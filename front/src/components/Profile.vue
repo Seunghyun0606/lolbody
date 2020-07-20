@@ -147,7 +147,6 @@ export default {
                 win : '11',
                 lose: '9'
             },
-            
             mostLine: {
                 src : require('@/assets/images/SUP.png'),
                 winRate: '55%',

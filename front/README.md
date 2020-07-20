@@ -1,5 +1,14 @@
 # front
 
+## add on 목록
+
+- vuex
+- linter/formater
+- router
+- vuetify
+- apexcharts
+- axios
+
 ## Project setup
 ```
 yarn install

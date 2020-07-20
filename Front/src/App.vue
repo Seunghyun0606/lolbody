@@ -9,13 +9,15 @@
 
     <v-content>
       <v-container fluid>
-
         <v-row justify="center" align="center" style="height:200px;">
           <div class="back-grey">광고?</div>
         </v-row>
 
         <v-row>
           <v-col cols=2 class="back-grey">
+            <v-row>
+              <RadarChart/>
+            </v-row>
             다각형 + 유저성향 + 배지?
 
           </v-col>
@@ -40,12 +42,14 @@
 
 <script>
 import MultiSearch from './components/MultiSearch';
+import RadarChart from './components/RadarChart';
+
 
 export default {
   name: 'App',
-
   components: {
     MultiSearch,
+    RadarChart,
   },
 
   data: () => ({
@@ -54,16 +58,10 @@ export default {
 };
 </script>
 
-#nav {
-  padding: 30px;
+<style scoped>
+
+.back-grey {
+  background-color: grey;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

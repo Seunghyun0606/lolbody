@@ -4,7 +4,7 @@
     :items="multiserach_infos"
     :items-per-page="5"
     class="elevation-1"
-    hide-default-footer`
+    hide-default-footer
   ></v-data-table>
 </template>
 

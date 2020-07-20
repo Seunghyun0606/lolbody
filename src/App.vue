@@ -9,13 +9,16 @@
 
     <v-content>
       <v-container fluid>
-
+        <!-- <prac/> -->
         <v-row justify="center" align="center" style="height:200px;">
           <div class="back-grey">광고?</div>
         </v-row>
 
         <v-row>
           <v-col cols=2 class="back-grey">
+            <v-row>
+              <RadarChart/>
+            </v-row>
             다각형 + 유저성향 + 배지?
 
           </v-col>
@@ -40,12 +43,16 @@
 
 <script>
 import MultiSearch from './components/MultiSearch';
+import RadarChart from './components/RadarChart';
+// import prac from './components/prac'
+
 
 export default {
   name: 'App',
-
   components: {
     MultiSearch,
+    RadarChart,
+    // prac,
   },
 
   data: () => ({

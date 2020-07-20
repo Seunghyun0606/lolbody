@@ -1,6 +1,6 @@
 <template>
   <div>
-    <VueApexCharts style="background-color: red;" type="radar" :options="chartOptions" :series="series"></VueApexCharts>
+    <VueApexCharts style="background-color: red;" width="500" type="radar" :options="chartOptions" :series="series"></VueApexCharts>
   </div>
 </template>
 
@@ -27,8 +27,6 @@ export default {
         chartOptions: {
           chart: {
             // background: 'black',
-            width: '500%',
-            height: 500,
             toolbar: {
               show: false,
             },

@@ -1,6 +1,4 @@
 <template>
-<v-app id="sandbox">
-    <v-main>
         <v-container fluid>
             <v-row algin="center" justify="center">
                 <v-col cols="10">
@@ -33,7 +31,7 @@
                                 </v-card>
                                 
                                 <v-card style="margin-top:10px">
-                                    <RaderChart/>
+                                    <RadarChart/>
                                 </v-card>
                             </td>
                         </tr>
@@ -54,17 +52,16 @@
                 </v-col>
             </v-row>
         </v-container>
-    </v-main>
-</v-app>
+
 </template>
 
 <script>
-import RaderChart from '@/components/RaderChart';
+import RadarChart from '@/components/RadarChart';
 
 export default {
     name:'Profile',
     components:{
-        RaderChart
+        RadarChart
     },
     data: ()=>({
         item:{

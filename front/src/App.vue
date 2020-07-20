@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-content>
-      <Profile />
+      <Profile/>
     </v-content>
   </v-app>
 </template>

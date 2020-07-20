@@ -7828,6 +7828,17 @@ vm-browserify@^1.0.1:
   resolved "https://registry.npm.taobao.org/vm-browserify/download/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha1-eGQcSIuObKkadfUR56OzKobl3aA=
 
+<<<<<<< HEAD
+=======
+vue-cli-plugin-vuetify@~2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npm.taobao.org/vue-cli-plugin-vuetify/download/vue-cli-plugin-vuetify-2.0.6.tgz#910f996a5c07e9f4e651bb332992cd0868e08546"
+  integrity sha1-kQ+ZalwH6fTmUbszKZLNCGjghUY=
+  dependencies:
+    semver "^7.1.2"
+    shelljs "^0.8.3"
+
+>>>>>>> parent of 57574fd... apexCharts practice
 vue-eslint-parser@^7.0.0:
   version "7.1.0"
   resolved "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-7.1.0.tgz#9cdbcc823e656b087507a1911732b867ac101e83"

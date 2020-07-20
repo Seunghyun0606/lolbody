@@ -10,7 +10,6 @@
 import Profile from "./components/Profile.vue";
 export default {
   name: 'App',
-
   components: {
     Profile,
   },

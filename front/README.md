@@ -2,12 +2,14 @@
 
 ## add on 목록
 
-- vuex
 - linter/formater
-- router
+- vuex
+- vue-router
 - vuetify
-- apexcharts
+
 - axios
+- apexcharts
+- vue-apexcharts
 
 ## Project setup
 ```

@@ -4,11 +4,22 @@
 	<select id="getSummoner"
 		resultType="com.ssafy.lolbody.dto.SummonerDTO">
 		select * from summoner
-		where name=#{summonerName}
+		where replace(name,' ','') like #{summonerName}
 	</select>
 	
 	<insert id="insertSummoner">
 		insert into summoner(id, accountId, puuid, name, profileIconId, revisionDate, summonerLevel)
 		values(#{id}, #{accountId}, #{puuid}, #{name}, #{profileIconId}, #{revisionDate}, #{summonerLevel})
+	</insert>
+	
+	<select id="getSummonerTier"
+		resultType="com.ssafy.lolbody.dto.LeagueEntryDTO">
+		select * from league_entry
+		where replace(summoner_name,' ','') like #{summonerName}
+	</select>
+	
+	<insert id="insertSummonerTier">
+		insert into league_entry(summoner_name,leagueId,queueType,tier,leagueRank,leaguePoints,wins,losses)
+		values(#{summonerName},#{leagueId},#{queueType},#{tier},#{leagueRank},#{leaguePoints},#{wins},#{losses})
 	</insert>
 </mapper>

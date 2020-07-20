@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.ssafy.lolbody.config.ApiKey;
 import com.ssafy.lolbody.dao.SummonerDAO;
+import com.ssafy.lolbody.dto.LeagueEntryDTO;
 import com.ssafy.lolbody.dto.SummonerDTO;
 
 @Component
@@ -42,7 +43,7 @@ public class SummonerService {
 				summonerDto.setPuuid((String) obj.get("puuid"));
 				summonerDto.setSummonerLevel((long) obj.get("summonerLevel"));
 				dao.insertSummoner(summonerDto);
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -50,26 +51,46 @@ public class SummonerService {
 		return summonerDto;
 	}
 
-	public JSONArray getSummonerTier(String summonerName) {
-		SummonerDTO tmp = getSummoner(summonerName);
-		String str = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner";
-		str += "/" + tmp.getId();
-		str += "?api_key=" + ApiKey.key;
-		try {
-			URL url = new URL(str);
-			String line = "", result = "";
-			BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream()));
-			while ((line = bf.readLine()) != null) {
-				result = result.concat(line);
-			}
+	public LeagueEntryDTO getSummonerTier(String summonerName) {
+		LeagueEntryDTO leagueDto = dao.getSummonerTier(summonerName);
+		if (leagueDto == null) {
+			leagueDto = new LeagueEntryDTO();
+			SummonerDTO summonerDTO = getSummoner(summonerName);
+			String str = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner";
+			str += "/" + summonerDTO.getId();
+			str += "?api_key=" + ApiKey.key;
+			try {
+				URL url = new URL(str);
+				String line = "", result = "";
+				BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream()));
+				while ((line = bf.readLine()) != null) {
+					result = result.concat(line);
+				}
 
-			JSONParser parser = new JSONParser();
-			JSONArray arr = (JSONArray) parser.parse(result);
-			return arr;
-		} catch (Exception e) {
-			e.printStackTrace();
+				JSONParser parser = new JSONParser();
+				JSONArray arr = (JSONArray) parser.parse(result);
+				for (int i = 0; i < arr.size(); i++) {
+					JSONObject obj = (JSONObject) arr.get(i);
+					leagueDto.setLeagueId((String) obj.get("leagueId"));
+					leagueDto.setSummonerName(summonerDTO.getName());
+					leagueDto.setQueueType((String) obj.get("queueType"));
+					leagueDto.setTier((String) obj.get("tier"));
+					leagueDto.setRank((String) obj.get("rank"));
+					leagueDto.setLeaguePoints(Integer.parseInt(obj.get("leaguePoints").toString()));
+					leagueDto.setWins(Integer.parseInt(obj.get("wins").toString()));
+					leagueDto.setLosses(Integer.parseInt(obj.get("losses").toString()));
+				}
+				if (leagueDto.getSummonerName() == null) {
+					leagueDto.setSummonerName(summonerDTO.getName());
+					leagueDto.setRank("UNRANKED");
+				}
+				dao.insertSummonerTier(leagueDto);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		return null;
+		return leagueDto;
 	}
 
 	public JSONObject getSummonerMatch(String summonerName) {

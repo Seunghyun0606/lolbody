@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.lolbody.dto.LeagueEntryDTO;
+import com.ssafy.lolbody.dto.MatchlistDto;
 import com.ssafy.lolbody.dto.SummonerDTO;
 import com.ssafy.lolbody.service.LeagueEntryService;
+import com.ssafy.lolbody.service.MatchlistService;
 import com.ssafy.lolbody.service.SummonerService;
 
 import io.swagger.annotations.ApiOperation;
 
+//http://localhost:8080/swagger-ui.html
 @RestController("/api")
 public class SummonerController {
 	
@@ -21,6 +24,8 @@ public class SummonerController {
 	private SummonerService summonerService;
 	@Autowired
 	private LeagueEntryService leagueEntryService;
+	@Autowired
+	private MatchlistService matchlistService;
 	
 	@GetMapping("/user/{name}")
 	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 검색합니다.")
@@ -28,6 +33,14 @@ public class SummonerController {
 		SummonerDTO summonerDto = summonerService.findByName(name);
 		
 		return leagueEntryService.findBySummonerId(summonerDto.getId());
+	}
+	
+	@GetMapping("/match/{name}")
+	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 검색합니다.")
+	public MatchlistDto getUserMatch(@PathVariable String name) {
+		SummonerDTO summonerDto = summonerService.findByName(name);
+		
+		return matchlistService.findBySummonerId(summonerDto);
 	}
 	
 }

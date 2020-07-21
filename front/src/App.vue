@@ -10,6 +10,10 @@
     <v-content>
       <v-container fluid>
         <v-row justify="center" align="center" style="height:200px;">
+          <form action="">
+            <input v-model="userId" type="text">
+          </form>
+          <button @click="getApiData">버튼</button>
           <div class="back-grey">광고?</div>
         </v-row>
 
@@ -44,6 +48,7 @@
 import MultiSearch from './components/MultiSearch';
 import RadarChart from './components/RadarChart';
 
+import axios from 'axios'
 
 export default {
   name: 'App',
@@ -52,9 +57,30 @@ export default {
     RadarChart,
   },
 
-  data: () => ({
-    //
-  }),
+  data () {
+    return {
+      apiData: Array,
+      userId: "abc"
+    }
+  },
+  methods: {
+    getApiData() {
+      axios
+        .get(`http://localhost:8000/user/${this.userId}`)
+        .then(res => {
+          this.apiData = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+  
+
+
+  },
+  created() {
+
+  }
 };
 </script>
 

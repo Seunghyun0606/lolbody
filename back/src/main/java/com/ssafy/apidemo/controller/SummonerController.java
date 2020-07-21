@@ -14,6 +14,8 @@ import com.ssafy.apidemo.service.SummonerService;
 
 import io.swagger.annotations.ApiOperation;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 @RestController("/api")
 public class SummonerController {
 	
@@ -22,6 +24,7 @@ public class SummonerController {
 	@Autowired
 	private LeagueEntryService leagueEntryService;
 	
+	@CrossOrigin("*")
 	@GetMapping("/user/{name}")
 	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 검색합니다.")
 	public List<LeagueEntryDTO> getUserInfo(@PathVariable String name) {

@@ -39,21 +39,21 @@
                                 <v-card>
                                     <v-row>
                                         <v-col cols="1">
-                                            <v-btn class="graph_btn">
+                                            <v-btn class="graph_btn" @click="getLankData">
                                                 LP
                                             </v-btn>
                                         </v-col>
                                         <v-col cols="1">
-                                            <v-btn class="graph_btn"> 
+                                            <v-btn class="graph_btn" @click="getTotalPointData"> 
                                                 총점
                                             </v-btn>
                                         </v-col>
                                     </v-row>
                                 </v-card>
                                 
-                                <v-card style="margin-top:10px">
-                                    <div>
-                                    <LineChart/>
+                                <v-card style="margin-top:10px;text-align:center;">
+                                    <div style="text-align:center;">
+                                        <LineChart/>
                                     </div>
                                 </v-card>
                             </td>
@@ -160,7 +160,15 @@ export default {
                 lose: '9'
             },
         }
-    })
+    }),
+    methods:{
+        getLankData(){
+            //LineChart에 데이터  전달
+        },
+        getTotalPointData(){
+            //LineChart에 데이터  전달
+        }
+    }
 }
 </script>
 
@@ -188,5 +196,10 @@ td{
 .v-card {
     margin: 5px !important;
     padding: 5px 10px 5px 10px !important;
+    
+}
+.apexcharts-canvas {
+    text-align: center;
+    margin-left : 0px !important;
 }
 </style> 

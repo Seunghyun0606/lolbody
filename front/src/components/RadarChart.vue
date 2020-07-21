@@ -1,6 +1,6 @@
 <template>
   <div>
-    <VueApexCharts width="365" hegith="200" type="radar" :options="chartOptions" :series="series"></VueApexCharts>
+    <VueApexCharts width="365" type="radar" :options="chartOptions" :series="series"></VueApexCharts>
   </div>
 </template>
 

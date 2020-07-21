@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <VueApexCharts width="500" hegith="200" type="line" :options="chartOptions" :series="series"></VueApexCharts>
-    </div>
+  <div>
+    <VueApexCharts type="line" :options="chartOptions" :series="series"></VueApexCharts>
+  </div>
 </template>
 
 <script>
@@ -16,53 +16,34 @@ export default {
           series: [
             {
               name: "High - 2013",
-              data: [28, 29, 33, 36, 32, 32, 33]
-            },
-            {
-              name: "Low - 2013",
-              data: [12, 11, 14, 18, 17, 13, 13]
+              data: [10, 9, 8, 7, 6, 11, 15]
             }
           ],
           chartOptions: {
             chart: {
-                width: '100%',
-              height: 350,
+              height: 100,
               type: 'line',
-              dropShadow: {
-                enabled: true,
-                color: '#000',
-                top: 18,
-                left: 7,
-                blur: 10,
-                opacity: 0.2
-              },
               toolbar: {
                 show: false
               }
             },
             colors: ['#77B6EA', '#545454'],
-            dataLabels: {
-              enabled: true,
-            },
-            stroke: {
-              curve: 'smooth'
-            },
             title: {
-              text: 'Average High & Low Temperature',
-              align: 'left'
+              text: '변화 추이',
+              align: 'center'
             },
             grid: {
-              borderColor: '#e7e7e7',
-              row: {
-                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                opacity: 0.5
-              },
+              borderColor: '#e7e7e7'
             },
             markers: {
-              size: 1
+              size: 7,
+              shape: "circle",
+              radius: 2,
             },
             xaxis: {
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+              categories: [
+                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'
+              ],
               title: {
                 text: 'Month'
               }
@@ -72,14 +53,7 @@ export default {
                 text: 'Temperature'
               },
               min: 5,
-              max: 40
-            },
-            legend: {
-              position: 'top',
-              horizontalAlign: 'right',
-              floating: true,
-              offsetY: -25,
-              offsetX: -5
+              max: 20
             }
           },
         }

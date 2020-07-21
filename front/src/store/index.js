@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import axios from 'axios'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -60,10 +62,25 @@ export default new Vuex.Store({
         most_champ: '1%',
       },
     ],
+    apiData: {},
   },
   mutations: {
+    setApiData(state, apiData) {
+      state.apiData = apiData
+    },
   },
   actions: {
+    getApiData( { commit }, userId ) {
+      axios
+        .get(`http://localhost:8000/user/${userId}`)
+        .then(res => {
+          commit('setApiData', res.data[0])
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
   },
   modules: {
   }

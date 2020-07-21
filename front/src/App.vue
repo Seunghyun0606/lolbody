@@ -13,7 +13,8 @@
           <v-col></v-col>
           <v-col>
             <v-text-field v-model="userId" label="test"></v-text-field>
-            <v-btn @click="getApiData">버튼</v-btn>
+            <v-btn @click="getApiData(userId)">버튼</v-btn>
+            <p> {{ apiData.tier }}</p>
 
           </v-col>
           <v-col></v-col>
@@ -50,7 +51,8 @@
 import MultiSearch from './components/MultiSearch';
 import RadarChart from './components/RadarChart';
 
-import axios from 'axios'
+import { mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -61,24 +63,16 @@ export default {
 
   data () {
     return {
-      apiData: Array,
-      userId: "abc"
+      userId: "",
     }
   },
+  computed: {
+    ...mapState(['apiData'])
+
+  },
   methods: {
-    getApiData() {
-      axios
-        .get(`http://localhost:8000/user/${this.userId}`)
-        .then(res => {
-          this.apiData = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-  
-
-
+    ...mapActions(['getApiData'])
+    
   },
   created() {
 

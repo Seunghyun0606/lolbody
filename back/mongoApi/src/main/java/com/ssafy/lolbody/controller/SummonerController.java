@@ -3,6 +3,7 @@ package com.ssafy.lolbody.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,8 @@ import com.ssafy.lolbody.service.SummonerService;
 
 import io.swagger.annotations.ApiOperation;
 
-//http://localhost:8080/swagger-ui.html
+//http://localhost:8888/swagger-ui.html
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController("/api")
 public class SummonerController {
 	
@@ -28,15 +30,16 @@ public class SummonerController {
 	private MatchlistService matchlistService;
 	
 	@GetMapping("/user/{name}")
-	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 검색합니다.")
+	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 소환사 정보를 검색합니다.")
 	public List<LeagueEntryDTO> getUserInfo(@PathVariable String name) {
 		SummonerDTO summonerDto = summonerService.findByName(name);
 		
 		return leagueEntryService.findBySummonerId(summonerDto.getId());
 	}
 	
+	
 	@GetMapping("/match/{name}")
-	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 검색합니다.")
+	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 매치데이터를 검색합니다.")
 	public MatchlistDto getUserMatch(@PathVariable String name) {
 		SummonerDTO summonerDto = summonerService.findByName(name);
 		

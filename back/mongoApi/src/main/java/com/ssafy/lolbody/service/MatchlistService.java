@@ -28,30 +28,36 @@ public class MatchlistService {
 		MatchlistDto matchlistDto = matchlistRepository.findBySummonerId(summonerDto.getId());
 
 		if (matchlistDto == null) {
+			// 매치 데이터가 없는 유저
 			matchlistDto = new MatchlistDto();
 			matchlistDto.setSummonerId(summonerDto.getId());
 			List<MatchReferenceDto> list = new ArrayList<>();
 			int season = 13, beginIndex = 0, endIndex = 100;
 			while (true) {
+				System.out.println("search " + beginIndex + " ~ " + endIndex);
 				String query = "?season=" + season + "&beginIndex=" + beginIndex + "&endIndex=" + endIndex;
-				JSONObject obj = new JSONObject(
+				try {
+					JSONObject obj = new JSONObject(
 						Api.get("https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account",
 								summonerDto.getAccountId() + query));
-				JSONArray arr = obj.getJSONArray("matches");
-				if (arr.length() == 0)
+					JSONArray arr = obj.getJSONArray("matches");
+					if (arr.length() == 0)
+						break;
+					for (int i = 0; i < arr.length(); i++) {
+						JSONObject tmp = arr.getJSONObject(i);
+						MatchReferenceDto mr = new MatchReferenceDto();
+						mr.setGameId(tmp.getLong("gameId"));
+						mr.setRole(tmp.getString("role"));
+						mr.setSeason(tmp.getInt("season"));
+						mr.setPlatformId(tmp.getString("platformId"));
+						mr.setChampion(tmp.getInt("champion"));
+						mr.setQueue(tmp.getInt("queue"));
+						mr.setLane(tmp.getString("lane"));
+						mr.setTimestamp(tmp.getLong("timestamp"));
+						list.add(mr);
+					}
+				} catch (Exception e) {
 					break;
-				for (int i = 0; i < arr.length(); i++) {
-					JSONObject tmp = arr.getJSONObject(i);
-					MatchReferenceDto mr = new MatchReferenceDto();
-					mr.setGameId(tmp.getLong("gameId"));
-					mr.setRole(tmp.getString("role"));
-					mr.setSeason(tmp.getInt("season"));
-					mr.setPlatformId(tmp.getString("platformId"));
-					mr.setChampion(tmp.getInt("champion"));
-					mr.setQueue(tmp.getInt("queue"));
-					mr.setLane(tmp.getString("lane"));
-					mr.setTimestamp(tmp.getLong("timestamp"));
-					list.add(mr);
 				}
 				beginIndex += 100;
 				endIndex += 100;
@@ -60,32 +66,39 @@ public class MatchlistService {
 			matchlistDto.setMatches(list);
 
 		} else {
+			// 매치 데이터가 있는 유저
 			List<MatchReferenceDto> matches = matchlistDto.getMatches();
-			String beginTime = matches.get(matches.size() - 1).getTimestamp() + "";
+			Long beginTime = matches.get(matches.size() - 1).getTimestamp() + 1;
 			List<MatchReferenceDto> list = new ArrayList<>();
 			int season = 13, beginIndex = 0, endIndex = 100;
 			while (true) {
+				System.out.println("search " + beginIndex + " ~ " + endIndex);
 				String query = "?season=" + season + "&beginIndex=" + beginIndex + "&endIndex=" + endIndex
 						+ "&beginTime=" + beginTime;
+				try {
 				JSONObject obj = new JSONObject(
 						Api.get("https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account",
 								summonerDto.getAccountId() + query));
-				JSONArray arr = obj.getJSONArray("matches");
-				if (arr.length() == 0)
+					JSONArray arr = obj.getJSONArray("matches");
+					if (arr.length() == 0)
+						break;
+					for (int i = 0; i < arr.length(); i++) {
+						JSONObject tmp = arr.getJSONObject(i);
+						MatchReferenceDto mr = new MatchReferenceDto();
+						mr.setGameId(tmp.getLong("gameId"));
+						mr.setRole(tmp.getString("role"));
+						mr.setSeason(tmp.getInt("season"));
+						mr.setPlatformId(tmp.getString("platformId"));
+						mr.setChampion(tmp.getInt("champion"));
+						mr.setQueue(tmp.getInt("queue"));
+						mr.setLane(tmp.getString("lane"));
+						mr.setTimestamp(tmp.getLong("timestamp"));
+						list.add(mr);
+					}
+				} catch (Exception e) {
 					break;
-				for (int i = 0; i < arr.length(); i++) {
-					JSONObject tmp = arr.getJSONObject(i);
-					MatchReferenceDto mr = new MatchReferenceDto();
-					mr.setGameId(tmp.getLong("gameId"));
-					mr.setRole(tmp.getString("role"));
-					mr.setSeason(tmp.getInt("season"));
-					mr.setPlatformId(tmp.getString("platformId"));
-					mr.setChampion(tmp.getInt("champion"));
-					mr.setQueue(tmp.getInt("queue"));
-					mr.setLane(tmp.getString("lane"));
-					mr.setTimestamp(tmp.getLong("timestamp"));
-					list.add(mr);
 				}
+
 				beginIndex += 100;
 				endIndex += 100;
 			}

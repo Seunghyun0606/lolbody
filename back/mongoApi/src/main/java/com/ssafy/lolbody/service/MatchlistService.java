@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.ssafy.lolbody.api.Api;
 import com.ssafy.lolbody.dto.MatchlistDto;
 import com.ssafy.lolbody.dto.MatchlistDto.MatchReferenceDto;
@@ -44,16 +45,8 @@ public class MatchlistService {
 					if (arr.length() == 0)
 						break;
 					for (int i = 0; i < arr.length(); i++) {
-						JSONObject tmp = arr.getJSONObject(i);
-						MatchReferenceDto mr = new MatchReferenceDto();
-						mr.setGameId(tmp.getLong("gameId"));
-						mr.setRole(tmp.getString("role"));
-						mr.setSeason(tmp.getInt("season"));
-						mr.setPlatformId(tmp.getString("platformId"));
-						mr.setChampion(tmp.getInt("champion"));
-						mr.setQueue(tmp.getInt("queue"));
-						mr.setLane(tmp.getString("lane"));
-						mr.setTimestamp(tmp.getLong("timestamp"));
+						String json = arr.getJSONObject(i).toString();
+						MatchReferenceDto mr = new Gson().fromJson(json, MatchReferenceDto.class);
 						list.add(mr);
 					}
 				} catch (Exception e) {
@@ -83,16 +76,8 @@ public class MatchlistService {
 					if (arr.length() == 0)
 						break;
 					for (int i = 0; i < arr.length(); i++) {
-						JSONObject tmp = arr.getJSONObject(i);
-						MatchReferenceDto mr = new MatchReferenceDto();
-						mr.setGameId(tmp.getLong("gameId"));
-						mr.setRole(tmp.getString("role"));
-						mr.setSeason(tmp.getInt("season"));
-						mr.setPlatformId(tmp.getString("platformId"));
-						mr.setChampion(tmp.getInt("champion"));
-						mr.setQueue(tmp.getInt("queue"));
-						mr.setLane(tmp.getString("lane"));
-						mr.setTimestamp(tmp.getLong("timestamp"));
+						String json = arr.getJSONObject(i).toString();
+						MatchReferenceDto mr = new Gson().fromJson(json, MatchReferenceDto.class);
 						list.add(mr);
 					}
 				} catch (Exception e) {

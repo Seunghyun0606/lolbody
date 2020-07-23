@@ -2,119 +2,108 @@
 <v-app id="sandbox">
     <v-main>
         <v-container fluid>
-            <v-row algin="center" justify="center">
-                <v-col cols="10">
-                    <table width="100%">
-                        <tr>
-                            <td width="30%">
-                                <v-card height="150px" algin="center">
-                                    <v-row>
-                                        <v-col cols="3">
-                                            <div class="avatar">
-                                                <v-avatar class="ma-3" size="70">
-                                                    <v-img :src= "item.iconSrc"/>
-                                                </v-avatar>
-                                            </div>
-                                        </v-col>
-                                        <v-col cols="6">
-                                            <v-card-title class="headline" v-text="item.nickname"/>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-chip class="ma-2" color="green" text-color="white">
-                                            배지1
-                                            </v-chip>
-                                            <v-chip class="ma-2" color="green" text-color="white">
-                                            배지2
-                                            </v-chip>
-                                            <v-chip class="ma-2" color="green" text-color="white">
-                                            배지3
-                                            </v-chip>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                            </td>
-                            <td rowspan="2">
-                                <v-card>
-                                    <v-row>
-                                        <v-col cols="1">
-                                            <v-btn class="graph_btn" @click="getLankData">
-                                                LP
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="1">
-                                            <v-btn class="graph_btn" @click="getTotalPointData"> 
-                                                총점
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                                
-                                <v-card style="margin-top:10px;text-align:center;">
-                                    <div style="text-align:center;">
-                                        <LineChart/>
-                                    </div>
-                                </v-card>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <v-card height="150px" algin="center">
-                                    <div>
+            <v-row align="center" justify="center">
+                <table width="1000px">
+                    <tr>
+                        <td width="35%">
+                            <v-card height="150px" algin="center">
+                                <v-row>
+                                    <v-col cols="3">
+                                        <div class="avatar">
+                                            <v-avatar class="ma-3" size="70">
+                                                <v-img :src= "item.iconSrc"/>
+                                            </v-avatar>
+                                            <span class="level">105</span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <v-card-title class="headline nickname" v-text="item.nickname"/>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-chip class="ma-2" color="green" text-color="white">
+                                        배지1
+                                        </v-chip>
+                                        <v-chip class="ma-2" color="green" text-color="white">
+                                        배지2
+                                        </v-chip>
+                                        <v-chip class="ma-2" color="green" text-color="white">
+                                        배지3
+                                        </v-chip>
+                                    </v-col>
+                                </v-row>
+                            </v-card>
+                        </td>
+                        <td rowspan="2">
+                            <v-card style="margin-top:10px;text-align:center;">
+                                <ul class="options">
+                                    <li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">LP</a></li>
+                                    <li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
+                                </ul>
+                                <div class="LineChart">
+                                    <LineChart/>
+                                </div>
+                            </v-card>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <v-card height="300px" algin="center">
+                                <ul class="options">
+                                    <li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
+                                    <li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
+                                </ul>
+                                <div class="icons">
+                                    <div class="icon">
                                         <v-avatar class="ma-3" size="70">
-                                            <v-img :src="item.lank.src" />
+                                            <v-img :src="item.rank.src"/>
                                         </v-avatar>
                                         <v-card-text>
-                                            {{item.lank.winRate}} ({{item.lank.win}}승 {{item.lank.lose}}패)
+                                            <span>{{item.rank.winRate}}</span> (<span class="win">{{item.rank.win}}승</span> <span class="lose">{{item.rank.lose}}패</span>)
                                         </v-card-text>
                                     </div>
-                                </v-card>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <v-card height="150px" algin="center">
-                                    <div>
+                                    <div class="icon">
+                                        <v-avatar class="ma-3" size="50">
+                                            <v-img :src="item.mostLine.src"/>
+                                        </v-avatar>
+                                        <v-card-text>
+                                            {{item.mostLine.winRate}} (<span class="win">{{item.mostLine.win}}승</span> <span class="lose">{{item.mostLine.lose}}패</span>)
+                                        </v-card-text>
+                                    </div>
+                                    <div class="icon">
+                                        <v-avatar class="ma-3" size="50">
+                                            <v-img :src="item.secondLine.src"/>
+                                        </v-avatar>
+                                        <v-card-text>
+                                            {{item.secondLine.winRate}} (<span class="win">{{item.secondLine.win}}승</span> <span class="lose">{{item.secondLine.lose}}패</span>)
+                                        </v-card-text>
+                                    </div>
+                                    <div class="icon">
                                         <v-avatar class="ma-3" size="70">
                                             <v-img :src="item.mostCham.src" />
                                         </v-avatar>
                                         <v-card-text>
-                                            {{item.mostCham.winRate}} ({{item.mostCham.win}}승 {{item.mostCham.lose}}패)
+                                            {{item.mostCham.winRate}} (<span class="win">{{item.mostCham.win}}승</span> <span class="lose">{{item.mostCham.lose}}패</span>)
                                         </v-card-text>
                                     </div>
-                                </v-card>
-                            </td>
-                            <td rowspan="2">
-                                <v-card style="margin-top:10px">
-                                    <RadarChart/>
-                                </v-card>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <v-card height="150px" algin="center">
-                                    <div style="display:inline-block;">
-                                        <v-avatar class="ma-3" size="70">
-                                            <v-img :src="item.mostLine.src"/>
-                                        </v-avatar>
-                                        <v-card-text>
-                                            {{item.mostLine.winRate}} ({{item.mostLine.win}}승 {{item.mostLine.lose}}패)
-                                        </v-card-text>
-                                    </div>
-                                    <div style="display:inline-block;">
-                                        <v-avatar class="ma-3" size="70">
-                                            <v-img :src="item.secondLine.src"/>
-                                        </v-avatar>
-                                        <v-card-text>
-                                            {{item.secondLine.winRate}} ({{item.secondLine.win}}승 {{item.secondLine.lose}}패)
-                                        </v-card-text>
-                                    </div>
-                                </v-card>
-                            </td>
-                        </tr>
-                    </table>
-                </v-col>
+                                </div>
+                            </v-card>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <v-card height="150px" algin="center">
+                                
+                            </v-card>
+                        </td>
+                        <td rowspan="2">
+                            <v-card style="margin-top:10px">
+                                <RadarChart/>
+                            </v-card>
+                        </td>
+                    </tr>
+                </table>
             </v-row>
         </v-container>
     </v-main>
@@ -132,10 +121,16 @@ export default {
         LineChart
     },
     data: ()=>({
+        triger:{
+            totalPointActive: false,
+            LPActive: true,
+            nomalGameActive : false,
+            rankGameActive : true
+        },
         item:{
             nickname : 'BBluee',
             iconSrc : require('@/assets/images/937.png'), 
-            lank: {
+            rank: {
                 src : require('@/assets/images/Emblem_Challenger.png'),
                 winRate: '55%',
                 win : '11',
@@ -162,11 +157,27 @@ export default {
         }
     }),
     methods:{
-        getLankData(){
+        getRankData(){
             //LineChart에 데이터  전달
         },
         getTotalPointData(){
             //LineChart에 데이터  전달
+        },
+        changeNomarlGame(){
+            this.triger.nomalGameActive = true;
+            this.triger.rankGameActive = false;
+        },
+        changeRankGame(){
+            this.triger.nomalGameActive = false;
+            this.triger.rankGameActive = true;
+        },
+        changeLP(){
+            this.triger.LPActive = true;
+            this.triger.totalPointActive = false;
+        },
+        changeTotalPointDate(){
+            this.triger.LPActive = false;
+            this.triger.totalPointActive = true;
         }
     }
 }
@@ -186,6 +197,20 @@ td{
 .v-avatar {
     border : #BDBDBD 1px solid;
 }
+.nickname {
+    padding: 30px 0 0 5px !important;
+}
+.level{
+    border : gold 0.5px solid;
+    border-radius: 50px;
+    padding: 2px 5px 2px 5px !important;
+    font-size: 5px;
+    color:gold;
+    font-weight: bold;
+    position: absolute;
+    transform: translate(32px, -27px);
+    background-color: rgb(26, 25, 25);
+}
 .v-btn {
     margin: 10px !important;
 }
@@ -195,11 +220,55 @@ td{
 }
 .v-card {
     margin: 5px !important;
-    padding: 5px 10px 5px 10px !important;
-    
 }
 .apexcharts-canvas {
     text-align: center;
     margin-left : 0px !important;
+}
+.icons {
+    text-align: center;
+}
+.LineChart{
+    padding: 0 30px 0 30px !important;
+}
+
+.options {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.options li {
+    float: left;
+    width: 50%;
+}
+.options li a {
+    height: 30px;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 4px 0 0 0 !important;
+    text-decoration: none;
+    background-color: #8b8b8b;
+}
+.options li a:hover:not(.option_action) {
+    background-color: rgb(160, 160, 160);
+}
+.option_action {
+    background-color: white !important;
+    border: white 0px solid !important;
+}
+
+.icon {
+    display:inline-block;
+    padding: 5px !important;
+}
+.win{
+    color:rgb(2, 2, 214);
+    font-size: 8px;
+}
+.lose{
+    color:rgb(223, 3, 3);
+    font-size: 8px;
 }
 </style> 

@@ -25,13 +25,14 @@ export default {
               type: 'line',
               toolbar: {
                 show: false
-              }
+              },
+              // annotations:{
+              //   yaxis:[{
+              //     y:
+              //   }]
+              // }
             },
             colors: ['#77B6EA', '#545454'],
-            title: {
-              text: '변화 추이',
-              align: 'center'
-            },
             grid: {
               borderColor: '#e7e7e7'
             },
@@ -52,11 +53,17 @@ export default {
               title: {
                 text: 'Temperature'
               },
+              tickAmount: 15,
               min: 5,
               max: 20
             }
           },
         }
+    },
+    methods:{
+      yData(){
+        
+      }
     }
 }
 </script>

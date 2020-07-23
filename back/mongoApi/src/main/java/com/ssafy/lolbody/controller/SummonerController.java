@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.lolbody.dto.LeagueEntryDTO;
+import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.dto.MatchDto;
 import com.ssafy.lolbody.dto.MatchlistDto;
-import com.ssafy.lolbody.dto.SummonerDTO;
+import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.service.LeagueEntryService;
 import com.ssafy.lolbody.service.MatchService;
 import com.ssafy.lolbody.service.MatchlistService;
@@ -35,8 +35,8 @@ public class SummonerController {
 	
 	@GetMapping("/user/{name}")
 	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 소환사 정보를 검색합니다.")
-	public List<LeagueEntryDTO> getUserInfo(@PathVariable String name) {
-		SummonerDTO summonerDto = summonerService.findByName(name);
+	public List<LeagueEntryDto> getUserInfo(@PathVariable String name) {
+		SummonerDto summonerDto = summonerService.findByName(name);
 		
 		return leagueEntryService.findBySummonerId(summonerDto.getId());
 	}
@@ -45,7 +45,7 @@ public class SummonerController {
 	@GetMapping("/matchlist/{name}")
 	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 매치데이터를 검색합니다.")
 	public MatchlistDto getUserMatchlist(@PathVariable String name) {
-		SummonerDTO summonerDto = summonerService.findByName(name);
+		SummonerDto summonerDto = summonerService.findByName(name);
 		
 		return matchlistService.findBySummonerId(summonerDto);
 	}

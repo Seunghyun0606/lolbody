@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.ssafy.lolbody.api.Api;
-import com.ssafy.lolbody.dto.LeagueEntryDTO;
+import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.repository.LeagueEntryRepository;
 
 @Service
@@ -17,22 +17,22 @@ public class LeagueEntryService {
 	@Autowired
 	private LeagueEntryRepository leagueEntryRepository;
 	
-	public void save(List<LeagueEntryDTO> leagueEntryList) {
+	public void save(List<LeagueEntryDto> leagueEntryList) {
 		leagueEntryRepository.saveAll(leagueEntryList);
 	}
 	
-	public List<LeagueEntryDTO> findAll() {
+	public List<LeagueEntryDto> findAll() {
 		return leagueEntryRepository.findAll();
 	}
 	
-	public List<LeagueEntryDTO> findBySummonerId(String summonerId) {
-		List<LeagueEntryDTO> leagueEntryList = leagueEntryRepository.findBySummonerId(summonerId);
+	public List<LeagueEntryDto> findBySummonerId(String summonerId) {
+		List<LeagueEntryDto> leagueEntryList = leagueEntryRepository.findBySummonerId(summonerId);
 		if(leagueEntryList.size() == 0) {
 			JSONArray arr = new JSONArray(Api.get("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner", summonerId));
 			leagueEntryList = new ArrayList<>();
 			for(int i = 0; i < arr.length(); i++) {
 				String json = arr.getJSONObject(i).toString();
-				LeagueEntryDTO leagueEntry = new Gson().fromJson(json, LeagueEntryDTO.class);
+				LeagueEntryDto leagueEntry = new Gson().fromJson(json, LeagueEntryDto.class);
 				leagueEntryList.add(leagueEntry);
 			}
 			save(leagueEntryList);

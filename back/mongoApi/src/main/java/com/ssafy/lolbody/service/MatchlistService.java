@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.ssafy.lolbody.api.Api;
+import com.ssafy.lolbody.dto.MatchReferenceDto;
 import com.ssafy.lolbody.dto.MatchlistDto;
-import com.ssafy.lolbody.dto.MatchlistDto.MatchReferenceDto;
-import com.ssafy.lolbody.dto.SummonerDTO;
+import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.repository.MatchlistRepository;
 
 @Service
@@ -25,7 +25,7 @@ public class MatchlistService {
 		matchlistRepository.save(matchlistDto);
 	}
 
-	public MatchlistDto findBySummonerId(SummonerDTO summonerDto) {
+	public MatchlistDto findBySummonerId(SummonerDto summonerDto) {
 		MatchlistDto matchlistDto = matchlistRepository.findBySummonerId(summonerDto.getId());
 
 		if (matchlistDto == null) {

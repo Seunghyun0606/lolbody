@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ssafy.lolbody.dto.LeagueEntryDTO;
+import com.ssafy.lolbody.dto.LeagueEntryDto;
 
-public interface LeagueEntryRepository extends MongoRepository<LeagueEntryDTO, String>{
-	public List<LeagueEntryDTO> findBySummonerId(String summonerId);
+public interface LeagueEntryRepository extends MongoRepository<LeagueEntryDto, String>{
+	public List<LeagueEntryDto> findBySummonerId(String summonerId);
 }

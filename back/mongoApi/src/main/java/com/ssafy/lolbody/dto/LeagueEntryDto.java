@@ -3,8 +3,8 @@ package com.ssafy.lolbody.dto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="leagues")
-public class LeagueEntryDTO {
+@Document(collection = "leagues")
+public class LeagueEntryDto {
 	@Id
 	private String summonerId;
 	private String leagueId;
@@ -20,128 +20,119 @@ public class LeagueEntryDTO {
 	private boolean freshBlood;
 	private boolean inactive;
 	private MiniSeriesDTO miniSeries;
-	
-	public class MiniSeriesDTO {
-		private int losses;
-		private String progress;
-		private int target;
-		private int wins;
-		public int getLosses() {
-			return losses;
-		}
-		public void setLosses(int losses) {
-			this.losses = losses;
-		}
-		public String getProgress() {
-			return progress;
-		}
-		public void setProgress(String progress) {
-			this.progress = progress;
-		}
-		public int getTarget() {
-			return target;
-		}
-		public void setTarget(int target) {
-			this.target = target;
-		}
-		public int getWins() {
-			return wins;
-		}
-		public void setWins(int wins) {
-			this.wins = wins;
-		}
-		@Override
-		public String toString() {
-			return "MiniSeriesDTO [losses=" + losses + ", progress=" + progress + ", target=" + target + ", wins=" + wins
-					+ "]";
-		}
-		
-		
-	}
+
 	public String getLeagueId() {
 		return leagueId;
 	}
+
 	public void setLeagueId(String leagueId) {
 		this.leagueId = leagueId;
 	}
+
 	public String getSummonerId() {
 		return summonerId;
 	}
+
 	public void setSummonerId(String summonerId) {
 		this.summonerId = summonerId;
 	}
+
 	public String getSummonerName() {
 		return summonerName;
 	}
+
 	public void setSummonerName(String summonerName) {
 		this.summonerName = summonerName;
 	}
+
 	public String getQueueType() {
 		return queueType;
 	}
+
 	public void setQueueType(String queueType) {
 		this.queueType = queueType;
 	}
+
 	public String getTier() {
 		return tier;
 	}
+
 	public void setTier(String tier) {
 		this.tier = tier;
 	}
+
 	public String getRank() {
 		return rank;
 	}
+
 	public void setRank(String rank) {
 		this.rank = rank;
 	}
+
 	public int getLeaguePoints() {
 		return leaguePoints;
 	}
+
 	public void setLeaguePoints(int leaguePoints) {
 		this.leaguePoints = leaguePoints;
 	}
+
 	public int getWins() {
 		return wins;
 	}
+
 	public void setWins(int wins) {
 		this.wins = wins;
 	}
+
 	public int getLosses() {
 		return losses;
 	}
+
 	public void setLosses(int losses) {
 		this.losses = losses;
 	}
+
 	public boolean isHotStreak() {
 		return hotStreak;
 	}
+
 	public void setHotStreak(boolean hotStreak) {
 		this.hotStreak = hotStreak;
 	}
+
 	public boolean isVeteran() {
 		return veteran;
 	}
+
 	public void setVeteran(boolean veteran) {
 		this.veteran = veteran;
 	}
+
 	public boolean isFreshBlood() {
 		return freshBlood;
 	}
+
 	public void setFreshBlood(boolean freshBlood) {
 		this.freshBlood = freshBlood;
 	}
+
 	public boolean isInactive() {
 		return inactive;
 	}
+
 	public void setInactive(boolean inactive) {
 		this.inactive = inactive;
 	}
+
 	public MiniSeriesDTO getMiniSeries() {
 		return miniSeries;
 	}
+
 	public void setMiniSeries(MiniSeriesDTO miniSeries) {
 		this.miniSeries = miniSeries;
 	}
+
 	@Override
 	public String toString() {
 		return "LeagueEntryDTO [leagueId=" + leagueId + ", summonerId=" + summonerId + ", summonerName=" + summonerName

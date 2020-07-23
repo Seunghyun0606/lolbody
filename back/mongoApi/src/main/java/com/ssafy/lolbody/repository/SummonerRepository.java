@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ssafy.lolbody.dto.SummonerDTO;
+import com.ssafy.lolbody.dto.SummonerDto;
 
-public interface SummonerRepository extends MongoRepository<SummonerDTO, String> {
-	public List<SummonerDTO> findAll();
-	public SummonerDTO findByName(String name);
+public interface SummonerRepository extends MongoRepository<SummonerDto, String> {
+	public List<SummonerDto> findAll();
+	public SummonerDto findByName(String name);
 }

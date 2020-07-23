@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="champkey")
-public class ChampKeyDTO {
+public class ChampKeyDto {
 	@Id
 	private String key;
 	private String name;

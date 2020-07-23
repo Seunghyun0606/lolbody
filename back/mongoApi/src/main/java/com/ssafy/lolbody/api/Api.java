@@ -8,7 +8,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 public class Api {
-	private final static String token = "RGAPI-d301d131-9bfc-4fb3-ba75-f83d8e35bae6";
+	private final static String token = "RGAPI-a3ad9f81-99ff-41d0-86e7-d7da6cf587ab";
 	public static String get(String input, String summonerName) {
 		boolean isOk = false;
 		String result = "";

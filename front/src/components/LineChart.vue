@@ -13,6 +13,19 @@ export default {
     },
     data() {
         return {
+          items:{
+              summonerName:"재료페인",
+              queueType:"RANKED_SOLO_5x5",
+              tier:"PLATINUM",
+              rank:"III",
+              leaguePoints:32,
+              wins:66,
+              losses:53,
+              hotStreak:false,
+              veteran:false,
+              freshBlood:false,
+              inactive:false
+          },
           series: [
             {
               name: "High - 2013",

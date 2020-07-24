@@ -11,26 +11,32 @@
                                     <v-col cols="3">
                                         <div class="avatar">
                                             <v-avatar class="ma-3" size="70">
-                                                <v-img :src= "item.iconSrc"/>
+                                                <v-img :src= "'require(`@/assets/images/profileicon'+item.profileIconId+'.png`)'"/>
                                             </v-avatar>
-                                            <span class="level">105</span>
+                                            <span class="level">{{item.summonerLevel}}</span>
                                         </div>
                                     </v-col>
-                                    <v-col cols="6">
-                                        <v-card-title class="headline nickname" v-text="item.nickname"/>
+                                    <v-col cols="8">
+                                        <div class="nicknameBox">
+                                            <v-card-title class="headline nickname" v-text="item.summonerName"/>
+                                            <v-btn color="info">전적 갱신</v-btn>
+                                            <span class="leastUpdate">최근 업데이트: 3시간 전</span>
+                                        </div>
                                     </v-col>
                                 </v-row>
                                 <v-row>
                                     <v-col cols="12">
-                                        <v-chip class="ma-2" color="green" text-color="white">
-                                        배지1
-                                        </v-chip>
-                                        <v-chip class="ma-2" color="green" text-color="white">
-                                        배지2
-                                        </v-chip>
-                                        <v-chip class="ma-2" color="green" text-color="white">
-                                        배지3
-                                        </v-chip>
+                                        <div class="badge">
+                                            <v-chip class="ma-2" color="green" text-color="white">
+                                            배지1
+                                            </v-chip>
+                                            <v-chip class="ma-2" color="green" text-color="white">
+                                            배지2
+                                            </v-chip>
+                                            <v-chip class="ma-2" color="green" text-color="white">
+                                            배지3
+                                            </v-chip>
+                                        </div>
                                     </v-col>
                                 </v-row>
                             </v-card>
@@ -56,9 +62,7 @@
                                 </ul>
                                 <div class="icons">
                                     <div class="icon">
-                                        <v-avatar class="ma-3" size="70">
-                                            <v-img :src="item.rank.src"/>
-                                        </v-avatar>
+                                        <img :src="item.rank.src" width= "70px"/>
                                         <v-card-text>
                                             <span>{{item.rank.winRate}}</span> (<span class="win">{{item.rank.win}}승</span> <span class="lose">{{item.rank.lose}}패</span>)
                                         </v-card-text>
@@ -111,6 +115,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import RadarChart from '@/components/RadarChart';
 import LineChart from '@/components/LineChart';
 
@@ -127,10 +132,8 @@ export default {
             nomalGameActive : false,
             rankGameActive : true
         },
-        item:{
-            nickname : 'BBluee',
-            iconSrc : require('@/assets/images/937.png'), 
-            rank: {
+        now:{ 
+            game:{
                 src : require('@/assets/images/Emblem_Challenger.png'),
                 winRate: '55%',
                 win : '11',
@@ -153,9 +156,22 @@ export default {
                 winRate: '55%',
                 win : '11',
                 lose: '9'
-            },
-        }
+            }
+        },
+        item:{}
     }),
+    created(){
+        axios.get('http://localhost:8888/profile/parkjamal')
+        .then(({data}) => {
+            this.item = data;
+        }).catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+        });
+    },
     methods:{
         getRankData(){
             //LineChart에 데이터  전달
@@ -195,13 +211,10 @@ td{
     vertical-align: top;
 }
 .v-avatar {
-    border : #BDBDBD 1px solid;
-}
-.nickname {
-    padding: 30px 0 0 5px !important;
+    border : rgb(200, 170, 110) 1px solid;
 }
 .level{
-    border : gold 0.5px solid;
+    border : gold 1px solid;
     border-radius: 50px;
     padding: 2px 5px 2px 5px !important;
     font-size: 5px;
@@ -211,21 +224,38 @@ td{
     transform: translate(32px, -27px);
     background-color: rgb(26, 25, 25);
 }
+.nicknameBox{
+    padding: 15px 0 0 10px !important;
+}
 .v-btn {
-    margin: 10px !important;
+    margin: 4px 4px 0 0 !important;
+    padding: 0 4px 0 4px !important;
+    height: 30px !important;
+}
+.v-btn__content{
+    font-size: 12px;
+}
+.leastUpdate{
+    position: absolute;
+    transform:translate(0, 13px);
+    font-size: 5px;
+}
+.badge{
+    margin-left: 5px !important;
 }
 .v-chip{
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+    padding: 2px 10px 0 10px !important;
 }
 .v-card {
     margin: 5px !important;
+    background-color: #fafafa !important;
 }
 .apexcharts-canvas {
     text-align: center;
     margin-left : 0px !important;
 }
 .icons {
+    margin-top: 10px !important;
     text-align: center;
 }
 .LineChart{
@@ -237,26 +267,29 @@ td{
     margin: 0;
     padding: 0;
     overflow: hidden;
+    background-color: #c4c4c4;
+    box-shadow: 2px 2px 2px rgb(51, 51, 51) inset;
 }
 .options li {
     float: left;
-    width: 50%;
+    width: 100px;
 }
 .options li a {
-    height: 30px;
+    height: 40px;
     display: block;
     color: black;
     text-align: center;
-    padding: 4px 0 0 0 !important;
+    padding: 9px 0 0 0 !important;
     text-decoration: none;
-    background-color: #8b8b8b;
+    background-color: #c4c4c4;
+    box-shadow: 2px 2px 2px rgb(51, 51, 51) inset;
 }
 .options li a:hover:not(.option_action) {
     background-color: rgb(160, 160, 160);
 }
 .option_action {
-    background-color: white !important;
-    border: white 0px solid !important;
+    background-color: #fafafa !important;
+    box-shadow: 2px 2px 2px rgb(51, 51, 51) !important;
 }
 
 .icon {
@@ -264,11 +297,11 @@ td{
     padding: 5px !important;
 }
 .win{
-    color:rgb(2, 2, 214);
+    color:rgb(1, 1, 211);
     font-size: 8px;
 }
 .lose{
-    color:rgb(223, 3, 3);
+    color:rgb(214, 0, 0);
     font-size: 8px;
 }
 </style> 

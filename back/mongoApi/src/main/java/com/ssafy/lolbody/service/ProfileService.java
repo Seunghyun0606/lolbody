@@ -31,11 +31,11 @@ public class ProfileService {
 		SummonerDto summonerDto = summonerService.findByName(name);
 		profile.setProfileIconId(summonerDto.getProfileIconId());
 		profile.setSummonerLevel(summonerDto.getSummonerLevel());
+		profile.setSummonerName(summonerDto.getName());
 
 		List<LeagueEntryDto> leagueEntryList = leagueEntryService.findBySummonerId(summonerDto.getId());
 		for (LeagueEntryDto i : leagueEntryList) {
 			if (i.getQueueType().equals("RANKED_SOLO_5x5")) {
-				profile.setSummonerName(i.getSummonerName());
 				profile.setTier(i.getTier());
 				profile.setRank(i.getRank());
 				profile.setLeaguePoints(i.getLeaguePoints());

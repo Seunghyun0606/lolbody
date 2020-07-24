@@ -25,7 +25,7 @@
             <v-btn 
             small 
             color="primary lighten-2"
-            @click="onClickSubmitButton"
+            @click="onClickSearchButton"
             >Search</v-btn>
           </v-toolbar>
         </v-card>
@@ -40,11 +40,10 @@ export default {
   data() {
     return {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2
-      searchSummernerIDs: []
     }
   },
   methods: {
-    onClickSubmitButton() {
+    onClickSearchButton() {
       this.parseInputSummonerID()
       console.log('axios요청', this.searchSummernerIDs)
     },
@@ -81,7 +80,9 @@ export default {
         tmpSearchSummernerIDs[idx] = ID
         // console.log(ID + '공백제거')
       })
-      this.searchSummernerIDs = tmpSearchSummernerIDs
+      // this.searchSummernerIDs = tmpSearchSummernerIDs
+      this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
+      console.log(1)
       // console.log(this.searchSummernerIDs)
     },
     onPaste (e) {
@@ -94,7 +95,7 @@ export default {
         e.preventDefault();
 
         // Get pasted data via clipboard API
-        clipboardData = e.clipboardData // || window.clipboardData;
+        clipboardData = e.clipboardData || window.clipboardData;
         pastedData = clipboardData.getData('Text');
 
         // inputSummonerID에 붙여넣기 한 데이터를 넣고
@@ -102,7 +103,8 @@ export default {
         // 붙여넣기한 데이터를 parse
         this.parseInputSummonerID()
         // 사용자가 수정이 가능하도록 input 창에 띄워줌
-        this.inputSummonerID = this.searchSummernerIDs.join(', ')
+        console.log(2)
+        this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
     },
   },
 }

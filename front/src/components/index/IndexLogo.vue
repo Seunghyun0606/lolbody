@@ -1,19 +1,23 @@
 <template>
   <div class="text-center">
     <v-img
-          :src="require('@/assets/logo.svg')"
-          class="my-3"
+          :src="require('@/assets/lolbody-logo.png')"
+          class="my-5"
           contain
-          height="200"
+          height="150"
         />
-    대충 로고라는 글
+    <GraphPractice/>
   </div>
 </template>
 
 <script>
+import GraphPractice from '@/components/GraphPractice.vue'
+
 export default {
   name: "IndexLogo",
-  
+  components: {
+    GraphPractice,
+  }  
 }
 </script>
 

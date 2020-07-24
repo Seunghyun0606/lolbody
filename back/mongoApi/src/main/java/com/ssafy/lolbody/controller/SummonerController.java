@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 
 //http://localhost:8888/swagger-ui.html
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
-@RestController("/api")
+@RestController
 public class SummonerController {
 	
 	@Autowired
@@ -43,10 +43,10 @@ public class SummonerController {
 	
 	
 	@GetMapping("/matchlist/{name}")
-	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 매치데이터를 검색합니다.")
+	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 매치리스트를 검색합니다.")
 	public MatchlistDto getUserMatchlist(@PathVariable String name) {
 		SummonerDto summonerDto = summonerService.findByName(name);
-		
+		System.out.println(summonerDto);
 		return matchlistService.findBySummonerId(summonerDto);
 	}
 	

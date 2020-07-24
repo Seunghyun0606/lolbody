@@ -61,7 +61,9 @@ public class MatchlistService {
 		} else {
 			// 매치 데이터가 있는 유저
 			List<MatchReferenceDto> matches = matchlistDto.getMatches();
-			Long beginTime = matches.get(matches.size() - 1).getTimestamp() + 1;
+			long beginTime = 0;
+			if (matches.size() != 0)
+				beginTime = matches.get(matches.size() - 1).getTimestamp() + 1;
 			List<MatchReferenceDto> list = new ArrayList<>();
 			int season = 13, beginIndex = 0, endIndex = 100;
 			while (true) {

@@ -32,11 +32,12 @@ public class MatchlistService {
 			// 매치 데이터가 없는 유저
 			matchlistDto = new MatchlistDto();
 			matchlistDto.setSummonerId(summonerDto.getId());
+			long beginTime = 1578596400000l;
 			List<MatchReferenceDto> list = new ArrayList<>();
-			int season = 13, beginIndex = 0, endIndex = 100;
+			int beginIndex = 0, endIndex = 100;
 			while (true) {
 				System.out.println("search " + beginIndex + " ~ " + endIndex);
-				String query = "?season=" + season + "&beginIndex=" + beginIndex + "&endIndex=" + endIndex;
+				String query = "?beginTime=" + beginTime + "&beginIndex=" + beginIndex + "&endIndex=" + endIndex;
 				try {
 					JSONObject obj = new JSONObject(
 						Api.get("https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account",
@@ -61,15 +62,14 @@ public class MatchlistService {
 		} else {
 			// 매치 데이터가 있는 유저
 			List<MatchReferenceDto> matches = matchlistDto.getMatches();
-			long beginTime = 0;
+			long beginTime = 1578596400000l;
 			if (matches.size() != 0)
 				beginTime = matches.get(matches.size() - 1).getTimestamp() + 1;
 			List<MatchReferenceDto> list = new ArrayList<>();
-			int season = 13, beginIndex = 0, endIndex = 100;
+			int beginIndex = 0, endIndex = 100;
 			while (true) {
 				System.out.println("search " + beginIndex + " ~ " + endIndex);
-				String query = "?season=" + season + "&beginIndex=" + beginIndex + "&endIndex=" + endIndex
-						+ "&beginTime=" + beginTime;
+				String query = "?beginTime=" + beginTime + "&beginIndex=" + beginIndex + "&endIndex=" + endIndex;
 				try {
 				JSONObject obj = new JSONObject(
 						Api.get("https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account",

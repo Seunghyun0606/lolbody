@@ -44,7 +44,7 @@ public class ProfileService {
 				profile.setRankedWinRate(100.0 * i.getWins() / (i.getWins() + i.getLosses()));
 			}
 		}
-		/*
+//		/*
 		MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
 		List<MatchReferenceDto> matchReferenceList = matchlistDto.getMatches();
 		int blindWins = 0, blindLosses = 0;
@@ -76,7 +76,7 @@ public class ProfileService {
 		profile.setBlindWins(blindWins);
 		profile.setBlindLosses(blindLosses);
 		profile.setBlindWinRate(100.0 * blindWins / (blindWins + blindLosses));
-		*/
+//		*/
 		return profile;
 
 	}

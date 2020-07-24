@@ -46,7 +46,7 @@ public class SummonerController {
 	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 매치리스트를 검색합니다.")
 	public MatchlistDto getUserMatchlist(@PathVariable String name) {
 		SummonerDto summonerDto = summonerService.findByName(name);
-		System.out.println(summonerDto);
+		
 		return matchlistService.findBySummonerId(summonerDto);
 	}
 	

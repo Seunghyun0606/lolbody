@@ -72,8 +72,11 @@ public class MultiSearchController {
 		}
 		// 라인(통계)
 		MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
+		Collections.sort(matchlistDto.getMatches(), (o1,o2) -> Long.compare(o2.getTimestamp(),o1.getTimestamp()));
 		Map<String,Integer> lane = new LinkedHashMap<>();
 		for(MatchReferenceDto matchRef: matchlistDto.getMatches()) {
+			if(matchRef.getTimestamp() < 1578596400000L) break;
+			if(matchRef.getQueue() != 420) continue;
 			if(matchRef.getRole().equals("DUO_SUPPORT")) {
 				if(!lane.containsKey("SUPPORT"))
 					lane.put("SUPPORT", 0);
@@ -93,13 +96,15 @@ public class MultiSearchController {
 		// 최근 5게임 스펠, 챔피언, 라인정보, 승 패 여부
 		// spell1Id,spell2Id,champName,lane,result
 		List<MatchReferenceDto> matchRefList = matchlistDto.getMatches();
-		Collections.sort(matchRefList, (o1,o2) -> Long.compare(o2.getTimestamp(),o1.getTimestamp()));
 
 		List<RecentGamesDto> recentGames = new LinkedList<>();
-		for(int i = 0; i < 5; i++) {
+		int idx = 0;
+		for(MatchReferenceDto matchRefDto: matchRefList) {
 			RecentGamesDto recentGame = new RecentGamesDto();
 			int participantId = 0;
-			MatchDto matchDto = matchService.findByGameId(matchRefList.get(i).getGameId());
+			if(matchRefDto.getTimestamp() < 1578596400000L) break;
+			if(matchRefDto.getQueue() != 420) continue;
+			MatchDto matchDto = matchService.findByGameId(matchRefDto.getGameId());
 			if(matchDto == null) break;
 			for(ParticipantIdentityDto identites: matchDto.getParticipantIdentities()) {
 				if(identites.getPlayer().getSummonerName().equals(summonerService.findBySubName(summonerName).getName())) {
@@ -107,10 +112,10 @@ public class MultiSearchController {
 					break;
 				}
 			}
-			if(matchRefList.get(i).getRole().equals("DUO_SUPPORT")) {
+			if(matchRefDto.getRole().equals("DUO_SUPPORT")) {
 				recentGame.setLane("SUPPORT");
 			} else {
-				recentGame.setLane(matchRefList.get(i).getLane());
+				recentGame.setLane(matchRefDto.getLane());
 			}
 			for(ParticipantDto participant: matchDto.getParticipants()) {
 				if(participant.getParticipantId() == participantId) {
@@ -119,9 +124,13 @@ public class MultiSearchController {
 					ChampKeyDto champkey = mongodbPreset.findById(String.valueOf(participant.getChampionId())).get();
 					recentGame.setChampName(champkey.getName());
 					recentGame.setWin(participant.getStats().isWin());
+					if(participant.getHighestAchievedSeasonTier() != null)
+						result.setHighestAchievedSeasonTier(participant.getHighestAchievedSeasonTier());
 				}
 			}
 			recentGames.add(recentGame);
+			idx++;
+			if(idx == 5) break;
 		}
 		result.setRecentGames(recentGames);
 		
@@ -141,13 +150,12 @@ public class MultiSearchController {
 		List<String> mostPicks = new LinkedList<>();
 		for(int i = 0; i < 3; i++) {
 			ChampKeyDto champkey = mongodbPreset.findById(String.valueOf(mostPickEntries.get(i).getKey())).get();
-			System.out.println(mostPickEntries.get(i).getKey()+" "+mostPickEntries.get(i).getValue());
 			mostPicks.add(champkey.getName());
 		}
 		result.setMostChamp(mostPicks);
 		
 		// 최근 20게임 전적(승, 패)
-		int idx = 0;
+		idx = 0;
 		List<Boolean> recentMatchResults = new LinkedList<>();
 		if(matchlistDto.getMatches() != null) {
 			for(MatchReferenceDto matchRefDto: matchlistDto.getMatches()) {

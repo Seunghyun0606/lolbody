@@ -27,7 +27,7 @@ public class LeagueEntryService {
 	
 	public List<LeagueEntryDto> findBySummonerId(String summonerId) {
 		List<LeagueEntryDto> leagueEntryList = leagueEntryRepository.findBySummonerId(summonerId);
-		if(leagueEntryList.size() == 0) {
+//		if(leagueEntryList.size() == 0) {
 			JSONArray arr = new JSONArray(Api.get("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner", summonerId));
 			leagueEntryList = new ArrayList<>();
 			for(int i = 0; i < arr.length(); i++) {
@@ -36,7 +36,7 @@ public class LeagueEntryService {
 				leagueEntryList.add(leagueEntry);
 			}
 			save(leagueEntryList);
-		}
+//		}
 		return leagueEntryList;
 	}
 }

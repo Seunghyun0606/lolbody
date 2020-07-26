@@ -36,7 +36,6 @@ export default {
 
 .champ-card {
   width: 120%;
-  /* height: 40%; */
   background-color: rosybrown;
   border-radius: 30%;
   padding: 15px 10px 5px;

@@ -1,12 +1,13 @@
 <template>
 
 <div class="multi">
-  <div class="grid align-items-center">
+  <div class="grid">
     <div class="grid-header" v-for="(header, index) in multiHeader" v-bind:key="index">
       {{ header }}
     </div>
     <!-- 여기까지 6개는 header -->
   </div>
+
 
   <!-- 반복되어야할 그리드 (5인 멀티서치 정보) -->
   <div class="grid align-items-center">
@@ -59,7 +60,7 @@
 
     <!-- 모스트 챔피언 -->
     <div>
-      모스트 챔피언 데이터 받아올거임
+      <MultiSearchMostChamp/>
     </div>
 
 
@@ -71,12 +72,14 @@
 <script>
 import MultiSearchLineChart from "./MultiSearchLineChart"
 import MultiSearchLatestChamp from "./MultiSearchLatestChamp"
+import MultiSearchMostChamp from "./MultiSearchMostChamp"
 
 export default {
     name: "MultiSearch",
     components: {
       MultiSearchLineChart,
       MultiSearchLatestChamp,
+      MultiSearchMostChamp,
     },
     data() {
       return {
@@ -91,7 +94,7 @@ export default {
 <style scoped>
 
 .align-items-center {
-    align-items: center;
+  align-items: center;
 }
 
 .multi {
@@ -113,7 +116,8 @@ export default {
   border: 2px solid #ffa94d;
   border-radius: 5px;
   background-color: #ffd8a8;
-  padding: 1em;
+  height: 100%;
+
   color: #d9480f;
 }
 

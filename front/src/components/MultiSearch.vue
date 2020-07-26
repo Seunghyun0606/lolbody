@@ -1,7 +1,7 @@
 <template>
 
 <div class="multi">
-  <div class="grid">
+  <div class="grid align-items-center">
     <div class="grid-header" v-for="(header, index) in multiHeader" v-bind:key="index">
       {{ header }}
     </div>
@@ -9,9 +9,9 @@
   </div>
 
   <!-- 반복되어야할 그리드 (5인 멀티서치 정보) -->
-  <div class="grid">
+  <div class="grid align-items-center">
 
-    <div class="grid-body">
+    <div class="grid-body align-items-center">
     <!-- 하위 그리드 -->
       <div class="grid-body-top">
         이게 뱃지? 시즌 랭크?  
@@ -53,7 +53,7 @@
     </div>
     
     <!-- 최근 챔피언 컴포넌트화 시켜서 for문 돌리면됨. -->
-    <div class="grid-champ">
+    <div class="grid-champ align-items-center">
       최근 챔피언 ( 컴포넌트 화)
 
     </div>
@@ -88,6 +88,10 @@ export default {
 </script>
 
 <style scoped>
+
+.align-items-center {
+    align-items: center;
+}
 
 .multi {
   width: 90%;
@@ -125,6 +129,7 @@ export default {
     "cd-b-l cd-b-l cd-b-l cd-b-l cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r"
     "cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l"
   ;
+
 }
 
 .grid-body-top {
@@ -152,6 +157,7 @@ export default {
   
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+
 }
 
 

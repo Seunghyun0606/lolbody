@@ -6,7 +6,7 @@
     <div style="position: relative;">
       <img class="card-sub card-sub-left" src="@/assets/images/champion/Akali.png" alt="spell-left">
       <img class="card-sub card-sub-right" src="@/assets/images/champion/Ahri.png" alt="spell-right">
-      <img class="card-sub card-sub-top" src="@/assets/images/champion/Annie.png" alt="lane">  
+      <img class="card-sub card-sub-top" :src="laneImage" alt="lane">  
     </div>
   </div>
 
@@ -37,6 +37,10 @@ export default {
         "multiSearchData",
 
       ]),
+      laneImage () {
+        var lane = this.recentGame.lane
+        return require(`@/assets/images/position/${lane.charAt(0) + lane.slice(1).toLowerCase()}.png`)
+      },
     },
 
 }

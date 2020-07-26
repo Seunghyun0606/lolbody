@@ -1,23 +1,13 @@
 <template>
-<v-container>
-  <v-row>
-    <v-col>
-      <img class="card-champ-img" src="@/assets/images/champion/Aatrox.png" alt="champ-img">
-    </v-col>
-    <v-col>
-      <img class="card-champ-img" src="@/assets/images/champion/Aatrox.png" alt="champ-img">
-    </v-col>
-    <v-col>
-      <img class="card-champ-img" src="@/assets/images/champion/Aatrox.png" alt="champ-img">
-    </v-col>
-  </v-row>
-</v-container>
-  
+  <img class="card-champ-img" :src="require(`@/assets/images/champion/${mostChamp}.png`)" alt="champ-img">
 </template>
 
 <script>
 export default {
   name: "MultiSearchMostChamp",
+  props: {
+    mostChamp: String,
+  },
   data() {
     return {
 

@@ -64,7 +64,7 @@
 
     <!-- 모스트 챔피언 -->
     <div>
-      <MultiSearchMostChamp/>
+      <MultiSearchMostChamp v-for="(mostChamp, index) in multiSearchData.mostChamp" :mostChamp="mostChamp" :key="index"/>
     </div>
   </div>
 

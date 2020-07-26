@@ -54,8 +54,7 @@
     
     <!-- 최근 챔피언 컴포넌트화 시켜서 for문 돌리면됨. -->
     <div class="grid-champ align-items-center">
-      최근 챔피언 ( 컴포넌트 화)
-
+      <MultiSearchLatestChamp/>
     </div>
 
     <!-- 모스트 챔피언 -->
@@ -71,11 +70,13 @@
 
 <script>
 import MultiSearchLineChart from "./MultiSearchLineChart"
+import MultiSearchLatestChamp from "./MultiSearchLatestChamp"
 
 export default {
     name: "MultiSearch",
     components: {
       MultiSearchLineChart,
+      MultiSearchLatestChamp,
     },
     data() {
       return {

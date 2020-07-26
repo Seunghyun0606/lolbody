@@ -22,8 +22,12 @@ export default {
         
         chartOptions: {
           chart: {
-              type: 'bar',
-              height: 350
+            type: 'bar',
+            height: 350,
+            toolbar: {
+              show: false,
+            // 위에 툴바 없애기
+          },              
           },
           plotOptions: {
               bar: {

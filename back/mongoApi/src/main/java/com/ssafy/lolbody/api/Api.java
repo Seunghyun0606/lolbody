@@ -8,7 +8,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 public class Api {
-	private final static String token = "RGAPI-d301d131-9bfc-4fb3-ba75-f83d8e35bae6";
+	private final static String token = "RGAPI-627f6d2f-36a2-4876-ac2d-e52d68a4c092";
 	public static String get(String input, String summonerName) {
 		boolean isOk = false;
 		String result = "";
@@ -31,8 +31,6 @@ public class Api {
 				br.close();
 				isOk = true;
 				result = sb.toString();
-			} else {
-				System.out.println(con.getResponseMessage());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,6 +46,32 @@ public class Api {
 		String result = "";
 		try {
 			URL url = new URL(championUrl);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
+			
+			con.setRequestMethod("GET");
+			
+			StringBuilder sb = new StringBuilder();
+			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
+				String line;
+				while((line = br.readLine()) != null) {
+					sb.append(line).append("\n");
+				}
+				br.close();
+				result = sb.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static String getHttpRequest(String urlParam) {
+		String result = "";
+		try {
+			URL url = new URL(urlParam);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);

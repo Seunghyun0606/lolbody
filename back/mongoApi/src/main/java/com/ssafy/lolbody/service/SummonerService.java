@@ -2,6 +2,7 @@ package com.ssafy.lolbody.service;
 
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +24,16 @@ public class SummonerService {
 		return summonerRepository.findAll();
 	}
 	
-	public SummonerDto findByName(String name) {
-		SummonerDto summonerDto = summonerRepository.findByName(name);
+	public SummonerDto findBySubName(String name) {
+		SummonerDto summonerDto = summonerRepository.findBySubName(name.toLowerCase());
 		if(summonerDto == null) {
 			String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
+			if(json.equals("Fail")) {
+				return null;
+			}
 			summonerDto = new Gson().fromJson(json, SummonerDto.class);
+			JSONObject object = new JSONObject(json);
+			summonerDto.setSubName(object.getString("name").toLowerCase());
 			insert(summonerDto);
 		}
 		return summonerDto;

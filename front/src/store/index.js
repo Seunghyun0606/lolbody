@@ -7,37 +7,49 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    multiSearchData: {},
-    userData: [{tier: "Gold"}],
+    multiSearchDatas: [],
+    userDatas: [],
   },
   getters: {
 
   },
   mutations: {
-    setMultiSearchData(state, multiSearchData) {
-      state.multiSearchData = multiSearchData
+    setMultiSearchDatas(state, multiSearchDatas) {
+      // 계속해서 집어넣게 만듬.
+      var recentGameCount = 0
+      for (var i of multiSearchDatas.recentMatchResults) {
+        if (i) {
+          recentGameCount++
+        }
+      }
+      multiSearchDatas.recentMatchResults = { wins: recentGameCount, fails: 20-recentGameCount, rate: Math.round((recentGameCount/20)*100)}
+
+
+
+      state.multiSearchDatas.push(multiSearchDatas)
     },
-    setUserData(state, userData) {
-      state.userData = userData
+    setUserDatas(state, userDatas) {
+      // userData는 array로 오기 때문에 sperad시킴
+      state.userDatas = [ ...state.userDatas, ...userDatas ]
     },
   },
   actions: {
-    getMultiSearchData( { commit }, userName ) {
+    getMultiSearchDatas( { commit }, userName ) {
       axios
         .get(`http://localhost:8888/api/multisearch/${userName}`)
         .then(res => {
-          commit('setMultiSearchData', res.data)
+          commit('setMultiSearchDatas', res.data)
         })
         .catch(err => {
           console.log(err)
         })
 
     },
-    getUserData( { commit }, userName ) {
+    getUserDatas( { commit }, userName ) {
       axios
         .get(`http://localhost:8888/user/${userName}`)
         .then(res => {
-          commit('setUserData', res.data)
+          commit('setUserDatas', res.data)
         })
         .catch(err => {
           console.log(err)

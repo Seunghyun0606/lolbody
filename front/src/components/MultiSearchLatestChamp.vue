@@ -1,8 +1,8 @@
 <template>
 
-<div class="champ-card">
+<div class="champ-card" :class="{cssLatestGameResult}" >
   <div>
-    <img class="card-champ-img" src="@/assets/images/champion/Aatrox.png" alt="champ-img">
+    <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="champ-img">
     <div style="position: relative;">
       <img class="card-sub card-sub-left" src="@/assets/images/champion/Akali.png" alt="spell-left">
       <img class="card-sub card-sub-right" src="@/assets/images/champion/Ahri.png" alt="spell-right">
@@ -20,14 +20,29 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
     name: "MultiSearchLatestChamp",
+    props: {
+      recentGame: Object,
+
+    },
     data() {
         return {
-
         }
-    }
+    },
+    computed: {
+      ...mapState([
+        "multiSearchData",
+
+      ]),
+      cssLatestGameResult() {
+
+        return this.recentGame.win ? win : fail
+
+      }
+    },
 
 }
 </script>
@@ -36,9 +51,17 @@ export default {
 
 .champ-card {
   width: 120%;
-  background-color: rosybrown;
   border-radius: 30%;
   padding: 15px 10px 5px;
+}
+.fail {
+  background-color: rosybrown;
+
+}
+
+.win {
+  background-color: cadetblue;
+
 }
 
 .champ-card-text {

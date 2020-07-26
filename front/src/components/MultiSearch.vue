@@ -15,7 +15,7 @@
     <div class="grid-body align-items-center">
     <!-- 하위 그리드 -->
       <div class="grid-body-top">
-        이게 뱃지? 시즌 랭크?  
+        여기 뱃지? 시즌 랭크?  
       </div>
       <!-- 랭크 -->
       <div class="grid-body-center-left">
@@ -35,7 +35,7 @@
       </div>
       <!-- 주라인 ( 나중에 갈아끼워야함 ) -->
       <div class="grid-body-lane">
-        {{ multiSearchData.lane }}
+        {{ multiSearchData.lane }} 이미지로 갈아야함
       </div>
     </div>
 
@@ -52,16 +52,14 @@
 
     <!-- 최근전적 -->
     <div>
-      <!-- {{ recentMatchResults }} -->
-      11승 9패
-      퍼센트
-      2.56 평점
+      {{ recentMatchResults }}
+      평점 필요.
 
     </div>
     
     <!-- 최근 챔피언 컴포넌트화 시켜서 for문 돌리면됨. -->
     <div class="grid-champ align-items-center">
-      <MultiSearchLatestChamp/>
+      <MultiSearchLatestChamp v-for="(recentGame, index) in multiSearchData.recentGames" :recentGame="recentGame" :key="index"/>
     </div>
 
     <!-- 모스트 챔피언 -->
@@ -113,18 +111,14 @@ export default {
       recentMatchResults () {
         
         if (this.multiSearchData.recentMatchResults !== undefined) {
-          var countResult
-  
-          console.log(this.multiSearchData.recentMatchResults)
-  
+          var countResult = 0
+    
           for (var i of this.multiSearchData.recentMatchResults) {
-            console.log(i)
             if (i) {
               countResult++
-              console.log('count', countResult)
             }
           }
-          return countResult          
+          return `${countResult}승 ${20-countResult}패 ${(countResult/20)*100}%`
         }
         return 0
       }

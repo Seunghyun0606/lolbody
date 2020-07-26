@@ -1,6 +1,6 @@
 <template>
 
-<div class="champ-card" :class="{cssLatestGameResult}" >
+<div class="champ-card" :class="[ this.recentGame.win ? 'win' : 'fail' ]" >
   <div>
     <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="champ-img">
     <div style="position: relative;">
@@ -11,7 +11,7 @@
   </div>
 
   <div class="champ-card-text">
-    7 / 3 / 0
+    K / D / A
   </div>
 
 </div>
@@ -37,11 +37,6 @@ export default {
         "multiSearchData",
 
       ]),
-      cssLatestGameResult() {
-
-        return this.recentGame.win ? win : fail
-
-      }
     },
 
 }

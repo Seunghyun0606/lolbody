@@ -7,79 +7,42 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    headers: [
-      {
-        text: '소환사 정보',
-        align: 'start',
-        sortable: false,
-        value: 'name',
-      },
-      { text: '솔로 랭크', value: 'solo' },
-      { text: '자유 랭크', value: 'free' },
-      { text: '포지션', value: 'line' },
-      { text: '최근 전적', value: 'latest_game' },
-      { text: '모스트 챔피언', value: 'most_champ' },
-    ],
-    multiserach_infos: [
-      {
-        name: '소환사 1',
-        solo: 159,
-        free: 6.0,
-        line: 24,
-        latest_game: 4.0,
-        most_champ: '1%',
-      },
-      {
-        name: '소환사 2',
-        solo: 159,
-        free: 6.0,
-        line: 24,
-        latest_game: 4.0,
-        most_champ: '1%',
-      },
-      {
-        name: '소환사 3',
-        solo: 159,
-        free: 6.0,
-        line: 24,
-        latest_game: 4.0,
-        most_champ: '1%',
-      },
-      {
-        name: '소환사 4',
-        solo: 159,
-        free: 6.0,
-        line: 24,
-        latest_game: 4.0,
-        most_champ: '1%',
-      },
-      {
-        name: '소환사 5 ',
-        solo: 159,
-        free: 6.0,
-        line: 24,
-        latest_game: 4.0,
-        most_champ: '1%',
-      },
-    ],
-    apiData: {},
+    multiSearchData: {},
+    userData: [{tier: "Gold"}],
+  },
+  getters: {
+
   },
   mutations: {
-    setApiData(state, apiData) {
-      state.apiData = apiData
+    setMultiSearchData(state, multiSearchData) {
+      state.multiSearchData = multiSearchData
+    },
+    setUserData(state, userData) {
+      state.userData = userData
     },
   },
   actions: {
-    getApiData( { commit }, userId ) {
+    getMultiSearchData( { commit }, userName ) {
       axios
-        .get(`http://localhost:8000/user/${userId}`)
+        .get(`http://localhost:8888/api/multisearch/${userName}`)
         .then(res => {
-          commit('setApiData', res.data[0])
+          commit('setMultiSearchData', res.data)
         })
         .catch(err => {
           console.log(err)
         })
+
     },
+    getUserData( { commit }, userName ) {
+      axios
+        .get(`http://localhost:8888/user/${userName}`)
+        .then(res => {
+          commit('setUserData', res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
 
   },
   modules: {

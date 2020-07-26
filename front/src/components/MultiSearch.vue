@@ -17,20 +17,25 @@
       <div class="grid-body-top">
         이게 뱃지? 시즌 랭크?  
       </div>
+      <!-- 랭크 -->
       <div class="grid-body-center-left">
-        랭크뱃지
+        <img :src="tierImage" alt="tier">
       </div>
+      <!-- 유저네임 -->
       <div class="grid-body-center-right">
-        이름
+        {{ userName }}
       </div>
+      <!-- 티어 -->
       <div class="grid-body-bot-left">
-        랭크 등급
+        {{ userData[0].tier }} {{ userData[0].rank }}
       </div>
+      <!-- 승패 -->
       <div class="grid-body-bot-right">
-        전적(승률)
+        {{ multiSearchData.wins }} / {{ multiSearchData.losses }}
       </div>
+      <!-- 주라인 ( 나중에 갈아끼워야함 ) -->
       <div class="grid-body-lane">
-        주라인 이미지 2개 적당히 거리벌려서
+        {{ multiSearchData.lane }}
       </div>
     </div>
 
@@ -47,6 +52,7 @@
 
     <!-- 최근전적 -->
     <div>
+      <!-- {{ recentMatchResults }} -->
       11승 9패
       퍼센트
       2.56 평점
@@ -62,9 +68,9 @@
     <div>
       <MultiSearchMostChamp/>
     </div>
-
-
   </div>
+
+  <input v-model="userName" style="border: 1px solid black;" type="text" @keyup.enter="getMultiSearchData(userName), getUserData(userName)">
 </div>
 
 </template>
@@ -73,6 +79,10 @@
 import MultiSearchLineChart from "./MultiSearchLineChart"
 import MultiSearchLatestChamp from "./MultiSearchLatestChamp"
 import MultiSearchMostChamp from "./MultiSearchMostChamp"
+
+import { mapActions } from "vuex"
+import { mapState } from "vuex"
+import { mapGetters } from  "vuex"
 
 export default {
     name: "MultiSearch",
@@ -84,8 +94,47 @@ export default {
     data() {
       return {
         multiHeader: [ "소환사 정보", "레이더 차트", "포지션 통계", "최근 전적", "최근 챔피언", "모스트 챔피언" ],
-        }
+        userName: "",
+      }
+    },
+    computed: {
+      ...mapState([
+        "multiSearchData",
+        "userData",
+      ]),
+      ...mapGetters([
+      ]),
+      tierImage () {
+        var tierName = this.userData[0].tier
+        // 대문자로만 받아와서 변환해줌 ( 다른 방법으론, static파일이름을 바꾸는 방법도 있음 )
+        // require 써야만 한다. webpack에 의해 alias 주소 변환을 제대로 못함
+        return require(`@/assets/images/tier/Emblem_${tierName.charAt(0) + tierName.slice(1).toLowerCase()}.png`)
+      },
+      recentMatchResults () {
         
+        if (this.multiSearchData.recentMatchResults !== undefined) {
+          var countResult
+  
+          console.log(this.multiSearchData.recentMatchResults)
+  
+          for (var i of this.multiSearchData.recentMatchResults) {
+            console.log(i)
+            if (i) {
+              countResult++
+              console.log('count', countResult)
+            }
+          }
+          return countResult          
+        }
+        return 0
+      }
+
+    },
+    methods: {
+      ...mapActions([
+        "getMultiSearchData",
+        "getUserData",
+      ])
     }
   }
     
@@ -142,6 +191,9 @@ export default {
 }
 .grid-body-center-left {
   grid-area: cd-c-l;
+}
+.grid-body-center-left > img {
+  width: 100%;
 }
 .grid-body-center-right {
   grid-area: cd-c-r;

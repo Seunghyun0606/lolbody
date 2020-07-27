@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import Profile from "@/components/Profile.vue";
+
 Vue.use(VueRouter)
 
   const routes = [
 
+  {
+    path:"/Profile",
+    component: Profile
+  }
 ]
 
 const router = new VueRouter({

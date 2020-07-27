@@ -8,17 +8,17 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 public class Api {
-	private final static String token = "RGAPI-9e581cdc-c05b-4b3f-b36a-8d6483681108";
+	private final static String token = "RGAPI-4bc20f6a-6865-4a8d-844d-abb9bdabdcf6";
 	private final static String[] tokens = {
-			"RGAPI-9e581cdc-c05b-4b3f-b36a-8d6483681108",
-			"RGAPI-a84237a2-568a-4768-aaf9-1c750b72ce15",
-			"RGAPI-7c0e6df1-1e74-4e76-8149-b35522915787",
-			"RGAPI-b1601889-ab7e-4b2f-bc71-ee6fc1b5c3bb",
-			"RGAPI-a6db19ff-7039-43d5-b082-aa1d364120db",
-			"RGAPI-db3be196-5256-4179-a45e-bf87a8c46c3d",
-			"RGAPI-08c89665-c6ef-4e98-bfc3-f242183a457a",
-			"RGAPI-dd8501f2-c153-4949-886c-b129257c1826",
-			"RGAPI-15280c6a-861c-462f-a23b-56c461c8cbe8"
+			"RGAPI-ef42d362-2fb1-4df0-a570-110abb6171fc",
+			"RGAPI-3b743023-04d5-4ec1-ade0-61d7eb4cbd1b",
+			"RGAPI-4a186891-bc0b-48ee-8b17-0263360c977f",
+			"RGAPI-4bc20f6a-6865-4a8d-844d-abb9bdabdcf6",
+			"RGAPI-726874f6-d6d4-493a-843b-f36d995b5fce",
+			"RGAPI-c7eef392-61a4-4a0d-a284-8831096c5b7a",
+//			"RGAPI-3ecb19f7-233b-4684-bce4-941c34356b54",
+			"RGAPI-6c63c01b-837a-4881-911e-432464587a73",
+			"RGAPI-4aa80ba8-4260-478d-87ec-e011b0980e54"
 	};
 	private static int idx = 0;
 	

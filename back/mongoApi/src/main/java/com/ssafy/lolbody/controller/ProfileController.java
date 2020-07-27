@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.lolbody.dto.ProfileDto;
+import com.ssafy.lolbody.dto.ProfileReferenceDto;
 import com.ssafy.lolbody.service.ProfileService;
 
 import io.swagger.annotations.ApiOperation;
@@ -22,8 +22,8 @@ public class ProfileController {
 
 	@ApiOperation(value = "소환사 이름으로 유저 프로필을 검색합니다. (성공:200, 실패:404)")
 	@GetMapping("/profile/{name}")
-	public ResponseEntity<ProfileDto> getProfile(@PathVariable String name) {
-		ProfileDto profile = new ProfileDto();
+	public ResponseEntity<ProfileReferenceDto> getProfile(@PathVariable String name) {
+		ProfileReferenceDto profile = new ProfileReferenceDto();
 		try {
 			profile = profileService.getProfile(name);
 			System.out.println(profile);

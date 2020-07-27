@@ -30,7 +30,6 @@ public class MatchlistService {
 		
 		JSONArray jsonArr = new JSONArray(Api.getHttpRequest("http://static.developer.riotgames.com/docs/lol/seasons.json"));
 		int season = ((JSONObject)jsonArr.getJSONObject(jsonArr.length()-1)).getInt("id");
-		System.out.println(season);
 
 		if (matchlistDto == null) {
 			// 매치 데이터가 없는 유저
@@ -145,7 +144,6 @@ public class MatchlistService {
 			List<MatchReferenceDto> list = new ArrayList<>();
 			int beginIndex = 0, endIndex = 100;
 			while (true) {
-				System.out.println("search " + beginIndex + " ~ " + endIndex);
 				String query = "?beginIndex=" + beginIndex + "&endIndex=" + endIndex
 						+ "&beginTime=" + beginTime;
 				if(season >= 0 && season < jsonArr.length())

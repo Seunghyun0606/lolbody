@@ -4,9 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import org.json.JSONArray;
 
 public class Api {
 	private final static String token = "RGAPI-b0005f6e-8704-4920-aee5-abbb6f5c9d4c";
@@ -16,6 +17,8 @@ public class Api {
 		try {
 			String name = summonerName.replaceAll("\\s", "%20");
 			URL url = new URL(input+"/"+name);
+			if(summonerName.length() == 0)
+				url = new URL(input);
 			HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);
@@ -43,8 +46,10 @@ public class Api {
 			return "Fail";
 	}
 	
-	private final static String championUrl = "http://ddragon.leagueoflegends.com/cdn/10.15.1/data/en_US/champion.json";
 	public static String getAllChampionsInfo() {
+		JSONArray jsonArray = new JSONArray(Api.get("https://ddragon.leagueoflegends.com/api/versions.json", ""));
+		String version = jsonArray.getString(0);
+		String championUrl = "http://ddragon.leagueoflegends.com/cdn/"+version+"/data/en_US/champion.json";
 		String result = "";
 		try {
 			URL url = new URL(championUrl);

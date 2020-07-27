@@ -1,5 +1,7 @@
 <template>
-  <apexchart width="500" type="radar" :options="options" :series="series"></apexchart>
+<div>
+  <apexchart type="radar" :options="options" :series="series"></apexchart>
+</div>
 </template>
 
 <script>
@@ -15,19 +17,26 @@ export default {
       indexGraphSeries: {
         idx: 0,
         pre: [
-          [10, 20, 30],
-          [20, 10, 30],
-          [40, 50, 70],
+          [60, 50, 45],
+          [45, 70, 80],
+          [80, 45, 60],
         ],
         post: [
-          [20, 10, 60],
-          [40, 80, 50],
-          [30, 20, 10],
+          [50, 90, 70],
+          [40, 60, 50],
+          [80, 75, 40],
         ]
       },
       options: {
         chart: {
-          id: 'vuechart-example'
+          id: 'vuechart-example',
+          toolbar: {
+            show: false,
+          },
+          // height: '100%'
+        },
+        legend: {
+          show: false,
         },
         xaxis: {
           categories: ['공격력', '안정성', '영향력']
@@ -63,11 +72,23 @@ export default {
       }]
     }
   },
-  created() {
-    setInterval(() => {
-      this.changeIndexGraphSeries();
-    }, 3000)
+  computed: {
+    onlyGraph() {
+      return document.querySelectorAll('g > g')[3]
+    },
+    onlyGraph2() {
+      return document.getElementsByClassName('apexcharts-radar-series')[0]
+    }
   },
+  created() {
+    // setInterval(() => {
+    //   this.changeIndexGraphSeries();
+    // }, 3000)
+  },
+  mounted() {
+    console.log(this.onlyGraph)
+    console.log(this.onlyGraph2)
+  }
 }
 </script>
 

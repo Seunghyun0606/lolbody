@@ -1,6 +1,7 @@
 <template>
   <div class="index">
       <IndexLogo />
+      <ProfileGameHistory/>
       <IndexSearchBar />
       <IndexIntro />
   </div>
@@ -11,6 +12,7 @@
 import IndexLogo from '@/components/index/IndexLogo.vue';
 import IndexSearchBar from '@/components/index/IndexSearchBar.vue';
 import IndexIntro from '@/components/index/IndexIntro.vue';
+import ProfileGameHistory from '@/components/ProfileGameHistory'
 
 export default {
   name: 'Index',
@@ -19,6 +21,7 @@ export default {
     IndexLogo,
     IndexSearchBar,
     IndexIntro,
+    ProfileGameHistory,
   },
 
   data: () => ({

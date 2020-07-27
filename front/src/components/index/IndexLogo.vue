@@ -6,17 +6,13 @@
           contain
           height="150"
         />
-    <GraphPractice/>
   </div>
 </template>
 
 <script>
-import GraphPractice from '@/components/GraphPractice.vue'
-
 export default {
   name: "IndexLogo",
   components: {
-    GraphPractice,
   }  
 }
 </script>

@@ -2,6 +2,11 @@
 <v-app id="sandbox">
     <v-main>
         <v-container fluid>
+            <v-row>
+                <br>
+                <br>
+                <br>
+            </v-row>
             <v-row align="center" justify="center">
                 <table width="1000px">
                     <tr>
@@ -10,8 +15,8 @@
                                 <v-row>
                                     <v-col cols="3">
                                         <div class="avatar">
-                                            <v-avatar class="ma-3" size="70">
-                                                <v-img :src= "'require(`@/assets/images/profileicon'+item.profileIconId+'.png`)'"/>
+                                            <v-avatar size="70">
+                                                <v-img :src="require('@/assets/images/profileicon/'+item.profileIconId+'.png')"/>
                                             </v-avatar>
                                             <span class="level">{{item.summonerLevel}}</span>
                                         </div>
@@ -62,33 +67,33 @@
                                 </ul>
                                 <div class="icons">
                                     <div class="icon">
-                                        <img :src="item.rank.src" width= "70px"/>
+                                        <img :src="require('@/assets/images/tier/'+now.src+'.png')" height= "75px"/>
                                         <v-card-text>
-                                            <span>{{item.rank.winRate}}</span> (<span class="win">{{item.rank.win}}승</span> <span class="lose">{{item.rank.lose}}패</span>)
+                                            <span class="winRate">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="win">{{now.totalRecord.wins}}승</span> <span class="lose">{{now.totalRecord.losses}}패</span>)</span>
                                         </v-card-text>
                                     </div>
                                     <div class="icon">
                                         <v-avatar class="ma-3" size="50">
-                                            <v-img :src="item.mostLine.src"/>
+                                            <v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')"/>
                                         </v-avatar>
                                         <v-card-text>
-                                            {{item.mostLine.winRate}} (<span class="win">{{item.mostLine.win}}승</span> <span class="lose">{{item.mostLine.lose}}패</span>)
+                                            <span class="winRate">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="win">{{now.mostLineRecord.wins}}승</span> <span class="lose">{{now.mostLineRecord.losses}}패</span>)</span>
                                         </v-card-text>
                                     </div>
                                     <div class="icon">
                                         <v-avatar class="ma-3" size="50">
-                                            <v-img :src="item.secondLine.src"/>
+                                            <v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')"/>
                                         </v-avatar>
                                         <v-card-text>
-                                            {{item.secondLine.winRate}} (<span class="win">{{item.secondLine.win}}승</span> <span class="lose">{{item.secondLine.lose}}패</span>)
+                                            <span class="winRate">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="win">{{now.secondLineRecord.wins}}승</span> <span class="lose">{{now.secondLineRecord.losses}}패</span>)</span>
                                         </v-card-text>
                                     </div>
                                     <div class="icon">
                                         <v-avatar class="ma-3" size="70">
-                                            <v-img :src="item.mostCham.src" />
+                                            <v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" />
                                         </v-avatar>
                                         <v-card-text>
-                                            {{item.mostCham.winRate}} (<span class="win">{{item.mostCham.win}}승</span> <span class="lose">{{item.mostCham.lose}}패</span>)
+                                            <span class="winRate">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="win">{{now.mostChamRecord.wins}}승</span> <span class="lose">{{now.mostChamRecord.losses}}패</span>)</span>
                                         </v-card-text>
                                     </div>
                                 </div>
@@ -132,38 +137,15 @@ export default {
             nomalGameActive : false,
             rankGameActive : true
         },
-        now:{ 
-            game:{
-                src : require('@/assets/images/tier/Emblem_Challenger.png'),
-                winRate: '55%',
-                win : '11',
-                lose: '9'
-            },
-            mostCham: {
-                src : require('@/assets/images/champion/Senna.png'),
-                winRate: '55%',
-                win : '11',
-                lose: '9'
-            },
-            mostLine: {
-                src : require('@/assets/images/SUP.png'),
-                winRate: '55%',
-                win : '11',
-                lose: '9'
-            },
-            secondLine:{
-                src : require('@/assets/images/JGL.png'),
-                winRate: '55%',
-                win : '11',
-                lose: '9'
-            }
-        },
+        now:{},
         item:{}
     }),
     created(){
         axios.get('http://localhost:8888/profile/parkjamal')
         .then(({data}) => {
             this.item = data;
+            this.now = this.item.rankedRecord;
+            this.now.src = this.item.tier;
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.data);
@@ -182,10 +164,14 @@ export default {
         changeNomarlGame(){
             this.triger.nomalGameActive = true;
             this.triger.rankGameActive = false;
+            this.now = this.item.blindRecord;
+            this.now.src = 'unranked';
         },
         changeRankGame(){
             this.triger.nomalGameActive = false;
             this.triger.rankGameActive = true;
+            this.now = this.item.rankedRecord;
+            this.now.src = this.item.tier;
         },
         changeLP(){
             this.triger.LPActive = true;
@@ -213,6 +199,11 @@ td{
 .v-avatar {
     border : rgb(200, 170, 110) 1px solid;
 }
+.avatar{
+    text-align: center;
+    height: 84px;
+    margin: 10px 0 0 10px !important;
+}
 .level{
     border : gold 1px solid;
     border-radius: 50px;
@@ -220,8 +211,8 @@ td{
     font-size: 5px;
     color:gold;
     font-weight: bold;
-    position: absolute;
-    transform: translate(32px, -27px);
+    position: relative;
+    top: -15px;
     background-color: rgb(26, 25, 25);
 }
 .nicknameBox{
@@ -295,6 +286,10 @@ td{
 .icon {
     display:inline-block;
     padding: 5px !important;
+    width: 112px;
+}
+.winRate{
+    font-size: 10px;
 }
 .win{
     color:rgb(1, 1, 211);

@@ -21,6 +21,7 @@ import com.ssafy.lolbody.dto.ProfileDto;
 import com.ssafy.lolbody.dto.ProfileReferenceDto;
 import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.dto.WinRateDto;
+import com.ssafy.lolbody.preset.MongoDBPreset;
 import com.ssafy.lolbody.repository.ProfileRepository;
 
 @Service
@@ -35,6 +36,8 @@ public class ProfileService {
 	private MatchService matchService;
 	@Autowired
 	private ProfileRepository profileRepository;
+	@Autowired
+	MongoDBPreset preset;
 
 	public ProfileReferenceDto getProfile(String name) throws Exception {
 		SummonerDto summonerDto = summonerService.findByName(name);
@@ -66,8 +69,8 @@ public class ProfileService {
 			WinRateDto blindTotal = new WinRateDto(0, 0, 0, 0.0);
 			Map<String, WinRateDto> rankedLine = new LinkedHashMap<>();
 			Map<String, WinRateDto> blindLine = new LinkedHashMap<>();
-			Map<Integer, WinRateDto> rankedCham = new LinkedHashMap<>();
-			Map<Integer, WinRateDto> blindCham = new LinkedHashMap<>();
+			Map<String, WinRateDto> rankedCham = new LinkedHashMap<>();
+			Map<String, WinRateDto> blindCham = new LinkedHashMap<>();
 
 			for (MatchReferenceDto matchReferenceDto : matchReferences) {
 				int queue = matchReferenceDto.getQueue();
@@ -82,8 +85,7 @@ public class ProfileService {
 					} else {
 						line = matchReferenceDto.getLane();
 					}
-					int cham = matchReferenceDto.getChampion();
-
+					String cham = preset.findByKey(matchReferenceDto.getChampion() + "").getName();
 					List<ParticipantIdentityDto> participantIdentityList = matchDto.getParticipantIdentities();
 					int participantId = -1;
 					for (ParticipantIdentityDto participantIdentityDto : participantIdentityList) {
@@ -137,37 +139,49 @@ public class ProfileService {
 				}
 			}
 
-			List<Map.Entry<Integer, WinRateDto>> rcEntries = new LinkedList<>(rankedCham.entrySet());
+			List<Map.Entry<String, WinRateDto>> rcEntries = new LinkedList<>(rankedCham.entrySet());
 			Collections.sort(rcEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
 			List<Map.Entry<String, WinRateDto>> rlEntries = new LinkedList<>(rankedLine.entrySet());
 			Collections.sort(rlEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
-			List<Map.Entry<Integer, WinRateDto>> bcEntries = new LinkedList<>(blindCham.entrySet());
+			List<Map.Entry<String, WinRateDto>> bcEntries = new LinkedList<>(blindCham.entrySet());
 			Collections.sort(bcEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
 			List<Map.Entry<String, WinRateDto>> blEntries = new LinkedList<>(blindLine.entrySet());
 			Collections.sort(blEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
 
 			MatchRecordDto rankedRecord = new MatchRecordDto();
 			rankedRecord.setTotalRecord(rankedTotal);
-			rankedRecord.setMostChamRecord(rcEntries.get(0).getValue());
-			rankedRecord.setMostLineRecord(rlEntries.get(0).getValue());
-			rankedRecord.setSecondLineRecord(rlEntries.get(1).getValue());
+			if (rcEntries.size() > 0)
+				rankedRecord.setMostChamRecord(rcEntries.get(0).getValue());
+			if (rlEntries.size() > 0)
+				rankedRecord.setMostLineRecord(rlEntries.get(0).getValue());
+			if (rlEntries.size() > 1)
+				rankedRecord.setSecondLineRecord(rlEntries.get(1).getValue());
 			rankedRecord.setLineRecord(rankedLine);
 			rankedRecord.setChamRecord(rankedCham);
-			rankedRecord.setMostCham(rcEntries.get(0).getKey());
-			rankedRecord.setMostLine(rlEntries.get(0).getKey());
-			rankedRecord.setSecondLine(rlEntries.get(1).getKey());
+			if (rcEntries.size() > 0)
+				rankedRecord.setMostCham(rcEntries.get(0).getKey());
+			if (rlEntries.size() > 0)
+				rankedRecord.setMostLine(rlEntries.get(0).getKey());
+			if (rlEntries.size() > 1)
+				rankedRecord.setSecondLine(rlEntries.get(1).getKey());
 			profileReferenceDto.setRankedRecord(rankedRecord);
 
 			MatchRecordDto blindRecord = new MatchRecordDto();
 			blindRecord.setTotalRecord(blindTotal);
-			blindRecord.setMostChamRecord(bcEntries.get(0).getValue());
-			blindRecord.setMostLineRecord(blEntries.get(0).getValue());
-			blindRecord.setSecondLineRecord(blEntries.get(1).getValue());
+			if (bcEntries.size() > 0)
+				blindRecord.setMostChamRecord(bcEntries.get(0).getValue());
+			if (blEntries.size() > 0)
+				blindRecord.setMostLineRecord(blEntries.get(0).getValue());
+			if (blEntries.size() > 1)
+				blindRecord.setSecondLineRecord(blEntries.get(1).getValue());
 			blindRecord.setLineRecord(blindLine);
 			blindRecord.setChamRecord(blindCham);
-			blindRecord.setMostCham(bcEntries.get(0).getKey());
-			blindRecord.setMostLine(blEntries.get(0).getKey());
-			blindRecord.setSecondLine(blEntries.get(1).getKey());
+			if (bcEntries.size() > 0)
+				blindRecord.setMostCham(bcEntries.get(0).getKey());
+			if (blEntries.size() > 0)
+				blindRecord.setMostLine(blEntries.get(0).getKey());
+			if (blEntries.size() > 1)
+				blindRecord.setSecondLine(blEntries.get(1).getKey());
 			profileReferenceDto.setBlindRecord(blindRecord);
 
 			profiles.add(profileReferenceDto);
@@ -199,8 +213,8 @@ public class ProfileService {
 			WinRateDto blindTotal = lastProfile.getBlindRecord().getTotalRecord();
 			Map<String, WinRateDto> rankedLine = lastProfile.getRankedRecord().getLineRecord();
 			Map<String, WinRateDto> blindLine = lastProfile.getBlindRecord().getLineRecord();
-			Map<Integer, WinRateDto> rankedCham = lastProfile.getRankedRecord().getChamRecord();
-			Map<Integer, WinRateDto> blindCham = lastProfile.getBlindRecord().getChamRecord();
+			Map<String, WinRateDto> rankedCham = lastProfile.getRankedRecord().getChamRecord();
+			Map<String, WinRateDto> blindCham = lastProfile.getBlindRecord().getChamRecord();
 
 			for (MatchReferenceDto matchReferenceDto : matchReferences) {
 				int queue = matchReferenceDto.getQueue();
@@ -214,8 +228,7 @@ public class ProfileService {
 					} else {
 						line = matchReferenceDto.getLane();
 					}
-					int cham = matchReferenceDto.getChampion();
-
+					String cham = preset.findByKey(matchReferenceDto.getChampion() + "").getName();
 					List<ParticipantIdentityDto> participantIdentityList = matchDto.getParticipantIdentities();
 					int participantId = -1;
 					for (ParticipantIdentityDto participantIdentityDto : participantIdentityList) {
@@ -269,37 +282,49 @@ public class ProfileService {
 				}
 			}
 
-			List<Map.Entry<Integer, WinRateDto>> rcEntries = new LinkedList<>(rankedCham.entrySet());
+			List<Map.Entry<String, WinRateDto>> rcEntries = new LinkedList<>(rankedCham.entrySet());
 			Collections.sort(rcEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
 			List<Map.Entry<String, WinRateDto>> rlEntries = new LinkedList<>(rankedLine.entrySet());
 			Collections.sort(rlEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
-			List<Map.Entry<Integer, WinRateDto>> bcEntries = new LinkedList<>(blindCham.entrySet());
+			List<Map.Entry<String, WinRateDto>> bcEntries = new LinkedList<>(blindCham.entrySet());
 			Collections.sort(bcEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
 			List<Map.Entry<String, WinRateDto>> blEntries = new LinkedList<>(blindLine.entrySet());
 			Collections.sort(blEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
 
 			MatchRecordDto rankedRecord = new MatchRecordDto();
 			rankedRecord.setTotalRecord(rankedTotal);
-			rankedRecord.setMostChamRecord(rcEntries.get(0).getValue());
-			rankedRecord.setMostLineRecord(rlEntries.get(0).getValue());
-			rankedRecord.setSecondLineRecord(rlEntries.get(1).getValue());
+			if (rcEntries.size() > 0)
+				rankedRecord.setMostChamRecord(rcEntries.get(0).getValue());
+			if (rlEntries.size() > 0)
+				rankedRecord.setMostLineRecord(rlEntries.get(0).getValue());
+			if (rlEntries.size() > 1)
+				rankedRecord.setSecondLineRecord(rlEntries.get(1).getValue());
 			rankedRecord.setLineRecord(rankedLine);
 			rankedRecord.setChamRecord(rankedCham);
-			rankedRecord.setMostCham(rcEntries.get(0).getKey());
-			rankedRecord.setMostLine(rlEntries.get(0).getKey());
-			rankedRecord.setSecondLine(rlEntries.get(1).getKey());
+			if (rcEntries.size() > 0)
+				rankedRecord.setMostCham(rcEntries.get(0).getKey());
+			if (rlEntries.size() > 0)
+				rankedRecord.setMostLine(rlEntries.get(0).getKey());
+			if (rlEntries.size() > 1)
+				rankedRecord.setSecondLine(rlEntries.get(1).getKey());
 			profileReferenceDto.setRankedRecord(rankedRecord);
 
 			MatchRecordDto blindRecord = new MatchRecordDto();
 			blindRecord.setTotalRecord(blindTotal);
-			blindRecord.setMostChamRecord(bcEntries.get(0).getValue());
-			blindRecord.setMostLineRecord(blEntries.get(0).getValue());
-			blindRecord.setSecondLineRecord(blEntries.get(1).getValue());
+			if (bcEntries.size() > 0)
+				blindRecord.setMostChamRecord(bcEntries.get(0).getValue());
+			if (blEntries.size() > 0)
+				blindRecord.setMostLineRecord(blEntries.get(0).getValue());
+			if (blEntries.size() > 1)
+				blindRecord.setSecondLineRecord(blEntries.get(1).getValue());
 			blindRecord.setLineRecord(blindLine);
 			blindRecord.setChamRecord(blindCham);
-			blindRecord.setMostCham(bcEntries.get(0).getKey());
-			blindRecord.setMostLine(blEntries.get(0).getKey());
-			blindRecord.setSecondLine(blEntries.get(1).getKey());
+			if (bcEntries.size() > 0)
+				blindRecord.setMostCham(bcEntries.get(0).getKey());
+			if (blEntries.size() > 0)
+				blindRecord.setMostLine(blEntries.get(0).getKey());
+			if (blEntries.size() > 1)
+				blindRecord.setSecondLine(blEntries.get(1).getKey());
 			profileReferenceDto.setBlindRecord(blindRecord);
 
 			profiles.add(profileReferenceDto);

@@ -3,7 +3,7 @@ package com.ssafy.lolbody.dto;
 import java.util.Map;
 
 public class MatchRecordDto {
-	private int mostCham;
+	private String mostCham;
 	private String mostLine;
 	private String secondLine;
 
@@ -13,13 +13,13 @@ public class MatchRecordDto {
 	private WinRateDto secondLineRecord;
 
 	private Map<String, WinRateDto> lineRecord;
-	private Map<Integer, WinRateDto> chamRecord;
+	private Map<String, WinRateDto> chamRecord;
 
-	public int getMostCham() {
+	public String getMostCham() {
 		return mostCham;
 	}
 
-	public void setMostCham(int mostCham) {
+	public void setMostCham(String mostCham) {
 		this.mostCham = mostCham;
 	}
 
@@ -79,11 +79,11 @@ public class MatchRecordDto {
 		this.lineRecord = lineRecord;
 	}
 
-	public Map<Integer, WinRateDto> getChamRecord() {
+	public Map<String, WinRateDto> getChamRecord() {
 		return chamRecord;
 	}
 
-	public void setChamRecord(Map<Integer, WinRateDto> chamRecord) {
+	public void setChamRecord(Map<String, WinRateDto> chamRecord) {
 		this.chamRecord = chamRecord;
 	}
 

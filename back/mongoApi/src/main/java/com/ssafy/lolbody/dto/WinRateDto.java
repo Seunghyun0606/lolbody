@@ -1,6 +1,7 @@
 package com.ssafy.lolbody.dto;
 
 public class WinRateDto {
+	private int totalGames;
 	private int wins;
 	private int losses;
 	private double winRate;
@@ -8,10 +9,19 @@ public class WinRateDto {
 	public WinRateDto() {
 	}
 
-	public WinRateDto(int wins, int losses, double winRate) {
+	public WinRateDto(int totalGames, int wins, int losses, double winRate) {
+		this.totalGames = totalGames;
 		this.wins = wins;
 		this.losses = losses;
 		this.winRate = winRate;
+	}
+
+	public int getTotalGames() {
+		return totalGames;
+	}
+
+	public void setTotalGames(int totalGames) {
+		this.totalGames = totalGames;
 	}
 
 	public int getWins() {
@@ -40,6 +50,8 @@ public class WinRateDto {
 
 	@Override
 	public String toString() {
-		return "WinRateDto [wins=" + wins + ", losses=" + losses + ", winRate=" + winRate + "]";
+		return "WinRateDto [totalGames=" + totalGames + ", wins=" + wins + ", losses=" + losses + ", winRate=" + winRate
+				+ "]";
 	}
+
 }

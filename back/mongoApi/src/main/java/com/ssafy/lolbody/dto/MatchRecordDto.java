@@ -1,5 +1,7 @@
 package com.ssafy.lolbody.dto;
 
+import java.util.Map;
+
 public class MatchRecordDto {
 	private int mostCham;
 	private String mostLine;
@@ -9,6 +11,9 @@ public class MatchRecordDto {
 	private WinRateDto mostChamRecord;
 	private WinRateDto mostLineRecord;
 	private WinRateDto secondLineRecord;
+
+	private Map<String, WinRateDto> lineRecord;
+	private Map<Integer, WinRateDto> chamRecord;
 
 	public int getMostCham() {
 		return mostCham;
@@ -66,11 +71,28 @@ public class MatchRecordDto {
 		this.secondLineRecord = secondLineRecord;
 	}
 
+	public Map<String, WinRateDto> getLineRecord() {
+		return lineRecord;
+	}
+
+	public void setLineRecord(Map<String, WinRateDto> lineRecord) {
+		this.lineRecord = lineRecord;
+	}
+
+	public Map<Integer, WinRateDto> getChamRecord() {
+		return chamRecord;
+	}
+
+	public void setChamRecord(Map<Integer, WinRateDto> chamRecord) {
+		this.chamRecord = chamRecord;
+	}
+
 	@Override
 	public String toString() {
 		return "MatchRecordDto [mostCham=" + mostCham + ", mostLine=" + mostLine + ", secondLine=" + secondLine
 				+ ", totalRecord=" + totalRecord + ", mostChamRecord=" + mostChamRecord + ", mostLineRecord="
-				+ mostLineRecord + ", secondLineRecord=" + secondLineRecord + "]";
+				+ mostLineRecord + ", secondLineRecord=" + secondLineRecord + ", lineRecord=" + lineRecord
+				+ ", chamRecord=" + chamRecord + "]";
 	}
 
 }

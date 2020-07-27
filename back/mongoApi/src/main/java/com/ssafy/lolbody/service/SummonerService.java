@@ -24,15 +24,15 @@ public class SummonerService {
 	}
 	
 	public SummonerDto findByName(String name) {
-	      SummonerDto summonerDto = summonerRepository.findByName(name);
-	      if(summonerDto == null) {
+//	      SummonerDto summonerDto = summonerRepository.findByName(name);
+//	      if(summonerDto == null) {
 	         String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
 	         if(json.equals("Fail")) {
 	            return null;
 	         }
-	         summonerDto = new Gson().fromJson(json, SummonerDto.class);
+	         SummonerDto summonerDto = new Gson().fromJson(json, SummonerDto.class);
 	         insert(summonerDto);
-	      }
+//	      }
 	      return summonerDto;
 	   }
 	

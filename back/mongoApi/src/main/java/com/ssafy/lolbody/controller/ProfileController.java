@@ -28,6 +28,7 @@ public class ProfileController {
 			profile = profileService.getProfile(name);
 			System.out.println(profile);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(profile, HttpStatus.OK);

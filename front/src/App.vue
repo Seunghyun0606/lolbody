@@ -9,6 +9,7 @@
 
     <v-main>
       <router-view></router-view>
+      
       <MultiSearch/>
       <Profile/>
     </v-main>

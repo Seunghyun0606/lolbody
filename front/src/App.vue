@@ -16,8 +16,6 @@
 <script>
 import MultiSearch from './components/MultiSearch';
 
-import { mapActions } from 'vuex'
-import { mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -27,27 +25,12 @@ export default {
 
   data () {
     return {
-      userId: "",
     }
   },
-  computed: {
-    ...mapState(['apiData'])
 
-  },
-  methods: {
-    ...mapActions(['getApiData'])
-    
-  },
-  created() {
-
-  }
 };
 </script>
 
 <style scoped>
-
-.back-grey {
-  background-color: grey;
-}
 
 </style>

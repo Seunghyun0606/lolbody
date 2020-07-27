@@ -8,9 +8,11 @@
     </v-app-bar>
 
     <v-main>
+      <router-view></router-view>
       <MultiSearch/>
       <Profile/>
     </v-main>
+
   </v-app>
 </template>
 
@@ -30,8 +32,7 @@ export default {
     return {
     }
   },
-
-};
+}
 </script>
 
 <style scoped>

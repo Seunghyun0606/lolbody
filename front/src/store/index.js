@@ -7,13 +7,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // 승현
     multiSearchDatas: [],
     userDatas: [],
+    // 호철
+    searchSummonerIDs: [],
   },
   getters: {
 
   },
   mutations: {
+    // 승현
     setMultiSearchDatas(state, multiSearchDatas) {
       // 계속해서 집어넣게 만듬.
       var recentGameCount = 0
@@ -32,6 +36,12 @@ export default new Vuex.Store({
       // userData는 array로 오기 때문에 sperad시킴
       state.userDatas = [ ...state.userDatas, ...userDatas ]
     },
+
+    // 호철
+    changeSearchSummonerIDs(state, arr) {
+      state.searchSummonerIDs = arr
+    }
+
   },
   actions: {
     getMultiSearchDatas( { commit }, userName ) {

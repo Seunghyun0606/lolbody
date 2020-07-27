@@ -12,7 +12,7 @@
 import IndexLogo from '@/components/index/IndexLogo.vue';
 import IndexSearchBar from '@/components/index/IndexSearchBar.vue';
 import IndexIntro from '@/components/index/IndexIntro.vue';
-import ProfileGameHistory from '@/components/ProfileGameHistory'
+import ProfileGameHistory from '@/components/profile/ProfileGameHistory'
 
 export default {
   name: 'Index',

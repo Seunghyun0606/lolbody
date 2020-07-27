@@ -78,9 +78,9 @@
 
 <script>
 // 랭크 이미지 받아올때 require써야 build시에 web-pack이 똑바로 인지한다.
-import MultiSearchLineChart from "./MultiSearchLineChart"
-import MultiSearchLatestChamp from "./MultiSearchLatestChamp"
-import MultiSearchMostChamp from "./MultiSearchMostChamp"
+import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart"
+import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
+import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 
 import { mapActions } from "vuex"
 import { mapState } from "vuex"

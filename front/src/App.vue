@@ -9,24 +9,16 @@
 
     <v-main>
       <router-view></router-view>
-      
-      <MultiSearch/>
-      <Profile/>
     </v-main>
 
   </v-app>
 </template>
 
 <script>
-import MultiSearch from './components/MultiSearch';
-import Profile from "./components/Profile.vue";
-
 
 export default {
   name: 'App',
   components: {
-    MultiSearch,
-    Profile,
   },
 
   data () {

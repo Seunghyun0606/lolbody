@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import GraphPractice from '@/components/GraphPractice.vue'
+import GraphPractice from '@/components/index/GraphPractice.vue'
 
 export default {
   name: "IndexIntro",

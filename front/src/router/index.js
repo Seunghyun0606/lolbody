@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Profile from "@/components/Profile.vue";
-import Index from '../views/Index.vue'
-import MultiSearch from '@/components/Multisearch.vue'
+import Profile from "@/views/Profile.vue";
+import Index from '@/views/Index.vue'
+import MultiSearch from '@/views/MultiSearch.vue'
 
 Vue.use(VueRouter)
 
@@ -19,8 +19,8 @@ const routes = [
     component: Profile,
   },
   {
-    path: '/MultiSerach',
-    name: 'MultiSerach',
+    path: '/MultiSearch',
+    name: 'MultiSearch',
     component: MultiSearch,
   }
 ]

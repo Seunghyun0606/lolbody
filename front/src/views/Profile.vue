@@ -116,8 +116,8 @@
 
 <script>
 import axios from 'axios';
-import RadarChart from '@/components/RadarChart';
-import LineChart from '@/components/LineChart';
+import RadarChart from '@/components/profile/RadarChart';
+import LineChart from '@/components/profile/LineChart';
 
 export default {
     name:'Profile',
@@ -134,13 +134,13 @@ export default {
         },
         now:{ 
             game:{
-                src : require('@/assets/images/Emblem_Challenger.png'),
+                src : require('@/assets/images/tier/Emblem_Challenger.png'),
                 winRate: '55%',
                 win : '11',
                 lose: '9'
             },
             mostCham: {
-                src : require('@/assets/images/Senna.png'),
+                src : require('@/assets/images/champion/Senna.png'),
                 winRate: '55%',
                 win : '11',
                 lose: '9'

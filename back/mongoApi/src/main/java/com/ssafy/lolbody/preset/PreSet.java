@@ -22,7 +22,7 @@ public class PreSet implements CommandLineRunner{
 			ChampKeyDto champ = new ChampKeyDto();
 			champ.setKey(key);
 			champ.setName(name);
-			preset.findById("key").orElseGet(() -> preset.save(champ));
+			preset.findById(key).orElseGet(() -> preset.save(champ));
 		}
 	}
 	

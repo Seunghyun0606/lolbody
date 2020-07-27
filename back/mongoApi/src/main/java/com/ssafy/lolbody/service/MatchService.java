@@ -17,11 +17,11 @@ public class MatchService {
 		matchRepository.save(matchDto);
 	}
 
-	public MatchDto findByGameId(String gameId) {
+	public MatchDto findByGameId(long gameId) {
 		MatchDto matchDto = matchRepository.findByGameId(gameId);
 		if (matchDto == null) {
 			matchDto = new MatchDto();
-			String json = Api.multi("https://kr.api.riotgames.com/lol/match/v4/matches", gameId);
+			String json = Api.multi("https://kr.api.riotgames.com/lol/match/v4/matches", gameId + "");
 			matchDto = new Gson().fromJson(json, MatchDto.class);
 			save(matchDto);
 		}

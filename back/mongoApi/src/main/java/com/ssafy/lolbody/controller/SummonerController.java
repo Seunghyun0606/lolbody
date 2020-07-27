@@ -53,7 +53,7 @@ public class SummonerController {
 	@GetMapping("/match/{gameId}")
 	@ApiOperation(value="게임 id를 변수로 받아 매치 상세정보를 검색합니다.")
 	public MatchDto getUserMatch(@PathVariable String gameId) {
-		return matchService.findByGameId(gameId);
+		return matchService.findByGameId(Long.parseLong(gameId));
 	}
 	
 }

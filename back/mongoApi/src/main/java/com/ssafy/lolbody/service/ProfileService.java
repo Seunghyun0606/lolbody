@@ -72,7 +72,7 @@ public class ProfileService {
 			for (MatchReferenceDto matchReferenceDto : matchReferences) {
 				int queue = matchReferenceDto.getQueue();
 				if (queue == 420 || queue == 430) {
-					MatchDto matchDto = matchService.findByGameId(matchReferenceDto.getGameId() + "");
+					MatchDto matchDto = matchService.findByGameId(matchReferenceDto.getGameId());
 					if (matchDto.getGameDuration() < 600) // 다시하기는 통계에 집계되지 않음
 						continue;
 
@@ -205,10 +205,9 @@ public class ProfileService {
 			for (MatchReferenceDto matchReferenceDto : matchReferences) {
 				int queue = matchReferenceDto.getQueue();
 				if (queue == 420 || queue == 430) {
-					MatchDto matchDto = matchService.findByGameId(matchReferenceDto.getGameId() + "");
+					MatchDto matchDto = matchService.findByGameId(matchReferenceDto.getGameId());
 					if (timestamp >= matchDto.getGameCreation() || matchDto.getGameDuration() < 600) // 다시하기는 통계에 집계되지
 						continue;
-
 					String line = "";
 					if (matchReferenceDto.getRole().equals("DUO_SUPPORT")) {
 						line = "SUPPORT";

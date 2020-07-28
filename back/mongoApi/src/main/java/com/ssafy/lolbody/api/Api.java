@@ -16,7 +16,7 @@ public class Api {
 			"RGAPI-2adde83f-a408-46e6-bf94-8830e3700c9d",
 			"RGAPI-bfe812b2-f299-4625-9879-372199313ec5",
 			"RGAPI-acb1f578-b44d-46e0-8dac-c22ecc80a33b",
-			"RGAPI-973f062c-cb73-463a-a271-c5ffb024f52f",
+//			"RGAPI-973f062c-cb73-463a-a271-c5ffb024f52f",
 			"RGAPI-47c0271d-2cbd-467c-9c3b-8c0f5d89cad4",
 			"RGAPI-2df57d2d-0fa7-4e43-bec9-ce4b1ee0f909",
 			"RGAPI-987954d2-fd43-4bbb-a7ca-4e600a5f428d",
@@ -47,7 +47,7 @@ public class Api {
 				isOk = true;
 				result = sb.toString();
 			} else {
-				System.out.println(con.getResponseMessage() + " - " + url + " - " + tokens[idx]);
+				System.out.println(con.getResponseMessage() + " - " + url + " - " + tokens[idx-1]);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

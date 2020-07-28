@@ -2,6 +2,7 @@ package com.ssafy.lolbody.dto;
 
 public class ProfileReferenceDto {
 	private long timestamp;
+	private int games;
 
 	private int profileIconId;
 	private int summonerLevel;
@@ -20,6 +21,14 @@ public class ProfileReferenceDto {
 
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public int getGames() {
+		return games;
+	}
+
+	public void setGames(int games) {
+		this.games = games;
 	}
 
 	public int getProfileIconId() {
@@ -88,9 +97,10 @@ public class ProfileReferenceDto {
 
 	@Override
 	public String toString() {
-		return "ProfileReferenceDto [timestamp=" + timestamp + ", profileIconId=" + profileIconId + ", summonerLevel="
-				+ summonerLevel + ", summonerName=" + summonerName + ", tier=" + tier + ", rank=" + rank
-				+ ", leaguePoints=" + leaguePoints + ", rankedRecord=" + rankedRecord + ", blindRecord=" + blindRecord
-				+ "]";
+		return "ProfileReferenceDto [timestamp=" + timestamp + ", games=" + games + ", profileIconId=" + profileIconId
+				+ ", summonerLevel=" + summonerLevel + ", summonerName=" + summonerName + ", tier=" + tier + ", rank="
+				+ rank + ", leaguePoints=" + leaguePoints + ", rankedRecord=" + rankedRecord + ", blindRecord="
+				+ blindRecord + "]";
 	}
+
 }

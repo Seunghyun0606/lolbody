@@ -1,5 +1,10 @@
 package com.ssafy.lolbody.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +37,18 @@ public class ProfileController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(profile, HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "티어/모스트라인별 유저 닉네임을 검색합니다. (성공:200, 실패:404)")
+	@GetMapping("/profile")
+	public ResponseEntity<Map<String, Map<String, String>>> getName() {
+		Map<String, Map<String, String>> map = new HashMap<>();
+		try {
+			map = profileService.getName();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 }

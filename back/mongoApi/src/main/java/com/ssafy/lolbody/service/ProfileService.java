@@ -2,6 +2,7 @@ package com.ssafy.lolbody.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -202,5 +203,23 @@ public class ProfileService {
 			winRateDto.setLosses(winRateDto.getLosses() + 1);
 		winRateDto.setWinRate(100.0 * winRateDto.getWins() / winRateDto.getTotalGames());
 		return winRateDto;
+	}
+
+	public Map<String, Map<String, String>> getName() throws Exception {
+		Map<String, Map<String, String>> map = new HashMap<>();
+		List<SummonerDto> summonerList = summonerService.findAll();
+		for (SummonerDto summonerDto : summonerList) {
+			ProfileReferenceDto profileDto = getProfile(summonerDto.getName().replaceAll(" ", ""));
+			String tier = profileDto.getTier();
+			if (tier == null)
+				continue;
+			if (!map.containsKey(tier)) {
+				map.put(tier, new HashMap<>());
+			}
+			Map<String, String> tmp = map.get(tier);
+			tmp.put(profileDto.getRankedRecord().getMostLine(), summonerDto.getName());
+		}
+		System.out.println(map);
+		return map;
 	}
 }

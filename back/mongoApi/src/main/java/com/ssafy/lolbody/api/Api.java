@@ -20,7 +20,7 @@ public class Api {
 			"RGAPI-47c0271d-2cbd-467c-9c3b-8c0f5d89cad4",
 			"RGAPI-2df57d2d-0fa7-4e43-bec9-ce4b1ee0f909",
 			"RGAPI-987954d2-fd43-4bbb-a7ca-4e600a5f428d",
-			"RGAPI-e59754f2-f56b-4471-aaf6-75330d5863f6"
+//			"RGAPI-e59754f2-f56b-4471-aaf6-75330d5863f6"
 	};
 	private static int idx = 0;
 	
@@ -47,7 +47,7 @@ public class Api {
 				isOk = true;
 				result = sb.toString();
 			} else {
-				System.out.println(con.getResponseMessage() + " - " + url + " - " + tokens[idx-1]);
+				System.out.println(con.getResponseMessage() + " - " + url + " - " + tokens[(idx + tokens.length - 1) % tokens.length]);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

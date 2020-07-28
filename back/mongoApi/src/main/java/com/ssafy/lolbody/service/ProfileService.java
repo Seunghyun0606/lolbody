@@ -2,7 +2,6 @@ package com.ssafy.lolbody.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.dto.MatchDto;
+import com.ssafy.lolbody.dto.MatchInfoDto;
 import com.ssafy.lolbody.dto.MatchRecordDto;
 import com.ssafy.lolbody.dto.MatchReferenceDto;
 import com.ssafy.lolbody.dto.MatchlistDto;
@@ -23,7 +23,10 @@ import com.ssafy.lolbody.dto.ProfileReferenceDto;
 import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.dto.WinRateDto;
 import com.ssafy.lolbody.preset.MongoDBPreset;
+import com.ssafy.lolbody.preset.PerkRepository;
+import com.ssafy.lolbody.preset.PerkStyleRepository;
 import com.ssafy.lolbody.repository.ProfileRepository;
+import com.ssafy.lolbody.preset.SpellRepository;
 
 @Service
 public class ProfileService {
@@ -39,6 +42,12 @@ public class ProfileService {
 	private ProfileRepository profileRepository;
 	@Autowired
 	MongoDBPreset preset;
+	@Autowired
+	SpellRepository spellRepository;
+	@Autowired
+	PerkRepository perkRepository;
+	@Autowired
+	PerkStyleRepository perkStyleRepository;
 
 	public ProfileReferenceDto getProfile(String name) throws Exception {
 		SummonerDto summonerDto = summonerService.findByName(name);
@@ -192,6 +201,7 @@ public class ProfileService {
 		profileDto.setProfiles(profiles);
 
 		profileRepository.save(profileDto);
+		System.out.println(profileReferenceDto);
 		return profileReferenceDto;
 	}
 
@@ -205,21 +215,78 @@ public class ProfileService {
 		return winRateDto;
 	}
 
-	public Map<String, Map<String, String>> getName() throws Exception {
-		Map<String, Map<String, String>> map = new HashMap<>();
-		List<SummonerDto> summonerList = summonerService.findAll();
-		for (SummonerDto summonerDto : summonerList) {
-			ProfileReferenceDto profileDto = getProfile(summonerDto.getName().replaceAll(" ", ""));
-			String tier = profileDto.getTier();
-			if (tier == null)
-				continue;
-			if (!map.containsKey(tier)) {
-				map.put(tier, new HashMap<>());
+	public List<List<MatchInfoDto>> getMatchInfo(String name, String num) {
+		List<List<MatchInfoDto>> matchInfoList = new ArrayList<>();
+		SummonerDto summonerDto = summonerService.findByName(name);
+		MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
+		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
+		int size = matchReferences.size(), idx = Integer.parseInt(num);
+		if (size - ((idx - 1) * 10) <= 0) {
+			return null;
+		} else {
+			int s = 0;
+			if (size - (idx * 10) >= 0) {
+				matchReferences = matchReferences.subList(size - (idx * 10), size - ((idx - 1) * 10));
+				s = 9;
+			} else {
+				matchReferences = matchReferences.subList(0, size - ((idx - 1) * 10));
+				s = size - ((idx - 1) * 10) - 1;
 			}
-			Map<String, String> tmp = map.get(tier);
-			tmp.put(profileDto.getRankedRecord().getMostLine(), summonerDto.getName());
+			for (int i = s; i >= 0; i--) {
+				matchInfoList.add(new ArrayList<>());
+				MatchReferenceDto matchReferenceDto = matchReferences.get(i);
+				MatchDto match = matchService.findByGameId(matchReferenceDto.getGameId());
+				List<ParticipantIdentityDto> users = match.getParticipantIdentities();
+				List<ParticipantDto> participants = match.getParticipants();
+
+				int[][] kda = new int[10][3];
+				int blueKills = 0, redKills = 0;
+				for (int j = 0; j < 10; j++) {
+					ParticipantDto p = participants.get(j);
+					kda[j][0] = p.getStats().getKills();
+					kda[j][1] = p.getStats().getDeaths();
+					kda[j][2] = p.getStats().getAssists();
+					if (j < 5)
+						blueKills += kda[j][0];
+					else
+						redKills += kda[j][0];
+				}
+				for (int j = 0; j < 10; j++) {
+					MatchInfoDto tmp = new MatchInfoDto();
+					ParticipantDto p = participants.get(j);
+					tmp.setName(users.get(j).getPlayer().getSummonerName());
+					tmp.setTeam(j < 5 ? 100 : 200);
+					tmp.setWin(p.getStats().isWin());
+					tmp.setChamp(preset.findByKey(p.getChampionId() + "").getName());
+					tmp.setQueue(matchReferenceDto.getQueue());
+					tmp.setKills(kda[j][0]);
+					tmp.setDeaths(kda[j][1]);
+					tmp.setAssists(kda[j][2]);
+					tmp.setKda(((double) tmp.getKills() + tmp.getAssists()) / tmp.getDeaths());
+					tmp.setKa(100.0 * (tmp.getKills() + tmp.getAssists()) / (j < 5 ? blueKills : redKills));
+					tmp.setSpell1(spellRepository.findByKey(p.getSpell1Id() + "").getName());
+					tmp.setSpell2(spellRepository.findByKey(p.getSpell2Id() + "").getName());
+					tmp.setItem0(p.getStats().getItem0());
+					tmp.setItem1(p.getStats().getItem1());
+					tmp.setItem2(p.getStats().getItem2());
+					tmp.setItem3(p.getStats().getItem3());
+					tmp.setItem4(p.getStats().getItem4());
+					tmp.setItem5(p.getStats().getItem5());
+					tmp.setItem6(p.getStats().getItem6());
+					tmp.setPerk(perkRepository.findByKey(p.getStats().getPerk0()).getName());
+					tmp.setPerkStyle(perkStyleRepository.findByKey(p.getStats().getPerkSubStyle()).getName());
+					tmp.setLevel(p.getStats().getChampLevel());
+					tmp.setGold(p.getStats().getGoldEarned());
+					tmp.setCs(p.getStats().getNeutralMinionsKilled() + p.getStats().getTotalMinionsKilled());
+					tmp.setDuration(match.getGameDuration());
+					tmp.setCsPerMin(60.0 * tmp.getCs() / tmp.getDuration());
+					tmp.setLine(
+							p.getTimeline().getRole().equals("DUO_SUPPORT") ? "SUPPORT" : p.getTimeline().getLane());
+					matchInfoList.get(s - i).add(tmp);
+				}
+			}
 		}
-		System.out.println(map);
-		return map;
+		return matchInfoList;
 	}
+
 }

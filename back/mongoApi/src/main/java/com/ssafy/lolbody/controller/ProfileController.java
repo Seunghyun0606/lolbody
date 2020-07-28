@@ -1,9 +1,7 @@
 package com.ssafy.lolbody.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.lolbody.dto.MatchInfoDto;
 import com.ssafy.lolbody.dto.ProfileReferenceDto;
 import com.ssafy.lolbody.service.ProfileService;
 
@@ -30,8 +29,7 @@ public class ProfileController {
 	public ResponseEntity<ProfileReferenceDto> getProfile(@PathVariable String name) {
 		ProfileReferenceDto profile = new ProfileReferenceDto();
 		try {
-			profile = profileService.getProfile(name);
-			System.out.println(profile);
+			profile = profileService.getProfile(name.replaceAll(" ", ""));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -39,16 +37,17 @@ public class ProfileController {
 		return new ResponseEntity<>(profile, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "티어/모스트라인별 유저 닉네임을 검색합니다. (성공:200, 실패:404)")
-	@GetMapping("/profile")
-	public ResponseEntity<Map<String, Map<String, String>>> getName() {
-		Map<String, Map<String, String>> map = new HashMap<>();
+	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (성공:200, 실패:404)")
+	@GetMapping("/profile/{name}/{num}")
+	public ResponseEntity<List<List<MatchInfoDto>>> getMatchInfo(@PathVariable String name, @PathVariable String num) {
+		List<List<MatchInfoDto>> matchInfoList = new ArrayList<>();
 		try {
-			map = profileService.getName();
+			matchInfoList = profileService.getMatchInfo(name.replaceAll(" ", ""), num);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(map, HttpStatus.OK);
+		return new ResponseEntity<>(matchInfoList, HttpStatus.OK);
 	}
+
 }

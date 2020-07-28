@@ -1,14 +1,25 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="primary" dense dark flat>
+      <template>
+        <v-tabs align-with-title>
+          <v-tab router-link to="/">Main</v-tab>
+          <v-tab router-link to="/Profile">Profile</v-tab>
+          <v-tab router-link to="/MultiSearch">Multi Search</v-tab>
+        </v-tabs>
+      </template>
     </v-app-bar>
 
     <v-main>
-      <router-view></router-view>
+      <v-container fluid>
+            <v-row>
+                <br>
+                <br>
+            </v-row>
+            <v-row align="center" justify="center">
+              <router-view></router-view>
+            </v-row>
+      </v-container>
     </v-main>
 
   </v-app>

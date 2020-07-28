@@ -12,6 +12,8 @@ export default new Vuex.Store({
     userDatas: [],
     // 호철
     searchSummonerIDs: [],
+
+    profileDatas: {},
   },
   getters: {
 
@@ -40,6 +42,11 @@ export default new Vuex.Store({
     // 호철
     changeSearchSummonerIDs(state, arr) {
       state.searchSummonerIDs = arr
+    },
+
+
+    setProfileDatas(state, profileDatas){
+      state.profileDatas = profileDatas;
     }
 
   },
@@ -64,8 +71,19 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err)
         })
+    },
+    getProfileDatas( { commit }, userName){
+      axios.get(`http://13.125.220.135/profile/${userName}`)
+        .then(res => {
+            commit('setProfileDatas', res.data)
+        }).catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+        });
     }
-
   },
   modules: {
   }

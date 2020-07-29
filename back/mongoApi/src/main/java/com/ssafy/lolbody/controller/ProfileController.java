@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.lolbody.dto.MatchInfoDto;
+import com.ssafy.lolbody.dto.MatchRecordDto;
 import com.ssafy.lolbody.dto.ProfileReferenceDto;
 import com.ssafy.lolbody.service.ProfileService;
 
@@ -43,10 +43,10 @@ public class ProfileController {
 
 	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (num: 1부터 시작, 10개씩)")
 	@GetMapping("/profile/{name}/{num}")
-	public ResponseEntity<List<List<MatchInfoDto>>> getMatchInfo(@PathVariable String name, @PathVariable String num) {
-		List<List<MatchInfoDto>> matchInfoList = new ArrayList<>();
+	public ResponseEntity<List<MatchRecordDto>> getMatchInfo(@PathVariable String name, @PathVariable String num) {
+		List<MatchRecordDto> matchRecords = new ArrayList<>();
 		try {
-			matchInfoList = profileService.getMatchInfo(name.replaceAll(" ", ""), num);
+			matchRecords = profileService.getMatchRecord(name.replaceAll(" ", ""), num);
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
@@ -54,7 +54,7 @@ public class ProfileController {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(matchInfoList, HttpStatus.OK);
+		return new ResponseEntity<>(matchRecords, HttpStatus.OK);
 	}
 
 }

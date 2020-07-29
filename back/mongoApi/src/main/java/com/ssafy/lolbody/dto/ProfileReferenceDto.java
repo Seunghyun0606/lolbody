@@ -12,8 +12,8 @@ public class ProfileReferenceDto {
 	private String rank;
 	private int leaguePoints;
 
-	private MatchRecordDto rankedRecord;
-	private MatchRecordDto blindRecord;
+	private TotalRecordDto rankedRecord;
+	private TotalRecordDto blindRecord;
 
 	public long getTimestamp() {
 		return timestamp;
@@ -79,19 +79,19 @@ public class ProfileReferenceDto {
 		this.leaguePoints = leaguePoints;
 	}
 
-	public MatchRecordDto getRankedRecord() {
+	public TotalRecordDto getRankedRecord() {
 		return rankedRecord;
 	}
 
-	public void setRankedRecord(MatchRecordDto rankedRecord) {
+	public void setRankedRecord(TotalRecordDto rankedRecord) {
 		this.rankedRecord = rankedRecord;
 	}
 
-	public MatchRecordDto getBlindRecord() {
+	public TotalRecordDto getBlindRecord() {
 		return blindRecord;
 	}
 
-	public void setBlindRecord(MatchRecordDto blindRecord) {
+	public void setBlindRecord(TotalRecordDto blindRecord) {
 		this.blindRecord = blindRecord;
 	}
 

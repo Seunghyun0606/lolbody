@@ -1,98 +1,98 @@
 package com.ssafy.lolbody.dto;
 
-import java.util.Map;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "matchrecords")
 public class MatchRecordDto {
-	private String mostCham;
-	private String mostLine;
-	private String secondLine;
+	@Id
+	private long gameId;
+	private int queue;
+	private long timestamp;
+	private long duration;
+	private boolean noGame;
+	private int myIndex;
+	private String myTeam;
+	private TeamRecordDto blueTeam;
+	private TeamRecordDto redTeam;
 
-	private WinRateDto totalRecord;
-	private WinRateDto mostChamRecord;
-	private WinRateDto mostLineRecord;
-	private WinRateDto secondLineRecord;
-
-	private Map<String, WinRateDto> lineRecord;
-	private Map<String, WinRateDto> chamRecord;
-
-	public String getMostCham() {
-		return mostCham;
+	public long getGameId() {
+		return gameId;
 	}
 
-	public void setMostCham(String mostCham) {
-		this.mostCham = mostCham;
+	public void setGameId(long gameId) {
+		this.gameId = gameId;
 	}
 
-	public String getMostLine() {
-		return mostLine;
+	public int getQueue() {
+		return queue;
 	}
 
-	public void setMostLine(String mostLine) {
-		this.mostLine = mostLine;
+	public void setQueue(int queue) {
+		this.queue = queue;
 	}
 
-	public String getSecondLine() {
-		return secondLine;
+	public long getTimestamp() {
+		return timestamp;
 	}
 
-	public void setSecondLine(String secondLine) {
-		this.secondLine = secondLine;
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
 	}
 
-	public WinRateDto getTotalRecord() {
-		return totalRecord;
+	public long getDuration() {
+		return duration;
 	}
 
-	public void setTotalRecord(WinRateDto totalRecord) {
-		this.totalRecord = totalRecord;
+	public void setDuration(long duration) {
+		this.duration = duration;
 	}
 
-	public WinRateDto getMostChamRecord() {
-		return mostChamRecord;
+	public boolean isNoGame() {
+		return noGame;
 	}
 
-	public void setMostChamRecord(WinRateDto mostChamRecord) {
-		this.mostChamRecord = mostChamRecord;
+	public void setNoGame(boolean noGame) {
+		this.noGame = noGame;
 	}
 
-	public WinRateDto getMostLineRecord() {
-		return mostLineRecord;
+	public int getMyIndex() {
+		return myIndex;
 	}
 
-	public void setMostLineRecord(WinRateDto mostLineRecord) {
-		this.mostLineRecord = mostLineRecord;
+	public void setMyIndex(int myIndex) {
+		this.myIndex = myIndex;
 	}
 
-	public WinRateDto getSecondLineRecord() {
-		return secondLineRecord;
+	public String getMyTeam() {
+		return myTeam;
 	}
 
-	public void setSecondLineRecord(WinRateDto secondLineRecord) {
-		this.secondLineRecord = secondLineRecord;
+	public void setMyTeam(String myTeam) {
+		this.myTeam = myTeam;
 	}
 
-	public Map<String, WinRateDto> getLineRecord() {
-		return lineRecord;
+	public TeamRecordDto getBlueTeam() {
+		return blueTeam;
 	}
 
-	public void setLineRecord(Map<String, WinRateDto> lineRecord) {
-		this.lineRecord = lineRecord;
+	public void setBlueTeam(TeamRecordDto blueTeam) {
+		this.blueTeam = blueTeam;
 	}
 
-	public Map<String, WinRateDto> getChamRecord() {
-		return chamRecord;
+	public TeamRecordDto getRedTeam() {
+		return redTeam;
 	}
 
-	public void setChamRecord(Map<String, WinRateDto> chamRecord) {
-		this.chamRecord = chamRecord;
+	public void setRedTeam(TeamRecordDto redTeam) {
+		this.redTeam = redTeam;
 	}
 
 	@Override
 	public String toString() {
-		return "MatchRecordDto [mostCham=" + mostCham + ", mostLine=" + mostLine + ", secondLine=" + secondLine
-				+ ", totalRecord=" + totalRecord + ", mostChamRecord=" + mostChamRecord + ", mostLineRecord="
-				+ mostLineRecord + ", secondLineRecord=" + secondLineRecord + ", lineRecord=" + lineRecord
-				+ ", chamRecord=" + chamRecord + "]";
+		return "MatchRecordDto [gameId=" + gameId + ", queue=" + queue + ", timestamp=" + timestamp + ", duration="
+				+ duration + ", noGame=" + noGame + ", myIndex=" + myIndex + ", myTeam=" + myTeam + ", blueTeam="
+				+ blueTeam + ", redTeam=" + redTeam + "]";
 	}
 
 }

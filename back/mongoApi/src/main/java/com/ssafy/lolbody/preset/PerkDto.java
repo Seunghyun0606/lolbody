@@ -3,15 +3,15 @@ package com.ssafy.lolbody.preset;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="champkey")
-public class ChampKeyDTO {
+@Document(collection="perks")
+public class PerkDto {
 	@Id
-	private String key;
+	private int key;
 	private String name;
-	public String getKey() {
+	public int getKey() {
 		return key;
 	}
-	public void setKey(String key) {
+	public void setKey(int key) {
 		this.key = key;
 	}
 	public String getName() {
@@ -22,6 +22,6 @@ public class ChampKeyDTO {
 	}
 	@Override
 	public String toString() {
-		return "ChampKeyDTO [key=" + key + ", name=" + name + "]";
+		return "PerkDto [key=" + key + ", name=" + name + "]";
 	}
 }

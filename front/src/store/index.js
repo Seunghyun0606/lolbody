@@ -13,6 +13,7 @@ export default new Vuex.Store({
     // 호철
     searchSummonerIDs: [],
 
+    // 형래
     profileDatas: {},
     matchDatas: []
   },
@@ -48,7 +49,7 @@ export default new Vuex.Store({
       state.searchSummonerIDs = arr
     },
 
-
+    // 형래
     setProfileDatas(state, profileDatas){
       state.profileDatas = profileDatas;
     },

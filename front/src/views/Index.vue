@@ -1,9 +1,12 @@
 <template>
-  <div class="index">
+  <v-container class="index">
+    <v-row justify="center" align="center">
       <IndexLogo />
       <IndexSearchBar />
       <IndexIntro />
-  </div>
+
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -25,6 +28,7 @@ export default {
 
   methods: {
     ...mapActions(["getProfileDatas"]),
+
     test(){
         this.getProfileDatas(this.userName);
         this.$router.push('/Profile');

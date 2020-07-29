@@ -11,15 +11,9 @@
     </v-app-bar>
 
     <v-main>
-      <v-container fluid>
-            <v-row>
-                <br>
-                <br>
-            </v-row>
-            <v-row align="center" justify="center">
-              <router-view></router-view>
-            </v-row>
-      </v-container>
+      
+      <router-view></router-view>
+
     </v-main>
 
   </v-app>

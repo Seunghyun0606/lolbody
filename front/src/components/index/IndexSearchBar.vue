@@ -1,31 +1,33 @@
 <template>
-  <v-container>
-        <v-card>
-          <v-toolbar
-            color="primary"
-            dark
-            flat
-          >
-            <v-text-field
-              id="paste"
-              append-icon=""
-              class="mx-4"
-              flat
-              hide-details
-              label="Summoner ID"
-              prepend-inner-icon="search"
-              solo-inverted
-              v-model="inputSummonerID"
-              @paste="onPaste"
-            ></v-text-field>
-            <v-btn 
-            small 
-            color="primary lighten-2"
-            @click="onClickSearchButton"
-            >Search</v-btn>
-          </v-toolbar>
-        </v-card>
-  </v-container>
+  <v-card style="width: 600px justify-center: center">
+    <v-toolbar
+      color="primary"
+      dark
+      flat
+    >
+      <v-text-field
+        id="paste"
+        append-icon=""
+        class="mx-2"
+        flat
+        hide-details
+        label="Summoner ID"
+        prepend-inner-icon="search"
+        solo-inverted
+        v-model="inputSummonerID"
+        @paste="onPaste"
+      ></v-text-field>
+      
+      <v-btn 
+      small 
+      color="primary lighten-2"
+      @click="onClickSearchButton"
+      >
+      Search
+      </v-btn>
+
+    </v-toolbar>
+  </v-card>
 </template>
 
 <script>
@@ -74,6 +76,7 @@ export default {
         tmpSearchSummernerIDs[idx] = ID
         // console.log(ID + '공백제거')
       })
+
       this.searchSummernerIDs = tmpSearchSummernerIDs
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
       console.log(1)

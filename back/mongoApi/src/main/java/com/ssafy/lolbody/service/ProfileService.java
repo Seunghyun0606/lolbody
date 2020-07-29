@@ -366,7 +366,7 @@ public class ProfileService {
 		return winRateDto;
 	}
 
-	public List<List<MatchInfoDto>> getMatchInfo(String name, String num) {
+	public List<List<MatchInfoDto>> getMatchInfo(String name, String num) throws Exception{
 		List<List<MatchInfoDto>> matchInfoList = new ArrayList<>();
 		SummonerDto summonerDto = summonerService.findBySubName(name);
 		MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);

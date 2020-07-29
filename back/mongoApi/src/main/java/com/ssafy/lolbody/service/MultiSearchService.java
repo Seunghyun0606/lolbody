@@ -40,8 +40,6 @@ public class MultiSearchService {
 		MultiSearchDto result = new MultiSearchDto();
 		// 존재하는 소환사인지
 		SummonerDto summonerDto = summonerService.findBySubName(summonerName);
-		if(summonerDto == null)
-			throw new Exception();
 		
 		// 소환사 이름, 소환사 레벨
 		result.setSummonerName(summonerName);
@@ -64,9 +62,15 @@ public class MultiSearchService {
 		List<MatchReferenceDto> matchRefs = matchlistDto.getMatches().stream().filter((o1) -> o1.getTimestamp() >= 1578596400000L && o1.getQueue() == 420).collect(Collectors.toList());
 		for(MatchReferenceDto matchRef: matchRefs) {
 			if(matchRef.getRole().equals("DUO_SUPPORT")) {
-				if(!lane.containsKey("SUPPORT"))
-					lane.put("SUPPORT", 0);
-				lane.put("SUPPORT", lane.get("SUPPORT")+1);
+				if(!matchRef.getLane().equals("NONE")) {
+					if(!lane.containsKey(matchRef.getLane()))
+						lane.put(matchRef.getLane(), 0);
+					lane.put(matchRef.getLane(), lane.get(matchRef.getLane())+1);
+				} else {
+					if(!lane.containsKey("SUPPORT"))
+						lane.put("SUPPORT", 0);
+					lane.put("SUPPORT", lane.get("SUPPORT")+1);
+				}
 			} else {
 				if(!lane.containsKey(matchRef.getLane()))
 					lane.put(matchRef.getLane(), 0);
@@ -96,7 +100,10 @@ public class MultiSearchService {
 				}
 			}
 			if(matchRefDto.getRole().equals("DUO_SUPPORT")) {
-				recentGame.setLane("SUPPORT");
+				if(!matchRefDto.getLane().equals("NONE"))
+					recentGame.setLane(matchRefDto.getLane());
+				else
+					recentGame.setLane("SUPPORT");
 			} else {
 				recentGame.setLane(matchRefDto.getLane());
 			}

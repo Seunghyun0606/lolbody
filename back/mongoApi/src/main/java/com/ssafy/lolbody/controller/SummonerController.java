@@ -38,11 +38,12 @@ public class SummonerController {
 	@GetMapping("/user/{name}")
 	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 소환사 정보를 검색합니다.")
 	public ResponseEntity<List<LeagueEntryDto>> getUserInfo(@PathVariable String name) {
-		SummonerDto summonerDto = summonerService.findBySubName(name);
-		if(summonerDto == null) {
+		SummonerDto summonerDto = new SummonerDto();
+		try {
+			summonerDto = summonerService.findBySubName(name);
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
 		return new ResponseEntity<>(leagueEntryService.findBySummonerId(summonerDto.getId()),HttpStatus.OK);
 	}
 	
@@ -50,18 +51,26 @@ public class SummonerController {
 	@GetMapping("/matchlist/{name}")
 	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 매치데이터를 검색합니다.")
 	public ResponseEntity<MatchlistDto> getUserMatchlist(@PathVariable String name) {
-		SummonerDto summonerDto = summonerService.findBySubName(name);
-		if(summonerDto == null) {
+		SummonerDto summonerDto = new SummonerDto();
+		try {
+			summonerDto = summonerService.findBySubName(name);
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
 		return new ResponseEntity<>(matchlistService.findBySummonerId(summonerDto),HttpStatus.OK);
 	}
 	
 	@GetMapping("/match/{gameId}")
 	@ApiOperation(value="게임 id를 변수로 받아 매치 상세정보를 검색합니다.")
-	public MatchDto getUserMatch(@PathVariable long gameId) {
-		return matchService.findByGameId(gameId);
+	public ResponseEntity<MatchDto> getUserMatch(@PathVariable long gameId) {
+		MatchDto matchDto = new MatchDto();
+		
+		try {
+			matchDto = matchService.findByGameId(gameId);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(matchDto,HttpStatus.OK);
 	}
 	
 }

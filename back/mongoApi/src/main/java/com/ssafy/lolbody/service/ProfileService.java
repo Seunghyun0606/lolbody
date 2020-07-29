@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,6 +76,8 @@ public class ProfileService {
 			}
 			MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
 			List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
+			matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
+					.collect(Collectors.toList());
 			int e = matchReferences.size();
 			profileReferenceDto.setGames(e);
 
@@ -221,6 +224,8 @@ public class ProfileService {
 
 			MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
 			List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
+			matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
+					.collect(Collectors.toList());
 			int s = lastProfile.getGames(), e = matchReferences.size();
 			profileReferenceDto.setGames(e);
 

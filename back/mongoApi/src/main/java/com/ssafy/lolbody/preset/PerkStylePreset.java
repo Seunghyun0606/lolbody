@@ -16,7 +16,7 @@ public class PerkStylePreset implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		JSONArray arr = new JSONObject(Api.get("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perkstyles.json", "")).getJSONArray("styles");
+		JSONArray arr = new JSONObject(Api.getHttpsRequest("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perkstyles.json")).getJSONArray("styles");
 		for (int i = 0; i < arr.length(); i++) {
 			JSONObject info = arr.getJSONObject(i);
 			int key = info.getInt("id");

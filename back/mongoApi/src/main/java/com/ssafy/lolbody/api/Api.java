@@ -73,7 +73,6 @@ public class Api {
 			if(summonerName.length() == 0)
 				url = new URL(input);
 			HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
-			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);
 			con.addRequestProperty("X-Riot-Token", token);
@@ -114,6 +113,33 @@ public class Api {
 			
 			StringBuilder sb = new StringBuilder();
 			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
+				String line;
+				while((line = br.readLine()) != null) {
+					sb.append(line).append("\n");
+				}
+				br.close();
+				result = sb.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static String getHttpsRequest(String urlParam) {
+		String result = "";
+		try {
+			URL url = new URL(urlParam);
+			HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
+			
+			con.setRequestMethod("GET");
+			
+			StringBuilder sb = new StringBuilder();
+			if(con.getResponseCode() == HttpsURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
 				String line;
 				while((line = br.readLine()) != null) {

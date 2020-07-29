@@ -26,7 +26,7 @@
 
       <!-- 유저네임, 티어, 승패-->
       <div class="grid-body-center-right">
-        <div>
+        <div class="user-name">
           {{ multiSearchData.summonerName }}
         </div>
         <div>
@@ -39,8 +39,10 @@
 
       </div>
 
+      <!-- 가장 많이가는 라인 -->
       <div class="grid-body-bot-left">
-        {{ multiSearchData.lane }}
+        <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
+        <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
       </div>
 
       <div class="grid-body-bot-right">
@@ -58,7 +60,7 @@
 
     <!-- 라인 차트 컴포넌트-->
     <div>
-      <!-- <MultiSearchLineChart/> -->
+      <MultiSearchLineChart/>
     </div>
 
     <!-- 최근전적 -->
@@ -89,7 +91,7 @@
 
 <script>
 // 랭크 이미지 받아올때 require써야 build시에 web-pack이 똑바로 인지한다.
-// import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart" 
+import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart" 
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 
@@ -100,7 +102,7 @@ import { mapGetters } from  "vuex"
 export default {
     name: "MultiSearch",
     components: {
-      // MultiSearchLineChart,
+      MultiSearchLineChart,
       MultiSearchLatestChamp,
       MultiSearchMostChamp,
     },
@@ -131,6 +133,16 @@ export default {
 
 <style scoped>
 
+
+.user-name {
+  font-weight: 900;
+  font-size: initial;
+}
+
+.lane-width {
+  width: 40%;
+}
+
 .align-items-center {
   align-items: center;
 }
@@ -150,7 +162,7 @@ export default {
 }
 
 .grid2 {
-  grid-template-rows: 120px;
+  grid-template-rows: 90px;
 }
 
 .grid > .grid-header {
@@ -167,6 +179,7 @@ export default {
 .grid-body {
 
   display: grid;
+  height: 90%;
   grid-template-columns: repeat(10, 1fr);
   grid-template-areas:
     /* "cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t" */
@@ -188,15 +201,17 @@ export default {
   width: 100%;
   padding-left: 10px;
 }
+
 .grid-body-center-right {
   grid-area: cd-c-r;
   font-size: 12px;
   text-align: left;
   padding-left: 15px;
 }
+
 .grid-body-bot-left {
   grid-area: cd-b-l;
-  font-size: 12px;
+  padding-left: 10px;
 }
 .grid-body-bot-right {
   grid-area: cd-b-r;

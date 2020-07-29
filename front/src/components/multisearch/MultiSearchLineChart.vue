@@ -1,5 +1,5 @@
 <template>
-  <LineChart type="bar" height="250" :options="chartOptions" :series="series" />
+  <LineChart type="bar" height="100" :options="chartOptions" :series="series" />
 </template>
 
 <script>
@@ -12,18 +12,17 @@ export default {
         LineChart,
     },
     data() {
-      return {        
+      return {
         series: [
           {
             name: 'Lane',
-            data: [44, 55, 66, 77, 88]
+            data: [44, 55, 66, 77, 88] // 들어오는 퍼센트 데이터 넣어줘야함.
           },
         ],
         
         chartOptions: {
           chart: {
             type: 'bar',
-            height: 350,
             toolbar: {
               show: false,
             // 위에 툴바 없애기
@@ -33,27 +32,25 @@ export default {
               bar: {
               horizontal: false,
               columnWidth: '55%',
-              endingShape: 'rounded'
               },
           },
           dataLabels: {
               enabled: false
           },
-          stroke: {
-              show: true,
-              width: 2,
-              colors: ['transparent']
-          },
           xaxis: {
-              categories: ['Top', 'Jungle', 'Mid', 'ADC', 'Sup'],
-          },
-          yaxis: {
-              title: {
-              text: 'Lane'
+              categories: ['Top', 'Jg', 'Mid', 'Adc', 'Sup'],
+              labels: {
+                style: {
+                  fontSize: '10px',
+                  fontWeight: 100,
+                }
               }
           },
-          fill: {
-              opacity: 1
+          yaxis: {
+            labels: {
+              show: false,
+            }
+
           },
           tooltip: {
               y: {
@@ -64,10 +61,26 @@ export default {
             }
         },
       }
-  },     
+  },
+  methods: {
+    makeXaxis() {
+      var test = document.getElementsByTagName("tspan")
+      var test1 = document.getElementsByTagName("tspan")[0]
+      var testImg = document.createElement('img')
+      testImg.src = require(`@/assets/images/tier/GOLD.png`)
+      test1.appendChild(testImg)
+      console.log(testImg.src)
+      console.log(test)
+      console.log(test1)
+      // this.chartOptions.xaxis.categories = ['top', 'jg', 'a', 'b', 'c']
+    },
+  },
+  created () {
+    this.makeXaxis()
+  }
 }
 
-</script>
+</script> 
 
 <style>
 

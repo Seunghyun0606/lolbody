@@ -35,7 +35,6 @@ public class MatchlistService {
 			// 매치 데이터가 없는 유저
 			matchlistDto = new MatchlistDto();
 			matchlistDto.setSummonerId(summonerDto.getId());
-			long beginTime = 1578596400000l;
 			List<MatchReferenceDto> list = new ArrayList<>();
 			int beginIndex = 0, endIndex = 100;
 			while (true) {
@@ -65,13 +64,12 @@ public class MatchlistService {
 		} else {
 			// 매치 데이터가 있는 유저
 			List<MatchReferenceDto> matches = matchlistDto.getMatches();
-			long beginTime = 1578596400000l;
+			long beginTime = 0;
 			if (matches.size() != 0)
 				beginTime = matches.get(matches.size() - 1).getTimestamp() + 1;
 			List<MatchReferenceDto> list = new ArrayList<>();
 			int beginIndex = 0, endIndex = 100;
 			while (true) {
-				System.out.println("search " + beginIndex + " ~ " + endIndex);
 				String query = "?season="+season+"&beginIndex=" + beginIndex + "&endIndex=" + endIndex
 						+ "&beginTime=" + beginTime;
 				try {
@@ -114,7 +112,6 @@ public class MatchlistService {
 			List<MatchReferenceDto> list = new ArrayList<>();
 			int beginIndex = 0, endIndex = 100;
 			while (true) {
-				System.out.println("search " + beginIndex + " ~ " + endIndex);
 				String query = "?beginIndex=" + beginIndex + "&endIndex=" + endIndex;;
 				if(season >= 0 && season < jsonArr.length())
 					query += "&season="+season;
@@ -143,7 +140,9 @@ public class MatchlistService {
 		} else {
 			// 매치 데이터가 있는 유저
 			List<MatchReferenceDto> matches = matchlistDto.getMatches();
-			Long beginTime = matches.get(matches.size() - 1).getTimestamp() + 1;
+			long beginTime = 0;
+			if (matches.size() != 0)
+				beginTime = matches.get(matches.size() - 1).getTimestamp() + 1;
 			List<MatchReferenceDto> list = new ArrayList<>();
 			int beginIndex = 0, endIndex = 100;
 			while (true) {

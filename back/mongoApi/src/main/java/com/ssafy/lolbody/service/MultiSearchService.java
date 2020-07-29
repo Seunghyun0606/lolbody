@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,9 +62,8 @@ public class MultiSearchService {
 		MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
 		Collections.sort(matchlistDto.getMatches(), (o1,o2) -> Long.compare(o2.getTimestamp(),o1.getTimestamp()));
 		Map<String,Integer> lane = new LinkedHashMap<>();
-		for(MatchReferenceDto matchRef: matchlistDto.getMatches()) {
-			if(matchRef.getTimestamp() < 1578596400000L) break;
-			if(matchRef.getQueue() != 420) continue;
+		List<MatchReferenceDto> matchRefs = matchlistDto.getMatches().stream().filter((o1) -> o1.getTimestamp() >= 1578596400000L && o1.getQueue() == 420).collect(Collectors.toList());
+		for(MatchReferenceDto matchRef: matchRefs) {
 			if(matchRef.getRole().equals("DUO_SUPPORT")) {
 				if(!lane.containsKey("SUPPORT"))
 					lane.put("SUPPORT", 0);
@@ -81,19 +82,17 @@ public class MultiSearchService {
 		
 		// 최근 5게임 스펠, 챔피언, 라인정보, 승 패 여부
 		// spell1Id,spell2Id,champName,lane,result
-		List<MatchReferenceDto> matchRefList = matchlistDto.getMatches();
 
 		List<RecentGamesDto> recentGames = new LinkedList<>();
 		int idx = 0;
-		for(MatchReferenceDto matchRefDto: matchRefList) {
+		for(MatchReferenceDto matchRefDto: matchRefs) {
 			RecentGamesDto recentGame = new RecentGamesDto();
 			int participantId = 0;
-			if(matchRefDto.getTimestamp() < 1578596400000L) break;
-			if(matchRefDto.getQueue() != 420) continue;
+			System.out.println(matchRefDto.getGameId());
 			MatchDto matchDto = matchService.findByGameId(matchRefDto.getGameId());
 			if(matchDto == null) break;
 			for(ParticipantIdentityDto identites: matchDto.getParticipantIdentities()) {
-				if(identites.getPlayer().getSummonerName().toLowerCase().equals(summonerName)) {
+				if(identites.getPlayer().getSummonerName().toLowerCase().equals(summonerName.toLowerCase())) {
 					participantId = identites.getParticipantId();
 					break;
 				}
@@ -103,6 +102,7 @@ public class MultiSearchService {
 			} else {
 				recentGame.setLane(matchRefDto.getLane());
 			}
+			System.out.println(participantId);
 			for(ParticipantDto participant: matchDto.getParticipants()) {
 				if(participant.getParticipantId() == participantId) {
 					recentGame.setSpell1Id(participant.getSpell1Id());
@@ -151,7 +151,7 @@ public class MultiSearchService {
 				MatchDto matchDto = matchService.findByGameId(matchRefDto.getGameId());
 				if(matchDto == null) break;
 				for(ParticipantIdentityDto identites: matchDto.getParticipantIdentities()) {
-					if(identites.getPlayer().getSummonerName().toLowerCase().equals(summonerName)) {
+					if(identites.getPlayer().getSummonerName().toLowerCase().equals(summonerName.toLowerCase())) {
 						participantId = identites.getParticipantId();
 						break;
 					}

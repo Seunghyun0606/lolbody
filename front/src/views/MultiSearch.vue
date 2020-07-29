@@ -15,33 +15,39 @@
     <div class="grid-body align-items-center">
 
     <!-- 하위 그리드 -->
-      <div class="grid-body-top">
-        여기 뱃지? 시즌 랭크?  
-      </div>
+      <!-- <div class="grid-body-top">
+        여기 뱃지 chip 써서 만들자
+      </div> -->
 
       <!-- 랭크 -->
       <div class="grid-body-center-left">
         <img :src="require(`@/assets/images/tier/${userDatas[index].tier}.png`)" alt="tier">
       </div>
 
-      <!-- 유저네임 -->
+      <!-- 유저네임, 티어, 승패-->
       <div class="grid-body-center-right">
-        {{ multiSearchData.summonerName }}
+        <div>
+          {{ multiSearchData.summonerName }}
+        </div>
+        <div>
+          {{ userDatas[index].tier }} {{ userDatas[index].rank }}
+        </div>
+        <div>
+          승률% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
+        </div>
+
+
       </div>
 
-      <!-- 티어 -->
       <div class="grid-body-bot-left">
-        {{ userDatas[index].tier }} {{ userDatas[index].rank }}
-      </div>
-
-      <!-- 승패 -->
-      <div class="grid-body-bot-right">
-        {{ multiSearchData.wins }} / {{ multiSearchData.losses }}
-      </div>
-
-      <!-- 주라인 ( 나중에 갈아끼워야함 ) -->
-      <div class="grid-body-lane">
         {{ multiSearchData.lane }} 이미지로 갈아야함
+      </div>
+
+      <div class="grid-body-bot-right">
+      </div>
+
+      <!-- 배지 칩으로 넣어야함 -->
+      <div class="grid-body-lane">
       </div>
     </div>
 
@@ -52,7 +58,7 @@
 
     <!-- 라인 차트 컴포넌트-->
     <div>
-      <MultiSearchLineChart/>
+      <!-- <MultiSearchLineChart/> -->
     </div>
 
     <!-- 최근전적 -->
@@ -83,7 +89,7 @@
 
 <script>
 // 랭크 이미지 받아올때 require써야 build시에 web-pack이 똑바로 인지한다.
-import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart"
+// import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart"
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 
@@ -94,7 +100,7 @@ import { mapGetters } from  "vuex"
 export default {
     name: "MultiSearch",
     components: {
-      MultiSearchLineChart,
+      // MultiSearchLineChart,
       MultiSearchLatestChamp,
       MultiSearchMostChamp,
     },
@@ -130,7 +136,7 @@ export default {
 }
 
 .multi {
-  width: 90%;
+  width: 1000px;
 }
 
 .grid {
@@ -139,6 +145,8 @@ export default {
 
   border: 2px solid #f76707;
   border-radius: 5px;
+
+  
 
   text-align: center;
 
@@ -149,6 +157,8 @@ export default {
   border-radius: 5px;
   background-color: #ffd8a8;
   height: 100%;
+
+  font-size: 12px;
 
   color: #d9480f;
 }
@@ -161,10 +171,11 @@ export default {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-areas:
-    "cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t"
-    "cd-c-l cd-c-l cd-c-l cd-c-l cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r"
-    "cd-b-l cd-b-l cd-b-l cd-b-l cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r"
+    /* "cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t" */
+    "cd-c-l cd-c-l cd-c-l cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r"
+    "cd-b-l cd-b-l cd-b-l cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r"
     "cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l"
+    /* "cd-b-l cd-b-l cd-b-l cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r" */
   ;
 
 }
@@ -177,12 +188,17 @@ export default {
 }
 .grid-body-center-left > img {
   width: 100%;
+  padding-left: 10px;
 }
 .grid-body-center-right {
   grid-area: cd-c-r;
+  font-size: 12px;
+  text-align: left;
+  padding-left: 15px;
 }
 .grid-body-bot-left {
   grid-area: cd-b-l;
+  font-size: 12px;
 }
 .grid-body-bot-right {
   grid-area: cd-b-r;

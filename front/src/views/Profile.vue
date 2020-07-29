@@ -190,7 +190,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 * {
     padding : 0px !important;
     margin : 0px !important;

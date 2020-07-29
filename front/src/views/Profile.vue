@@ -1,115 +1,110 @@
 <template>
+  <v-container fluid>
+    <v-row align="center" justify="center">
+      <v-app id="sandbox">
+          <v-main>
+              <table width="1000px">
+                  <tr>
+                      <td style="vertical-align: top" width="34%">
+                          <v-card class="ma-1 mb-2" elevation="0" outlined height="150px" :loading="triger.isLoading">
+                              <v-row>
+                                  <v-col cols="3">
+                                      <div class="avatar mt-3 ml-3 text-center">
+                                          <v-avatar size="70">
+                                              <v-img :src="require('@/assets/images/profileicon/'+profileDatas.profileIconId+'.png')" v-if="profileDatas.profileIconId != 'null'"/>
+                                          </v-avatar>
+                                          <span class="level fs-10">{{profileDatas.summonerLevel}}</span>
+                                      </div>
+                                  </v-col>
+                                  <v-col cols="8">
+                                      <div class="pt-4 pl-4">
+                                          <v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
+                                          <v-btn class="mt-2 mr-1 py-3 px-2 fs-14" elevation="0" color="info">전적 갱신</v-btn>
+                                          <span class="leastUpdate fs-10">최근 업데이트: 3시간 전</span>
+                                      </div>
+                                  </v-col>
+                              </v-row>
+                              <v-row>
+                                  <v-col cols="12">
+                                      <div class="ml-2">
+                                          <v-chip class="ma-2" color="green" text-color="white">
+                                          배지1
+                                          </v-chip>
+                                          <v-chip class="ma-2" color="green" text-color="white">
+                                          배지2
+                                          </v-chip>
+                                          <v-chip class="ma-2" color="green" text-color="white">
+                                          배지3
+                                          </v-chip>
+                                      </div>
+                                  </v-col>
+                              </v-row>
+                          </v-card>
+                          <v-card class="ma-1 mb-2" elevation="0" outlined height="300px" algin="center">
+                              <ul class="options">
+                                  <li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
+                                  <li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
+                              </ul>
+                              <div class="mt-2 text-center" v-if="now.src != null"> 
+                                  <div class="icon pa-1 d-inline-block">
+                                      <span class="rank fs-14">{{now.rank}}</span>
+                                      <img :src="require('@/assets/images/tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
+                                      <v-card-text>
+                                          <span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.totalRecord.wins}}승</span> <span class="lose fs-13">{{now.totalRecord.losses}}패</span>)</span>
+                                      </v-card-text>
+                                  </div>
+                                  <div class="icon pa-1 d-inline-block">
+                                      <v-avatar class="ma-3" size="70">
+                                          <v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" alt="모스트 픽" v-if="now.mostCham != 'null'"/>
+                                      </v-avatar>
+                                      <v-card-text>
+                                          <span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.mostChamRecord.wins}}승</span> <span class="lose fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
+                                      </v-card-text>
+                                  </div>
+                                  <div class="icon pa-1 d-inline-block">
+                                      <v-avatar class="ma-3" size="50">
+                                          <v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')" v-if="now.mostLine != 'null'"/>
+                                      </v-avatar>
+                                      <v-card-text>
+                                          <span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.mostLineRecord.wins}}승</span> <span class="lose fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
+                                      </v-card-text>
+                                  </div>
+                                  <div class="icon pa-1 d-inline-block">
+                                      <v-avatar class="ma-3" size="50">
+                                          <v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')" v-if="now.secondLine != 'null'"/>
+                                      </v-avatar>
+                                      <v-card-text>
+                                          <span class="fs-14">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.secondLineRecord.wins}}승</span> <span class="lose fs-13">{{now.secondLineRecord.losses}}패</span>)</span>
+                                      </v-card-text>
+                                  </div>
+                              </div>
+                              <div class="mt-2 text-center" v-if="now.src == null">
+                                  <p>전적이 없습니다.</p>
+                              </div>
+                          </v-card>
+                      </td>
+                      <td style="vertical-align: top">
+                          <v-card class="text-center ma-1 mb-2" elevation="0" outlined>
+                              <ul class="options">
+                                  <li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">LP</a></li>
+                                  <li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
+                              </ul>
+                              <div class="px-5">
+                                  <LineChart/>
+                              </div>
+                          </v-card>
 
-<v-container fluid>
-  <v-row>
-    <br>
-    <br>
-  </v-row>
-  <v-row align="center" justify="center">
-    <v-app id="sandbox">
-        <v-main>
-            <table width="1000px">
-                <tr>
-                    <td style="vertical-align: top" width="34%">
-                        <v-card class="ma-1 mb-2" elevation="0" outlined height="150px" :loading="triger.isLoading">
-                            <v-row>
-                                <v-col cols="3">
-                                    <div class="avatar mt-3 ml-3 text-center">
-                                        <v-avatar size="70">
-                                            <v-img :src="require('@/assets/images/profileicon/'+profileDatas.profileIconId+'.png')" v-if="profileDatas.profileIconId != 'null'"/>
-                                        </v-avatar>
-                                        <span class="level fs-10">{{profileDatas.summonerLevel}}</span>
-                                    </div>
-                                </v-col>
-                                <v-col cols="8">
-                                    <div class="pt-4 pl-4">
-                                        <v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
-                                        <v-btn class="mt-2 mr-1 py-3 px-2 fs-14" elevation="0" color="info">전적 갱신</v-btn>
-                                        <span class="leastUpdate fs-10">최근 업데이트: 3시간 전</span>
-                                    </div>
-                                </v-col>
-                            </v-row>
-                            <v-row>
-                                <v-col cols="12">
-                                    <div class="ml-2">
-                                        <v-chip class="ma-2" color="green" text-color="white">
-                                        배지1
-                                        </v-chip>
-                                        <v-chip class="ma-2" color="green" text-color="white">
-                                        배지2
-                                        </v-chip>
-                                        <v-chip class="ma-2" color="green" text-color="white">
-                                        배지3
-                                        </v-chip>
-                                    </div>
-                                </v-col>
-                            </v-row>
-                        </v-card>
-                        <v-card class="ma-1 mb-2" elevation="0" outlined height="300px" algin="center">
-                            <ul class="options">
-                                <li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
-                                <li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
-                            </ul>
-                            <div class="mt-2 text-center" v-if="now.src != null"> 
-                                <div class="icon pa-1 d-inline-block">
-                                    <span class="rank fs-14">{{now.rank}}</span>
-                                    <img :src="require('@/assets/images/tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
-                                    <v-card-text>
-                                        <span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.totalRecord.wins}}승</span> <span class="lose fs-13">{{now.totalRecord.losses}}패</span>)</span>
-                                    </v-card-text>
-                                </div>
-                                <div class="icon pa-1 d-inline-block">
-                                    <v-avatar class="ma-3" size="70">
-                                        <v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" alt="모스트 픽" v-if="now.mostCham != 'null'"/>
-                                    </v-avatar>
-                                    <v-card-text>
-                                        <span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.mostChamRecord.wins}}승</span> <span class="lose fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
-                                    </v-card-text>
-                                </div>
-                                <div class="icon pa-1 d-inline-block">
-                                    <v-avatar class="ma-3" size="50">
-                                        <v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')" v-if="now.mostLine != 'null'"/>
-                                    </v-avatar>
-                                    <v-card-text>
-                                        <span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.mostLineRecord.wins}}승</span> <span class="lose fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
-                                    </v-card-text>
-                                </div>
-                                <div class="icon pa-1 d-inline-block">
-                                    <v-avatar class="ma-3" size="50">
-                                        <v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')" v-if="now.secondLine != 'null'"/>
-                                    </v-avatar>
-                                    <v-card-text>
-                                        <span class="fs-14">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.secondLineRecord.wins}}승</span> <span class="lose fs-13">{{now.secondLineRecord.losses}}패</span>)</span>
-                                    </v-card-text>
-                                </div>
-                            </div>
-                            <div class="mt-2 text-center" v-if="now.src == null">
-                                <p>전적이 없습니다.</p>
-                            </div>
-                        </v-card>
-                    </td>
-                    <td style="vertical-align: top">
-                        <v-card class="text-center ma-1 mb-2" elevation="0" outlined>
-                            <ul class="options">
-                                <li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">LP</a></li>
-                                <li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
-                            </ul>
-                            <div class="px-5">
-                                <LineChart/>
-                            </div>
-                        </v-card>
-
-                        <v-card class="ma-1 mb-2" elevation="0" outlined>
-                            <RadarChart/>
-                        </v-card>
-                        <ProfileGameHistory/>
-                    </td>
-                </tr>
-            </table>
-        </v-main>
-    </v-app>
-  </v-row>
-</v-container>
+                          <v-card class="ma-1 mb-2" elevation="0" outlined>
+                              <RadarChart/>
+                          </v-card>
+                          <ProfileGameHistory/>
+                      </td>
+                  </tr>
+              </table>
+          </v-main>
+      </v-app>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

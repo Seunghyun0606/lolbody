@@ -10,7 +10,7 @@
       </template>
     </v-app-bar>
 
-    <v-main>
+    <v-main class='mt-16'>
       
       <router-view></router-view>
 

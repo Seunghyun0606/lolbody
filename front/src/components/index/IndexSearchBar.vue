@@ -16,6 +16,7 @@
         solo-inverted
         v-model="inputSummonerID"
         @paste="onPaste"
+        @keyup.enter="onClickSearchButton"
       ></v-text-field>
       
       <v-btn 

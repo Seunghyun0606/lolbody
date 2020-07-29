@@ -24,7 +24,7 @@ public class ProfileController {
 	@Autowired
 	private ProfileService profileService;
 
-	@ApiOperation(value = "소환사 이름으로 유저 프로필을 검색합니다. (성공:200, 실패:404)")
+	@ApiOperation(value = "소환사 이름으로 유저 프로필을 검색합니다.")
 	@GetMapping("/profile/{name}")
 	public ResponseEntity<ProfileReferenceDto> getProfile(@PathVariable String name) {
 		ProfileReferenceDto profile = new ProfileReferenceDto();
@@ -37,7 +37,7 @@ public class ProfileController {
 		return new ResponseEntity<>(profile, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (성공:200, 실패:404)")
+	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (num: 1부터 시작, 10개씩)")
 	@GetMapping("/profile/{name}/{num}")
 	public ResponseEntity<List<List<MatchInfoDto>>> getMatchInfo(@PathVariable String name, @PathVariable String num) {
 		List<List<MatchInfoDto>> matchInfoList = new ArrayList<>();

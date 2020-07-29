@@ -58,7 +58,7 @@
 
     <!-- 라인 차트 컴포넌트-->
     <div>
-      <!-- <MultiSearchLineChart/> -->
+      <MultiSearchLineChart/>
     </div>
 
     <!-- 최근전적 -->
@@ -89,7 +89,7 @@
 
 <script>
 // 랭크 이미지 받아올때 require써야 build시에 web-pack이 똑바로 인지한다.
-// import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart" 
+import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart" 
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 
@@ -100,7 +100,7 @@ import { mapGetters } from  "vuex"
 export default {
     name: "MultiSearch",
     components: {
-      // MultiSearchLineChart,
+      MultiSearchLineChart,
       MultiSearchLatestChamp,
       MultiSearchMostChamp,
     },

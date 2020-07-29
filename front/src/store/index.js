@@ -57,6 +57,7 @@ export default new Vuex.Store({
 
   },
   actions: {
+    // 승현, multisearch
     getMultiSearchDatas( { commit }, userName ) {
       axios
         .get(`http://13.125.220.135/api/multisearch/${userName}`)
@@ -77,6 +78,7 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err)
         })
+    // 형래, profile
     },
     getProfileDatas( { commit }, userName){
       axios.get(`http://13.125.220.135/profile/${userName}`)

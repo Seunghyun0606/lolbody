@@ -14,7 +14,7 @@ export default new Vuex.Store({
     searchSummonerIDs: [],
 
     profileDatas: {},
-    matchDatas: [],
+    matchDatas: []
   },
   getters: {
     profileDatas(state){
@@ -103,7 +103,7 @@ export default new Vuex.Store({
                   console.log(error.response.headers);
               }
           });
-      }
+      },
   },
   modules: {
   }

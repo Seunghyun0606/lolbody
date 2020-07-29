@@ -11,14 +11,14 @@
                                     <v-avatar size="70">
                                         <v-img :src="require('@/assets/images/profileicon/'+item.profileIconId+'.png')"/>
                                     </v-avatar>
-                                    <span class="level">{{item.summonerLevel}}</span>
+                                    <span class="level fs-10">{{item.summonerLevel}}</span>
                                 </div>
                             </v-col>
                             <v-col cols="8">
                                 <div class="pt-4 pl-4">
                                     <v-card-title class="headline nickname" v-text="item.summonerName"/>
-                                    <v-btn class="mt-2 mr-1 py-3 px-2" elevation="0" color="info">전적 갱신</v-btn>
-                                    <span class="leastUpdate">최근 업데이트: 3시간 전</span>
+                                    <v-btn class="mt-2 mr-1 py-3 px-2 fs-14" elevation="0" color="info">전적 갱신</v-btn>
+                                    <span class="leastUpdate fs-10">최근 업데이트: 3시간 전</span>
                                 </div>
                             </v-col>
                         </v-row>
@@ -44,35 +44,35 @@
                             <li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
                         </ul>
                         <div class="mt-2 text-center">
-                            <div class="icon">
-                                <span class="rank">{{now.rank}}</span>
+                            <div class="icon pa-1 d-inline-block">
+                                <span class="rank fs-14">{{now.rank}}</span>
                                 <img :src="require('@/assets/images/tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px"/>
                                 <v-card-text>
-                                    <span class="winRate">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="win">{{now.totalRecord.wins}}승</span> <span class="lose">{{now.totalRecord.losses}}패</span>)</span>
+                                    <span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.totalRecord.wins}}승</span> <span class="lose fs-13">{{now.totalRecord.losses}}패</span>)</span>
                                 </v-card-text>
                             </div>
-                            <div class="icon">
+                            <div class="icon pa-1 d-inline-block">
                                 <v-avatar class="ma-3" size="70">
                                     <v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" alt="모스트 픽"/>
                                 </v-avatar>
                                 <v-card-text>
-                                    <span class="winRate">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="win">{{now.mostChamRecord.wins}}승</span> <span class="lose">{{now.mostChamRecord.losses}}패</span>)</span>
+                                    <span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.mostChamRecord.wins}}승</span> <span class="lose fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
                                 </v-card-text>
                             </div>
-                            <div class="icon">
+                            <div class="icon pa-1 d-inline-block">
                                 <v-avatar class="ma-3" size="50">
                                     <v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')"/>
                                 </v-avatar>
                                 <v-card-text>
-                                    <span class="winRate">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="win">{{now.mostLineRecord.wins}}승</span> <span class="lose">{{now.mostLineRecord.losses}}패</span>)</span>
+                                    <span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.mostLineRecord.wins}}승</span> <span class="lose fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
                                 </v-card-text>
                             </div>
-                            <div class="icon">
+                            <div class="icon pa-1 d-inline-block">
                                 <v-avatar class="ma-3" size="50">
                                     <v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')"/>
                                 </v-avatar>
                                 <v-card-text>
-                                    <span class="winRate">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="win">{{now.secondLineRecord.wins}}승</span> <span class="lose">{{now.secondLineRecord.losses}}패</span>)</span>
+                                    <span class="fs-14">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.secondLineRecord.wins}}승</span> <span class="lose fs-13">{{now.secondLineRecord.losses}}패</span>)</span>
                                 </v-card-text>
                             </div>
                         </div>
@@ -190,7 +190,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 * {
     padding : 0px !important;
     margin : 0px !important;
@@ -201,11 +201,10 @@ export default {
 .avatar{
     height: 84px;
 }
-.level{
+.level {
     border : gold 1px solid;
     border-radius: 50px;
     padding: 2px 5px 2px 5px !important;
-    font-size: 0.625em;
     color:gold;
     font-weight: bold;
     position: relative;
@@ -215,20 +214,15 @@ export default {
 .v-btn {
     height: 30px !important;
 }
-.v-btn__content{
-    font-size: 0.875em;
-}
 .leastUpdate{
     position: absolute;
     transform: translate(0, 16px);
-    font-size: 0.625em;
 }
 .v-chip{
     padding: 2px 10px 0 10px !important;
 }
 .rank{
     font-family: cursive;
-    font-size: 0.875em;
     color: rgb(231, 197, 0);
     font-weight: 500;
     text-shadow: -1px 0 #000000, 0 1px #5e5e5e, 1px 0 #5e5e5e, 0 -1px #5e5e5e;
@@ -271,20 +265,21 @@ export default {
 }
 
 .icon {
-    display: inline-block;
-    padding: 5px !important;
-    width: 112px;
-    text-align: center;
+    width: 130px;
 }
-.winRate{
+.fs-14{
     font-size: 0.875em;
+}
+.fs-13{
+    font-size: 0.813em;
+}
+.fs-10{
+    font-size: 0.625em;
 }
 .win{
     color:rgb(1, 1, 211);
-    font-size: 0.8125em;
 }
 .lose{
     color:rgb(214, 0, 0);
-    font-size: 0.8125em;
 }
 </style> 

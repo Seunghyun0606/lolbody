@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="mt-12">
     <v-row align="center" justify="center">
       <v-app id="sandbox">
           <v-main>

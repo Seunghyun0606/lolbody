@@ -111,6 +111,8 @@ public class ProfileService {
 							break;
 						}
 					}
+					if (participantId == -1)
+						continue;
 					List<ParticipantDto> participantList = matchDto.getParticipants();
 					if (participantList.get(participantId - 1).getStats().isWin()) {
 						if (queue == 420) {
@@ -258,6 +260,8 @@ public class ProfileService {
 							break;
 						}
 					}
+					if (participantId == -1)
+						continue;
 					List<ParticipantDto> participantList = matchDto.getParticipants();
 					if (participantList.get(participantId - 1).getStats().isWin()) {
 						if (queue == 420) {

@@ -88,7 +88,6 @@ public class MultiSearchService {
 		for(MatchReferenceDto matchRefDto: matchRefs) {
 			RecentGamesDto recentGame = new RecentGamesDto();
 			int participantId = 0;
-			System.out.println(matchRefDto.getGameId());
 			MatchDto matchDto = matchService.findByGameId(matchRefDto.getGameId());
 			if(matchDto == null) break;
 			for(ParticipantIdentityDto identites: matchDto.getParticipantIdentities()) {
@@ -102,7 +101,6 @@ public class MultiSearchService {
 			} else {
 				recentGame.setLane(matchRefDto.getLane());
 			}
-			System.out.println(participantId);
 			for(ParticipantDto participant: matchDto.getParticipants()) {
 				if(participant.getParticipantId() == participantId) {
 					recentGame.setSpell1Id(participant.getSpell1Id());

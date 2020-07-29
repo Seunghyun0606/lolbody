@@ -59,7 +59,7 @@ export default new Vuex.Store({
   actions: {
     getMultiSearchDatas( { commit }, userName ) {
       axios
-        .get(`http://localhost:8888/api/multisearch/${userName}`)
+        .get(`http://13.125.220.135/api/multisearch/${userName}`)
         .then(res => {
           commit('setMultiSearchDatas', res.data)
         })
@@ -70,7 +70,7 @@ export default new Vuex.Store({
     },
     getUserDatas( { commit }, userName ) {
       axios
-        .get(`http://localhost:8888/user/${userName}`)
+        .get(`http://13.125.220.135/user/${userName}`)
         .then(res => {
           commit('setUserDatas', res.data)
         })

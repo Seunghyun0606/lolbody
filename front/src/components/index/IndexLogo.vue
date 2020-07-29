@@ -3,7 +3,7 @@
         :src="require('@/assets/lolbody-logo.png')"
         class="my-5"
         contain
-        height="150"
+        height="180"
       />
 </template>
 

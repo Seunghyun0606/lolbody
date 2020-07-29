@@ -1,5 +1,5 @@
 <template>
-  <v-card style="width: 600px justify-center: center">
+  <v-card style="width: 690px">
     <v-toolbar
       color="primary"
       dark

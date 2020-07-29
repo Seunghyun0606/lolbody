@@ -1,5 +1,7 @@
 package com.ssafy.lolbody.controller;
 
+import java.util.concurrent.TimeoutException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,9 @@ public class MultiSearchController {
 		try {
 			multiSearchDto = multiSearchService.getMultiSearch(summonerName);
 			
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

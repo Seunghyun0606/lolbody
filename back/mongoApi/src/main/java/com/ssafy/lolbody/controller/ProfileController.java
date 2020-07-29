@@ -2,6 +2,7 @@ package com.ssafy.lolbody.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,9 @@ public class ProfileController {
 		ProfileReferenceDto profile = new ProfileReferenceDto();
 		try {
 			profile = profileService.getProfile(name.replaceAll(" ", ""));
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -43,6 +47,9 @@ public class ProfileController {
 		List<List<MatchInfoDto>> matchInfoList = new ArrayList<>();
 		try {
 			matchInfoList = profileService.getMatchInfo(name.replaceAll(" ", ""), num);
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

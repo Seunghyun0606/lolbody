@@ -1,6 +1,7 @@
 package com.ssafy.lolbody.controller;
 
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,9 @@ public class SummonerController {
 		SummonerDto summonerDto = new SummonerDto();
 		try {
 			summonerDto = summonerService.findBySubName(name);
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -54,6 +58,9 @@ public class SummonerController {
 		SummonerDto summonerDto = new SummonerDto();
 		try {
 			summonerDto = summonerService.findBySubName(name);
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -67,6 +74,9 @@ public class SummonerController {
 		
 		try {
 			matchDto = matchService.findByGameId(gameId);
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

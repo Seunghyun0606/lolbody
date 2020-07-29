@@ -135,8 +135,7 @@ export default {
 
 
 .user-name {
-  font-weight: 900;
-  font-size: initial;
+  font-weight: bold;
 }
 
 .lane-width {

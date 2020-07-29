@@ -62,22 +62,22 @@ export default {
         },
       }
   },
-  methods: {
-    makeXaxis() {
-      var test = document.getElementsByTagName("tspan")
-      var test1 = document.getElementsByTagName("tspan")[0]
-      var testImg = document.createElement('img')
-      testImg.src = require(`@/assets/images/tier/GOLD.png`)
-      test1.appendChild(testImg)
-      console.log(testImg.src)
-      console.log(test)
-      console.log(test1)
-      // this.chartOptions.xaxis.categories = ['top', 'jg', 'a', 'b', 'c']
-    },
-  },
-  created () {
-    this.makeXaxis()
-  }
+  // methods: {
+  //   makeXaxis() {
+  //     var test = document.getElementsByTagName("tspan")
+  //     var test1 = document.getElementsByTagName("tspan")[0]
+  //     var testImg = document.createElement('img')
+  //     testImg.src = require(`@/assets/images/tier/GOLD.png`)
+  //     test1.appendChild(testImg)
+  //     console.log(testImg.src)
+  //     console.log(test)
+  //     console.log(test1)
+  //     // this.chartOptions.xaxis.categories = ['top', 'jg', 'a', 'b', 'c']
+  //   },
+  // },
+  // created () {
+  //   this.makeXaxis()
+  // }
 }
 
 </script> 

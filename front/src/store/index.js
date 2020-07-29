@@ -39,7 +39,8 @@ export default new Vuex.Store({
     },
     setUserDatas(state, userDatas) {
       // userData는 array로 오기 때문에 sperad시킴
-      state.userDatas = [ ...state.userDatas, ...userDatas ]
+      // 20.07.30 userData가 자유랭크 데이터도 넘기기때문에 스프레드 시키면안됨. 단일 오브젝트만 넣습니다.
+      state.userDatas = [ ...state.userDatas, userDatas ]
     },
 
     // 호철
@@ -73,7 +74,13 @@ export default new Vuex.Store({
       axios
         .get(`http://13.125.220.135/user/${userName}`)
         .then(res => {
-          commit('setUserDatas', res.data)
+          //자유랭크가 같이와서 솔로만 넣게 처리했습니다.
+          for (var data_i of res.data) {
+            console.log(data_i)
+            if (data_i.queueType == "RANKED_SOLO_5x5") {
+              commit('setUserDatas', data_i)
+            }
+          }
         })
         .catch(err => {
           console.log(err)

@@ -353,7 +353,6 @@ public class ProfileService {
 		}
 
 		profileRepository.save(profileDto);
-		System.out.println(profileReferenceDto);
 		return profileReferenceDto;
 	}
 

@@ -27,30 +27,36 @@ public class Api {
 	public static String multi(String input, String summonerName) {
 		boolean isOk = false;
 		String result = "";
-		try {
-			URL url = new URL(input+"/"+summonerName);
-			HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
-			con.setConnectTimeout(5000);
-			con.setReadTimeout(5000);
-			con.addRequestProperty("X-Riot-Token", tokens[idx]);
-			con.setRequestMethod("GET");
-			idx = (idx + 1) % tokens.length;
-			
-			StringBuilder sb = new StringBuilder();
-			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
-				String line;
-				while((line = br.readLine()) != null) {
-					sb.append(line).append("\n");
+		int cnt = 10;
+		while (cnt-- > 0) {
+			try {
+				URL url = new URL(input+"/"+summonerName);
+				HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
+				con.setConnectTimeout(5000);
+				con.setReadTimeout(5000);
+				con.addRequestProperty("X-Riot-Token", tokens[idx]);
+				con.setRequestMethod("GET");
+				idx = (idx + 1) % tokens.length;
+				
+				StringBuilder sb = new StringBuilder();
+				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+					BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
+					String line;
+					while((line = br.readLine()) != null) {
+						sb.append(line).append("\n");
+					}
+					br.close();
+					isOk = true;
+					result = sb.toString();
+					break;
+				} else if (con.getResponseMessage().equals("Too Many Requests") || con.getResponseMessage().equals("Gateway Timeout")) {
+					continue;
+				} else {
+					break;
 				}
-				br.close();
-				isOk = true;
-				result = sb.toString();
-			} else {
-				System.out.println(con.getResponseMessage() + " - " + url + " - " + tokens[(idx + tokens.length - 1) % tokens.length]);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		if(isOk)
 			return result;

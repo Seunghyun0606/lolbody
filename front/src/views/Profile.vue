@@ -3,11 +3,11 @@
     <v-main>
         <table width="1000px">
             <tr>
-                <td width="35%">
-                    <v-card elevation="0" outlined height="150px" algin="center">
+                <td style="vertical-align: top" width="34%">
+                    <v-card class="ma-1 mb-2" elevation="0" outlined height="150px">
                         <v-row>
                             <v-col cols="3">
-                                <div class="avatar">
+                                <div class="avatar mt-3 ml-3 text-center">
                                     <v-avatar size="70">
                                         <v-img :src="require('@/assets/images/profileicon/'+item.profileIconId+'.png')"/>
                                     </v-avatar>
@@ -15,16 +15,16 @@
                                 </div>
                             </v-col>
                             <v-col cols="8">
-                                <div class="nicknameBox">
+                                <div class="pt-4 pl-4">
                                     <v-card-title class="headline nickname" v-text="item.summonerName"/>
-                                    <v-btn elevation="0" color="info">전적 갱신</v-btn>
+                                    <v-btn class="mt-2 mr-1 py-3 px-2" elevation="0" color="info">전적 갱신</v-btn>
                                     <span class="leastUpdate">최근 업데이트: 3시간 전</span>
                                 </div>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="12">
-                                <div class="badge">
+                                <div class="ml-2">
                                     <v-chip class="ma-2" color="green" text-color="white">
                                     배지1
                                     </v-chip>
@@ -38,34 +38,25 @@
                             </v-col>
                         </v-row>
                     </v-card>
-                </td>
-                <td rowspan="2">
-                    <v-card elevation="0" outlined style="margin-top:10px;text-align:center;">
-                        <ul class="options">
-                            <li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">LP</a></li>
-                            <li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
-                        </ul>
-                        <div class="LineChart">
-                            <LineChart/>
-                        </div>
-                    </v-card>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <v-card elevation="0" outlined height="300px" algin="center">
+                    <v-card class="ma-1 mb-2" elevation="0" outlined height="300px" algin="center">
                         <ul class="options">
                             <li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
                             <li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
                         </ul>
-                        <div class="icons">
+                        <div class="mt-2 text-center">
                             <div class="icon">
-                                <div class="avatar">
-                                    <img :src="require('@/assets/images/tier/'+now.src+'.png')" height= "75px"/>
-                                    <span class="rank">{{now.rank}}</span>
-                                </div>
+                                <span class="rank">{{now.rank}}</span>
+                                <img :src="require('@/assets/images/tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px"/>
                                 <v-card-text>
                                     <span class="winRate">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="win">{{now.totalRecord.wins}}승</span> <span class="lose">{{now.totalRecord.losses}}패</span>)</span>
+                                </v-card-text>
+                            </div>
+                            <div class="icon">
+                                <v-avatar class="ma-3" size="70">
+                                    <v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" alt="모스트 픽"/>
+                                </v-avatar>
+                                <v-card-text>
+                                    <span class="winRate">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="win">{{now.mostChamRecord.wins}}승</span> <span class="lose">{{now.mostChamRecord.losses}}패</span>)</span>
                                 </v-card-text>
                             </div>
                             <div class="icon">
@@ -84,28 +75,24 @@
                                     <span class="winRate">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="win">{{now.secondLineRecord.wins}}승</span> <span class="lose">{{now.secondLineRecord.losses}}패</span>)</span>
                                 </v-card-text>
                             </div>
-                            <div class="icon">
-                                <v-avatar class="ma-3" size="70">
-                                    <v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" />
-                                </v-avatar>
-                                <v-card-text>
-                                    <span class="winRate">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="win">{{now.mostChamRecord.wins}}승</span> <span class="lose">{{now.mostChamRecord.losses}}패</span>)</span>
-                                </v-card-text>
-                            </div>
                         </div>
                     </v-card>
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    <v-card elevation="0" outlined height="150px" algin="center">
-                        
+                <td style="vertical-align: top">
+                    <v-card class="text-center ma-1 mb-2" elevation="0" outlined>
+                        <ul class="options">
+                            <li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">LP</a></li>
+                            <li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
+                        </ul>
+                        <div class="px-5">
+                            <LineChart/>
+                        </div>
                     </v-card>
-                </td>
-                <td rowspan="2">
-                    <v-card elevation="0" outlined style="margin-top:10px">
+
+                    <v-card class="ma-1 mb-2" elevation="0" outlined>
                         <RadarChart/>
                     </v-card>
+                    <ProfileGameHistory/>
                 </td>
             </tr>
         </table>
@@ -117,15 +104,17 @@
 //import axios from 'axios';
 import RadarChart from '@/components/profile/RadarChart';
 import LineChart from '@/components/profile/LineChart';
+import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
 import { mapActions } from "vuex"
 import { mapState } from "vuex"
-import { mapGetters } from  "vuex"
+//import { mapGetters } from  "vuex"
 
 export default {
     name:'Profile',
     components:{
         RadarChart,
-        LineChart
+        LineChart,
+        ProfileGameHistory
     },
     data: ()=>({
         triger:{
@@ -153,7 +142,6 @@ export default {
         // });
         this.getProfileDatas('parkjamal');
         this.item = this.profileDatas;
-        console.log(this.item);
         this.now = this.item.rankedRecord;
         this.now.src = this.item.tier;
         this.now.rank = this.item.rank;
@@ -162,8 +150,9 @@ export default {
       ...mapState([
         'profileDatas',
       ]),
-      ...mapGetters([
-      ]),
+    //   ...mapGetters([
+    //       'profileDatas'
+    //   ]),
     },
     methods:{
         ...mapActions([
@@ -206,19 +195,11 @@ export default {
     padding : 0px !important;
     margin : 0px !important;
 }
-.graph_btn {
-    margin-left: 10px !important;
-}
-td{
-    vertical-align: top;
-}
 .v-avatar {
     border : rgb(200, 170, 110) 1px solid;
 }
 .avatar{
-    text-align: center;
     height: 84px;
-    margin: 10px 0 0 10px !important;
 }
 .level{
     border : gold 1px solid;
@@ -231,12 +212,7 @@ td{
     top: -15px;
     background-color: rgb(26, 25, 25);
 }
-.nicknameBox{
-    padding: 15px 0 0 10px !important;
-}
 .v-btn {
-    margin: 4px 4px 0 0 !important;
-    padding: 3px 6px 3px 6px !important;
     height: 30px !important;
 }
 .v-btn__content{
@@ -244,35 +220,28 @@ td{
 }
 .leastUpdate{
     position: absolute;
-    transform:translate(0, 13px);
+    transform: translate(0, 16px);
     font-size: 0.625em;
-}
-.badge{
-    margin-left: 5px !important;
 }
 .v-chip{
     padding: 2px 10px 0 10px !important;
 }
+.rank{
+    font-family: cursive;
+    font-size: 0.875em;
+    color: rgb(231, 197, 0);
+    font-weight: 500;
+    text-shadow: -1px 0 #000000, 0 1px #5e5e5e, 1px 0 #5e5e5e, 0 -1px #5e5e5e;
+}
 .v-card {
-    margin: 5px !important;
     background-color: #fafafa !important;
 }
 .apexcharts-canvas {
     text-align: center;
     margin-left : 0px !important;
 }
-.icons {
-    margin-top: 10px !important;
-    text-align: center;
-}
-.LineChart{
-    padding: 0 30px 0 30px !important;
-}
-
 .options {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
     overflow: hidden;
     background-color: #c4c4c4;
     box-shadow: 2px 2px 2px rgb(161, 161, 161) inset;
@@ -302,9 +271,10 @@ td{
 }
 
 .icon {
-    display:inline-block;
+    display: inline-block;
     padding: 5px !important;
     width: 112px;
+    text-align: center;
 }
 .winRate{
     font-size: 0.875em;

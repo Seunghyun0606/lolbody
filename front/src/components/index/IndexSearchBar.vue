@@ -1,9 +1,5 @@
 <template>
   <v-container>
-    <v-row 
-        class="text-center"
-        justify="center">
-      <v-col cols="8">
         <v-card>
           <v-toolbar
             color="primary"
@@ -29,8 +25,6 @@
             >Search</v-btn>
           </v-toolbar>
         </v-card>
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 

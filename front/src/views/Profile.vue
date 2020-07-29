@@ -267,6 +267,9 @@ export default {
 .icon {
     width: 130px;
 }
+.fs-15{
+    font-size: 0.938em;
+}
 .fs-14{
     font-size: 0.875em;
 }
@@ -280,6 +283,6 @@ export default {
     color:rgb(1, 1, 211);
 }
 .lose{
-    color:rgb(214, 0, 0);
+    color:rgb(211, 1, 1);
 }
 </style> 

@@ -43,7 +43,7 @@ export default {
       ]),
       laneImage () {
         var lane = this.recentGame.lane
-        return require(`@/assets/images/position/${lane.charAt(0) + lane.slice(1).toLowerCase()}.png`)
+        return require(`@/assets/images/position/${lane}.png`)
       },
     },
 

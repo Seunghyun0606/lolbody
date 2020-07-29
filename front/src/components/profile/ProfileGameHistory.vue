@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container v-if="!isLoading">
         <v-flex v-for="(matchData, idx) in matchDatas" :key="idx + '_matchData'">
             <v-card class="text-center ma-1 mb-2" :class="{ bg_blue : matchDatas[idx][useridx[idx]].win, bg_red : !matchDatas[idx][useridx[idx]].win}" elevation="0" outlined>
                 <table height="100px">
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex"
+//import { mapActions } from "vuex"
 import { mapState } from "vuex"
 import champoins from "@/assets/data/champion.json";
 import queues from "@/assets/data/queues.json";
@@ -68,23 +68,16 @@ export default {
         return {
             useridx: [],
             champoins,
-            queues
+            queues,
+            isLoading : true
         }
     },
     created(){
-        this.$store.dispatch('getMatchDatas', {
-            userName: this.profileDatas.summonerName, 
-            num : 1
-        });
-
-        for(let i = 0; i < this.matchDatas.length; i++) {
-            for(let j = 0; j < this.matchDatas[i].length; j++){
-                if(this.matchDatas[i][j].name == this.profileDatas.summonerName){
-                    this.useridx.push(j);
-                    break;
-                }
-            }
-        }
+        // this.$store.dispatch('actionB', {
+        //     userName: this.profileDatas.summonerName, 
+        //     num : 1
+        // });
+        this.getMatchDatas();
         //console.log(new Date(1595840710509));
         //this.getMatchDatas('parkjamal', 1);
     },
@@ -95,9 +88,26 @@ export default {
       ]),
     },
     methods:{
-        ...mapActions([
-            'getMatchDatas'
-        ]),
+        // ...mapActions([
+        //     'getMatchDatas'
+        // ]),
+        async getMatchDatas(){
+            await this.$store.dispatch('getMatchDatas', {
+                userName: this.profileDatas.summonerName, 
+                num : 1
+            });
+            
+            for(let i = 0; i < this.matchDatas.length; i++) {
+                for(let j = 0; j < this.matchDatas[i].length; j++){
+                    if(this.matchDatas[i][j].name == this.profileDatas.summonerName){
+                        this.useridx.push(j);
+                        break;
+                    }
+                }
+            }
+            this.isLoading = false;
+            console.log("loading done");
+        },
     }
 };
 </script>

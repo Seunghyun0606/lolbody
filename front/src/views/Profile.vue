@@ -4,19 +4,19 @@
         <table width="1000px">
             <tr>
                 <td style="vertical-align: top" width="34%">
-                    <v-card class="ma-1 mb-2" elevation="0" outlined height="150px">
+                    <v-card class="ma-1 mb-2" elevation="0" outlined height="150px" :loading="triger.isLoading">
                         <v-row>
                             <v-col cols="3">
                                 <div class="avatar mt-3 ml-3 text-center">
                                     <v-avatar size="70">
-                                        <v-img :src="require('@/assets/images/profileicon/'+item.profileIconId+'.png')"/>
+                                        <v-img :src="require('@/assets/images/profileicon/'+profileDatas.profileIconId+'.png')" v-if="profileDatas.profileIconId != 'null'"/>
                                     </v-avatar>
-                                    <span class="level fs-10">{{item.summonerLevel}}</span>
+                                    <span class="level fs-10">{{profileDatas.summonerLevel}}</span>
                                 </div>
                             </v-col>
                             <v-col cols="8">
                                 <div class="pt-4 pl-4">
-                                    <v-card-title class="headline nickname" v-text="item.summonerName"/>
+                                    <v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
                                     <v-btn class="mt-2 mr-1 py-3 px-2 fs-14" elevation="0" color="info">전적 갱신</v-btn>
                                     <span class="leastUpdate fs-10">최근 업데이트: 3시간 전</span>
                                 </div>
@@ -43,17 +43,17 @@
                             <li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
                             <li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
                         </ul>
-                        <div class="mt-2 text-center">
+                        <div class="mt-2 text-center" v-if="now.src != null"> 
                             <div class="icon pa-1 d-inline-block">
                                 <span class="rank fs-14">{{now.rank}}</span>
-                                <img :src="require('@/assets/images/tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px"/>
+                                <img :src="require('@/assets/images/tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
                                 <v-card-text>
                                     <span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.totalRecord.wins}}승</span> <span class="lose fs-13">{{now.totalRecord.losses}}패</span>)</span>
                                 </v-card-text>
                             </div>
                             <div class="icon pa-1 d-inline-block">
                                 <v-avatar class="ma-3" size="70">
-                                    <v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" alt="모스트 픽"/>
+                                    <v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" alt="모스트 픽" v-if="now.mostCham != 'null'"/>
                                 </v-avatar>
                                 <v-card-text>
                                     <span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.mostChamRecord.wins}}승</span> <span class="lose fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
@@ -61,7 +61,7 @@
                             </div>
                             <div class="icon pa-1 d-inline-block">
                                 <v-avatar class="ma-3" size="50">
-                                    <v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')"/>
+                                    <v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')" v-if="now.mostLine != 'null'"/>
                                 </v-avatar>
                                 <v-card-text>
                                     <span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.mostLineRecord.wins}}승</span> <span class="lose fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
@@ -69,12 +69,15 @@
                             </div>
                             <div class="icon pa-1 d-inline-block">
                                 <v-avatar class="ma-3" size="50">
-                                    <v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')"/>
+                                    <v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')" v-if="now.secondLine != 'null'"/>
                                 </v-avatar>
                                 <v-card-text>
                                     <span class="fs-14">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="win fs-13">{{now.secondLineRecord.wins}}승</span> <span class="lose fs-13">{{now.secondLineRecord.losses}}패</span>)</span>
                                 </v-card-text>
                             </div>
+                        </div>
+                        <div class="mt-2 text-center" v-if="now.src == null">
+                            <p>전적이 없습니다.</p>
                         </div>
                     </v-card>
                 </td>
@@ -105,7 +108,7 @@
 import RadarChart from '@/components/profile/RadarChart';
 import LineChart from '@/components/profile/LineChart';
 import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
-import { mapActions } from "vuex"
+//import { mapActions } from "vuex"
 import { mapState } from "vuex"
 //import { mapGetters } from  "vuex"
 
@@ -121,43 +124,43 @@ export default {
             totalPointActive: false,
             LPActive: true,
             nomalGameActive : false,
-            rankGameActive : true
+            rankGameActive : true,
+            isLoading : true
         },
         now:{},
         item:{}
     }),
     created(){
-        // axios.get('http://13.125.220.135/profile/parkjamal')
-        // .then(({data}) => {
-        //     this.item = data;
-        //     console.log(data);
-        //     this.now = this.item.rankedRecord;
-        //     this.now.src = this.item.tier;
-        // }).catch(function (error) {
-        //     if (error.response) {
-        //         console.log(error.response.data);
-        //         console.log(error.response.status);
-        //         console.log(error.response.headers);
-        //     }
-        // });
-        this.getProfileDatas('parkjamal');
-        this.item = this.profileDatas;
-        this.now = this.item.rankedRecord;
-        this.now.src = this.item.tier;
-        this.now.rank = this.item.rank;
+        const userName = this.$route.params.userName;
+        console.log(userName);
+        this.getProfileDatas(userName);
     },
     computed: {
       ...mapState([
         'profileDatas',
       ]),
-    //   ...mapGetters([
-    //       'profileDatas'
-    //   ]),
+        //   ...mapGetters([
+        //       'profileDatas'
+        //   ]),
     },
     methods:{
-        ...mapActions([
-            'getProfileDatas',
-        ]),
+        // ...mapActions([
+        //     'getProfileDatas',
+        // ]),
+        async getProfileDatas(userName){
+            await this.$store.dispatch('getProfileDatas', userName);
+            this.now = this.profileDatas.rankedRecord;
+            if(this.profileDatas.tier == 'null'){
+                this.profileDatas.tier= 'unranked';
+                this.profileDatas.rank = 'unranked';
+                this.changeNomarlGame();
+                console.log('test');
+            }else {
+                this.now.src = this.profileDatas.tier;
+                this.now.rank = this.profileDatas.rank;
+            }
+            this.triger.isLoading = false;
+        },
         getRankData(){
             //LineChart에 데이터  전달
         },
@@ -167,16 +170,16 @@ export default {
         changeNomarlGame(){
             this.triger.nomalGameActive = true;
             this.triger.rankGameActive = false;
-            this.now = this.item.blindRecord;
+            this.now = this.profileDatas.blindRecord;
             this.now.src = 'unranked';
             this.now.rank = 'unranked';
         },
         changeRankGame(){
             this.triger.nomalGameActive = false;
             this.triger.rankGameActive = true;
-            this.now = this.item.rankedRecord;
-            this.now.src = this.item.tier;
-            this.now.rank = this.item.rank;
+            this.now = this.profileDatas.rankedRecord;
+            this.now.src = this.profileDatas.tier;
+            this.now.rank = this.profileDatas.rank;
         },
         changeLP(){
             this.triger.LPActive = true;

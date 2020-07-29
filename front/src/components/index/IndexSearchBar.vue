@@ -74,10 +74,11 @@ export default {
         tmpSearchSummernerIDs[idx] = ID
         // console.log(ID + '공백제거')
       })
-      // this.searchSummernerIDs = tmpSearchSummernerIDs
+      this.searchSummernerIDs = tmpSearchSummernerIDs
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
       console.log(1)
-      // console.log(this.searchSummernerIDs)
+      console.log(this.searchSummernerIDs)
+      this.$router.push('/Profile/'+this.searchSummernerIDs);
     },
     onPaste (e) {
         var clipboardData, pastedData;

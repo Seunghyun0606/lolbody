@@ -3,7 +3,6 @@
       <IndexLogo />
       <IndexSearchBar />
       <IndexIntro />
-      <input v-model="userName" style="border: 1px solid black;" type="text" @keyup.enter="test(userName)">
   </div>
 </template>
 

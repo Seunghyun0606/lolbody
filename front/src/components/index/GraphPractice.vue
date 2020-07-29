@@ -86,8 +86,6 @@ export default {
     // }, 3000)
   },
   mounted() {
-    console.log(this.onlyGraph)
-    console.log(this.onlyGraph2)
   }
 }
 </script>

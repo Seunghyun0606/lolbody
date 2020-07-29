@@ -1,5 +1,5 @@
 <template>
-  <LineChart type="bar" height="130" :options="chartOptions" :series="series" />
+  <LineChart type="bar" height="100" :options="chartOptions" :series="series" />
 </template>
 
 <script>

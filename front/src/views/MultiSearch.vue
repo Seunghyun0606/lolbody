@@ -10,7 +10,7 @@
 
 
   <!-- 반복되어야할 그리드 (5인 멀티서치 정보) -->
-  <div class="grid align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index">
+  <div class="grid grid2 align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index">
 
     <div class="grid-body align-items-center">
 
@@ -40,7 +40,7 @@
       </div>
 
       <div class="grid-body-bot-left">
-        {{ multiSearchData.lane }} 이미지로 갈아야함
+        {{ multiSearchData.lane }}
       </div>
 
       <div class="grid-body-bot-right">
@@ -62,12 +62,12 @@
     </div>
 
     <!-- 최근전적 -->
-    <div>
+    <div style="font-size: 12px;">
       {{ multiSearchData.recentMatchResults.wins }}승 {{ multiSearchData.recentMatchResults.fails }}패
       <br>
       {{ multiSearchData.recentMatchResults.rate }}%
       <br>
-      평점 필요.
+      평점
 
     </div>
     
@@ -77,7 +77,7 @@
     </div>
 
     <!-- 모스트 챔피언 -->
-    <div>
+    <div style="margin-left: 5px; margin-right: 5px">
       <MultiSearchMostChamp v-for="(mostChamp, index) in multiSearchData.mostChamp" :mostChamp="mostChamp" :key="index"/>
     </div>
   </div>
@@ -89,7 +89,7 @@
 
 <script>
 // 랭크 이미지 받아올때 require써야 build시에 web-pack이 똑바로 인지한다.
-// import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart"
+// import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart" 
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 
@@ -141,20 +141,19 @@ export default {
 
 .grid {
   display: grid;
-  grid-template-columns: 20% 17.5% 17.5% 10% 25% 10%;
+  grid-template-columns: 20% 15% 17.5% 6% 29% 12.5%;
 
-  border: 2px solid #f76707;
-  border-radius: 5px;
-
-  
+  border: 1px solid #f76707;
 
   text-align: center;
 
 }
 
+.grid2 {
+  grid-template-rows: 120px;
+}
+
 .grid > .grid-header {
-  border: 2px solid #ffa94d;
-  border-radius: 5px;
   background-color: #ffd8a8;
   height: 100%;
 
@@ -166,7 +165,6 @@ export default {
 
 
 .grid-body {
-  height: 300px;
 
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -208,9 +206,7 @@ export default {
 }
 
 
-.grid-champ {
-  height: 300px;
-  
+.grid-champ { 
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 

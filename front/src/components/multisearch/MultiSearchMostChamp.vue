@@ -21,8 +21,9 @@ export default {
 <style scoped>
 
 .card-champ-img {
-  width: 3rem;
+  width: 27.5%;
   border-radius: 70%;
+  margin: 0 5px 5px 0;
 }
 
 

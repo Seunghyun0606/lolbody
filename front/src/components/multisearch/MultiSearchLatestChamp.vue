@@ -1,18 +1,22 @@
 <template>
 
 <div class="champ-card" :class="[ this.recentGame.win ? 'win' : 'fail' ]" >
-  <div>
-    <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="champ-img">
-    <div style="position: relative;">
+  <div class="champ">
+    <div class="lane">
+      <img class="card-sub" :src="laneImage" alt="lane">  
+    </div>
+
+    <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="card-champ-img">
+
+    <div class="spell">
       <img class="card-sub card-sub-left" src="@/assets/images/champion/Akali.png" alt="spell-left">
       <img class="card-sub card-sub-right" src="@/assets/images/champion/Ahri.png" alt="spell-right">
-      <img class="card-sub card-sub-top" :src="laneImage" alt="lane">  
     </div>
+    <!-- <div class="champ-card-text">
+      K / D / A
+    </div> -->
   </div>
 
-  <div class="champ-card-text">
-    K / D / A
-  </div>
 
 </div>
 
@@ -49,52 +53,58 @@ export default {
 <style scoped>
 
 .champ-card {
-  width: 120%;
+  width: 90%;
+  height: 70px;
   border-radius: 30%;
-  padding: 15px 10px 5px;
-}
-.fail {
-  background-color: rosybrown;
-
+  padding: 10px 4px 4px 4px;
 }
 
-.win {
-  background-color: cadetblue;
-
+.champ {
+  position: relative;
 }
 
-.champ-card-text {
-  font-size: 12px;
-  margin-top: 5px;
+.lane {
+  position: absolute;
+  top: -10px;
+}
+
+.spell {
+  position: absolute;
+  top: 25px;
+  bottom: 0px;
+  padding: 0 1px 0;
 }
 
 .card-champ-img {
-  width: 3rem;
+  width: 80%;
   border-radius: 70%;
 }
 
+.champ-card-text {
+  font-size: 9px;
+}
+  
 .card-sub {
-  position: absolute;
-  width: 33%;
+  width: 40%;
   border-radius: 70%;
   border: 0.01px solid white;
 }
 
 .card-sub-left {
-  top: -22px;
-  left: 0px;
+  float: left;
 }
 
 .card-sub-right {
-  top: -22px;
-  left: 42px;
+  float: right;
+}
+
+.fail {
+  background-color: #ffebeb;
 
 }
 
-.card-sub-top {
-  top: -65px;
-  left: 22px;
+.win {
+  background-color: #e5f4ff;
 
 }
-
 </style>

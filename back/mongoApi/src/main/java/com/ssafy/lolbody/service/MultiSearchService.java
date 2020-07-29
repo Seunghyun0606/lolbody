@@ -94,7 +94,7 @@ public class MultiSearchService {
 			MatchDto matchDto = matchService.findByGameId(matchRefDto.getGameId());
 			if(matchDto == null) break;
 			for(ParticipantIdentityDto identites: matchDto.getParticipantIdentities()) {
-				if(identites.getPlayer().getSummonerName().toLowerCase().equals(summonerName.toLowerCase())) {
+				if(identites.getPlayer().getAccountId().equals(summonerDto.getAccountId())) {
 					participantId = identites.getParticipantId();
 					break;
 				}
@@ -107,6 +107,7 @@ public class MultiSearchService {
 			} else {
 				recentGame.setLane(matchRefDto.getLane());
 			}
+			if(participantId == 0) break;
 			for(ParticipantDto participant: matchDto.getParticipants()) {
 				if(participant.getParticipantId() == participantId) {
 					recentGame.setSpell1Id(participant.getSpell1Id());
@@ -155,11 +156,12 @@ public class MultiSearchService {
 				MatchDto matchDto = matchService.findByGameId(matchRefDto.getGameId());
 				if(matchDto == null) break;
 				for(ParticipantIdentityDto identites: matchDto.getParticipantIdentities()) {
-					if(identites.getPlayer().getSummonerName().toLowerCase().equals(summonerName.toLowerCase())) {
+					if(identites.getPlayer().getAccountId().equals(summonerDto.getAccountId())) {
 						participantId = identites.getParticipantId();
 						break;
 					}
 				}
+				if(participantId == 0) break;
 				for(ParticipantDto participant: matchDto.getParticipants()) {
 					if(participant.getParticipantId() == participantId) {
 						recentMatchResults.add(participant.getStats().isWin());

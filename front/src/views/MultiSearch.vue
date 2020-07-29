@@ -1,92 +1,96 @@
 <template>
 
-<div class="multi">
-  <div class="grid">
-    <div class="grid-header" v-for="(header, index) in multiHeader" v-bind:key="index">
-      {{ header }}
-    </div>
-    <!-- 여기까지 6개는 header -->
-  </div>
+<v-container>
+  <v-row justify='center' align='center'>
+    <div class="multi">
 
-
-  <!-- 반복되어야할 그리드 (5인 멀티서치 정보) -->
-  <div class="grid grid2 align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index">
-
-    <div class="grid-body align-items-center">
-
-    <!-- 하위 그리드 -->
-      <!-- <div class="grid-body-top">
-        여기 뱃지 chip 써서 만들자
-      </div> -->
-
-      <!-- 랭크 -->
-      <div class="grid-body-center-left">
-        <img :src="require(`@/assets/images/tier/${userDatas[index].tier}.png`)" alt="tier">
+      <div class="grid">
+        <div class="grid-header" v-for="(header, index) in multiHeader" v-bind:key="index">
+          {{ header }}
+        </div>
+        <!-- 여기까지 6개는 header -->
       </div>
 
-      <!-- 유저네임, 티어, 승패-->
-      <div class="grid-body-center-right">
-        <div class="user-name">
-          {{ multiSearchData.summonerName }}
+
+      <!-- 반복되어야할 그리드 (5인 멀티서치 정보) -->
+      <div class="grid grid2 align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index">
+
+        <div class="grid-body align-items-center">
+
+        <!-- 하위 그리드 -->
+          <!-- <div class="grid-body-top">
+            여기 뱃지 chip 써서 만들자
+          </div> -->
+
+          <!-- 랭크 -->
+          <div class="grid-body-center-left">
+            <img :src="require(`@/assets/images/tier/${userDatas[index].tier}.png`)" alt="tier">
+          </div>
+
+          <!-- 유저네임, 티어, 승패-->
+          <div class="grid-body-center-right">
+            <div class="user-name">
+              {{ multiSearchData.summonerName }}
+            </div>
+            <div>
+              {{ userDatas[index].tier }} {{ userDatas[index].rank }}
+            </div>
+            <div>
+              승률% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
+            </div>
+
+
+          </div>
+
+          <!-- 가장 많이가는 라인 -->
+          <div class="grid-body-bot-left">
+            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
+            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
+          </div>
+
+          <div class="grid-body-bot-right">
+          </div>
+
+          <!-- 배지 칩으로 넣어야함 -->
+          <div class="grid-body-lane">
+          </div>
         </div>
+
+        <!-- 레이더차트 컴포넌트 -->
         <div>
-          {{ userDatas[index].tier }} {{ userDatas[index].rank }}
+          <MultiSearchRadarChart/>
         </div>
+
+        <!-- 라인 차트 컴포넌트-->
         <div>
-          승률% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
+          <MultiSearchLineChart/>
         </div>
 
+        <!-- 최근전적 -->
+        <div style="font-size: 12px;">
+          {{ multiSearchData.recentMatchResults.wins }}승 {{ multiSearchData.recentMatchResults.fails }}패
+          <br>
+          {{ multiSearchData.recentMatchResults.rate }}%
+          <br>
+          평점
 
+        </div>
+        
+        <!-- 최근 챔피언 컴포넌트화 시켜서 for문 돌리면됨. -->
+        <div class="grid-champ align-items-center">
+          <MultiSearchLatestChamp v-for="(recentGame, index) in multiSearchData.recentGames" :recentGame="recentGame" :key="index"/>
+        </div>
+
+        <!-- 모스트 챔피언 -->
+        <div style="margin-left: 5px; margin-right: 5px">
+          <MultiSearchMostChamp v-for="(mostChamp, index) in multiSearchData.mostChamp" :mostChamp="mostChamp" :key="index"/>
+        </div>
       </div>
 
-      <!-- 가장 많이가는 라인 -->
-      <div class="grid-body-bot-left">
-        <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
-        <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
-      </div>
-
-      <div class="grid-body-bot-right">
-      </div>
-
-      <!-- 배지 칩으로 넣어야함 -->
-      <div class="grid-body-lane">
-      </div>
+      <input v-model="userName" style="border: 1px solid black;" type="text" @keyup.enter="getMultiSearchDatas(userName), getUserDatas(userName)">
     </div>
-
-    <!-- 레이더차트 컴포넌트 -->
-    <div>
-      레이더 차트
-    </div>
-
-    <!-- 라인 차트 컴포넌트-->
-    <div>
-      <MultiSearchLineChart/>
-    </div>
-
-    <!-- 최근전적 -->
-    <div style="font-size: 12px;">
-      {{ multiSearchData.recentMatchResults.wins }}승 {{ multiSearchData.recentMatchResults.fails }}패
-      <br>
-      {{ multiSearchData.recentMatchResults.rate }}%
-      <br>
-      평점
-
-    </div>
-    
-    <!-- 최근 챔피언 컴포넌트화 시켜서 for문 돌리면됨. -->
-    <div class="grid-champ align-items-center">
-      <MultiSearchLatestChamp v-for="(recentGame, index) in multiSearchData.recentGames" :recentGame="recentGame" :key="index"/>
-    </div>
-
-    <!-- 모스트 챔피언 -->
-    <div style="margin-left: 5px; margin-right: 5px">
-      <MultiSearchMostChamp v-for="(mostChamp, index) in multiSearchData.mostChamp" :mostChamp="mostChamp" :key="index"/>
-    </div>
-  </div>
-
-  <input v-model="userName" style="border: 1px solid black;" type="text" @keyup.enter="getMultiSearchDatas(userName), getUserDatas(userName)">
-</div>
-
+  </v-row>
+</v-container>
 </template>
 
 <script>
@@ -94,6 +98,7 @@
 import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart" 
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
+import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
 
 import { mapActions } from "vuex"
 import { mapState } from "vuex"
@@ -105,6 +110,7 @@ export default {
       MultiSearchLineChart,
       MultiSearchLatestChamp,
       MultiSearchMostChamp,
+      MultiSearchRadarChart,
     },
     data() {
       return {

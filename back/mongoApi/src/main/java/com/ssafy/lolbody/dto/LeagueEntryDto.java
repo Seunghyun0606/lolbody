@@ -19,7 +19,7 @@ public class LeagueEntryDto {
 	private boolean veteran;
 	private boolean freshBlood;
 	private boolean inactive;
-	private MiniSeriesDTO miniSeries;
+	private MiniSeriesDto miniSeries;
 
 	public String getLeagueId() {
 		return leagueId;
@@ -125,11 +125,11 @@ public class LeagueEntryDto {
 		this.inactive = inactive;
 	}
 
-	public MiniSeriesDTO getMiniSeries() {
+	public MiniSeriesDto getMiniSeries() {
 		return miniSeries;
 	}
 
-	public void setMiniSeries(MiniSeriesDTO miniSeries) {
+	public void setMiniSeries(MiniSeriesDto miniSeries) {
 		this.miniSeries = miniSeries;
 	}
 

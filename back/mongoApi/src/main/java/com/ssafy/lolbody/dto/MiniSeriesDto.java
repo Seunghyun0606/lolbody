@@ -1,6 +1,6 @@
 package com.ssafy.lolbody.dto;
 
-public class MiniSeriesDTO {
+public class MiniSeriesDto {
 	private int losses;
 	private String progress;
 	private int target;

@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 
 //http://localhost:8888/swagger-ui.html
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
-@RestController("/api")
+@RestController
 public class SummonerController {
 	
 	@Autowired

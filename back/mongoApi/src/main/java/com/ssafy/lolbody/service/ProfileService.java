@@ -428,7 +428,7 @@ public class ProfileService {
 					tmp.setItem4(p.getStats().getItem4());
 					tmp.setItem5(p.getStats().getItem5());
 					tmp.setItem6(p.getStats().getItem6());
-					tmp.setPerk(perkRepository.findByKey(p.getStats().getPerk0()).getName());
+					tmp.setPerk(perkRepository.findByKey(p.getStats().getPerk0()).getName().replaceAll(" ", ""));
 					tmp.setPerkStyle(perkStyleRepository.findByKey(p.getStats().getPerkSubStyle()).getName());
 					tmp.setLevel(p.getStats().getChampLevel());
 					tmp.setGold(p.getStats().getGoldEarned());

@@ -13,32 +13,37 @@
   <div class="grid align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index">
 
     <div class="grid-body align-items-center">
+
     <!-- 하위 그리드 -->
       <div class="grid-body-top">
         여기 뱃지? 시즌 랭크?  
       </div>
+
       <!-- 랭크 -->
       <div class="grid-body-center-left">
-        <img :src="require(`@/assets/images/tier/Emblem_${userDatas[index].tier.charAt(0) + userDatas[index].tier.slice(1).toLowerCase()}.png`)" alt="tier">
+        <img :src="require(`@/assets/images/tier/${userDatas[index].tier}.png`)" alt="tier">
       </div>
+
       <!-- 유저네임 -->
       <div class="grid-body-center-right">
         {{ multiSearchData.summonerName }}
       </div>
+
       <!-- 티어 -->
       <div class="grid-body-bot-left">
         {{ userDatas[index].tier }} {{ userDatas[index].rank }}
       </div>
+
       <!-- 승패 -->
       <div class="grid-body-bot-right">
         {{ multiSearchData.wins }} / {{ multiSearchData.losses }}
       </div>
+
       <!-- 주라인 ( 나중에 갈아끼워야함 ) -->
       <div class="grid-body-lane">
         {{ multiSearchData.lane }} 이미지로 갈아야함
       </div>
     </div>
-
 
     <!-- 레이더차트 컴포넌트 -->
     <div>

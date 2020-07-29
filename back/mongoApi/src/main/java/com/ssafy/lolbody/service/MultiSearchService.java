@@ -80,8 +80,8 @@ public class MultiSearchService {
 		
 		List<Map.Entry<String, Integer>> entries = new LinkedList<>(lane.entrySet());
 		Collections.sort(entries, (o1,o2) -> o2.getValue().compareTo(o1.getValue()));
-		
-		result.setLane(entries.get(0).getKey());
+		if(entries.size() != 0)
+			result.setLane(entries.get(0).getKey());
 		
 		// 최근 5게임 스펠, 챔피언, 라인정보, 승 패 여부
 		// spell1Id,spell2Id,champName,lane,result
@@ -138,9 +138,11 @@ public class MultiSearchService {
 		Collections.sort(mostPickEntries, (o1,o2) -> Integer.compare(o2.getValue(), o1.getValue()));
 		
 		List<String> mostPicks = new LinkedList<>();
-		for(int i = 0; i < 3; i++) {
-			ChampKeyDto champkey = mongodbPreset.findById(String.valueOf(mostPickEntries.get(i).getKey())).get();
-			mostPicks.add(champkey.getName());
+		if(mostPickEntries.size() != 0) {
+			for(int i = 0; i < 3; i++) {
+				ChampKeyDto champkey = mongodbPreset.findById(String.valueOf(mostPickEntries.get(i).getKey())).get();
+				mostPicks.add(champkey.getName());
+			}
 		}
 		result.setMostChamp(mostPicks);
 		

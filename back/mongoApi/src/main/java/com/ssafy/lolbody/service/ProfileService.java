@@ -50,7 +50,7 @@ public class ProfileService {
 	PerkStyleRepository perkStyleRepository;
 
 	public ProfileReferenceDto getProfile(String name) throws Exception {
-		SummonerDto summonerDto = summonerService.findByName(name);
+		SummonerDto summonerDto = summonerService.findBySubName(name);
 		ProfileDto profileDto = profileRepository.findBySummonerId(summonerDto.getId());
 		ProfileReferenceDto profileReferenceDto = new ProfileReferenceDto();
 		profileReferenceDto.setTimestamp(System.currentTimeMillis());
@@ -364,7 +364,7 @@ public class ProfileService {
 
 	public List<List<MatchInfoDto>> getMatchInfo(String name, String num) {
 		List<List<MatchInfoDto>> matchInfoList = new ArrayList<>();
-		SummonerDto summonerDto = summonerService.findByName(name);
+		SummonerDto summonerDto = summonerService.findBySubName(name);
 		MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
 		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
 		int size = matchReferences.size(), idx = Integer.parseInt(num);

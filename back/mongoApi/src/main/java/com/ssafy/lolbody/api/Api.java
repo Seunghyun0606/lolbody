@@ -7,6 +7,8 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.json.JSONArray;
+
 public class Api {
 	private final static String token = "RGAPI-2adde83f-a408-46e6-bf94-8830e3700c9d";
 	private final static String[] tokens = {
@@ -62,7 +64,10 @@ public class Api {
 		boolean isOk = false;
 		String result = "";
 		try {
-			URL url = new URL(input+"/"+summonerName);
+			String name = summonerName.replaceAll("\\s", "%20");
+			URL url = new URL(input+"/"+name);
+			if(summonerName.length() == 0)
+				url = new URL(input);
 			HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);
@@ -79,8 +84,6 @@ public class Api {
 				br.close();
 				isOk = true;
 				result = sb.toString();
-			} else {
-				System.out.println(con.getResponseMessage() + " - " + url);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,11 +94,39 @@ public class Api {
 			return "Fail";
 	}
 	
-	private final static String championUrl = "http://ddragon.leagueoflegends.com/cdn/10.14.1/data/en_US/champion.json";
 	public static String getAllChampionsInfo() {
+		JSONArray jsonArray = new JSONArray(Api.get("https://ddragon.leagueoflegends.com/api/versions.json", ""));
+		String version = jsonArray.getString(0);
+		String championUrl = "http://ddragon.leagueoflegends.com/cdn/"+version+"/data/en_US/champion.json";
 		String result = "";
 		try {
 			URL url = new URL(championUrl);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
+			
+			con.setRequestMethod("GET");
+			
+			StringBuilder sb = new StringBuilder();
+			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
+				String line;
+				while((line = br.readLine()) != null) {
+					sb.append(line).append("\n");
+				}
+				br.close();
+				result = sb.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static String getHttpRequest(String urlParam) {
+		String result = "";
+		try {
+			URL url = new URL(urlParam);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);

@@ -19,8 +19,8 @@
           </textarea>
       </v-col>
 
-      <v-col cols=1 class="multi-search-col3">
-
+      <v-col cols=1 class="multi-search-col3" >
+        <v-icon class="icon-place">search</v-icon>
       </v-col>
     </v-row>
   </v-container>
@@ -84,6 +84,14 @@ export default {
   height: 100%;
   width: 100%;
 
+}
+
+.icon-place {
+  position: relative;
+  top: 38%;
+  left: 30%;
+  font-size: 40px;
+  color: white;
 }
 
 </style>

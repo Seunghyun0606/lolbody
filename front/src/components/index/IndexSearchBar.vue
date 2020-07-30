@@ -43,6 +43,8 @@ export default {
     onClickSearchButton() {
       this.parseInputSummonerID()
       console.log('axios요청', this.searchSummernerIDs)
+
+      // nav search bar 없애는 로직
       this.$store.commit('toggleNavSearch', false)
     },
     parseInputSummonerID() {
@@ -82,7 +84,8 @@ export default {
       this.searchSummernerIDs = tmpSearchSummernerIDs
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
       console.log(1)
-      console.log(this.searchSummernerIDs)
+      // console.log(this.searchSummernerIDs)
+      // console.log(tmpSearchSummernerIDs)
       this.$router.push('/Profile/'+this.searchSummernerIDs);
     },
     onPaste (e) {
@@ -104,7 +107,11 @@ export default {
         this.parseInputSummonerID()
         // 사용자가 수정이 가능하도록 input 창에 띄워줌
         console.log(2)
+
+        console.log(this.inputSummonerID)
         this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
+        console.log(3)
+        console.log(this.inputSummonerID)
     },
   },
 }

@@ -2,7 +2,10 @@
 
 <v-container>
   <v-row justify='center' align='center' class="fs-search-bar">
-    <MultiSearchBar />
+
+    <!-- 멀티써치용 써치바 -->
+    <MultiSearchBar/>
+
     <div class="multi" v-if="multiSearchDatas.length">
       <div class="grid">
         <div class="grid-header" v-for="(header, index) in multiHeader" v-bind:key="index">

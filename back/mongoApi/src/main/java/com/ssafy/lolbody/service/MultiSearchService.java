@@ -1,6 +1,5 @@
 package com.ssafy.lolbody.service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -20,7 +19,6 @@ import com.ssafy.lolbody.dto.MatchlistDto;
 import com.ssafy.lolbody.dto.MultiSearchDto;
 import com.ssafy.lolbody.dto.ParticipantDto;
 import com.ssafy.lolbody.dto.ParticipantIdentityDto;
-import com.ssafy.lolbody.dto.ParticipantStatsDto;
 import com.ssafy.lolbody.dto.PositionDto;
 import com.ssafy.lolbody.dto.RecentGamesDto;
 import com.ssafy.lolbody.dto.SummonerDto;
@@ -93,7 +91,7 @@ public class MultiSearchService {
 		if(entries.size() > 0)
 			result.setMainLane(entries.get(0).getKey());
 		if(entries.size() > 1)
-			result.setMainLane(entries.get(1).getKey());
+			result.setSubLane(entries.get(1).getKey());
 		
 		// 최근 5게임 스펠, 챔피언, 라인정보, 승 패 여부
 		// spell1Id,spell2Id,champName,lane,result
@@ -166,7 +164,10 @@ public class MultiSearchService {
 		idx = 0;
 		List<Boolean> recentMatchResults = new LinkedList<>();
 		Map<String,Integer> laneRate = new HashMap<>();
+		double recentMatchKda = 0;
 		if(matchlistDto.getMatches() != null) {
+			int kills,deaths,assists;
+			kills = deaths = assists = 0;
 			for(MatchReferenceDto matchRefDto: matchlistDto.getMatches()) {
 				if(matchRefDto.getTimestamp() < 1578596400000L) break;
 				if(matchRefDto.getQueue() != 420) continue;
@@ -182,6 +183,9 @@ public class MultiSearchService {
 				for(ParticipantDto participant: matchDto.getParticipants()) {
 					if(participant.getParticipantId() == participantId) {
 						recentMatchResults.add(participant.getStats().isWin());
+						kills += participant.getStats().getKills();
+						deaths += participant.getStats().getDeaths();
+						assists += participant.getStats().getAssists();
 					}
 				}
 				if(matchRefDto.getRole().equals("DUO_SUPPORT")) {
@@ -202,7 +206,12 @@ public class MultiSearchService {
 				idx++;
 				if(idx == RECENT_GAME) break;
 			}
+			if(deaths == 0)
+				recentMatchKda = kills+assists;
+			else
+				recentMatchKda = 1.0*(kills+assists)/deaths;
 		}
+		result.setRecentMatchKda(1.0*Math.round(recentMatchKda*100)/100);
 		List<PositionDto> positions = new LinkedList<>();
 		for(String key: laneRate.keySet()) {
 			PositionDto position = new PositionDto();

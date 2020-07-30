@@ -1,9 +1,9 @@
 <template>
 
 <v-container>
-  <v-row justify='center' align='center'>
-    <div class="multi">
-
+  <v-row justify='center' align='center' class="fs-search-bar">
+    <MultiSearchBar />
+    <div class="multi" v-if="multiSearchDatas.length">
       <div class="grid">
         <div class="grid-header" v-for="(header, index) in multiHeader" v-bind:key="index">
           {{ header }}
@@ -42,7 +42,7 @@
           </div>
 
           <!-- 배지 칩으로 넣어야함 // 현재 더미데이터, 나중에는 서버에서 받아와서 for문 돌려야함 -->
-          <div class="grid-body-bot-right" style="text-align: left; padding-left: 15px">
+          <div class="grid-body-bot-right">
             <MultiSearchBedge :index="index"/>
           </div>
         </div>
@@ -77,7 +77,6 @@
         </div>
       </div>
 
-      <input v-model="userName" style="border: 1px solid black;" type="text" @keyup.enter="getMultiSearchDatas(userName), getUserDatas(userName)">
     </div>
   </v-row>
 </v-container>
@@ -90,8 +89,9 @@ import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestCh
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
 import MultiSearchBedge from "@/components/multisearch/MultiSearchBedge"
+import MultiSearchBar from "@/components/multisearch/MultiSearchBar"
 
-import { mapActions } from "vuex"
+// import { mapActions } from "vuex"
 import { mapState } from "vuex"
 import { mapGetters } from  "vuex"
 
@@ -103,11 +103,11 @@ export default {
       MultiSearchMostChamp,
       MultiSearchRadarChart,
       MultiSearchBedge,
+      MultiSearchBar,
     },
     data() {
       return {
         multiHeader: [ "소환사 정보", "레이더 차트", "포지션 통계", "최근 전적", "최근 챔피언", "모스트 챔피언" ],
-        userName: "",
       }
     },
     computed: {
@@ -119,18 +119,18 @@ export default {
       ]),
       
     },
-    methods: {
-      ...mapActions([
-        "getMultiSearchDatas",
-        "getUserDatas",
-      ]),
 
-    }
   }
     
 </script>
 
 <style scoped>
+
+.fs-search-bar {
+  width: 1000px;
+  min-width: 1000px;
+  margin: auto;
+}
 
 .user-name {
   font-weight: bold;
@@ -143,10 +143,9 @@ export default {
 .align-items-center {
   align-items: center;
 }
-
+/* 
 .multi {
-  width: 1000px;
-}
+} */
 
 .grid {
   display: grid;
@@ -211,6 +210,11 @@ export default {
 }
 .grid-body-bot-right {
   grid-area: cd-b-r;
+
+  position: relative;
+  top: -4px;
+  text-align: left;
+  padding-left: 15px
 }
 .grid-body-lane {
   grid-area: cd-l;

@@ -134,7 +134,7 @@ export default {
         now:{},
         item:{}
     }),
-    created(){
+    mounted(){
         const userName = this.$route.params.userName;
         console.log(userName);
         this.getProfileDatas(userName);

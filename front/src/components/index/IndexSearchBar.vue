@@ -43,6 +43,7 @@ export default {
     onClickSearchButton() {
       this.parseInputSummonerID()
       console.log('axios요청', this.searchSummernerIDs)
+      this.$store.commit('toggleNavSearch', false)
     },
     parseInputSummonerID() {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split

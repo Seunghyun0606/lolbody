@@ -10,6 +10,8 @@ export default new Vuex.Store({
     // 승현
     multiSearchDatas: [],
     userDatas: [],
+    isIndex: '',
+
     // 호철
     searchSummonerIDs: [],
 
@@ -17,6 +19,7 @@ export default new Vuex.Store({
     profileDatas: {},
     matchDatas: []
   },
+  // 형래
   getters: {
     profileDatas(state){
       return state.profileDatas;
@@ -33,15 +36,16 @@ export default new Vuex.Store({
         }
       }
       multiSearchDatas.recentMatchResults = { wins: recentGameCount, fails: 20-recentGameCount, rate: Math.round((recentGameCount/20)*100)}
-
-
-
       state.multiSearchDatas.push(multiSearchDatas)
     },
     setUserDatas(state, userDatas) {
       // userData는 array로 오기 때문에 sperad시킴
       // 20.07.30 userData가 자유랭크 데이터도 넘기기때문에 스프레드 시키면안됨. 단일 오브젝트만 넣습니다.
       state.userDatas = [ ...state.userDatas, userDatas ]
+    },
+
+    toggleNavSearch(state, toggle) {
+      state.isIndex = toggle
     },
 
     // 호철

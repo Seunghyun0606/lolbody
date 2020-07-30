@@ -16,6 +16,7 @@ import IndexSearchBar from '@/components/index/IndexSearchBar.vue';
 import IndexIntro from '@/components/index/IndexIntro.vue';
 
 import { mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Index',
@@ -24,6 +25,9 @@ export default {
     IndexLogo,
     IndexSearchBar,
     IndexIntro,
+  },
+  computed: {
+    ...mapState(['isIndex'])
   },
 
   methods: {
@@ -37,8 +41,11 @@ export default {
 
   data() {
     return {
-      userName: ''
+      userName: '',
     }
+  },
+  created() {
+    this.$store.commit('toggleNavSearch', true)
   }
 };
 </script>

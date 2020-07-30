@@ -33,8 +33,6 @@
             <div>
               {{ Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
             </div>
-
-
           </div>
 
           <!-- 가장 많이가는 라인 -->
@@ -43,14 +41,11 @@
             <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.subLane}.png`)" alt="subLane">
           </div>
 
-          <div class="grid-body-bot-right">
-          </div>
-
-          <!-- 배지 칩으로 넣어야함 -->
-          <div class="grid-body-lane">
+          <!-- 배지 칩으로 넣어야함 // 현재 더미데이터, 나중에는 서버에서 받아와서 for문 돌려야함 -->
+          <div class="grid-body-bot-right" style="text-align: left; padding-left: 15px">
+            <MultiSearchBedge :index="index"/>
           </div>
         </div>
-
         <!-- 레이더차트 컴포넌트 -->
         <div>
           <MultiSearchRadarChart/>
@@ -94,6 +89,7 @@ import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart"
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
+import MultiSearchBedge from "@/components/multisearch/MultiSearchBedge"
 
 import { mapActions } from "vuex"
 import { mapState } from "vuex"
@@ -106,12 +102,12 @@ export default {
       MultiSearchLatestChamp,
       MultiSearchMostChamp,
       MultiSearchRadarChart,
+      MultiSearchBedge,
     },
     data() {
       return {
         multiHeader: [ "소환사 정보", "레이더 차트", "포지션 통계", "최근 전적", "최근 챔피언", "모스트 챔피언" ],
         userName: "",
-        test: 0.0123,
       }
     },
     computed: {
@@ -135,7 +131,6 @@ export default {
 </script>
 
 <style scoped>
-
 
 .user-name {
   font-weight: bold;
@@ -187,7 +182,6 @@ export default {
     /* "cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t" */
     "cd-c-l cd-c-l cd-c-l cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r"
     "cd-b-l cd-b-l cd-b-l cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r"
-    "cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l"
     /* "cd-b-l cd-b-l cd-b-l cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r" */
   ;
 

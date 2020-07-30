@@ -19,7 +19,7 @@
           </textarea>
       </v-col>
 
-      <v-col cols=1 class="multi-search-col3" >
+      <v-col cols=1 class="multi-search-col3" @click="getMultiSearchDatas(userName), getUserDatas(userName)" >
         <v-icon class="icon-place">search</v-icon>
       </v-col>
     </v-row>
@@ -83,6 +83,13 @@ export default {
   padding: 0px;
   height: 100%;
   width: 100%;
+  transition: 0.2s;
+
+}
+
+.multi-search-col3:hover {
+  background: #fbb5b5;
+  cursor: pointer;
 
 }
 

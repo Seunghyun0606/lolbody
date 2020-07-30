@@ -211,8 +211,7 @@ export default {
             let gametime = new Date(time);
             let result = "";
             let diff = now.getTime() - gametime.getTime();
-            diff = Math.floor(diff/(1000*3600*24));
-            if(diff > 0){
+            if(Math.floor(diff/(1000*3600*24)) > 0){
                 result = (gametime.getMonth()+1) + "/" + gametime.getDate();
             }else{
                 diff = Math.floor(diff%(1000*3600*24)/(1000*3600));

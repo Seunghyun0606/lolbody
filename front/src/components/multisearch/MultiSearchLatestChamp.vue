@@ -9,12 +9,12 @@
     <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="card-champ-img">
 
     <div class="spell">
-      <img class="card-sub card-sub-left" src="@/assets/images/champion/Akali.png" alt="spell-left">
-      <img class="card-sub card-sub-right" src="@/assets/images/champion/Ahri.png" alt="spell-right">
+      <img class="card-sub card-sub-left" :src="require(`@/assets/images/spell/${recentGame.spell1Id}.png`)" alt="spell-left">
+      <img class="card-sub card-sub-right" :src="require(`@/assets/images/spell/${recentGame.spell2Id}.png`)" alt="spell-right">
     </div>
-    <!-- <div class="champ-card-text">
-      K / D / A
-    </div> -->
+    <div class="champ-card-text">
+      {{ recentGame.kda.kills }} / {{ recentGame.kda.deaths }} / {{ recentGame.kda.assists }}
+    </div>
   </div>
 
 

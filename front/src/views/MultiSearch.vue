@@ -17,11 +17,6 @@
 
         <div class="grid-body align-items-center">
 
-        <!-- 하위 그리드 -->
-          <!-- <div class="grid-body-top">
-            여기 뱃지 chip 써서 만들자
-          </div> -->
-
           <!-- 랭크 -->
           <div class="grid-body-center-left">
             <img :src="require(`@/assets/images/tier/${userDatas[index].tier}.png`)" alt="tier">
@@ -36,7 +31,7 @@
               {{ userDatas[index].tier }} {{ userDatas[index].rank }}
             </div>
             <div>
-              승률% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
+              {{ Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
             </div>
 
 
@@ -44,8 +39,8 @@
 
           <!-- 가장 많이가는 라인 -->
           <div class="grid-body-bot-left">
-            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
-            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
+            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.mainLane}.png`)" alt="mainLane">
+            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.subLane}.png`)" alt="subLane">
           </div>
 
           <div class="grid-body-bot-right">
@@ -63,16 +58,16 @@
 
         <!-- 라인 차트 컴포넌트-->
         <div>
-          <MultiSearchLineChart/>
+          <MultiSearchLineChart :multiSearchData="multiSearchData"/>
         </div>
 
         <!-- 최근전적 -->
-        <div style="font-size: 12px;">
+        <div style="font-size: 10px;">
           {{ multiSearchData.recentMatchResults.wins }}승 {{ multiSearchData.recentMatchResults.fails }}패
           <br>
           {{ multiSearchData.recentMatchResults.rate }}%
           <br>
-          평점
+          {{ multiSearchData.recentMatchKda }}
 
         </div>
         
@@ -116,6 +111,7 @@ export default {
       return {
         multiHeader: [ "소환사 정보", "레이더 차트", "포지션 통계", "최근 전적", "최근 챔피언", "모스트 챔피언" ],
         userName: "",
+        test: 0.0123,
       }
     },
     computed: {
@@ -125,13 +121,14 @@ export default {
       ]),
       ...mapGetters([
       ]),
-
+      
     },
     methods: {
       ...mapActions([
         "getMultiSearchDatas",
         "getUserDatas",
-      ])
+      ]),
+
     }
   }
     

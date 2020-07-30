@@ -9,11 +9,12 @@ public class MultiSearchDto {
 	private int losses;
 	private int summonerLevel;
 	private String highestAchievedSeasonTier;
-	private String lane;
+	private String MainLane;
+	private String SubLane;
+	private List<PositionDto> positionRates; 
 	private List<RecentGamesDto> recentGames;
 	private List<String> mostChamp;
 	private List<Boolean> recentMatchResults;
-	
 	public String getHighestAchievedSeasonTier() {
 		return highestAchievedSeasonTier;
 	}
@@ -50,12 +51,6 @@ public class MultiSearchDto {
 	public void setSummonerLevel(int summonerLevel) {
 		this.summonerLevel = summonerLevel;
 	}
-	public String getLane() {
-		return lane;
-	}
-	public void setLane(String lane) {
-		this.lane = lane;
-	}
 	public List<RecentGamesDto> getRecentGames() {
 		return recentGames;
 	}
@@ -74,11 +69,31 @@ public class MultiSearchDto {
 	public void setRecentMatchResults(List<Boolean> recentMatchResults) {
 		this.recentMatchResults = recentMatchResults;
 	}
+	public String getMainLane() {
+		return MainLane;
+	}
+	public void setMainLane(String mainLane) {
+		MainLane = mainLane;
+	}
+	public String getSubLane() {
+		return SubLane;
+	}
+	public void setSubLane(String subLane) {
+		SubLane = subLane;
+	}
+	
+	public List<PositionDto> getPositionRates() {
+		return positionRates;
+	}
+	public void setPositionRates(List<PositionDto> positionRates) {
+		this.positionRates = positionRates;
+	}
 	@Override
 	public String toString() {
 		return "MultiSearchDto [summonerName=" + summonerName + ", totalGame=" + totalGame + ", wins=" + wins
 				+ ", losses=" + losses + ", summonerLevel=" + summonerLevel + ", highestAchievedSeasonTier="
-				+ highestAchievedSeasonTier + ", lane=" + lane + ", recentGame=" + recentGames + ", mostChamp="
-				+ mostChamp + ", recentMatchlist=" + recentMatchResults + "]";
+				+ highestAchievedSeasonTier + ", MainLane=" + MainLane + ", SubLane=" + SubLane + ", positionRates="
+				+ positionRates + ", recentGames=" + recentGames + ", mostChamp=" + mostChamp + ", recentMatchResults="
+				+ recentMatchResults + "]";
 	}
 }

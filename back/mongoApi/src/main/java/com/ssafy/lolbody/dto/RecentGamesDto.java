@@ -1,21 +1,32 @@
 package com.ssafy.lolbody.dto;
 
+import java.util.List;
+
 public class RecentGamesDto {
-	private int spell1Id;
-	private int spell2Id;
+	private String spell1Id;
+	private String spell2Id;
 	private String champName;
 	private String lane;
 	private boolean win;
-	public int getSpell1Id() {
+	private KDADto kda;
+	
+	
+	public KDADto getKda() {
+		return kda;
+	}
+	public void setKda(KDADto kda) {
+		this.kda = kda;
+	}
+	public String getSpell1Id() {
 		return spell1Id;
 	}
-	public void setSpell1Id(int spell1Id) {
+	public void setSpell1Id(String spell1Id) {
 		this.spell1Id = spell1Id;
 	}
-	public int getSpell2Id() {
+	public String getSpell2Id() {
 		return spell2Id;
 	}
-	public void setSpell2Id(int spell2Id) {
+	public void setSpell2Id(String spell2Id) {
 		this.spell2Id = spell2Id;
 	}
 	public String getChampName() {
@@ -40,6 +51,6 @@ public class RecentGamesDto {
 	@Override
 	public String toString() {
 		return "RecentGamesDto [spell1Id=" + spell1Id + ", spell2Id=" + spell2Id + ", champName=" + champName
-				+ ", lane=" + lane + ", win=" + win + "]";
+				+ ", lane=" + lane + ", win=" + win + ", kda=" + kda + "]";
 	}
 }

@@ -10,10 +10,10 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 
 public class Api {
-	private final static String token = "RGAPI-f1718647-d7c2-4327-b281-ec8f8b92f9c1";
+	private final static String token = "RGAPI-bc877355-98b7-41f6-9358-c1b6a816b0de";
 	private final static String[] tokens = {
-			"RGAPI-c7a10307-6d23-400f-b89e-def98dc959d9",
-			"RGAPI-9d44d44e-944f-43a5-aabb-17d20ed3e1bb",
+			"RGAPI-489cdd9b-2d6f-43ee-a4e8-cb4e3dec4be9",
+			"RGAPI-a124f6a1-bf78-4630-bd47-a1a767792a4a",
 			"RGAPI-6a9eb3b1-6b41-45cf-b73a-df77320cc18b",
 			"RGAPI-f1718647-d7c2-4327-b281-ec8f8b92f9c1",
 			"RGAPI-accf205c-79e9-4796-b993-e3b5d1ea0ab8",

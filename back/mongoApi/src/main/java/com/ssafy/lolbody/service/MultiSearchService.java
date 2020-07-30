@@ -1,6 +1,8 @@
 package com.ssafy.lolbody.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.lolbody.dto.KDADto;
 import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.dto.MatchDto;
 import com.ssafy.lolbody.dto.MatchReferenceDto;
@@ -17,10 +20,13 @@ import com.ssafy.lolbody.dto.MatchlistDto;
 import com.ssafy.lolbody.dto.MultiSearchDto;
 import com.ssafy.lolbody.dto.ParticipantDto;
 import com.ssafy.lolbody.dto.ParticipantIdentityDto;
+import com.ssafy.lolbody.dto.ParticipantStatsDto;
+import com.ssafy.lolbody.dto.PositionDto;
 import com.ssafy.lolbody.dto.RecentGamesDto;
 import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.preset.ChampKeyDto;
 import com.ssafy.lolbody.preset.MongoDBPreset;
+import com.ssafy.lolbody.preset.SpellRepository;
 
 @Service
 public class MultiSearchService {
@@ -35,6 +41,10 @@ public class MultiSearchService {
 	private MatchService matchService;
 	@Autowired
 	private MongoDBPreset mongodbPreset;
+	@Autowired
+	private SpellRepository spellRepository;
+	
+	private static final int RECENT_GAME = 20;
 	
 	public MultiSearchDto getMultiSearch(String summonerName) throws Exception{
 		MultiSearchDto result = new MultiSearchDto();
@@ -80,12 +90,13 @@ public class MultiSearchService {
 		
 		List<Map.Entry<String, Integer>> entries = new LinkedList<>(lane.entrySet());
 		Collections.sort(entries, (o1,o2) -> o2.getValue().compareTo(o1.getValue()));
-		if(entries.size() != 0)
-			result.setLane(entries.get(0).getKey());
+		if(entries.size() > 0)
+			result.setMainLane(entries.get(0).getKey());
+		if(entries.size() > 1)
+			result.setMainLane(entries.get(1).getKey());
 		
 		// 최근 5게임 스펠, 챔피언, 라인정보, 승 패 여부
 		// spell1Id,spell2Id,champName,lane,result
-
 		List<RecentGamesDto> recentGames = new LinkedList<>();
 		int idx = 0;
 		for(MatchReferenceDto matchRefDto: matchRefs) {
@@ -109,13 +120,18 @@ public class MultiSearchService {
 			}
 			for(ParticipantDto participant: matchDto.getParticipants()) {
 				if(participant.getParticipantId() == participantId) {
-					recentGame.setSpell1Id(participant.getSpell1Id());
-					recentGame.setSpell2Id(participant.getSpell2Id());
+					recentGame.setSpell1Id(spellRepository.findById(participant.getSpell1Id()+"").get().getName());
+					recentGame.setSpell2Id(spellRepository.findById(participant.getSpell2Id()+"").get().getName());
 					ChampKeyDto champkey = mongodbPreset.findById(String.valueOf(participant.getChampionId())).get();
 					recentGame.setChampName(champkey.getName());
 					recentGame.setWin(participant.getStats().isWin());
 					if(participant.getHighestAchievedSeasonTier() != null)
 						result.setHighestAchievedSeasonTier(participant.getHighestAchievedSeasonTier());
+					KDADto kda = new KDADto();
+					kda.setKills(participant.getStats().getKills());
+					kda.setDeaths(participant.getStats().getDeaths());
+					kda.setAssists(participant.getStats().getAssists());
+					recentGame.setKda(kda);
 				}
 			}
 			recentGames.add(recentGame);
@@ -149,6 +165,7 @@ public class MultiSearchService {
 		// 최근 20게임 전적(승, 패)
 		idx = 0;
 		List<Boolean> recentMatchResults = new LinkedList<>();
+		Map<String,Integer> laneRate = new HashMap<>();
 		if(matchlistDto.getMatches() != null) {
 			for(MatchReferenceDto matchRefDto: matchlistDto.getMatches()) {
 				if(matchRefDto.getTimestamp() < 1578596400000L) break;
@@ -167,10 +184,33 @@ public class MultiSearchService {
 						recentMatchResults.add(participant.getStats().isWin());
 					}
 				}
+				if(matchRefDto.getRole().equals("DUO_SUPPORT")) {
+					if(!matchRefDto.getLane().equals("NONE")) {
+						if(!laneRate.containsKey(matchRefDto.getLane()))
+							laneRate.put(matchRefDto.getLane(), 0);
+						laneRate.put(matchRefDto.getLane(), laneRate.get(matchRefDto.getLane())+1);
+					} else {
+						if(!laneRate.containsKey("SUPPORT"))
+							laneRate.put("SUPPORT", 0);
+						laneRate.put("SUPPORT", laneRate.get("SUPPORT")+1);
+					}
+				} else {
+					if(!laneRate.containsKey(matchRefDto.getLane()))
+						laneRate.put(matchRefDto.getLane(), 0);
+					laneRate.put(matchRefDto.getLane(), laneRate.get(matchRefDto.getLane())+1);
+				}
 				idx++;
-				if(idx == 20) break;
+				if(idx == RECENT_GAME) break;
 			}
 		}
+		List<PositionDto> positions = new LinkedList<>();
+		for(String key: laneRate.keySet()) {
+			PositionDto position = new PositionDto();
+			position.setLane(key);
+			position.setRate(laneRate.get(key)*100/RECENT_GAME);
+			positions.add(position);
+		}
+		result.setPositionRates(positions);
 		result.setRecentMatchResults(recentMatchResults);
 		return result;
 	}

@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  name: "NavSearchBar ",
+  name: "NavSearchBar",
   data() {
     return {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2

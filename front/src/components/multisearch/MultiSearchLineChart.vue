@@ -7,11 +7,14 @@
 import LineChart from "vue-apexcharts"
 
 export default {
-    name: "MultiSearchLineChart",
-    components: {
-        LineChart,
-    },
-    data() {
+  name: "MultiSearchLineChart",
+  components: {
+      LineChart,
+  },
+  props: {
+    multiSearchData: Object,
+  },
+  data() {
       return {
         series: [
           {
@@ -31,7 +34,7 @@ export default {
           plotOptions: {
               bar: {
               horizontal: false,
-              columnWidth: '55%',
+              columnWidth: '40%',
               },
           },
           dataLabels: {
@@ -62,6 +65,29 @@ export default {
         },
       }
   },
+  methods: {
+    changeLaneData() {
+      for (var i of this.multiSearchData.positionRates) {
+        if ( i.lane === 'TOP') {
+          this.series[0].data[0] = i.rate
+        } else if ( i.lane === 'JUNGLE') {
+          this.series[0].data[1] = i.rate
+        } else if ( i.lane === 'MID') {
+          this.series[0].data[2] = i.rate
+
+        } else if ( i.lane === 'BOTTOM' | i.lane === 'BOT') {
+          this.series[0].data[3] = i.rate
+
+        } else {
+          this.series[0].data[4] = i.rate
+        }
+      } 
+    },
+  },
+  created() {
+    this.changeLaneData()
+  }
+
   // methods: {
   //   makeXaxis() {
   //     var test = document.getElementsByTagName("tspan")

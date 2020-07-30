@@ -17,11 +17,6 @@
 
         <div class="grid-body align-items-center">
 
-        <!-- 하위 그리드 -->
-          <!-- <div class="grid-body-top">
-            여기 뱃지 chip 써서 만들자
-          </div> -->
-
           <!-- 랭크 -->
           <div class="grid-body-center-left">
             <img :src="require(`@/assets/images/tier/${userDatas[index].tier}.png`)" alt="tier">
@@ -36,26 +31,21 @@
               {{ userDatas[index].tier }} {{ userDatas[index].rank }}
             </div>
             <div>
-              승률% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
+              {{ Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
             </div>
-
-
           </div>
 
           <!-- 가장 많이가는 라인 -->
           <div class="grid-body-bot-left">
-            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
-            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.lane}.png`)" alt="lane">
+            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.mainLane}.png`)" alt="mainLane">
+            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.subLane}.png`)" alt="subLane">
           </div>
 
-          <div class="grid-body-bot-right">
-          </div>
-
-          <!-- 배지 칩으로 넣어야함 -->
-          <div class="grid-body-lane">
+          <!-- 배지 칩으로 넣어야함 // 현재 더미데이터, 나중에는 서버에서 받아와서 for문 돌려야함 -->
+          <div class="grid-body-bot-right" style="text-align: left; padding-left: 15px">
+            <MultiSearchBedge :index="index"/>
           </div>
         </div>
-
         <!-- 레이더차트 컴포넌트 -->
         <div>
           <MultiSearchRadarChart/>
@@ -63,16 +53,16 @@
 
         <!-- 라인 차트 컴포넌트-->
         <div>
-          <MultiSearchLineChart/>
+          <MultiSearchLineChart :multiSearchData="multiSearchData"/>
         </div>
 
         <!-- 최근전적 -->
-        <div style="font-size: 12px;">
+        <div style="font-size: 10px;">
           {{ multiSearchData.recentMatchResults.wins }}승 {{ multiSearchData.recentMatchResults.fails }}패
           <br>
           {{ multiSearchData.recentMatchResults.rate }}%
           <br>
-          평점
+          {{ multiSearchData.recentMatchKda }}
 
         </div>
         
@@ -99,6 +89,7 @@ import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart"
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
+import MultiSearchBedge from "@/components/multisearch/MultiSearchBedge"
 
 import { mapActions } from "vuex"
 import { mapState } from "vuex"
@@ -111,6 +102,7 @@ export default {
       MultiSearchLatestChamp,
       MultiSearchMostChamp,
       MultiSearchRadarChart,
+      MultiSearchBedge,
     },
     data() {
       return {
@@ -125,20 +117,20 @@ export default {
       ]),
       ...mapGetters([
       ]),
-
+      
     },
     methods: {
       ...mapActions([
         "getMultiSearchDatas",
         "getUserDatas",
-      ])
+      ]),
+
     }
   }
     
 </script>
 
 <style scoped>
-
 
 .user-name {
   font-weight: bold;
@@ -190,7 +182,6 @@ export default {
     /* "cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t   cd-t" */
     "cd-c-l cd-c-l cd-c-l cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r cd-c-r"
     "cd-b-l cd-b-l cd-b-l cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r"
-    "cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l   cd-l"
     /* "cd-b-l cd-b-l cd-b-l cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r cd-b-r" */
   ;
 

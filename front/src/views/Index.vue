@@ -1,6 +1,6 @@
 <template>
   <v-container class="index">
-    <v-row justify="center" align="center">
+    <v-row class="index-row" justify="center" align="center">
       <IndexLogo />
       <IndexSearchBar />
       <IndexIntro />
@@ -42,3 +42,12 @@ export default {
   }
 };
 </script>
+
+<style>
+
+.index > .index-row {
+  width: 1000px;
+  margin: auto;
+}
+
+</style>

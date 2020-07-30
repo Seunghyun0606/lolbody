@@ -2,6 +2,8 @@ package com.ssafy.lolbody.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -101,12 +103,12 @@ public class ProfileService {
 					if (matchDto.getGameDuration() < 300) // 다시하기는 통계에 집계되지 않음
 						continue;
 
-					String line = "";
+					String line = matchReferenceDto.getLane();
 					if (matchReferenceDto.getRole().equals("DUO_SUPPORT")) {
-						line = "SUPPORT";
-					} else {
-						line = matchReferenceDto.getLane();
+						if (line.equals("BOTTOM") || line.equals("NONE"))
+							line = "SUPPORT";
 					}
+
 					String cham = preset.findByKey(matchReferenceDto.getChampion() + "").getName();
 					List<ParticipantIdentityDto> participantIdentityList = matchDto.getParticipantIdentities();
 					int participantId = -1;
@@ -250,12 +252,13 @@ public class ProfileService {
 					MatchDto matchDto = matchService.findByGameId(matchReferenceDto.getGameId());
 					if (matchDto.getGameDuration() < 300) // 다시하기는 통계에 집계되지 않음
 						continue;
-					String line = "";
+
+					String line = matchReferenceDto.getLane();
 					if (matchReferenceDto.getRole().equals("DUO_SUPPORT")) {
-						line = "SUPPORT";
-					} else {
-						line = matchReferenceDto.getLane();
+						if (line.equals("BOTTOM") || line.equals("NONE"))
+							line = "SUPPORT";
 					}
+
 					String cham = preset.findByKey(matchReferenceDto.getChampion() + "").getName();
 					List<ParticipantIdentityDto> participantIdentityList = matchDto.getParticipantIdentities();
 					int participantId = -1;
@@ -382,6 +385,14 @@ public class ProfileService {
 		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
 		matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
 				.collect(Collectors.toList());
+		Map<String, Integer> map = new HashMap<>();
+		map.put("TOP", 0);
+		map.put("JUNGLE", 1);
+		map.put("MIDDLE", 2);
+		map.put("BOTTOM", 3);
+		map.put("SUPPORT", 4);
+		map.put("NONE", 5);
+
 		int size = matchReferences.size(), idx = Integer.parseInt(num);
 		if (size - ((idx - 1) * 10) <= 0) {
 			return null;
@@ -464,13 +475,19 @@ public class ProfileService {
 						tmp.setGold(p.getStats().getGoldEarned());
 						tmp.setCs(p.getStats().getNeutralMinionsKilled() + p.getStats().getTotalMinionsKilled());
 						tmp.setCsPerMin(60.0 * tmp.getCs() / match.getGameDuration());
-						tmp.setLine(p.getTimeline().getRole().equals("DUO_SUPPORT") ? "SUPPORT"
-								: p.getTimeline().getLane());
+						String line = p.getTimeline().getLane();
+						if (p.getTimeline().getRole().equals("DUO_SUPPORT")
+								&& (line.equals("BOTTOM") || line.equals("NONE"))) {
+							tmp.setLine("SUPPORT");
+						} else
+							tmp.setLine(line);
 						if (j < 5)
 							blueTeammate.add(tmp);
 						else
 							redTeammate.add(tmp);
 					}
+					Collections.sort(blueTeammate, (o1, o2) -> map.get(o1.getLine()) - map.get(o2.getLine()));
+					Collections.sort(redTeammate, (o1, o2) -> map.get(o1.getLine()) - map.get(o2.getLine()));
 
 					blueTeam.setTeammate(blueTeammate);
 					redTeam.setTeammate(redTeammate);

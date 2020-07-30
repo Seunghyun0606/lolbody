@@ -15,6 +15,14 @@ public class MultiSearchDto {
 	private List<RecentGamesDto> recentGames;
 	private List<String> mostChamp;
 	private List<Boolean> recentMatchResults;
+	private double recentMatchKda;
+	
+	public double getRecentMatchKda() {
+		return recentMatchKda;
+	}
+	public void setRecentMatchKda(double recentMatchKda) {
+		this.recentMatchKda = recentMatchKda;
+	}
 	public String getHighestAchievedSeasonTier() {
 		return highestAchievedSeasonTier;
 	}
@@ -94,6 +102,7 @@ public class MultiSearchDto {
 				+ ", losses=" + losses + ", summonerLevel=" + summonerLevel + ", highestAchievedSeasonTier="
 				+ highestAchievedSeasonTier + ", MainLane=" + MainLane + ", SubLane=" + SubLane + ", positionRates="
 				+ positionRates + ", recentGames=" + recentGames + ", mostChamp=" + mostChamp + ", recentMatchResults="
-				+ recentMatchResults + "]";
+				+ recentMatchResults + ", recentMatchKda=" + recentMatchKda + "]";
 	}
+
 }

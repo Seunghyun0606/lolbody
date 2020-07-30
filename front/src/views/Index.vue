@@ -55,6 +55,7 @@ export default {
 .index > .index-row {
   width: 1000px;
   margin: auto;
+  
 }
 
 </style>

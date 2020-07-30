@@ -1,11 +1,9 @@
 <template>
   <v-container class='index-intro'>
-    <v-row>
-      <v-col>
-        
+    <v-row>        
+
         <IndexIntroText/>
 
-      </v-col>
       <v-col cols=6>
         <GraphPractice/>
 
@@ -38,6 +36,7 @@ export default {
 
 .index-intro {
   width: 690px !important;
+  padding: 12px 0 0;
 }
 
 </style>

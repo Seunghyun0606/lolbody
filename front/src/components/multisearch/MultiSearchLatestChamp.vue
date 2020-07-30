@@ -1,6 +1,6 @@
 <template>
 
-<div class="champ-card" :class="[ this.recentGame.win ? 'win' : 'fail' ]" >
+<div class="champ-card" :class="[ this.recentGame.win ? 'bg_win' : 'bg_fail' ]" >
   <div class="champ">
     <div class="lane">
       <img class="card-sub" :src="laneImage" alt="lane">  
@@ -13,7 +13,7 @@
       <img class="card-sub card-sub-right" :src="require(`@/assets/images/spell/${recentGame.spell2Id}.png`)" alt="spell-right">
     </div>
     <div class="champ-card-text">
-      {{ recentGame.kda.kills }} / {{ recentGame.kda.deaths }} / {{ recentGame.kda.assists }}
+      {{ recentGame.kda.kills }} / <span>{{ recentGame.kda.deaths }}</span> / {{ recentGame.kda.assists }}
     </div>
   </div>
 
@@ -55,7 +55,7 @@ export default {
 .champ-card {
   width: 90%;
   height: 70px;
-  border-radius: 30%;
+  border-radius: 15%;
   padding: 10px 4px 4px 4px;
 }
 
@@ -81,7 +81,13 @@ export default {
 }
 
 .champ-card-text {
+  padding-top: 5px;
   font-size: 9px;
+  font-weight: 900;
+}
+
+.champ-card-text > span {
+  color: red;
 }
   
 .card-sub {
@@ -98,13 +104,11 @@ export default {
   float: right;
 }
 
-.fail {
-  background-color: #ffebeb;
-
+.bg_fail {
+  background-color: #ffe1e1 ;
 }
 
-.win {
-  background-color: #e5f4ff;
-
+.bg_win {
+  background-color: #d1e5ff ;
 }
 </style>

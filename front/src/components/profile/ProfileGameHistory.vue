@@ -1,10 +1,10 @@
 <template>
     <v-container>
         <v-flex v-for="(matchData, idx) in matchDatas" :key="idx + '_matchData'">
-            <v-card class="text-center ma-1 mb-2" :class="{ bg_win : matchDatas[idx][matchDatas[idx].myTeam].win, bg_fail : !matchDatas[idx][matchDatas[idx].myTeam].win}" outlined>
+            <v-card class="ma-1 mb-2 vertical-align-center" :class="{ bg_win : matchDatas[idx][matchDatas[idx].myTeam].win, bg_fail : !matchDatas[idx][matchDatas[idx].myTeam].win, bg_gray : matchDatas[idx].noGame}" outlined>
                 <table height="100px">
                     <tr>
-                        <td width="80px">
+                        <td class="text-center" width="80px">
                             <v-row justify="center">
                                 <div class="pa-1 text-center">
                                     <small class="d-block fs-11 font-weight-bold">{{queues[matchDatas[idx].queue].shortName}}</small>
@@ -15,36 +15,37 @@
                                 <hr class="mb-2 mt-1" style="border:1px color:silver;" width="30%">
                             </v-row>
                             <v-row justify="center">
-                                <small class="fs-11 font-weight-bold">{{matchDatas[idx][matchDatas[idx].myTeam].win ? '승리' : '패배'}}</small>
+                                <small class="fs-11 font-weight-bold" v-if="matchDatas[idx].noGame">다시하기</small>
+                                <small class="fs-11 font-weight-bold" :class="{ fc_blue : matchDatas[idx][matchDatas[idx].myTeam].win, fc_red: !matchDatas[idx][matchDatas[idx].myTeam].win}" v-else>{{matchDatas[idx][matchDatas[idx].myTeam].win ? '승리' : '패배'}}</small>
                             </v-row>
                             <v-row justify="center">
                                 <small class="fs-11">{{changeTime(matchDatas[idx].duration)}}</small>
                             </v-row>
                         </td>
 
-                        <td width="120px">
+                        <td class="text-center" width="110px">
                             <div class="float-left">
-                                <v-avatar size="40">
+                                <v-avatar class="mr-1" size="40">
                                     <img :src="require('@/assets/images/champion/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].champ + '.png')"/>
                                 </v-avatar>
                             </div>
                             <div class="float-left">
                                 <div>
-                                    <img :src="require('@/assets/images/spell/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].spell1 + '.png')" width="22px"/>
-                                    <img :src="require('@/assets/images/perk/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].perk.toLowerCase() + '.png')" width="22px"/>
+                                    <img :src="require('@/assets/images/spell/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].spell1 + '.png')" class="vertical-align-bottom mr-1" width="22px"/>
+                                    <img :src="require('@/assets/images/perk/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].perk.toLowerCase() + '.png')" class="vertical-align-bottom border-rounded bg_black" width="22px"/>
                                 </div>
                                 <div>
-                                    <img :src="require('@/assets/images/spell/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].spell2 + '.png')" width="22px"/>
-                                    <img :src="require('@/assets/images/perk/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].perkStyle.toLowerCase() + '.png')" width="22px"/>
+                                    <img :src="require('@/assets/images/spell/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].spell2 + '.png')" class="vertical-align-bottom mr-1" width="22px"/>
+                                    <img :src="require('@/assets/images/perk/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].perkStyle.toLowerCase() + '.png')" class="vertical-align-bottom border-rounded bg_gray_op" width="22px"/>
                                 </div>
                             </div>
                             <small class="d-block clear fs-12 font-weight-bold">{{champoins.data[matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].champ].name}}</small>
                         </td>
 
-                        <td width="90px">
+                        <td class="text-center" width="90px">
                             <div class="fs-15 font-weight-bold">
                                 <span>{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].kills}}</span>/
-                                <span>{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].deaths}}</span>/
+                                <span class="fc_red">{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].deaths}}</span>/
                                 <span>{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].assists}}</span>
                             </div>
                             <div class="fs-13">
@@ -55,7 +56,7 @@
                                 <span>킬관여 {{Math.round(matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].ka)}}%</span>
                             </div>
                         </td>
-                        <td width="85px">
+                        <td class="text-center" width="85px">
                             <span class="d-block fs-12">레벨 {{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].level}}</span>
                             <span class="d-block fs-12">{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].cs}} ({{Math.round(matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].csPerMin*100)/100}}) CS</span>
                         </td>
@@ -107,49 +108,39 @@
                                     <td width="22px" class="item-border" v-else>
                                     </td>
 
-                                    <td width="22px" class="item-border">
+                                    <td width="22px" height="22px" class="item-border">
                                     </td>
                                 </tr>
                             </table>
                         </td>
 
                         <td width="160px">
-                            <table class="align-middle" width="160px">
-                                <tr class="align-middle" width="88px">
-                                    <td class="align-middle" height="16px"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[0].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].blueTeam.teammate[0].name}}</span></td>
-                                    <td><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[0].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].redTeam.teammate[0].name}}</span></td>
-                                </tr>
-
-                                <tr>
-                                    <td class="align-middle"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[1].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].blueTeam.teammate[1].name}}</span></td>
-                                    <td class="align-middle"><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[1].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].redTeam.teammate[1].name}}</span></td>
-                                </tr>
-
-                                <tr>
-                                    <td class="align-middle"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[2].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].blueTeam.teammate[2].name}}</span></td>
-                                    <td class="align-middle"><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[2].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].redTeam.teammate[2].name}}</span></td>
-                                </tr>
-
-                                <tr>
-                                    <td class="align-middle"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[3].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].blueTeam.teammate[3].name}}</span></td>
-                                    <td class="align-middle"><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[3].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].redTeam.teammate[3].name}}</span></td>
-                                </tr>
-
-                                <tr>
-                                    <td class="align-middle"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[4].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].blueTeam.teammate[4].name}}</span></td>
-                                    <td class="align-middle"><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[4].champ + '.png')" width="16px"/></td>
-                                    <td><span class="fs-12 textover">{{matchDatas[idx].redTeam.teammate[4].name}}</span></td>
-                                </tr>
-                            </table>
+                            <div class="fs-0">
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[0].name)">{{matchDatas[idx].blueTeam.teammate[0].name}}</a></div>
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[0].name)">{{matchDatas[idx].redTeam.teammate[0].name}}</a></div>
+                            
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[1].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[1].name)">{{matchDatas[idx].blueTeam.teammate[1].name}}</a></div>
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[1].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[1].name)">{{matchDatas[idx].redTeam.teammate[1].name}}</a></div>
+                            
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[2].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[2].name)">{{matchDatas[idx].blueTeam.teammate[2].name}}</a></div>
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[2].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[2].name)">{{matchDatas[idx].redTeam.teammate[2].name}}</a></div>
+                            
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[3].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[3].name)">{{matchDatas[idx].blueTeam.teammate[3].name}}</a></div>
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[3].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[3].name)">{{matchDatas[idx].redTeam.teammate[3].name}}</a></div>
+                            
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].blueTeam.teammate[4].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[4].name)">{{matchDatas[idx].blueTeam.teammate[4].name}}</a></div>
+                                <div class="summonerNametd"><img :src="require('@/assets/images/champion/' + matchDatas[idx].redTeam.teammate[4].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[4].name)">{{matchDatas[idx].redTeam.teammate[4].name}}</a></div>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -212,57 +203,36 @@ export default {
         },
         changeTime(time){
             return Math.floor(time/60)+ "분 " + (time - Math.floor(time/60)*60) +"초"
+        },
+        toProfile(nickname){
+            this.$router.push('/Profile/' + nickname);
         }
     }
 };
 </script>
 
 <style>
-.bg_blue{
-    background-color: rgba(0, 0, 255, 0.25) !important;
-}
-.bg_red{
-    background-color: rgba(255, 0, 0, 0.25) !important;
-}
-.clear {
-    clear: both;
-}
-.fs-15{
-    font-size: 0.938em;
-}
-.fs-14{
-    font-size: 0.875em;
-}
-.fs-13{
-    font-size: 0.813em;
-}
-.fs-12{
-    font-size: 0.75em;
-}
-.fs-11{
-    font-size: 0.688em;
-}
-.fs-10{
-    font-size: 0.625em;
-}
+
 .textover {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     width: 60px !important;
-    height : 24px !important; 
     display: block;
+    height: 16px;
+    text-decoration: none;
+    color : black !important;
 }
 .item-border{
     border-radius: 4px;
     background-color: rgba(133, 133, 133, 0.25);
     vertical-align: bottom;
 }
-.bg_fail {
-  background-color: #ffe1e1 !important;
+
+.summonerNametd {
+    display: inline-block;
+    vertical-align: center;
+    margin-bottom: 1px;
 }
 
-.bg_win {
-  background-color: #d1e5ff !important;
-}
 </style>

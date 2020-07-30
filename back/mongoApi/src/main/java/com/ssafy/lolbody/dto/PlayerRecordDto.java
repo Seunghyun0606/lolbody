@@ -1,11 +1,8 @@
 package com.ssafy.lolbody.dto;
 
-public class MatchInfoDto {
+public class PlayerRecordDto {
 	private String name;
-	private int team;
-	private boolean win;
 	private String champ;
-	private int queue;
 	private int kills;
 	private int deaths;
 	private int assists;
@@ -25,7 +22,6 @@ public class MatchInfoDto {
 	private int level;
 	private int gold;
 	private int cs;
-	private long duration;
 	private double csPerMin;
 	private String line;
 
@@ -37,36 +33,12 @@ public class MatchInfoDto {
 		this.name = name;
 	}
 
-	public int getTeam() {
-		return team;
-	}
-
-	public void setTeam(int team) {
-		this.team = team;
-	}
-
-	public boolean isWin() {
-		return win;
-	}
-
-	public void setWin(boolean win) {
-		this.win = win;
-	}
-
 	public String getChamp() {
 		return champ;
 	}
 
 	public void setChamp(String champ) {
 		this.champ = champ;
-	}
-
-	public int getQueue() {
-		return queue;
-	}
-
-	public void setQueue(int queue) {
-		this.queue = queue;
 	}
 
 	public int getKills() {
@@ -229,14 +201,6 @@ public class MatchInfoDto {
 		this.csPerMin = csPerMin;
 	}
 
-	public long getDuration() {
-		return duration;
-	}
-
-	public void setDuration(long duration) {
-		this.duration = duration;
-	}
-
 	public String getLine() {
 		return line;
 	}
@@ -247,12 +211,11 @@ public class MatchInfoDto {
 
 	@Override
 	public String toString() {
-		return "MatchInfoDto [name=" + name + ", team=" + team + ", win=" + win + ", champ=" + champ + ", queue="
-				+ queue + ", kills=" + kills + ", deaths=" + deaths + ", assists=" + assists + ", kda=" + kda + ", ka="
-				+ ka + ", spell1=" + spell1 + ", spell2=" + spell2 + ", item0=" + item0 + ", item1=" + item1
-				+ ", item2=" + item2 + ", item3=" + item3 + ", item4=" + item4 + ", item5=" + item5 + ", item6=" + item6
-				+ ", perk=" + perk + ", perkStyle=" + perkStyle + ", level=" + level + ", gold=" + gold + ", cs=" + cs
-				+ ", duration=" + duration + ", csPerMin=" + csPerMin + ", line=" + line + "]";
+		return "PlayerRecordDto [name=" + name + ", champ=" + champ + ", kills=" + kills + ", deaths=" + deaths
+				+ ", assists=" + assists + ", kda=" + kda + ", ka=" + ka + ", spell1=" + spell1 + ", spell2=" + spell2
+				+ ", item0=" + item0 + ", item1=" + item1 + ", item2=" + item2 + ", item3=" + item3 + ", item4=" + item4
+				+ ", item5=" + item5 + ", item6=" + item6 + ", perk=" + perk + ", perkStyle=" + perkStyle + ", level="
+				+ level + ", gold=" + gold + ", cs=" + cs + ", csPerMin=" + csPerMin + ", line=" + line + "]";
 	}
 
 }

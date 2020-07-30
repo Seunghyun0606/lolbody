@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.dto.MatchDto;
-import com.ssafy.lolbody.dto.MatchInfoDto;
 import com.ssafy.lolbody.dto.MatchRecordDto;
+import com.ssafy.lolbody.dto.PlayerRecordDto;
+import com.ssafy.lolbody.dto.TotalRecordDto;
 import com.ssafy.lolbody.dto.MatchReferenceDto;
 import com.ssafy.lolbody.dto.MatchlistDto;
 import com.ssafy.lolbody.dto.ParticipantDto;
@@ -22,10 +23,12 @@ import com.ssafy.lolbody.dto.ParticipantIdentityDto;
 import com.ssafy.lolbody.dto.ProfileDto;
 import com.ssafy.lolbody.dto.ProfileReferenceDto;
 import com.ssafy.lolbody.dto.SummonerDto;
+import com.ssafy.lolbody.dto.TeamRecordDto;
 import com.ssafy.lolbody.dto.WinRateDto;
 import com.ssafy.lolbody.preset.MongoDBPreset;
 import com.ssafy.lolbody.preset.PerkRepository;
 import com.ssafy.lolbody.preset.PerkStyleRepository;
+import com.ssafy.lolbody.repository.MatchRecordRepository;
 import com.ssafy.lolbody.repository.ProfileRepository;
 import com.ssafy.lolbody.preset.SpellRepository;
 
@@ -49,6 +52,8 @@ public class ProfileService {
 	PerkRepository perkRepository;
 	@Autowired
 	PerkStyleRepository perkStyleRepository;
+	@Autowired
+	MatchRecordRepository matchRecordRepository;
 
 	public ProfileReferenceDto getProfile(String name) throws Exception {
 		SummonerDto summonerDto = summonerService.findBySubName(name);
@@ -93,7 +98,7 @@ public class ProfileService {
 				int queue = matchReferenceDto.getQueue();
 				if (queue == 420 || queue == 430) {
 					MatchDto matchDto = matchService.findByGameId(matchReferenceDto.getGameId());
-					if (matchDto.getGameDuration() < 600) // 다시하기는 통계에 집계되지 않음
+					if (matchDto.getGameDuration() < 300) // 다시하기는 통계에 집계되지 않음
 						continue;
 
 					String line = "";
@@ -167,7 +172,7 @@ public class ProfileService {
 			List<Map.Entry<String, WinRateDto>> blEntries = new LinkedList<>(blindLine.entrySet());
 			Collections.sort(blEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
 
-			MatchRecordDto rankedRecord = new MatchRecordDto();
+			TotalRecordDto rankedRecord = new TotalRecordDto();
 			rankedRecord.setTotalRecord(rankedTotal);
 			if (rcEntries.size() > 0)
 				rankedRecord.setMostChamRecord(rcEntries.get(0).getValue());
@@ -185,7 +190,7 @@ public class ProfileService {
 				rankedRecord.setSecondLine(rlEntries.get(1).getKey());
 			profileReferenceDto.setRankedRecord(rankedRecord);
 
-			MatchRecordDto blindRecord = new MatchRecordDto();
+			TotalRecordDto blindRecord = new TotalRecordDto();
 			blindRecord.setTotalRecord(blindTotal);
 			if (bcEntries.size() > 0)
 				blindRecord.setMostChamRecord(bcEntries.get(0).getValue());
@@ -243,7 +248,7 @@ public class ProfileService {
 				int queue = matchReferenceDto.getQueue();
 				if (queue == 420 || queue == 430) {
 					MatchDto matchDto = matchService.findByGameId(matchReferenceDto.getGameId());
-					if (matchDto.getGameDuration() < 600) // 다시하기는 통계에 집계되지 않음
+					if (matchDto.getGameDuration() < 300) // 다시하기는 통계에 집계되지 않음
 						continue;
 					String line = "";
 					if (matchReferenceDto.getRole().equals("DUO_SUPPORT")) {
@@ -316,7 +321,7 @@ public class ProfileService {
 			List<Map.Entry<String, WinRateDto>> blEntries = new LinkedList<>(blindLine.entrySet());
 			Collections.sort(blEntries, (o1, o2) -> o2.getValue().getTotalGames() - o1.getValue().getTotalGames());
 
-			MatchRecordDto rankedRecord = new MatchRecordDto();
+			TotalRecordDto rankedRecord = new TotalRecordDto();
 			rankedRecord.setTotalRecord(rankedTotal);
 			if (rcEntries.size() > 0)
 				rankedRecord.setMostChamRecord(rcEntries.get(0).getValue());
@@ -334,7 +339,7 @@ public class ProfileService {
 				rankedRecord.setSecondLine(rlEntries.get(1).getKey());
 			profileReferenceDto.setRankedRecord(rankedRecord);
 
-			MatchRecordDto blindRecord = new MatchRecordDto();
+			TotalRecordDto blindRecord = new TotalRecordDto();
 			blindRecord.setTotalRecord(blindTotal);
 			if (bcEntries.size() > 0)
 				blindRecord.setMostChamRecord(bcEntries.get(0).getValue());
@@ -370,11 +375,13 @@ public class ProfileService {
 		return winRateDto;
 	}
 
-	public List<List<MatchInfoDto>> getMatchInfo(String name, String num) throws Exception{
-		List<List<MatchInfoDto>> matchInfoList = new ArrayList<>();
+	public List<MatchRecordDto> getMatchRecord(String name, String num) throws Exception {
+		List<MatchRecordDto> matchRecords = new ArrayList<>();
 		SummonerDto summonerDto = summonerService.findBySubName(name);
 		MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
 		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
+		matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
+				.collect(Collectors.toList());
 		int size = matchReferences.size(), idx = Integer.parseInt(num);
 		if (size - ((idx - 1) * 10) <= 0) {
 			return null;
@@ -388,60 +395,101 @@ public class ProfileService {
 				s = size - ((idx - 1) * 10) - 1;
 			}
 			for (int i = s; i >= 0; i--) {
-				matchInfoList.add(new ArrayList<>());
 				MatchReferenceDto matchReferenceDto = matchReferences.get(i);
 				MatchDto match = matchService.findByGameId(matchReferenceDto.getGameId());
 				List<ParticipantIdentityDto> users = match.getParticipantIdentities();
 				List<ParticipantDto> participants = match.getParticipants();
 
-				int[][] kda = new int[10][3];
-				int blueKills = 0, redKills = 0;
-				for (int j = 0; j < 10; j++) {
-					ParticipantDto p = participants.get(j);
-					kda[j][0] = p.getStats().getKills();
-					kda[j][1] = p.getStats().getDeaths();
-					kda[j][2] = p.getStats().getAssists();
-					if (j < 5)
-						blueKills += kda[j][0];
-					else
-						redKills += kda[j][0];
+				MatchRecordDto matchRecordDto = matchRecordRepository.findByGameId(matchReferenceDto.getGameId());
+				if (matchRecordDto == null) {
+					matchRecordDto = new MatchRecordDto();
+
+					matchRecordDto.setGameId(match.getGameId());
+					matchRecordDto.setQueue(match.getQueueId());
+					matchRecordDto.setTimestamp(match.getGameCreation());
+					matchRecordDto.setDuration(match.getGameDuration());
+					matchRecordDto.setNoGame(match.getGameDuration() < 300 ? true : false);
+
+					TeamRecordDto blueTeam = new TeamRecordDto();
+					TeamRecordDto redTeam = new TeamRecordDto();
+
+					blueTeam.setTeam(100);
+					blueTeam.setWin(match.getTeams().get(0).getWin().equals("Win") ? true : false);
+					redTeam.setTeam(200);
+					redTeam.setWin(match.getTeams().get(1).getWin().equals("Win") ? true : false);
+
+					List<PlayerRecordDto> blueTeammate = new ArrayList<>();
+					List<PlayerRecordDto> redTeammate = new ArrayList<>();
+
+					int[][] kda = new int[10][3];
+					int blueKills = 0, redKills = 0;
+					for (int j = 0; j < 10; j++) {
+						ParticipantDto p = participants.get(j);
+						kda[j][0] = p.getStats().getKills();
+						kda[j][1] = p.getStats().getDeaths();
+						kda[j][2] = p.getStats().getAssists();
+						if (j < 5)
+							blueKills += kda[j][0];
+						else
+							redKills += kda[j][0];
+					}
+					for (int j = 0; j < 10; j++) {
+						PlayerRecordDto tmp = new PlayerRecordDto();
+						ParticipantDto p = participants.get(j);
+						tmp.setName(users.get(j).getPlayer().getSummonerName());
+						tmp.setChamp(preset.findByKey(p.getChampionId() + "").getName());
+						tmp.setKills(kda[j][0]);
+						tmp.setDeaths(kda[j][1]);
+						tmp.setAssists(kda[j][2]);
+						if (tmp.getKills() + tmp.getAssists() == 0)
+							tmp.setKda(0.0);
+						else
+							tmp.setKda(((double) tmp.getKills() + tmp.getAssists()) / tmp.getDeaths());
+						if (tmp.getKills() + tmp.getAssists() == 0)
+							tmp.setKa(0.0);
+						else
+							tmp.setKa(100.0 * (tmp.getKills() + tmp.getAssists()) / (j < 5 ? blueKills : redKills));
+						tmp.setSpell1(spellRepository.findByKey(p.getSpell1Id() + "").getName());
+						tmp.setSpell2(spellRepository.findByKey(p.getSpell2Id() + "").getName());
+						tmp.setItem0(p.getStats().getItem0());
+						tmp.setItem1(p.getStats().getItem1());
+						tmp.setItem2(p.getStats().getItem2());
+						tmp.setItem3(p.getStats().getItem3());
+						tmp.setItem4(p.getStats().getItem4());
+						tmp.setItem5(p.getStats().getItem5());
+						tmp.setItem6(p.getStats().getItem6());
+						tmp.setPerk(perkRepository.findByKey(p.getStats().getPerk0()).getName().replaceAll(" ", ""));
+						tmp.setPerkStyle(perkStyleRepository.findByKey(p.getStats().getPerkSubStyle()).getName());
+						tmp.setLevel(p.getStats().getChampLevel());
+						tmp.setGold(p.getStats().getGoldEarned());
+						tmp.setCs(p.getStats().getNeutralMinionsKilled() + p.getStats().getTotalMinionsKilled());
+						tmp.setCsPerMin(60.0 * tmp.getCs() / match.getGameDuration());
+						tmp.setLine(p.getTimeline().getRole().equals("DUO_SUPPORT") ? "SUPPORT"
+								: p.getTimeline().getLane());
+						if (j < 5)
+							blueTeammate.add(tmp);
+						else
+							redTeammate.add(tmp);
+					}
+
+					blueTeam.setTeammate(blueTeammate);
+					redTeam.setTeammate(redTeammate);
+					matchRecordDto.setBlueTeam(blueTeam);
+					matchRecordDto.setRedTeam(redTeam);
+
+					matchRecordRepository.save(matchRecordDto);
 				}
+				int myIdx = -1;
 				for (int j = 0; j < 10; j++) {
-					MatchInfoDto tmp = new MatchInfoDto();
-					ParticipantDto p = participants.get(j);
-					tmp.setName(users.get(j).getPlayer().getSummonerName());
-					tmp.setTeam(j < 5 ? 100 : 200);
-					tmp.setWin(p.getStats().isWin());
-					tmp.setChamp(preset.findByKey(p.getChampionId() + "").getName());
-					tmp.setQueue(matchReferenceDto.getQueue());
-					tmp.setKills(kda[j][0]);
-					tmp.setDeaths(kda[j][1]);
-					tmp.setAssists(kda[j][2]);
-					tmp.setKda(((double) tmp.getKills() + tmp.getAssists()) / tmp.getDeaths());
-					tmp.setKa(100.0 * (tmp.getKills() + tmp.getAssists()) / (j < 5 ? blueKills : redKills));
-					tmp.setSpell1(spellRepository.findByKey(p.getSpell1Id() + "").getName());
-					tmp.setSpell2(spellRepository.findByKey(p.getSpell2Id() + "").getName());
-					tmp.setItem0(p.getStats().getItem0());
-					tmp.setItem1(p.getStats().getItem1());
-					tmp.setItem2(p.getStats().getItem2());
-					tmp.setItem3(p.getStats().getItem3());
-					tmp.setItem4(p.getStats().getItem4());
-					tmp.setItem5(p.getStats().getItem5());
-					tmp.setItem6(p.getStats().getItem6());
-					tmp.setPerk(perkRepository.findByKey(p.getStats().getPerk0()).getName().replaceAll(" ", ""));
-					tmp.setPerkStyle(perkStyleRepository.findByKey(p.getStats().getPerkSubStyle()).getName());
-					tmp.setLevel(p.getStats().getChampLevel());
-					tmp.setGold(p.getStats().getGoldEarned());
-					tmp.setCs(p.getStats().getNeutralMinionsKilled() + p.getStats().getTotalMinionsKilled());
-					tmp.setDuration(match.getGameDuration());
-					tmp.setCsPerMin(60.0 * tmp.getCs() / tmp.getDuration());
-					tmp.setLine(
-							p.getTimeline().getRole().equals("DUO_SUPPORT") ? "SUPPORT" : p.getTimeline().getLane());
-					matchInfoList.get(s - i).add(tmp);
+					if (summonerDto.getName().equals(users.get(j).getPlayer().getSummonerName()))
+						myIdx = j;
 				}
+				matchRecordDto.setMyTeam(myIdx < 5 ? "blueTeam" : "redTeam");
+				matchRecordDto.setMyIndex(myIdx % 5);
+				matchRecords.add(matchRecordDto);
 			}
 		}
-		return matchInfoList;
+		return matchRecords;
 	}
 
 }

@@ -65,7 +65,7 @@ export default {
 
 .lane {
   position: absolute;
-  top: -10px;
+  top: -11px;
 }
 
 .spell {
@@ -93,7 +93,8 @@ export default {
 .card-sub {
   width: 40%;
   border-radius: 70%;
-  border: 0.01px solid white;
+  border: 0.01px solid #f0ffffb5;
+  background-color: #f0ffffb5;
 }
 
 .card-sub-left {

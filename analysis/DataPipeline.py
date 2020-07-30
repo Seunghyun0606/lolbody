@@ -213,7 +213,7 @@ def get_match_data(match_id):
         playtime = match_participants[idx].get('timeline').get('playtime')
 
         player_in_game_stats = [account_id, summoner_name, match_id, position, playtime]
-        print(player_in_game_stats)
+        # print(player_in_game_stats)
 
         # 플레이어 stats 삽입
         for stats in save_stats_list:
@@ -252,14 +252,14 @@ def create_folder(path):
 
 def main_logic(rank, division):
     now = time.localtime()
-    now = "%02d%02d%02d_%02dh%02dm%02ds" % (int(str(now.tm_year)[2:]), now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+    now = "%02d%02d%02d_%02d:%02d:%02d:" % (int(str(now.tm_year)[2:]), now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
     print(now)
     print()
     create_folder(now[:6])
     create_folder(now[:6] + '/' + rank)
 
     try:
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_id_list.csv', 'r', newline='')
+        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_id_list.csv', 'r', newline='', encoding='utf-8')
         csvf = csv.reader(file)
         for lst in csvf:
             summoner_id_list = lst
@@ -272,7 +272,7 @@ def main_logic(rank, division):
             if tmp_summoner_id_list is None: break
             summoner_id_list += tmp_summoner_id_list
         
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_id_list.csv', 'w', newline='')
+        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_id_list.csv', 'w', newline='', encoding='utf-8')
         csvfile = csv.writer(file)
         csvfile.writerow(summoner_id_list)
 
@@ -281,7 +281,7 @@ def main_logic(rank, division):
 
 
     try:
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_account_list.csv', 'r', newline='')
+        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_account_list.csv', 'r', newline='', encoding='utf-8')
         csvf = csv.reader(file)
         for lst in csvf:
             summoner_account_list = lst
@@ -295,7 +295,7 @@ def main_logic(rank, division):
             print(idx)
             summoner_account_list.append(tmp_summoner_account_id)
 
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_account_list.csv', 'w', newline='')
+        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_account_list.csv', 'w', newline='', encoding='utf-8')
         csvfile = csv.writer(file)
         csvfile.writerow(summoner_account_list)
 
@@ -304,7 +304,7 @@ def main_logic(rank, division):
 
 
     try:
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_match_id_list.csv', 'r', newline='')
+        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_match_id_list.csv', 'r', newline='', encoding='utf-8')
         csvf = csv.reader(file)
         for lst in csvf:
             match_id_list = lst
@@ -318,7 +318,7 @@ def main_logic(rank, division):
             print(idx)
             match_id_list.append(match_id)
 
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_match_id_list.csv', 'w', newline='')
+        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_match_id_list.csv', 'w', newline='', encoding='utf-8')
         csvfile = csv.writer(file)
         csvfile.writerow(match_id_list)
 
@@ -345,36 +345,36 @@ def main_logic(rank, division):
 
     lane_name = ['top', 'mid', 'jungle', 'carry', 'support']
     for idx, lane in enumerate([top, mid, jungle, carry, support]):
-        print(lane)
-        file = open('./csv/' + now[:6] + '/' + rank + '/' + now[:6] + '_%s.csv' % lane_name[idx], 'w', newline='')
+        print(lane, idx)
+        file = open('./csv/' + now[:6] + '/' + rank + '/' + now[:6] + '_%s.csv' % lane_name[idx], 'w', newline='', encoding='utf-8')
         csvfile = csv.writer(file)
         csvfile.writerow([
-        'account_id',                   # 암호화된 유저 아이디
-        'summoner_name',                # 소환사 명
-        'match_id',                     # match id
-        'position',                     # 포지션
-        'playtime',                     # 게임 플레이 시간
-        'kills',                        # kill
-        'deaths',                       # deaths
-        'assists',                      # assists
-        'totalDamageDealtToChampions',  # 챔피언에게 입힌 피해량
-        'totalHeal',                    # 총 회복량
-        'damageSelfMitigated',          # 감소시킨 피해량(방어막?)
-        'visionScore',                  # 시야점수
-        'timeCCingOthers',              # cc기에 맞은 총 시간
-        'totalDamageTaken',             # 받은 피해량
-        'goldEarned',                   # 총 골드
-        'totalMinionsKilled',           # cs
-        'neutralMinionsKilled',         # 중립몹 킬수
-        'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
-        'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
-        'visionWardsBoughtInGame',      # 핑와 구매 개수
-        'wardsPlaced',                  # 와드 설치수
-        'wardsKilled',                  # 와드 파괴수
-        'killsRatio',                   # 킬관여율
-        'deathsRatio',                  # 데스관여울
-    ])
-        for row in top:
+            'account_id',                   # 암호화된 유저 아이디
+            'summoner_name',                # 소환사 명
+            'match_id',                     # match id
+            'position',                     # 포지션
+            'playtime',                     # 게임 플레이 시간
+            'kills',                        # kill
+            'deaths',                       # deaths
+            'assists',                      # assists
+            'totalDamageDealtToChampions',  # 챔피언에게 입힌 피해량
+            'totalHeal',                    # 총 회복량
+            'damageSelfMitigated',          # 감소시킨 피해량(방어막?)
+            'visionScore',                  # 시야점수
+            'timeCCingOthers',              # cc기에 맞은 총 시간
+            'totalDamageTaken',             # 받은 피해량
+            'goldEarned',                   # 총 골드
+            'totalMinionsKilled',           # cs
+            'neutralMinionsKilled',         # 중립몹 킬수
+            'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
+            'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
+            'visionWardsBoughtInGame',      # 핑와 구매 개수
+            'wardsPlaced',                  # 와드 설치수
+            'wardsKilled',                  # 와드 파괴수
+            'killsRatio',                   # 킬관여율
+            'deathsRatio',                  # 데스관여울
+        ])
+        for row in lane:
             if type(row) != type(['list']): continue
             csvfile.writerow(row)
         file.close()

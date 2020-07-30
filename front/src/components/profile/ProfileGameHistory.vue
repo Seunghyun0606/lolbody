@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="!isLoading">
+    <v-container>
         <v-flex v-for="(matchData, idx) in matchDatas" :key="idx + '_matchData'">
             <v-card class="text-center ma-1 mb-2" :class="{ bg_win : matchDatas[idx][matchDatas[idx].myTeam].win, bg_fail : !matchDatas[idx][matchDatas[idx].myTeam].win}" outlined>
                 <table height="100px">
@@ -168,17 +168,16 @@ export default {
     name: "ProfileGameHistory",
     data: function() {
         return {
-            useridx: [],
             champoins,
             queues,
             isLoading : true
         }
     },
-    mounted(){
-        this.getMatchDatas();
-        console.log(this.matchDatas[0][this.matchDatas[0].myTeam].win);
-        //console.log(new Date(1595840710509));
-    },
+    // mounted(){
+    //     this.getMatchDatas();
+    //     console.log(this.matchDatas[0][this.matchDatas[0].myTeam].win);
+    //     //console.log(new Date(1595840710509));
+    // },
     computed: {
       ...mapState([
         'profileDatas',
@@ -189,23 +188,15 @@ export default {
         // ...mapActions([
         //     'getMatchDatas'
         // ]),
-        async getMatchDatas(){
-            await this.$store.dispatch('getMatchDatas', {
-                userName: this.profileDatas.summonerName, 
-                num : 1
-            });
+        // async getMatchDatas(){
+        //     await this.$store.dispatch('getMatchDatas', {
+        //         userName: this.profileDatas.summonerName, 
+        //         num : 1
+        //     });
             
-            for(let i = 0; i < this.matchDatas.length; i++) {
-                for(let j = 0; j < this.matchDatas[i].length; j++){
-                    if(this.matchDatas[i][j].name == this.profileDatas.summonerName){
-                        this.useridx.push(j);
-                        break;
-                    }
-                }
-            }
-            this.isLoading = false;
-            console.log("loading done");
-        },
+        //     this.isLoading = false;
+        //     console.log("loading done");
+        // },
         calcDate(time) {
             let now = new Date();
             let gametime = new Date(time);

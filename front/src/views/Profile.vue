@@ -163,7 +163,17 @@ export default {
                 this.now.src = this.profileDatas.tier;
                 this.now.rank = this.profileDatas.rank;
             }
+            this.getMatchDatas();
             this.triger.isLoading = false;
+        },
+        async getMatchDatas(){
+            await this.$store.dispatch('getMatchDatas', {
+                userName: this.profileDatas.summonerName, 
+                num : 1
+            });
+            
+            this.isLoading = false;
+            console.log("loading done");
         },
         getRankData(){
             //LineChart에 데이터  전달

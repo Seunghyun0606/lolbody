@@ -2,7 +2,6 @@ package com.ssafy.lolbody.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -496,13 +495,22 @@ public class ProfileService {
 
 					matchRecordRepository.save(matchRecordDto);
 				}
-				int myIdx = -1;
-				for (int j = 0; j < 10; j++) {
-					if (summonerDto.getName().equals(users.get(j).getPlayer().getSummonerName()))
-						myIdx = j;
+				
+				matchRecordDto.setMyTeam("blueTeam");
+				matchRecordDto.setMyIndex(0);
+
+				for (int j = 0; j < 5; j++) {
+					if (summonerDto.getName().equals(matchRecordDto.getBlueTeam().getTeammate().get(j).getName())) {
+						matchRecordDto.setMyTeam("blueTeam");
+						matchRecordDto.setMyIndex(j);
+						break;
+					}
+					if (summonerDto.getName().equals(matchRecordDto.getRedTeam().getTeammate().get(j).getName())) {
+						matchRecordDto.setMyTeam("redTeam");
+						matchRecordDto.setMyIndex(j);
+						break;
+					}
 				}
-				matchRecordDto.setMyTeam(myIdx < 5 ? "blueTeam" : "redTeam");
-				matchRecordDto.setMyIndex(myIdx % 5);
 				matchRecords.add(matchRecordDto);
 			}
 		}

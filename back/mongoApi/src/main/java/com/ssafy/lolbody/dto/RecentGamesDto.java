@@ -1,7 +1,5 @@
 package com.ssafy.lolbody.dto;
 
-import java.util.List;
-
 public class RecentGamesDto {
 	private String spell1Id;
 	private String spell2Id;

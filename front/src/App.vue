@@ -12,7 +12,7 @@
 
     <v-main class='mt-16 pt-0'>
       
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
 
     </v-main>
 

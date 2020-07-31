@@ -48,14 +48,14 @@
 					<div class="mt-2 text-center" v-if="now.src != null"> 
 						<div class="icon pa-1 d-inline-block">
 							<span class="rank fs-14">{{now.rank}}</span>
-							<img :src="require('@/assets/images/tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
+							<img :src="require('@/assets/images/tier/'+now.src+'.png')" @error="errorImage" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.totalRecord.wins}}승</span> <span class="fc_red fs-13">{{now.totalRecord.losses}}패</span>)</span>
 							</v-card-text>
 						</div>
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="70">
-								<v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" alt="모스트 픽" v-if="now.mostCham != 'null'"/>
+								<v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" @error="errorImage" alt="모스트 픽" v-if="now.mostCham != 'null'"/>
 							</v-avatar>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostChamRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
@@ -63,7 +63,7 @@
 						</div>
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
-								<v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')" v-if="now.mostLine != 'null'"/>
+								<v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')" @error="errorImage" v-if="now.mostLine != 'null'"/>
 							</v-avatar>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
@@ -71,7 +71,7 @@
 						</div>
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
-								<v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')" v-if="now.secondLine != 'null'"/>
+								<v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')" @error="errorImage" v-if="now.secondLine != 'null'"/>
 							</v-avatar>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.secondLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.secondLineRecord.losses}}패</span>)</span>
@@ -149,8 +149,14 @@ export default {
 	}),
 	mounted(){
 		const userName = this.$route.params.userName;
+		//const userName =  window.location.href.split("/");
 		//console.log(userName);
 		this.getProfileDatas(userName);
+	},
+	beforeUpdate(){
+		//const userName = this.$route.params.userName;
+		console.log("Updated");
+		//this.getProfileDatas(userName);
 	},
 	computed: {
 		...mapState([

@@ -26,13 +26,13 @@
                         <td class="text-center" width="110px">
                             <div class="float-left">
                                 <v-avatar class="mr-1" size="40">
-                                    <img :src="require('@/assets/images/champion/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].champ + '.png')"/>
+                                    <img :src="require('@/assets/images/champion/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].champ + '.png')" @error="errorImage()"/>
                                 </v-avatar>
                             </div>
                             <div class="float-left">
                                 <div>
-                                    <img :src="require('@/assets/images/spell/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].spell1 + '.png')" class="vertical-align-bottom mr-1" width="22px"/>
-                                    <img :src="require('@/assets/images/perk/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].perk.toLowerCase() + '.png')" class="vertical-align-bottom border-rounded bg_black" width="22px"/>
+                                    <img :src="require('@/assets/images/spell/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].spell1 + '.png')" @error="errorImage()" class="vertical-align-bottom mr-1" width="22px"/>
+                                    <img :src="require('@/assets/images/perk/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].perk.toLowerCase() + '.png')" @error="errorImage()" class="vertical-align-bottom border-rounded bg_black" width="22px"/>
                                 </div>
                                 <div>
                                     <img :src="require('@/assets/images/spell/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].spell2 + '.png')" class="vertical-align-bottom mr-1" width="22px"/>
@@ -206,7 +206,10 @@ export default {
         },
         toProfile(nickname){
             this.$router.push('/Profile/' + nickname);
-        }
+        },
+		errorImage(event){
+			event.target.src = require('@/assets/images/error.png');
+		}
     }
 };
 </script>

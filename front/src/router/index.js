@@ -14,7 +14,7 @@ const routes = [
     component: Index,
   },
   {
-    path: '/Profile',
+    path: '/Profile/:userName',
     name: 'proifle',
     component: Profile,
   },

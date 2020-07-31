@@ -1,11 +1,12 @@
 <template>
-  <div class="index">
+  <v-container class="index">
+    <v-row class="index-row" justify="center" align="center">
       <IndexLogo />
-      <ProfileGameHistory/>
       <IndexSearchBar />
       <IndexIntro />
-      <input v-model="userName" style="border: 1px solid black;" type="text" @keyup.enter="test(userName)">
-  </div>
+
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -13,9 +14,9 @@
 import IndexLogo from '@/components/index/IndexLogo.vue';
 import IndexSearchBar from '@/components/index/IndexSearchBar.vue';
 import IndexIntro from '@/components/index/IndexIntro.vue';
-import ProfileGameHistory from '@/components/profile/ProfileGameHistory'
 
 import { mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Index',
@@ -24,11 +25,14 @@ export default {
     IndexLogo,
     IndexSearchBar,
     IndexIntro,
-    ProfileGameHistory,
+  },
+  computed: {
+    ...mapState(['isIndex'])
   },
 
   methods: {
     ...mapActions(["getProfileDatas"]),
+
     test(){
         this.getProfileDatas(this.userName);
         this.$router.push('/Profile');
@@ -37,8 +41,21 @@ export default {
 
   data() {
     return {
-      userName: ''
+      userName: '',
     }
+  },
+  created() {
+    this.$store.commit('toggleNavSearch', true)
   }
 };
 </script>
+
+<style>
+
+.index > .index-row {
+  width: 1000px;
+  margin: auto;
+  
+}
+
+</style>

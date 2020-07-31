@@ -64,7 +64,7 @@ export default {
             },
             yaxis: {
               title: {
-                text: 'Temperature'
+                text: 'LP'
               },
               tickAmount: 15,
               min: 5,

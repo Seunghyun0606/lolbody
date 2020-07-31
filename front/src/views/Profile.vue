@@ -147,16 +147,16 @@ export default {
 		now:{},
 		item:{}
 	}),
+	beforeRouteUpdate (to, from, next) {
+		const userName = this.$route.params.userName;
+		this.getProfileDatas(userName);
+		next()
+	},
 	mounted(){
 		const userName = this.$route.params.userName;
 		//const userName =  window.location.href.split("/");
 		//console.log(userName);
 		this.getProfileDatas(userName);
-	},
-	beforeUpdate(){
-		//const userName = this.$route.params.userName;
-		console.log("Updated");
-		//this.getProfileDatas(userName);
 	},
 	computed: {
 		...mapState([
@@ -170,6 +170,10 @@ export default {
 		// ...mapActions([
 		//         'getProfileDatas',
 		// ]),
+		loadDatas(){
+			const userName = this.$route.params.userName;
+			this.getProfileDatas(userName);
+		},
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
 			this.now = this.profileDatas.rankedRecord;

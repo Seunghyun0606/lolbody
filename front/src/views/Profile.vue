@@ -11,7 +11,7 @@
 						<v-col cols="3">
 							<div class="avatar mt-3 ml-3 text-center">
 								<v-avatar size="70">
-									<v-img :src="require('@/assets/images/profileicon/'+profileDatas.profileIconId+'.png')" v-if="profileDatas.profileIconId != 'null'"/>
+									<v-img :src="require('@/assets/images/profileicon/'+profileDatas.profileIconId+'.png')" @error="errorImage" v-if="profileDatas.profileIconId != 'null'"/>
 								</v-avatar>
 								<span class="level fs-10">{{profileDatas.summonerLevel}}</span>
 							</div>
@@ -149,7 +149,7 @@ export default {
 	}),
 	mounted(){
 		const userName = this.$route.params.userName;
-		console.log(userName);
+		//console.log(userName);
 		this.getProfileDatas(userName);
 	},
 	computed: {
@@ -171,7 +171,6 @@ export default {
 				this.profileDatas.tier= 'unranked';
 				this.profileDatas.rank = 'unranked';
 				this.changeNomarlGame();
-				console.log('test');
 			}else {
 				this.now.src = this.profileDatas.tier;
 				this.now.rank = this.profileDatas.rank;
@@ -186,7 +185,7 @@ export default {
 			});
 			
 			this.isLoading = false;
-			console.log("loading done");
+			//console.log("loading done");
 		},
 		getRankData(){
 			//LineChart에 데이터    전달
@@ -215,6 +214,9 @@ export default {
 		changeTotalPointDate(){
 			this.triger.LPActive = false;
 			this.triger.totalPointActive = true;
+		},
+		errorImage(event){
+			event.target.src = require('@/assets/images/error.png');
 		}
 	}
 }

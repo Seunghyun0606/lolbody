@@ -6,10 +6,11 @@
 - vuex
 - vue-router
 - vuetify
-
 - axios
 - apexcharts
 - vue-apexcharts
+- material-design-icons-iconfont
+  - yarn add material-design-icons-iconfont -D
 
 ## Project setup
 ```

@@ -5,14 +5,14 @@ API_KEY = 'RGAPI-a76bd748-5749-43eb-9df2-7c99ee10c461'
 def check_api_key(api_key):
     pass
 
-# 티어와 구간을 정하면 그 랭크에 위치한 유저의 소환사명을 리스트로 반환
-def get_summoner_id_list(tier, division, page=1):
-    if type(tier) != type('string'): return None
+# 랭크와 구간을 정하면 그 랭크에 위치한 유저의 소환사명을 리스트로 반환
+def get_summoner_id_list(rank, division, page=1):
+    if type(rank) != type('string'): return None
     if type(division) != type(123456789) or 0 > division or division > 4: return None
-    tier = tier.upper()
+    rank = rank.upper()
     divisions = ['', 'I', 'II', 'III', 'IV']
     division = divisions[division]
-    get_summoners_accounts_URL = 'https://kr.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/%s/%s' % (tier, division)
+    get_summoners_accounts_URL = 'https://kr.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/%s/%s' % (rank, division)
     summoner_accounts = requests.get(get_summoners_accounts_URL, \
         params={ 'api_key': API_KEY, 'page': page }).json()
     # 데이터 전송이 성공한 경우 list type 실패한 경우 dict type
@@ -379,7 +379,7 @@ def main_logic(rank, division):
             csvfile.writerow(row)
         file.close()
 
-if __name__ == '__main__':
+def manual_mode():
     input_accept = False
 
     ranks = ['diamond', 'platinum', 'gold', 'silver', 'bronze', 'iron']
@@ -431,11 +431,11 @@ if __name__ == '__main__':
 
     main_logic(rank, division)
 
-    # now = time.localtime()
-    # now = "%02d%02d%02d_%02dh%02dm%02ds" % (int(str(now.tm_year)[2:]), now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
-    # file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_account_list.csv', 'r', newline='')
-    # csvf = csv.reader(file)
-    # for lst in csvf:
-    #     summoner_account_list = lst
-    #     break
-    # print(summoner_account_list)
+if __name__ == '__main__':
+    # 랭크별로 auto수집
+    ranks = ranks = ['diamond', 'platinum', 'gold', 'silver', 'bronze', 'iron']
+    for rank in ranks:
+        main_logic(rank, 1)
+    # manual_mode()
+
+    

@@ -106,18 +106,19 @@ for rank in ranks:
 
         # 이상치 제거
         idxs = []
-        
         for column in list(using_data.columns):
             idxs += list(outliers(using_data[column]).index)
             # csPerMin_outlier_idx = list(outliers(using_data.csPerMin).index)
             # deathsRatio_outlier_idx = list(outliers(using_data.deathsRatio).index)
         using_data = using_data.drop(idxs).reset_index(drop=True)
 
+        # 랭크별로 각 요소의 평균 삽입
         row = [position, ]
         for column in list(using_data.columns):
             row.extend([using_data[column].mean(), using_data[column].std()])
         print(row)
         csvfile.writerow(row)
+        file.close()
         # data_stastics = [d.mean(), d.std()]
         # print(data_stastics)
 

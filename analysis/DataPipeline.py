@@ -1,18 +1,18 @@
 import requests, json, random, time, os, csv
 
-API_KEY = 'RGAPI-a76bd748-5749-43eb-9df2-7c99ee10c461'
+API_KEY = 'RGAPI-d30e4585-746b-4fc0-8d3c-223ba52469be'
 
 def check_api_key(api_key):
     pass
 
-# 티어와 구간을 정하면 그 랭크에 위치한 유저의 소환사명을 리스트로 반환
-def get_summoner_id_list(tier, division, page=1):
-    if type(tier) != type('string'): return None
+# 랭크와 구간을 정하면 그 랭크에 위치한 유저의 소환사명을 리스트로 반환
+def get_summoner_id_list(rank, division, page=1):
+    if type(rank) != type('string'): return None
     if type(division) != type(123456789) or 0 > division or division > 4: return None
-    tier = tier.upper()
+    rank = rank.upper()
     divisions = ['', 'I', 'II', 'III', 'IV']
     division = divisions[division]
-    get_summoners_accounts_URL = 'https://kr.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/%s/%s' % (tier, division)
+    get_summoners_accounts_URL = 'https://kr.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/%s/%s' % (rank, division)
     summoner_accounts = requests.get(get_summoners_accounts_URL, \
         params={ 'api_key': API_KEY, 'page': page }).json()
     # 데이터 전송이 성공한 경우 list type 실패한 경우 dict type
@@ -214,6 +214,7 @@ def get_match_data(match_id):
 
         player_in_game_stats = [account_id, summoner_name, match_id, position, playtime]
         # print(player_in_game_stats)
+        # print(match_id)
 
         # 플레이어 stats 삽입
         for stats in save_stats_list:
@@ -255,11 +256,13 @@ def main_logic(rank, division):
     now = "%02d%02d%02d_%02d:%02d:%02d:" % (int(str(now.tm_year)[2:]), now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
     print(now)
     print()
-    create_folder(now[:6])
-    create_folder(now[:6] + '/' + rank)
+    create_folder(now[:4])
+    create_folder(now[:4] + '/' + rank)
+    root = './csv/%s/%s/%s' % (now[:4], rank, now[:4])
 
+    # 이미 summoner_list가 존재하는 경우
     try:
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_id_list.csv', 'r', newline='', encoding='utf-8')
+        file = open(root + '_summoner_id_list.csv', 'r', newline='', encoding='utf-8')
         csvf = csv.reader(file)
         for lst in csvf:
             summoner_id_list = lst
@@ -272,7 +275,7 @@ def main_logic(rank, division):
             if tmp_summoner_id_list is None: break
             summoner_id_list += tmp_summoner_id_list
         
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_id_list.csv', 'w', newline='', encoding='utf-8')
+        file = open(root + '_summoner_id_list.csv', 'w', newline='', encoding='utf-8')
         csvfile = csv.writer(file)
         csvfile.writerow(summoner_id_list)
 
@@ -281,7 +284,7 @@ def main_logic(rank, division):
 
 
     try:
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_account_list.csv', 'r', newline='', encoding='utf-8')
+        file = open(root + '_summoner_account_list.csv', 'r', newline='', encoding='utf-8')
         csvf = csv.reader(file)
         for lst in csvf:
             summoner_account_list = lst
@@ -295,7 +298,7 @@ def main_logic(rank, division):
             print(idx)
             summoner_account_list.append(tmp_summoner_account_id)
 
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_account_list.csv', 'w', newline='', encoding='utf-8')
+        file = open(root + '_summoner_account_list.csv', 'w', newline='', encoding='utf-8')
         csvfile = csv.writer(file)
         csvfile.writerow(summoner_account_list)
 
@@ -304,7 +307,7 @@ def main_logic(rank, division):
 
 
     try:
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_match_id_list.csv', 'r', newline='', encoding='utf-8')
+        file = open(root + '_match_id_list.csv', 'r', newline='', encoding='utf-8')
         csvf = csv.reader(file)
         for lst in csvf:
             match_id_list = lst
@@ -318,7 +321,7 @@ def main_logic(rank, division):
             print(idx)
             match_id_list.append(match_id)
 
-        file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_match_id_list.csv', 'w', newline='', encoding='utf-8')
+        file = open(root + '_match_id_list.csv', 'w', newline='', encoding='utf-8')
         csvfile = csv.writer(file)
         csvfile.writerow(match_id_list)
 
@@ -346,40 +349,45 @@ def main_logic(rank, division):
     lane_name = ['top', 'mid', 'jungle', 'carry', 'support']
     for idx, lane in enumerate([top, mid, jungle, carry, support]):
         print(lane, idx)
-        file = open('./csv/' + now[:6] + '/' + rank + '/' + now[:6] + '_%s.csv' % lane_name[idx], 'w', newline='', encoding='utf-8')
-        csvfile = csv.writer(file)
-        csvfile.writerow([
-            'account_id',                   # 암호화된 유저 아이디
-            'summoner_name',                # 소환사 명
-            'match_id',                     # match id
-            'position',                     # 포지션
-            'playtime',                     # 게임 플레이 시간
-            'kills',                        # kill
-            'deaths',                       # deaths
-            'assists',                      # assists
-            'totalDamageDealtToChampions',  # 챔피언에게 입힌 피해량
-            'totalHeal',                    # 총 회복량
-            'damageSelfMitigated',          # 감소시킨 피해량(방어막?)
-            'visionScore',                  # 시야점수
-            'timeCCingOthers',              # cc기에 맞은 총 시간
-            'totalDamageTaken',             # 받은 피해량
-            'goldEarned',                   # 총 골드
-            'totalMinionsKilled',           # cs
-            'neutralMinionsKilled',         # 중립몹 킬수
-            'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
-            'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
-            'visionWardsBoughtInGame',      # 핑와 구매 개수
-            'wardsPlaced',                  # 와드 설치수
-            'wardsKilled',                  # 와드 파괴수
-            'killsRatio',                   # 킬관여율
-            'deathsRatio',                  # 데스관여울
-        ])
-        for row in lane:
-            if type(row) != type(['list']): continue
-            csvfile.writerow(row)
-        file.close()
+        try:
+            file = open(root + '_%s.csv' % lane_name[idx], 'r', newline='', encoding='utf-8')
+            continue
+        except:
+            file = open(root + '_%s.csv' % lane_name[idx], 'w', newline='', encoding='utf-8')
+            csvfile = csv.writer(file)
+            csvfile.writerow([
+                'account_id',                   # 암호화된 유저 아이디
+                'summoner_name',                # 소환사 명
+                'match_id',                     # match id
+                'position',                     # 포지션
+                'playtime',                     # 게임 플레이 시간
+                'kills',                        # kill
+                'deaths',                       # deaths
+                'assists',                      # assists
+                'totalDamageDealtToChampions',  # 챔피언에게 입힌 피해량
+                'totalHeal',                    # 총 회복량
+                'damageSelfMitigated',          # 감소시킨 피해량(방어막?)
+                'visionScore',                  # 시야점수
+                'timeCCingOthers',              # cc기에 맞은 총 시간
+                'totalDamageTaken',             # 받은 피해량
+                'goldEarned',                   # 총 골드
+                'totalMinionsKilled',           # cs
+                'neutralMinionsKilled',         # 중립몹 킬수
+                'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
+                'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
+                'visionWardsBoughtInGame',      # 핑와 구매 개수
+                'wardsPlaced',                  # 와드 설치수
+                'wardsKilled',                  # 와드 파괴수
+                'killsRatio',                   # 킬관여율
+                'deathsRatio',                  # 데스관여울
+            ])
+            for row in lane:
+                if type(row) != type(['list']): continue
+                csvfile.writerow(row)
+            file.close()
 
-if __name__ == '__main__':
+
+def manual_mode():
     input_accept = False
 
     ranks = ['diamond', 'platinum', 'gold', 'silver', 'bronze', 'iron']
@@ -431,11 +439,15 @@ if __name__ == '__main__':
 
     main_logic(rank, division)
 
-    # now = time.localtime()
-    # now = "%02d%02d%02d_%02dh%02dm%02ds" % (int(str(now.tm_year)[2:]), now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
-    # file = open('./csv/'+ now[:6] + '/' + rank + '/' + now[:6] + '_summoner_account_list.csv', 'r', newline='')
-    # csvf = csv.reader(file)
-    # for lst in csvf:
-    #     summoner_account_list = lst
-    #     break
-    # print(summoner_account_list)
+
+def auto_mode():
+    ranks = ranks = ['diamond', 'platinum', 'gold', 'silver', 'bronze', 'iron']
+    for rank in ranks:
+        main_logic(rank, 1)
+
+if __name__ == '__main__':
+    # 랭크별로 auto수집
+    auto_mode()
+    # manual_mode()
+
+    

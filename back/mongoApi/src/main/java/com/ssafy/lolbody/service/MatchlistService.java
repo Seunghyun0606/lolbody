@@ -2,7 +2,10 @@ package com.ssafy.lolbody.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -176,6 +179,35 @@ public class MatchlistService {
 		}
 		save(matchlistDto);
 		return matchlistDto;
+	}
+	
+	public Map<String,Integer> getLaneFrequency(SummonerDto summonerDto) {
+		MatchlistDto matchlistDto = matchlistRepository.findBySummonerId(summonerDto.getId());
+
+		List<MatchReferenceDto> matches = matchlistDto.getMatches();
+		Collections.sort(matches, (o1,o2) -> Long.compare(o2.getTimestamp(),o1.getTimestamp()));
+		matches = matches.stream().filter(o -> o.getTimestamp() >= 1578596400000l && o.getQueue() == 420).collect(Collectors.toList());
+		
+		int cnt = 0;
+		Map<String,Integer> lane = new LinkedHashMap<>();
+		for(MatchReferenceDto matchRef: matches) {
+			if(matchRef.getRole().equals("DUO_SUPPORT")) {
+				if(!matchRef.getLane().equals("NONE")) {
+					if(!lane.containsKey(matchRef.getLane()))
+						lane.put(matchRef.getLane(), 0);
+					lane.put(matchRef.getLane(), lane.get(matchRef.getLane())+1);
+				} else {
+					if(!lane.containsKey("SUPPORT"))
+						lane.put("SUPPORT", 0);
+					lane.put("SUPPORT", lane.get("SUPPORT")+1);
+				}
+			} else {
+				if(!lane.containsKey(matchRef.getLane()))
+					lane.put(matchRef.getLane(), 0);
+				lane.put(matchRef.getLane(), lane.get(matchRef.getLane())+1);
+			}
+		}
+		return lane;
 	}
 
 }

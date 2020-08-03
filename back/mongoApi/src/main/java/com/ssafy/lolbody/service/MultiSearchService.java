@@ -108,6 +108,7 @@ public class MultiSearchService {
 					break;
 				}
 			}
+			if(participantId == 0) break;
 			if(matchRefDto.getRole().equals("DUO_SUPPORT")) {
 				if(!matchRefDto.getLane().equals("NONE"))
 					recentGame.setLane(matchRefDto.getLane());
@@ -180,6 +181,7 @@ public class MultiSearchService {
 						break;
 					}
 				}
+				if(participantId == 0) break;
 				for(ParticipantDto participant: matchDto.getParticipants()) {
 					if(participant.getParticipantId() == participantId) {
 						recentMatchResults.add(participant.getStats().isWin());

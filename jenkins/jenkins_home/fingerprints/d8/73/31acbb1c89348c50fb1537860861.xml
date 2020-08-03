@@ -1,0 +1,13 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<fingerprint>
+  <timestamp>2020-08-03 04:55:55.242 UTC</timestamp>
+  <md5sum>d87331acbb1c89348c50fb1537860861</md5sum>
+  <fileName>Credential id=KHRgitlab name=gudfo19950/******</fileName>
+  <usages>
+    <entry>
+      <string>test_gitlab</string>
+      <ranges>1</ranges>
+    </entry>
+  </usages>
+  <facets/>
+</fingerprint>

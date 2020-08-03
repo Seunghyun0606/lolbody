@@ -38,6 +38,7 @@ public class RadarChartService {
 		Map<String,Integer> lane = matchlistService.getLaneFrequency(summonerDto);
 		
 		List<Map.Entry<String, Integer>> entries = new LinkedList<>(lane.entrySet());
+		entries = entries.stream().filter(o -> !o.getKey().equals("NONE")).collect(Collectors.toList());
 		Collections.sort(entries, (o1,o2) -> o2.getValue().compareTo(o1.getValue()));
 		String mainLane="",subLane="";
 		if(entries.size() > 0)

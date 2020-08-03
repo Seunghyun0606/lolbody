@@ -93,8 +93,8 @@ export default new Vuex.Store({
     // 형래, profile
     },
     getProfileDatas( { commit }, userName){
-        //return axios.get(`http://13.125.220.135:8888/profile/${userName}`)
-        return axios.get(`http://localhost:8888/profile/${userName}`)
+        return axios.get(`http://13.125.220.135:8888/profile/${userName}`)
+        // return axios.get(`http://localhost:8888/profile/${userName}`)
         .then(res => {
             commit('setProfileDatas', res.data)
         }).catch(function (error) {
@@ -106,8 +106,8 @@ export default new Vuex.Store({
         });
     },
     getMatchDatas( { commit }, {userName, num}){
-        //return axios.get(`http://13.125.220.135:8888/profile/${userName}/${num}`)
-        return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
+        return axios.get(`http://13.125.220.135:8888/profile/${userName}/${num}`)
+        // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
             .then(res => {
                 commit('setMatchDatas', res.data)
             }).catch(function (error) {

@@ -10,6 +10,21 @@ public class LaneInfoDto {
 	private long gameDuration;
 	private long totalDamageDealtToChampions;
 	private long totalDamageTaken;
+	private int teamKills;
+	private int teamDeaths;
+	
+	public int getTeamKills() {
+		return teamKills;
+	}
+	public void setTeamKills(int teamKills) {
+		this.teamKills = teamKills;
+	}
+	public int getTeamDeaths() {
+		return teamDeaths;
+	}
+	public void setTeamDeaths(int teamDeaths) {
+		this.teamDeaths = teamDeaths;
+	}
 	public String getPosition() {
 		return position;
 	}
@@ -69,6 +84,7 @@ public class LaneInfoDto {
 		return "LaneInfoDto [position=" + position + ", visionScore=" + visionScore + ", csPerMin=" + csPerMin
 				+ ", kills=" + kills + ", deaths=" + deaths + ", assist=" + assist + ", gameDuration=" + gameDuration
 				+ ", totalDamageDealtToChampions=" + totalDamageDealtToChampions + ", totalDamageTaken="
-				+ totalDamageTaken + "]";
+				+ totalDamageTaken + ", teamKills=" + teamKills + ", teamDeaths=" + teamDeaths + "]";
 	}
+	
 }

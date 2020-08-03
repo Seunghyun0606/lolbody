@@ -3,8 +3,16 @@ package com.ssafy.lolbody.dto;
 import java.util.List;
 
 public class RadarChartDto {
-	List<LaneInfoDto> lane1;
-	List<LaneInfoDto> lane2;
+	private List<LaneInfoDto> lane1;
+	private List<LaneInfoDto> lane2;
+	private String tier;
+	
+	public String getTier() {
+		return tier;
+	}
+	public void setTier(String tier) {
+		this.tier = tier;
+	}
 	public List<LaneInfoDto> getLane1() {
 		return lane1;
 	}
@@ -19,6 +27,7 @@ public class RadarChartDto {
 	}
 	@Override
 	public String toString() {
-		return "RadarChartDto [lane1=" + lane1 + ", lane2=" + lane2 + "]";
+		return "RadarChartDto [lane1=" + lane1 + ", lane2=" + lane2 + ", tier=" + tier + "]";
 	}
+	
 }

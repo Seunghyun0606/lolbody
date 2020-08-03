@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.lolbody.dto.LaneInfoDto;
+import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.dto.MatchDto;
 import com.ssafy.lolbody.dto.MatchReferenceDto;
 import com.ssafy.lolbody.dto.MatchlistDto;
@@ -29,12 +30,17 @@ public class RadarChartService {
 	private MatchlistService matchlistService;
 	@Autowired
 	private MatchService matchService;
+	@Autowired
+	private LeagueEntryService leagueEntryService;
 	
 	public RadarChartDto getRadarChar(String summonerName) throws Exception {
 		SummonerDto summonerDto = summonerService.findBySubName(summonerName);
 		
 		RadarChartDto radarChart = new RadarChartDto();
-		
+		List<LeagueEntryDto> leagueEntries = leagueEntryService.findBySummonerId(summonerDto.getId())
+		.stream().filter(o -> o.getQueueType().contains("SOLO")).collect(Collectors.toList());
+		if(leagueEntries.size() != 0)
+			radarChart.setTier(leagueEntries.get(0).getTier());
 		Map<String,Integer> lane = matchlistService.getLaneFrequency(summonerDto);
 		
 		List<Map.Entry<String, Integer>> entries = new LinkedList<>(lane.entrySet());
@@ -75,7 +81,18 @@ public class RadarChartService {
 			final int pi = participantId;
 			List<ParticipantDto> participants = matchDto.getParticipants().
 					stream().filter(o -> o.getParticipantId() == pi).collect(Collectors.toList());
+			final int teamId = participants.get(0).getTeamId();
+			List<ParticipantDto> participantss = matchDto.getParticipants()
+					.stream().filter(o -> o.getTeamId() == teamId).collect(Collectors.toList());
+			int teamKills = 0, teamDeaths = 0;
+			for(ParticipantDto participant: participantss) {
+				teamKills += participant.getStats().getKills();
+				teamDeaths += participant.getStats().getDeaths();
+			}
+			laneInfo.setTeamKills(teamKills);
+			laneInfo.setTeamDeaths(teamDeaths);
 			ParticipantStatsDto stats = participants.get(0).getStats();
+			
 			laneInfo.setAssist(stats.getAssists());
 			laneInfo.setVisionScore(stats.getVisionScore());
 			laneInfo.setKills(stats.getKills());

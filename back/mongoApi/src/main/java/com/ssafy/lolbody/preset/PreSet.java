@@ -19,10 +19,10 @@ public class PreSet implements CommandLineRunner{
 		for(String name: data.keySet()) {
 			JSONObject info = data.getJSONObject(name);
 			String key = info.getString("key");
-			ChampKeyDTO champ = new ChampKeyDTO();
+			ChampKeyDto champ = new ChampKeyDto();
 			champ.setKey(key);
 			champ.setName(name);
-			preset.findById("key").orElseGet(() -> preset.save(champ));
+			preset.findById(key).orElseGet(() -> preset.save(champ));
 		}
 	}
 	

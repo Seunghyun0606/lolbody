@@ -1,18 +1,22 @@
 <template>
 
-<div class="champ-card" :class="[ this.recentGame.win ? 'win' : 'fail' ]" >
-  <div>
-    <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="champ-img">
-    <div style="position: relative;">
-      <img class="card-sub card-sub-left" src="@/assets/images/champion/Akali.png" alt="spell-left">
-      <img class="card-sub card-sub-right" src="@/assets/images/champion/Ahri.png" alt="spell-right">
-      <img class="card-sub card-sub-top" :src="laneImage" alt="lane">  
+<div class="champ-card" :class="[ this.recentGame.win ? 'bg_win' : 'bg_fail' ]" >
+  <div class="champ">
+    <div class="lane">
+      <img class="card-sub" :src="laneImage" alt="lane">  
+    </div>
+
+    <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="card-champ-img">
+
+    <div class="spell">
+      <img class="card-sub card-sub-left" :src="require(`@/assets/images/spell/${recentGame.spell1Id}.png`)" alt="spell-left">
+      <img class="card-sub card-sub-right" :src="require(`@/assets/images/spell/${recentGame.spell2Id}.png`)" alt="spell-right">
+    </div>
+    <div class="champ-card-text">
+      {{ recentGame.kda.kills }} / <span>{{ recentGame.kda.deaths }}</span> / {{ recentGame.kda.assists }}
     </div>
   </div>
 
-  <div class="champ-card-text">
-    K / D / A
-  </div>
 
 </div>
 
@@ -39,7 +43,7 @@ export default {
       ]),
       laneImage () {
         var lane = this.recentGame.lane
-        return require(`@/assets/images/position/${lane.charAt(0) + lane.slice(1).toLowerCase()}.png`)
+        return require(`@/assets/images/position/${lane}.png`)
       },
     },
 
@@ -49,52 +53,63 @@ export default {
 <style scoped>
 
 .champ-card {
-  width: 120%;
-  border-radius: 30%;
-  padding: 15px 10px 5px;
-}
-.fail {
-  background-color: rosybrown;
-
+  width: 90%;
+  height: 70px;
+  border-radius: 15%;
+  padding: 10px 4px 4px 4px;
 }
 
-.win {
-  background-color: cadetblue;
-
+.champ {
+  position: relative;
 }
 
-.champ-card-text {
-  font-size: 12px;
-  margin-top: 5px;
+.lane {
+  position: absolute;
+  top: -11px;
+}
+
+.spell {
+  position: absolute;
+  top: 25px;
+  bottom: 0px;
+  padding: 0 1px 0;
 }
 
 .card-champ-img {
-  width: 3rem;
+  width: 80%;
   border-radius: 70%;
 }
 
+.champ-card-text {
+  padding-top: 5px;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.champ-card-text > span {
+  color: red;
+}
+  
 .card-sub {
-  position: absolute;
-  width: 33%;
+  width: 40%;
   border-radius: 70%;
-  border: 0.01px solid white;
+  border: 0.01px solid #f0ffffb5;
+  background-color: #f0ffffb5;
 }
 
 .card-sub-left {
-  top: -22px;
-  left: 0px;
+  float: left;
 }
 
 .card-sub-right {
-  top: -22px;
-  left: 42px;
-
+  float: right;
 }
 
-.card-sub-top {
-  top: -65px;
-  left: 22px;
-
+.bg_fail {
+  background-color: #ffe1e1 ;
 }
 
+.bg_win {
+  background-color: #d1e5ff ;
+}
 </style>

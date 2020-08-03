@@ -1,37 +1,34 @@
 <template>
-  <v-container>
-    <v-row 
-        class="text-center"
-        justify="center">
-      <v-col cols="8">
-        <v-card>
-          <v-toolbar
-            color="primary"
-            dark
-            flat
-          >
-            <v-text-field
-              id="paste"
-              append-icon=""
-              class="mx-4"
-              flat
-              hide-details
-              label="Summoner ID"
-              prepend-inner-icon="search"
-              solo-inverted
-              v-model="inputSummonerID"
-              @paste="onPaste"
-            ></v-text-field>
-            <v-btn 
-            small 
-            color="primary lighten-2"
-            @click="onClickSearchButton"
-            >Search</v-btn>
-          </v-toolbar>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-card style="width: 690px">
+    <v-toolbar
+      color="primary"
+      dark
+      flat
+    >
+      <v-text-field
+        id="paste"
+        append-icon=""
+        class="mx-2"
+        flat
+        hide-details
+        label="Summoner ID"
+        prepend-inner-icon="search"
+        solo-inverted
+        v-model="inputSummonerID"
+        @paste="onPaste"
+        @keyup.enter="onClickSearchButton"
+      ></v-text-field>
+      
+      <v-btn 
+      small 
+      color="primary lighten-2"
+      @click="onClickSearchButton"
+      >
+      Search
+      </v-btn>
+
+    </v-toolbar>
+  </v-card>
 </template>
 
 <script>
@@ -46,6 +43,9 @@ export default {
     onClickSearchButton() {
       this.parseInputSummonerID()
       console.log('axios요청', this.searchSummernerIDs)
+
+      // nav search bar 없애는 로직
+      this.$store.commit('toggleNavSearch', false)
     },
     parseInputSummonerID() {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
@@ -80,10 +80,13 @@ export default {
         tmpSearchSummernerIDs[idx] = ID
         // console.log(ID + '공백제거')
       })
-      // this.searchSummernerIDs = tmpSearchSummernerIDs
+
+      this.searchSummernerIDs = tmpSearchSummernerIDs
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
       console.log(1)
       // console.log(this.searchSummernerIDs)
+      // console.log(tmpSearchSummernerIDs)
+      this.$router.push('/Profile/'+this.searchSummernerIDs);
     },
     onPaste (e) {
         var clipboardData, pastedData;
@@ -104,7 +107,11 @@ export default {
         this.parseInputSummonerID()
         // 사용자가 수정이 가능하도록 input 창에 띄워줌
         console.log(2)
+
+        console.log(this.inputSummonerID)
         this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
+        console.log(3)
+        console.log(this.inputSummonerID)
     },
   },
 }

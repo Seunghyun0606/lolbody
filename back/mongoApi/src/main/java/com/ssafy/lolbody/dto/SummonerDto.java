@@ -10,9 +10,17 @@ public class SummonerDto {
 	private String accountId;
 	private String puuid;
 	private String name;
+	private String subName;
 	private int profileIconId;
 	private long revisionDate;
 	private int summonerLevel;
+	
+	public String getSubName() {
+		return subName;
+	}
+	public void setSubName(String subName) {
+		this.subName = subName;
+	}
 	public String getId() {
 		return id;
 	}
@@ -57,8 +65,8 @@ public class SummonerDto {
 	}
 	@Override
 	public String toString() {
-		return "SummonerDTO [id=" + id + ", accountId=" + accountId + ", puuid=" + puuid + ", name=" + name
-				+ ", profileIconId=" + profileIconId + ", revisionDate=" + revisionDate + ", summonerLevel="
-				+ summonerLevel + "]";
+		return "SummonerDto [id=" + id + ", accountId=" + accountId + ", puuid=" + puuid + ", name=" + name
+				+ ", subName=" + subName + ", profileIconId=" + profileIconId + ", revisionDate=" + revisionDate
+				+ ", summonerLevel=" + summonerLevel + "]";
 	}
 }

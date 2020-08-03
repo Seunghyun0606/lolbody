@@ -1,7 +1,7 @@
 <template>
-<div>
-  <apexchart type="radar" :options="options" :series="series"></apexchart>
-</div>
+
+  <apexchart class='move-apexchart' type="radar" width="500" :options="options" :series="series"></apexchart>
+
 </template>
 
 <script>
@@ -86,12 +86,15 @@ export default {
     // }, 3000)
   },
   mounted() {
-    console.log(this.onlyGraph)
-    console.log(this.onlyGraph2)
   }
 }
 </script>
 
-<style>
+<style scoped>
+
+.move-apexchart {
+  position: relative;
+  left: -50px;
+}
 
 </style>

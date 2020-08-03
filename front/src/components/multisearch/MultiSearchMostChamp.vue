@@ -18,8 +18,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
+.card-champ-img {
+  width: 27.5%;
+  border-radius: 70%;
+  margin: 0 5px 5px 0;
+}
 
 
 </style>

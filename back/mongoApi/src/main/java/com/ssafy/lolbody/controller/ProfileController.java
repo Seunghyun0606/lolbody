@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.lolbody.api.Api;
 import com.ssafy.lolbody.dto.MatchRecordDto;
 import com.ssafy.lolbody.dto.ProfileReferenceDto;
 import com.ssafy.lolbody.service.ProfileService;
@@ -33,9 +34,11 @@ public class ProfileController {
 			profile = profileService.getProfile(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
 			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (Exception e) {
 			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(profile, HttpStatus.OK);
@@ -49,9 +52,11 @@ public class ProfileController {
 			matchRecords = profileService.getMatchRecord(name.replaceAll(" ", ""), num);
 		} catch (TimeoutException e) {
 			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (Exception e) {
 			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(matchRecords, HttpStatus.OK);

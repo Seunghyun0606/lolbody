@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.lolbody.api.Api;
 import com.ssafy.lolbody.dto.MultiSearchDto;
 import com.ssafy.lolbody.service.MultiSearchService;
 
@@ -31,9 +32,11 @@ public class MultiSearchController {
 			
 		} catch (TimeoutException e) {
 			e.printStackTrace();
+			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (Exception e) {
 			e.printStackTrace();
+			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(multiSearchDto,HttpStatus.OK);

@@ -17,8 +17,8 @@ public class Api {
 	private final static String token = "RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c";
 	private final static String[] tokens = {
 			"RGAPI-e4661f22-ec6d-44fe-b7b9-98b89a92b469",
-			"RGAPI-aefe908a-7048-462a-81d6-701b43b595eb",
-			"RGAPI-aefe908a-7048-462a-81d6-701b43b595eb",
+			"RGAPI-b3e86b8a-2b73-4ab4-9b95-0d57cb197ce8",
+			"RGAPI-d601d217-e30d-4a34-b282-c4bb71359546",
 			"RGAPI-3bad4913-73ca-4eb5-be85-a1055d22257d",
 			"RGAPI-2cb52bc3-2ff0-4463-8ea7-559aa606c958",
 			"RGAPI-20a56b79-59db-419f-825a-bfe622734e1c",
@@ -26,8 +26,11 @@ public class Api {
 			"RGAPI-9b886f2d-0987-4188-98ad-12dbccce052c",
 			"RGAPI-dc0a1479-01ee-48fd-b9f6-84241524aeac",
 			"RGAPI-c8501953-5329-4c49-94f5-4a59bf5b48df",
-			"RGAPI-03e8f924-1e68-46eb-8e9f-ef014dc9d453"
+			"RGAPI-03e8f924-1e68-46eb-8e9f-ef014dc9d453",
+			"RGAPI-b244f6df-474b-4e75-a22d-d29588f28927"
 	};
+	// 안먹히는 키 찾는 방법
+	// https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/parkjamal?api_key=여기에키입력
 	private static int idx = 0;
 	
 	public static String multi(String input, String summonerName) {

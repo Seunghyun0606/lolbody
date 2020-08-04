@@ -15,13 +15,13 @@ def z_value(d, mean, std):
 
 def get_badges(player_p_value):
     badge_items = {
-        'visionScore': '옵저버',
-        'csPerMin': '농부',
-        'deathsRatio': '맛집예약',
-        'killAssistPerMin': '전투민족',
-        'damageDealtPerMin': '그냥 딜량 높음',
-        'damageTakenPerMin': '덩어리',
-        'killsRatio': '오지라퍼',
+        'visionScore': 'vision',
+        'csPerMin': 'cs',
+        'deathsRatio': 'death',
+        'killAssistPerMin': 'fight',
+        'damageDealtPerMin': 'dealt',
+        'damageTakenPerMin': 'taken',
+        'killsRatio': 'kill',
     }
     badges = []
     for k, v in player_p_value.items():
@@ -40,6 +40,7 @@ def get_player_lane_value(player_data):
     }
     for l_name, lane in player_data.items():
         if type(lane) != type(['list']): continue
+        if not len(lane): continue
         position = lane[0].get('position')  ## TOP, JUNGLE...
         if position == 'BOTTOM':
             position = 'carry'
@@ -84,4 +85,5 @@ def get_player_lane_value(player_data):
 
 # print(player_data)
 player_data = json.loads(sys.argv[1].replace("'", '"'))
+print(type(player_data))
 print(get_player_lane_value(player_data))

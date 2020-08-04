@@ -85,5 +85,5 @@ def get_player_lane_value(player_data):
 
 # print(player_data)
 player_data = json.loads(sys.argv[1].replace("'", '"'))
-print(type(player_data))
+# print(type(player_data))
 print(get_player_lane_value(player_data))

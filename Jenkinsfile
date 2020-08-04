@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Pull') {
             steps {
-                git branch: 'test_docker', url: 'https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105.git'
+                git 'https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105.git'
             }
         }
         stage('Build') {

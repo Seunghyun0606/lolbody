@@ -7,14 +7,23 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'back/mongoApi/mvn clean install -DskipTests'
+                dir('back/mongoApi'){
+                    sh 'mvn clean install -DskipTests'
+                    sh 'mvn package'
+                    sh 'sudo docker rm spring'
+                    sh 'sudo docker run -i -t --name spring -p 8889:8888 springboot:0.1'
+                }
+                dir('front'){
+                    sh 'yarn install'
+                    sh 'yarn build'
+                    sh 'cp dist /var/www/html'
+                }
+                
             }
         }
         stage('Test') {
             steps {
                 
-                sh 'back/mongoApi/mvn package'
-                sh 'sudo docker run -i -t --name spring -p 8888:8888 springboot:0.1'
 
             }
         }

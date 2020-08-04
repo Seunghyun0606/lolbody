@@ -21,9 +21,7 @@ pipeline {
                     sh 'yarn install'
                     sh 'yarn build'
                     sh 'cp dist /usr/share/nginx/html'
-                    
                 }
-                
             }
         }
     }   

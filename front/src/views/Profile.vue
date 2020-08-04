@@ -107,15 +107,17 @@
 				</v-card>
 
 				<div class="d-inline-block">
-					<v-card class="ma-1 mb-2 bg_card float-left" width="320.5px" height="160px" outlined>
+					<v-card class="ma-1 mb-2 bg_card float-left" width="260.5px" height="160px" outlined>
 						<div class="ml-7">
-							<MultiSearchRadarChart/>
+
+							<ProfileRadarChart/>
+
 						</div>
 					</v-card>
 				</div>
 
 				<div class="d-inline-block">
-					<v-card class="ma-1 mb-2 bg_card float-right" width="320.5px" height="160px" outlined>
+					<v-card class="ma-1 mb-2 bg_card float-right" width="380.5px" height="160px" outlined>
 						<div class="d-inline">
 							<span>유저 성향</span>
 						</div>
@@ -138,7 +140,7 @@
 import ProfileLineChart from '@/components/profile/ProfileLineChart';
 import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
 
-import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
+import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
 //import { mapActions } from "vuex"
 import { mapState } from "vuex"
 //import { mapGetters } from    "vuex"
@@ -149,7 +151,7 @@ export default {
 		//RadarChart,
 		ProfileLineChart,
 		ProfileGameHistory,
-		MultiSearchRadarChart
+		ProfileRadarChart,
 	},
 	data: ()=>({
 		triger:{

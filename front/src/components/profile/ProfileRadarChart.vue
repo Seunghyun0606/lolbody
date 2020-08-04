@@ -1,6 +1,6 @@
 <template>
 
-  <apexchart class='move-apexchart' type="radar" width="235" :options="options" :series="series"></apexchart>
+  <apexchart class='move-apexchart' type="radar" width="350" :options="options" :series="series"></apexchart>
 
 </template>
 
@@ -8,7 +8,7 @@
 import apexchart from 'vue-apexcharts'
 
 export default {
-  name: 'MultiSearchRadarChart',
+  name: 'ProfileRadarChart',
   components: {
     apexchart
   },
@@ -97,8 +97,7 @@ export default {
 
 .move-apexchart {
   position: relative;
-  left: -45px;
-  top: 30px;
+  left: -70px;
 }
 
 </style>

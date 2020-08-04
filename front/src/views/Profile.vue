@@ -5,8 +5,10 @@
 	<v-main>
 	<table width="1000px">
 		<tr>
+			<!-- 여기서부터 좌측 공간 -->
 			<td style="vertical-align: top" width="34%">
 				<v-card class="ma-1 mb-2 bg_card"  outlined height="150px" :loading="triger.isLoading">
+					
 					<v-row>
 						<v-col cols="3">
 							<div class="avatar mt-3 ml-3 text-center">
@@ -23,8 +25,9 @@
 								<span class="leastUpdate fs-10">최근 업데이트: 3시간 전</span>
 							</div>
 						</v-col>
-						</v-row>
-						<v-row>
+					</v-row>
+
+					<v-row>
 						<v-col cols="12">
 							<div class="ml-2">
 								<v-chip class="ma-2" color="green" text-color="white">
@@ -40,11 +43,13 @@
 						</v-col>
 					</v-row>
 				</v-card>
+				
 				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" algin="center">
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
 						<li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
 					</ul>
+				
 					<div class="mt-2 text-center" v-if="now.src != null"> 
 						<div class="icon pa-1 d-inline-block">
 							<span class="rank fs-14">{{now.rank}}</span>
@@ -53,6 +58,7 @@
 								<span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.totalRecord.wins}}승</span> <span class="fc_red fs-13">{{now.totalRecord.losses}}패</span>)</span>
 							</v-card-text>
 						</div>
+				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="70">
 								<v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" @error="errorImage" alt="모스트 픽" v-if="now.mostCham != 'null'"/>
@@ -61,6 +67,7 @@
 								<span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostChamRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
 							</v-card-text>
 						</div>
+				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
 								<v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')" @error="errorImage" v-if="now.mostLine != 'null'"/>
@@ -69,6 +76,7 @@
 								<span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
 							</v-card-text>
 						</div>
+				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
 								<v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')" @error="errorImage" v-if="now.secondLine != 'null'"/>
@@ -78,21 +86,25 @@
 							</v-card-text>
 						</div>
 					</div>
+				
 					<div class="mt-2 text-center" v-if="now.src == null">
 						<p>전적이 없습니다.</p>
 					</div>
 				</v-card>
 			</td>
+			<!-- 여기서부터 우측 공간 -->
 			<td style="vertical-align: top">
 				<v-card class="text-center ma-1 mb-2 bg_card" outlined>
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">LP</a></li>
 						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
 					</ul>
+			
 					<div class="px-5">
 						<LineChart/>
 					</div>
 				</v-card>
+
 				<div class="d-inline-block">
 					<v-card class="ma-1 mb-2 bg_card float-left" width="320.5px" height="160px" outlined>
 						<div class="ml-7">
@@ -100,6 +112,7 @@
 						</div>
 					</v-card>
 				</div>
+
 				<div class="d-inline-block">
 					<v-card class="ma-1 mb-2 bg_card float-right" width="320.5px" height="160px" outlined>
 						<div class="d-inline">
@@ -107,6 +120,7 @@
 						</div>
 					</v-card>
 				</div>
+
 				<ProfileGameHistory/>
 			</td>
 		</tr>

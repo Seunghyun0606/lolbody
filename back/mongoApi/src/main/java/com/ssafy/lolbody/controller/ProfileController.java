@@ -68,10 +68,21 @@ public class ProfileController {
 		return new ResponseEntity<>(matchRecords, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (num: 1부터 시작, 10개씩)")
+	@ApiOperation(value = "소환사 이름으로 유저 성향을 검색합니다.")
 	@GetMapping("/summonervalue/{name}")
-	public ResponseEntity<SummonerValueResultDto> test(@PathVariable String name) throws JsonSyntaxException, IOException, Exception {
-		SummonerValueResultDto summonerValueResultDto = summonerValueService.getSummonerValue(name);
+	public ResponseEntity<SummonerValueResultDto> getSummonerValue(@PathVariable String name) {
+		SummonerValueResultDto summonerValueResultDto;
+		try {
+			summonerValueResultDto = summonerValueService.getSummonerValue(name);
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 성향 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 성향 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<>(summonerValueResultDto, HttpStatus.OK);
 	}
 

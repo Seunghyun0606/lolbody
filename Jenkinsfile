@@ -10,11 +10,11 @@ pipeline {
         stage('Build') {
             steps {
                 dir('back/mongoApi'){
+                    sh 'whoami'
                     sh 'ls'
                     sh 'mvn package'
                     script{
                         try {
-                            sh 'whoami'
                             sh 'sudo docker stop spring'
                             sh 'sudo docker rm spring'
                         }catch(e){

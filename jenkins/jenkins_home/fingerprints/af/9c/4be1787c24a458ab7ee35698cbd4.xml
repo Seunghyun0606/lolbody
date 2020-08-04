@@ -6,14 +6,14 @@
   <usages>
     <entry>
       <string>MyPipeline</string>
-      <ranges>29-30</ranges>
+      <ranges>29-31</ranges>
     </entry>
   </usages>
   <facets>
     <com.cloudbees.plugins.credentials.fingerprints.ItemCredentialsFingerprintFacet plugin="credentials@2.3.12">
-      <timestamp>1596522794172</timestamp>
+      <timestamp>1596523304208</timestamp>
       <itemFullName>MyPipeline</itemFullName>
-      <timestamp0>1596522659163</timestamp0>
+      <timestamp0>1596522794172</timestamp0>
     </com.cloudbees.plugins.credentials.fingerprints.ItemCredentialsFingerprintFacet>
   </facets>
 </fingerprint>

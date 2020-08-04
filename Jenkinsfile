@@ -11,7 +11,7 @@ pipeline {
             steps {
                 dir('back/mongoApi'){
                     sh 'ls'
-                    sh 'mvn package'
+                    sh 'mvnw package'
                     script{
                         try {
                             sh 'sudo docker stop spring'

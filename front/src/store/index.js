@@ -5,12 +5,16 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+const SERVER_URL = 'http://13.125.220.135:8888'
+
+
 export default new Vuex.Store({
   state: {
     // 승현
     multiSearchDatas: [],
     userDatas: [],
     isIndex: '',
+    radarChartDatas: [],
 
     // 호철
     searchSummonerIDs: [],
@@ -44,9 +48,16 @@ export default new Vuex.Store({
       state.userDatas = [ ...state.userDatas, userDatas ]
     },
 
+    // NavSearch toggle 용도
     toggleNavSearch(state, toggle) {
       state.isIndex = toggle
     },
+
+    // Radar Chart Data
+    setRadarChartDatas(state, datas) {
+      state.radarChartDatas = datas
+    },
+
 
     // 호철
     changeSearchSummonerIDs(state, arr) {
@@ -66,7 +77,7 @@ export default new Vuex.Store({
     // 승현, multisearch
     getMultiSearchDatas( { commit }, userName ) {
       axios
-        .get(`http://13.125.220.135:8888/api/multisearch/${userName}`)
+        .get(SERVER_URL + `/api/multisearch/${userName}`)
         // .get(`http://localhost:8888/api/multisearch/${userName}`)
         .then(res => {
           commit('setMultiSearchDatas', res.data)
@@ -78,7 +89,7 @@ export default new Vuex.Store({
     },
     getUserDatas( { commit }, userName ) {
       axios
-        .get(`http://13.125.220.135:8888/user/${userName}`)
+        .get(SERVER_URL + `/user/${userName}`)
         // .get(`http://localhost:8888/user/${userName}`)
         .then(res => {
           //자유랭크가 같이와서 솔로만 넣게 처리했습니다.
@@ -92,10 +103,23 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err)
         })
-    // 형래, profile
     },
+    // 승현, RadarChartData
+    getRadarChartDatas( { commit }, userName ) {
+      axios
+        .get(SERVER_URL + `/api/radar/${userName}`)
+        .then(res => {
+          commit('setRadarChartDatas', res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
+
+    // 형래, profile
     getProfileDatas( { commit }, userName){
-        return axios.get(`http://13.125.220.135:8888/profile/${userName}`)
+        return axios.get(SERVER_URL + `/profile/${userName}`)
         // return axios.get(`http://localhost:8888/profile/${userName}`)
         .then(res => {
             commit('setProfileDatas', res.data)
@@ -108,7 +132,7 @@ export default new Vuex.Store({
         });
     },
     getMatchDatas( { commit }, {userName, num}){
-        return axios.get(`http://13.125.220.135:8888/profile/${userName}/${num}`)
+        return axios.get(SERVER_URL + `/profile/${userName}/${num}`)
         // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
             .then(res => {
                 commit('setMatchDatas', res.data)

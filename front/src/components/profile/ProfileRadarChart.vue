@@ -6,6 +6,7 @@
 
 <script>
 import apexchart from 'vue-apexcharts'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ProfileRadarChart',
@@ -61,7 +62,25 @@ export default {
       }]
     }
   },
+  computed: {
+    ...mapState([
+      'radarChartDatas',
+    ]),
+
+    // 이거 어디서 쓴거죠?
+    onlyGraph() {
+      return document.querySelectorAll('g > g')[3]
+    },
+    onlyGraph2() {
+      return document.getElementsByClassName('apexcharts-radar-series')[0]
+    }
+  },
   methods: {
+
+    setRadarChartDatas() {
+
+    },
+
     changeIndexGraphSeries() {
       if (this.indexGraphSeries.idx >= 2) {
         this.indexGraphSeries.idx = 0
@@ -76,18 +95,12 @@ export default {
       }]
     }
   },
-  computed: {
-    onlyGraph() {
-      return document.querySelectorAll('g > g')[3]
-    },
-    onlyGraph2() {
-      return document.getElementsByClassName('apexcharts-radar-series')[0]
-    }
-  },
-  created() {
+
+  mounted() {
     // setInterval(() => {
     //   this.changeIndexGraphSeries();
     // }, 3000)
+
   },
 
 }

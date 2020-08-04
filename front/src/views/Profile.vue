@@ -203,6 +203,9 @@ export default {
 				this.now.rank = this.profileDatas.rank;
 			}
 			this.getMatchDatas();
+
+			this.getRadarChartDatas(userName);
+
 			this.triger.isLoading = false;
 		},
 		async getMatchDatas(){
@@ -214,6 +217,14 @@ export default {
 			this.isLoading = false;
 			//console.log("loading done");
 		},
+
+		// 승현, radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
+		async getRadarChartDatas(userName) {
+			await this.$store.dispatch('getRadarChartDatas', userName)
+
+			this.isLoading = false;
+		},
+
 		getRankData(){
 			//LineChart에 데이터    전달
 		},

@@ -20,7 +20,7 @@ pipeline {
                 dir('front'){
                     sh 'yarn install'
                     sh 'yarn build'
-                    sh 'cp dist /var/www/html'
+                    sh 'cp dist /usr/share/nginx/html'
                     
                 }
                 

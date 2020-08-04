@@ -13,7 +13,7 @@ pipeline {
                     try {
                         sh 'sudo docker stop spring'
                         sh 'sudo docker rm spring'
-                    }catch(){
+                    }catch(e){
                     }
                     sh 'sudo docker run -i -t --name spring -p 8889:8888 springboot:0.1'
                 }

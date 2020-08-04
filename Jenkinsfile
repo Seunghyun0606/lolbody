@@ -10,6 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('back/mongoApi'){
+                    sh 'ls'
                     sh 'mvn clean install -DskipTests'
                     sh 'mvn package'
                     script{

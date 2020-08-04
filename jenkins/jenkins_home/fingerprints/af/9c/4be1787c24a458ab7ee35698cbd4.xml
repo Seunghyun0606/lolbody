@@ -1,0 +1,19 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<fingerprint>
+  <timestamp>2020-08-04 01:56:56.584 UTC</timestamp>
+  <md5sum>af9c4be1787c24a458ab7ee35698cbd4</md5sum>
+  <fileName>Credential id=gitlab_userpass name=gudfo19950/******</fileName>
+  <usages>
+    <entry>
+      <string>MyPipeline</string>
+      <ranges>29-30</ranges>
+    </entry>
+  </usages>
+  <facets>
+    <com.cloudbees.plugins.credentials.fingerprints.ItemCredentialsFingerprintFacet plugin="credentials@2.3.12">
+      <timestamp>1596522794172</timestamp>
+      <itemFullName>MyPipeline</itemFullName>
+      <timestamp0>1596522659163</timestamp0>
+    </com.cloudbees.plugins.credentials.fingerprints.ItemCredentialsFingerprintFacet>
+  </facets>
+</fingerprint>

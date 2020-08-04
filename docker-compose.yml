@@ -11,6 +11,8 @@ services:
                         - "50000:50000"
                 volumes:
                         - "/home/ubuntu/hrtest/s03p13b105/jenkins/jenkins_home:/var/jenkins_home"
+                        - "/home/ubuntu/hrtest/s03p13b105/nginx/var/www/html:/usr/share/nginx/html"
+                        - "/var/run/docker.sock:/var/run/docker.sock"
         
         nginx:
                 image: nginx:latest
@@ -19,4 +21,4 @@ services:
                         - "8001:80"
                 volumes:
                         - "/home/ubuntu/hrtest/s03p13b105/nginx/conf.d:/etc/nginx/conf.d"
-
+                        - "/home/ubuntu/hrtest/s03p13b105/nginx/var/www/html:/usr/share/nginx/html"

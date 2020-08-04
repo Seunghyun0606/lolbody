@@ -1,0 +1,69 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-build plugin="workflow-job@2.39">
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <com.dabsquared.gitlabjenkins.cause.GitLabWebHookCause plugin="gitlab-plugin@1.5.13">
+            <data>
+              <actionType>PUSH</actionType>
+              <sourceProjectId>31811</sourceProjectId>
+              <targetProjectId>31811</targetProjectId>
+              <branch>test_docker</branch>
+              <sourceBranch>test_docker</sourceBranch>
+              <userName>김형래</userName>
+              <userEmail>gudfo19950@naver.com</userEmail>
+              <sourceRepoHomepage>https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105</sourceRepoHomepage>
+              <sourceRepoName>S03P13B105</sourceRepoName>
+              <sourceNamespace>s03-webmobile1-sub3</sourceNamespace>
+              <sourceRepoUrl>git@lab.ssafy.com:s03-webmobile1-sub3/s03p13b105.git</sourceRepoUrl>
+              <sourceRepoSshUrl>git@lab.ssafy.com:s03-webmobile1-sub3/s03p13b105.git</sourceRepoSshUrl>
+              <sourceRepoHttpUrl>https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105.git</sourceRepoHttpUrl>
+              <mergeRequestTitle></mergeRequestTitle>
+              <mergeRequestDescription></mergeRequestDescription>
+              <mergeRequestState></mergeRequestState>
+              <mergedByUser></mergedByUser>
+              <mergeRequestAssignee></mergeRequestAssignee>
+              <targetBranch>test_docker</targetBranch>
+              <targetRepoName></targetRepoName>
+              <targetNamespace></targetNamespace>
+              <targetRepoSshUrl></targetRepoSshUrl>
+              <targetRepoHttpUrl></targetRepoHttpUrl>
+              <triggeredByUser>김형래</triggeredByUser>
+              <before>d2afc0d8a1fc037d81c5cff0d0cf0015cd790426</before>
+              <after>6e34d11dc988cb29a047c384c5b30ddbeb5166d8</after>
+              <lastCommit>6e34d11dc988cb29a047c384c5b30ddbeb5166d8</lastCommit>
+              <targetProjectUrl>https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105</targetProjectUrl>
+            </data>
+          </com.dabsquared.gitlabjenkins.cause.GitLabWebHookCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <hudson.triggers.SCMTrigger_-BuildAction/>
+    <hudson.plugins.git.RevisionParameterAction plugin="git@4.3.0">
+      <commit>6e34d11dc988cb29a047c384c5b30ddbeb5166d8</commit>
+      <combineCommits>false</combineCommits>
+      <repoURL plugin="git-client@3.3.2">
+        <path>s03-webmobile1-sub3/s03p13b105.git</path>
+        <rawPath>s03-webmobile1-sub3/s03p13b105.git</rawPath>
+        <user>git</user>
+        <port>-1</port>
+        <host>lab.ssafy.com</host>
+      </repoURL>
+    </hudson.plugins.git.RevisionParameterAction>
+    <org.jenkinsci.plugins.workflow.libs.LibrariesAction plugin="workflow-cps-global-lib@2.17">
+      <libraries/>
+    </org.jenkinsci.plugins.workflow.libs.LibrariesAction>
+  </actions>
+  <queueId>28</queueId>
+  <timestamp>1596522389131</timestamp>
+  <startTime>1596522389136</startTime>
+  <result>FAILURE</result>
+  <description>Started by GitLab push by 김형래</description>
+  <duration>835</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <completed>true</completed>
+  <checkouts class="hudson.util.PersistedList"/>
+</flow-build>

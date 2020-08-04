@@ -1,24 +1,85 @@
-Started at Mon Aug 03 02:58:03 UTC 2020
-Finished at Mon Aug 03 02:58:03 UTC 2020. 0ms
-Started at Mon Aug 03 03:58:03 UTC 2020
-Finished at Mon Aug 03 03:58:03 UTC 2020. 1ms
-Started at Mon Aug 03 04:58:03 UTC 2020
+Started at Mon Aug 03 10:11:30 UTC 2020
 Processing test_gitlab
 Offering test_gitlab to Project Build Discarder
-Finished at Mon Aug 03 04:58:03 UTC 2020. 1ms
-Started at Mon Aug 03 05:58:03 UTC 2020
+Finished at Mon Aug 03 10:11:30 UTC 2020. 2ms
+Started at Mon Aug 03 11:11:30 UTC 2020
 Processing test_gitlab
 Offering test_gitlab to Project Build Discarder
-Finished at Mon Aug 03 05:58:03 UTC 2020. 1ms
-Started at Mon Aug 03 06:58:03 UTC 2020
+Finished at Mon Aug 03 11:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 12:11:30 UTC 2020
 Processing test_gitlab
 Offering test_gitlab to Project Build Discarder
-Finished at Mon Aug 03 06:58:03 UTC 2020. 1ms
-Started at Mon Aug 03 07:58:03 UTC 2020
+Finished at Mon Aug 03 12:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 13:11:30 UTC 2020
 Processing test_gitlab
 Offering test_gitlab to Project Build Discarder
-Finished at Mon Aug 03 07:58:03 UTC 2020. 1ms
-Started at Mon Aug 03 08:58:03 UTC 2020
+Finished at Mon Aug 03 13:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 14:11:30 UTC 2020
 Processing test_gitlab
 Offering test_gitlab to Project Build Discarder
-Finished at Mon Aug 03 08:58:03 UTC 2020. 1ms
+Finished at Mon Aug 03 14:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 15:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Mon Aug 03 15:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 16:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Mon Aug 03 16:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 17:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Mon Aug 03 17:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 18:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Mon Aug 03 18:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 19:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Mon Aug 03 19:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 20:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Mon Aug 03 20:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 21:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Mon Aug 03 21:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 22:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Mon Aug 03 22:11:30 UTC 2020. 1ms
+Started at Mon Aug 03 23:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Mon Aug 03 23:11:30 UTC 2020. 1ms
+Started at Tue Aug 04 00:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Tue Aug 04 00:11:30 UTC 2020. 1ms
+Started at Tue Aug 04 01:11:30 UTC 2020
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Tue Aug 04 01:11:30 UTC 2020. 1ms
+Started at Tue Aug 04 02:11:30 UTC 2020
+Processing MyPipeline
+Offering MyPipeline to Project Build Discarder
+MyPipeline accepted by Project Build Discarder
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Tue Aug 04 02:11:30 UTC 2020. 1ms
+Started at Tue Aug 04 03:11:30 UTC 2020
+Processing MyPipeline
+Offering MyPipeline to Project Build Discarder
+MyPipeline accepted by Project Build Discarder
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Tue Aug 04 03:11:30 UTC 2020. 1ms
+Started at Tue Aug 04 04:11:30 UTC 2020
+Processing MyPipeline
+Offering MyPipeline to Project Build Discarder
+MyPipeline accepted by Project Build Discarder
+Processing test_gitlab
+Offering test_gitlab to Project Build Discarder
+Finished at Tue Aug 04 04:11:30 UTC 2020. 1ms

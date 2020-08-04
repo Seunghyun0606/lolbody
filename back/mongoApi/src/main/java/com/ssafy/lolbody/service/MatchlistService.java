@@ -188,7 +188,6 @@ public class MatchlistService {
 		Collections.sort(matches, (o1,o2) -> Long.compare(o2.getTimestamp(),o1.getTimestamp()));
 		matches = matches.stream().filter(o -> o.getTimestamp() >= 1578596400000l && o.getQueue() == 420).collect(Collectors.toList());
 		
-		int cnt = 0;
 		Map<String,Integer> lane = new LinkedHashMap<>();
 		for(MatchReferenceDto matchRef: matches) {
 			if(matchRef.getRole().equals("DUO_SUPPORT")) {

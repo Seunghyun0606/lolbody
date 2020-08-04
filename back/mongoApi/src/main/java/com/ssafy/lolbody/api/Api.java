@@ -35,7 +35,7 @@ public class Api {
 	public static String multi(String input, String summonerName) {
 		boolean isOk = false;
 		String result = "";
-		int cnt = 10;
+		int cnt = 10 * tokens.length;
 		while (cnt-- > 0) {
 			try {
 				URL url = new URL(input+"/"+summonerName);

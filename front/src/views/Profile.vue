@@ -92,6 +92,13 @@
 						<p>전적이 없습니다.</p>
 					</div>
 				</v-card>
+
+				<!-- 듀오 전적이나 최근 자주한 챔피언? -->
+				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" algin="center">
+					<div>
+						여기에 뭐 들어갈지 고민해봐야할듯. 너무 빈공간이라 하나 쓰면 좋겠음
+					</div>
+				</v-card>
 			</td>
 			<!-- 여기서부터 우측 공간 -->
 			<td style="vertical-align: top">
@@ -131,7 +138,7 @@
 	</v-main>
 	</v-app>
 	</v-row>
-    </v-container>
+</v-container>
 </template>
 
 <script>
@@ -194,7 +201,7 @@ export default {
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
 			this.now = this.profileDatas.rankedRecord;
-			if(this.profileDatas.tier == 'null'){
+			if(this.profileDatas.tier === null){
 				this.profileDatas.tier= 'unranked';
 				this.profileDatas.rank = 'unranked';
 				this.changeNomarlGame();

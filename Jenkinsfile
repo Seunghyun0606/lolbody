@@ -20,6 +20,7 @@ pipeline {
                     sh 'yarn install'
                     sh 'yarn build'
                     sh 'cp dist /var/www/html'
+                    
                 }
                 
             }

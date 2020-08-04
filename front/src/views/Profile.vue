@@ -27,6 +27,7 @@
 						</v-col>
 					</v-row>
 
+					<!-- 배지 컴포넌트가 들어가야함. -->
 					<v-row>
 						<v-col cols="12">
 							<div class="ml-2">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <VueApexCharts type="line" :options="chartOptions" :series="series"></VueApexCharts>
+    <VueApexCharts height="150" type="line" :options="chartOptions" :series="series"></VueApexCharts>
   </div>
 </template>
 
@@ -28,13 +28,13 @@ export default {
           },
           series: [
             {
-              name: "High - 2013",
+              name: "미정",
               data: [10, 9, 8, 7, 6, 11, 15]
             }
           ],
           chartOptions: {
             chart: {
-              height: 100,
+              height: 150,
               type: 'line',
               toolbar: {
                 show: false
@@ -50,7 +50,7 @@ export default {
               borderColor: '#e7e7e7'
             },
             markers: {
-              size: 7,
+              size: 5,
               shape: "circle",
               radius: 2,
             },
@@ -66,8 +66,8 @@ export default {
               title: {
                 text: 'LP'
               },
-              tickAmount: 15,
-              min: 5,
+              tickAmount: 5,
+              min: 0,
               max: 20
             }
           },

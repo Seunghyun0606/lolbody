@@ -12,8 +12,9 @@ pipeline {
                 dir('back/mongoApi'){
                     sh 'whoami'
                     sh 'ls'
+                    sh 'export M2_HOME=/opt/maven'
+                    sh 'export PATH=$PATH:$M2_HOME/bin'
                     sh 'mvn -version'
-                    sh 'mvn package'
                     script{
                         try {
                             sh 'sudo docker stop spring'

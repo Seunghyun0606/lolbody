@@ -19,7 +19,6 @@ import com.ssafy.lolbody.dto.ParticipantDto;
 import com.ssafy.lolbody.dto.ParticipantIdentityDto;
 import com.ssafy.lolbody.dto.ParticipantStatsDto;
 import com.ssafy.lolbody.dto.RadarChartDto;
-import com.ssafy.lolbody.dto.RecentGamesDto;
 import com.ssafy.lolbody.dto.SummonerDto;
 
 @Service

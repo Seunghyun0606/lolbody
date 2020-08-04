@@ -1,6 +1,7 @@
 package com.ssafy.lolbody.api;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -217,4 +218,19 @@ public class Api {
 			x.printStackTrace();
 		}
 	}
+	
+	public String getAnalysisData(String fileName, String result) throws IOException {
+		
+		Process process = Runtime.getRuntime().exec("python "+fileName+" "+result);
+		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		String s = "";
+		StringBuilder sb = new StringBuilder();
+		while((s = br.readLine()) != null) {
+			sb.append(s);
+		}
+		
+		return sb.toString();
+	}
+	
+	
 }

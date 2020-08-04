@@ -21,7 +21,7 @@
 						<v-col cols="8">
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
-								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn"  color="info">전적 갱신</v-btn>
+								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalRecord">전적 갱신</v-btn>
 								<span class="leastUpdate fs-10">최근 업데이트: 3시간 전</span>
 							</div>
 						</v-col>
@@ -223,6 +223,10 @@ export default {
 			await this.$store.dispatch('getRadarChartDatas', userName)
 
 			this.isLoading = false;
+		},
+		// 새로고침시 리다이렉트하면서 전적갱신.
+		renewalRecord() {
+			this.$router.go()
 		},
 
 		getRankData(){

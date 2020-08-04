@@ -1,5 +1,6 @@
 package com.ssafy.lolbody.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.JsonSyntaxException;
 import com.ssafy.lolbody.api.Api;
 import com.ssafy.lolbody.dto.MatchRecordDto;
 import com.ssafy.lolbody.dto.ProfileReferenceDto;
+import com.ssafy.lolbody.dto.SummonerValueResultDto;
 import com.ssafy.lolbody.service.ProfileService;
+import com.ssafy.lolbody.service.SummonerValueService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -25,6 +29,8 @@ import io.swagger.annotations.ApiOperation;
 public class ProfileController {
 	@Autowired
 	private ProfileService profileService;
+	@Autowired
+	private SummonerValueService summonerValueService;
 
 	@ApiOperation(value = "소환사 이름으로 유저 프로필을 검색합니다.")
 	@GetMapping("/profile/{name}")
@@ -60,6 +66,13 @@ public class ProfileController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(matchRecords, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (num: 1부터 시작, 10개씩)")
+	@GetMapping("/summonervalue/{name}")
+	public ResponseEntity<SummonerValueResultDto> test(@PathVariable String name) throws JsonSyntaxException, IOException, Exception {
+		SummonerValueResultDto summonerValueResultDto = summonerValueService.getSummonerValue(name);
+		return new ResponseEntity<>(summonerValueResultDto, HttpStatus.OK);
 	}
 
 }

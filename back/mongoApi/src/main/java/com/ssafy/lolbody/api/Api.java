@@ -219,16 +219,21 @@ public class Api {
 		}
 	}
 	
-	public String getAnalysisData(String fileName, String result) throws IOException {
+	public static String getAnalysisData(String fileName, String argument) throws IOException {
 		
-		Process process = Runtime.getRuntime().exec("python "+fileName+" "+result);
+		Process process = Runtime.getRuntime().exec("python "+fileName+" "+argument);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		BufferedReader er = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 		String s = "";
 		StringBuilder sb = new StringBuilder();
+		while((s = er.readLine()) != null) {
+			sb.append(s);
+		}
+//		System.out.println(sb.toString());
+		sb.setLength(0);
 		while((s = br.readLine()) != null) {
 			sb.append(s);
 		}
-		
 		return sb.toString();
 	}
 	

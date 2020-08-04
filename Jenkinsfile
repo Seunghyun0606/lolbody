@@ -12,8 +12,8 @@ pipeline {
                 dir('back/mongoApi'){
                     sh 'whoami'
                     sh 'ls'
-                    sh 'export M2_HOME=/opt/maven'
-                    sh 'export PATH=$PATH:$M2_HOME/bin'
+                    sh 'export MAVEN_HOME=/opt/maven'
+                    sh 'export PATH=$PATH:$MAVEN_HOME/bin'
                     sh 'mvn -version'
                     script{
                         try {

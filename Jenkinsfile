@@ -2,6 +2,15 @@ pipeline {
     agent any
     
     stages {
+        stage("Git creds"){
+                withCredentials(usernamePassword(credentialsId: GIT_CREDS, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME'){
+                sh("""
+                git config --global credential.username {GIT_USERNAME}
+                git config --global credential.helper "!echo password={GITPASSWORD}; echo"
+                git clone {your_repository}
+                """)
+            }
+        }
         stage('Pull') {
             steps {
                 git 'https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105.git'

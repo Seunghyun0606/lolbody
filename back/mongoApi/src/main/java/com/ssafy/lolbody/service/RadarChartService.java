@@ -60,6 +60,7 @@ public class RadarChartService {
 		if(subLane.length() != 0)
 			radarChart.setLane2(getLaneInfos(subLane, matches, summonerName));
 		
+		
 		return radarChart;
 	}
 	
@@ -71,7 +72,7 @@ public class RadarChartService {
 			if(matchDto == null) break;
 			int participantId = 0;
 			for(ParticipantIdentityDto identites: matchDto.getParticipantIdentities()) {
-				if(identites.getPlayer().getSummonerName().toLowerCase().equals(summonerName.toLowerCase())) {
+				if(identites.getPlayer().getSummonerName().toLowerCase().replaceAll(" ", "").equals(summonerName.toLowerCase().replaceAll(" ", ""))) {
 					participantId = identites.getParticipantId();
 					break;
 				}

@@ -101,7 +101,7 @@
 					</ul>
 			
 					<div class="px-5">
-						<LineChart/>
+						<ProfileLineChart/>
 					</div>
 				</v-card>
 
@@ -134,7 +134,7 @@
 <script>
 //import axios from 'axios';
 //import RadarChart from '@/components/profile/RadarChart';
-import LineChart from '@/components/profile/LineChart';
+import ProfileLineChart from '@/components/profile/ProfileLineChart';
 import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
 
 import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
@@ -146,7 +146,7 @@ export default {
 	name:'Profile',
 	components:{
 		//RadarChart,
-		LineChart,
+		ProfileLineChart,
 		ProfileGameHistory,
 		MultiSearchRadarChart
 	},

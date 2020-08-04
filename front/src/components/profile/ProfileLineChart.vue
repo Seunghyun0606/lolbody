@@ -7,7 +7,7 @@
 <script>
 import VueApexCharts from 'vue-apexcharts'
 export default {
-    name: 'LineChart',
+    name: 'ProfileLineChart',
     components: {
           VueApexCharts
     },

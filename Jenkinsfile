@@ -12,6 +12,7 @@ pipeline {
                 dir('back/mongoApi'){
                     sh 'whoami'
                     sh 'ls'
+                    sh 'mvn -version'
                     sh 'mvn package'
                     script{
                         try {

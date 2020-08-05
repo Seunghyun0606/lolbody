@@ -26,6 +26,7 @@ pipeline {
                     sh 'yarn build'
                     sh 'sudo cp -r dist /home/ubuntu/hrtest/s03p13b105/nginx/var/www/html/'
                 }
+                mattermostSend(credentialsId: 'MM_id', color: colorCode, icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: message, channel: "b105log", endpoint: "https://meeting.ssafy.com/s03p21b01/")
             }
         }
     }  

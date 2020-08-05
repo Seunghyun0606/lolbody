@@ -10,10 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('back/mongoApi'){
-                    sh 'whoami'
-                    sh 'mvn -version'
-                    sh 'java -version'
-                    sh 'export'
+                    sh 'mvn clean install -DskipTests'
                     sh 'mvn package'
                     script{
                         try {

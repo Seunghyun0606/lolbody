@@ -17,12 +17,12 @@ pipeline {
                     sh 'mvn -version'
                     script{
                         try {
-                            sh 'sudo docker stop spring'
-                            sh 'sudo docker rm spring'
+                            sh 'docker stop spring'
+                            sh 'docker rm spring'
                         }catch(e){
                         }
                     }
-                    sh 'sudo docker run -i -t --name spring -p 8889:8888 springboot:0.1'
+                    sh 'docker run -i -t --name spring -p 8889:8888 springboot:0.1'
                 }
                 dir('front'){
                     sh 'yarn install'

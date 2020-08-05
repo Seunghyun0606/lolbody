@@ -6,30 +6,38 @@
 
 <script>
 import VueApexCharts from 'vue-apexcharts'
+import { mapState } from 'vuex'
+
+
 export default {
     name: 'ProfileLineChart',
     components: {
           VueApexCharts
     },
+    computed: {
+      ...mapState([
+        'radarChartDatas',
+      ])
+    },
+    // methods: {
+      // change() {
+      //   let lane1 = radarChartDatas.lane1;
+      //   let lane2 = radarChartDatas.lane2;
+
+      //   this. lane1 
+      // }
+    // },
     data() {
         return {
-          items:{
-              summonerName:"재료페인",
-              queueType:"RANKED_SOLO_5x5",
-              tier:"PLATINUM",
-              rank:"III",
-              leaguePoints:32,
-              wins:66,
-              losses:53,
-              hotStreak:false,
-              veteran:false,
-              freshBlood:false,
-              inactive:false
-          },
+
           series: [
             {
-              name: "미정",
-              data: [10, 9, 8, 7, 6, 11, 15]
+              name: "Lane1",
+              data: [1, 2, 3, 4, 5, 6.3, 7.5] 
+            },
+            {
+              name: "Lane2",
+              data: [3, 4, 5, 6, 5, 6.3, 7.5] 
             }
           ],
           chartOptions: {
@@ -52,31 +60,34 @@ export default {
             markers: {
               size: 5,
               shape: "circle",
-              radius: 2,
+              radius: 1,
             },
             xaxis: {
               categories: [
                 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'
               ],
               title: {
-                text: 'Month'
+                text: '최근 20게임'
               }
             },
             yaxis: {
               title: {
-                text: 'LP'
+                text: 'KDA'
               },
-              tickAmount: 5,
-              min: 0,
-              max: 20
+              // tickAmount: 5,
+              // min: 0,
+              // max: 10
             }
           },
         }
     },
     methods:{
-      yData(){
+      changeData(){
         
       }
+    },
+    mounted() {
+
     }
 }
 </script>

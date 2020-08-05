@@ -10,7 +10,8 @@ pipeline {
         stage('Build') {
             steps {
                 dir('back/mongoApi'){
-                    
+                    sg 'java -version'
+                    sg 'mvn -version'
                     sg 'mvn package'
                     script{
                         try {

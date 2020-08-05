@@ -26,7 +26,7 @@ pipeline {
                     sh 'yarn build'
                     sh 'sudo cp -r dist /home/ubuntu/hrtest/s03p13b105/nginx/var/www/html/'
                 }
-                mattermostSend(color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}", channel: "b105log", endpoint: "https://meeting.ssafy.com/s03p21b01/")
+                mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
             }
         }
     }  

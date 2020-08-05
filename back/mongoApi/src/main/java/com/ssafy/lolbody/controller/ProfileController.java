@@ -1,6 +1,5 @@
 package com.ssafy.lolbody.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.JsonSyntaxException;
 import com.ssafy.lolbody.api.Api;
 import com.ssafy.lolbody.dto.MatchRecordDto;
 import com.ssafy.lolbody.dto.ProfileReferenceDto;

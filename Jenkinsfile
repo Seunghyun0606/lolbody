@@ -10,19 +10,16 @@ pipeline {
         stage('Build') {
             steps {
                 dir('back/mongoApi'){
-                    sh 'whoami'
-                    sh 'ls'
-                    sh 'export MAVEN_HOME=/opt/maven'
-                    sh 'export PATH=$PATH:$MAVEN_HOME/bin'
-                    sh 'mvn -version'
+                    
+                    sg 'mvn package'
                     script{
                         try {
-                            sh 'docker stop spring'
-                            sh 'docker rm spring'
+                            sh 'sudo docker stop spring'
+                            sh 'sudo docker rm spring'
                         }catch(e){
                         }
                     }
-                    sh 'docker run -i -t --name spring -p 8889:8888 springboot:0.1'
+                    sh 'sudo docker run -i -t --name spring -p 8889:8888 springboot:0.1'
                 }
                 dir('front'){
                     sh 'yarn install'

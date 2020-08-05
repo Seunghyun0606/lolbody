@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir('back/mongoApi'){
+                /*dir('back/mongoApi'){
                     sh 'mvn package -Dmaven.test.skip=true'
                     script{
                         try {
@@ -20,11 +20,11 @@ pipeline {
                     }
                     sh 'docker run -d --name spring -p 8889:8888 springboot:0.1'
 
-                }
+                }*/
                 dir('front'){
-                    sh 'yarn install'
-                    sh 'yarn build'
-                    sh 'cp -r dist /home/ubuntu/hrtest/s03p13b105/nginx/var/www/html/'
+                    //sh 'yarn install'
+                    //sh 'yarn build'
+                    sh 'cp -r dist /hrtest/s03p13b105/nginx/var/www/html/'
                 }
             }
         }

@@ -12,13 +12,10 @@ pipeline {
                 dir('back/mongoApi'){
                     sh 'mvn package -Dmaven.test.skip=true'
                     script{
-                        try {
-                            sh 'docker stop spring'
-                            sh 'docker rm spring'
-                        }catch(e){
-                        }
+                        def springC = docker.container('spring')
+                        springC.stop()
                     }
-                    sh 'docker run -i -t --name spring -p 8889:8888 springboot:0.1'
+                    def makespringC = docker.image("springboot:0.1").run("--name spring -i -t --publish 8889:8888")
                 }
                 dir('front'){
                     sh 'yarn install'

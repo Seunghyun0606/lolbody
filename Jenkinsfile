@@ -24,7 +24,7 @@ pipeline {
                 dir('front'){
                     sh 'yarn install'
                     sh 'yarn build'
-                    sh 'cp -r dist /hrtest/s03p13b105/nginx/var/www/html/dist'
+                    sh 'cp -r dist /home/ubuntu/hrtest/s03p13b105/nginx/var/www/html/'
                 }
             }
         }

@@ -1,9 +1,0 @@
-commit 04a4d1d109adeca3c225b757885f6c5dc4da9920
-tree ea64fecf872bf681bfeccfb62b780514b618ca80
-parent c36e15d359a9e3c7e88547afd04353e6284f2e4a
-author 김형래 <gudfo19950@naver.com> 2020-08-04 06:33:06 +0000
-committer 김형래 <gudfo19950@naver.com> 2020-08-04 06:33:06 +0000
-
-    testJenkinsfile
-
-:100644 100644 e1f7591e388523fb7f7c6fe91d68e4a33cc696dd ae854bb32c4ebdd81787db2e874aab2205e15866 M	Jenkinsfile

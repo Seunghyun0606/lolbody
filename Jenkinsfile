@@ -18,7 +18,7 @@ pipeline {
                             }catch(e){
                         }
                     }
-                    sh 'docker run -i -t --name spring -p 8889:8888 springboot:0.1'
+                    sh 'docker run --name spring -p 8889:8888 springboot:0.1'
 
                 }
                 dir('front'){

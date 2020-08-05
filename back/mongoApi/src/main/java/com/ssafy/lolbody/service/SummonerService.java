@@ -15,28 +15,40 @@ import com.ssafy.lolbody.repository.SummonerRepository;
 public class SummonerService {
 	@Autowired
 	private SummonerRepository summonerRepository;
-	
+
 	public void insert(SummonerDto summonerDto) {
-		summonerRepository.findById(summonerDto.getId()).orElseGet(()->summonerRepository.save(summonerDto));
+		summonerRepository.findById(summonerDto.getId()).orElseGet(() -> summonerRepository.save(summonerDto));
 	}
-	
+
 	public List<SummonerDto> findAll() {
 		return summonerRepository.findAll();
 	}
-	
-	public SummonerDto findBySubName(String name) throws  Exception{
-//		SummonerDto summonerDto = summonerRepository.findBySubName(name.toLowerCase());
-//		if(summonerDto == null) {
-			String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
-			if(json.equals("Fail")) {
-				throw new Exception();
-			}
-			SummonerDto summonerDto = new Gson().fromJson(json, SummonerDto.class);
-			JSONObject object = new JSONObject(json);
-			summonerDto.setSubName(object.getString("name").toLowerCase());
-			insert(summonerDto);
-//		}
+
+	public SummonerDto findBySubName(String name) throws Exception {
+		String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
+		if (json.equals("Fail")) {
+			throw new Exception();
+		}
+		SummonerDto summonerDto = new Gson().fromJson(json, SummonerDto.class);
+		JSONObject object = new JSONObject(json);
+		summonerDto.setSubName(object.getString("name").toLowerCase().replaceAll(" ", ""));
+		insert(summonerDto);
 		return summonerDto;
 	}
-	
+
+	public SummonerDto findOnly(String name) throws Exception {
+		SummonerDto summonerDto = summonerRepository.findBySubName(name.toLowerCase());
+		if (summonerDto == null) {
+			String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
+			if (json.equals("Fail")) {
+				throw new Exception();
+			}
+			summonerDto = new Gson().fromJson(json, SummonerDto.class);
+			JSONObject object = new JSONObject(json);
+			summonerDto.setSubName(object.getString("name").toLowerCase().replaceAll(" ", ""));
+			insert(summonerDto);
+		}
+		return summonerDto;
+	}
+
 }

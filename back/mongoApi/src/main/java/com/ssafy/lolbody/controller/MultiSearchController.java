@@ -28,7 +28,7 @@ public class MultiSearchController {
 	public ResponseEntity<MultiSearchDto> getMultiSearch(@PathVariable String summonerName) {
 		MultiSearchDto multiSearchDto = new MultiSearchDto();
 		try {
-			multiSearchDto = multiSearchService.getMultiSearch(summonerName);
+			multiSearchDto = multiSearchService.getMultiSearch(summonerName.replaceAll(" ", ""));
 			
 		} catch (TimeoutException e) {
 			e.printStackTrace();

@@ -42,7 +42,7 @@ public class SummonerController {
 	public ResponseEntity<List<LeagueEntryDto>> getUserInfo(@PathVariable String name) {
 		SummonerDto summonerDto = new SummonerDto();
 		try {
-			summonerDto = summonerService.findBySubName(name);
+			summonerDto = summonerService.findBySubName(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
@@ -61,7 +61,7 @@ public class SummonerController {
 	public ResponseEntity<MatchlistDto> getUserMatchlist(@PathVariable String name) {
 		SummonerDto summonerDto = new SummonerDto();
 		try {
-			summonerDto = summonerService.findBySubName(name);
+			summonerDto = summonerService.findBySubName(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");

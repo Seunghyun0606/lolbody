@@ -25,7 +25,7 @@ public class RadarChartController {
 	public ResponseEntity<RadarChartDto> getRadarChart(@PathVariable String summonerName) {
 		RadarChartDto radarChart = new RadarChartDto();
 		try {
-			radarChart = radarChartService.getRadarChar(summonerName);
+			radarChart = radarChartService.getRadarChar(summonerName.replaceAll(" ", ""));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

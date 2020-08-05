@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.lolbody.api.Api;
@@ -35,6 +36,25 @@ public class ProfileController {
 	public ResponseEntity<ProfileReferenceDto> getProfile(@PathVariable String name) {
 		ProfileReferenceDto profile = new ProfileReferenceDto();
 		try {
+			profile = profileService.getProfile(name.replaceAll(" ", ""));
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(profile, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "소환사 이름으로 유저 프로필을 갱신합니다.")
+	@PutMapping("/profile/{name}")
+	public ResponseEntity<ProfileReferenceDto> getNewProfile(@PathVariable String name) {
+		ProfileReferenceDto profile = new ProfileReferenceDto();
+		try {
+			profileService.updateProfile(name.replaceAll(" ", ""));
 			profile = profileService.getProfile(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
 			e.printStackTrace();

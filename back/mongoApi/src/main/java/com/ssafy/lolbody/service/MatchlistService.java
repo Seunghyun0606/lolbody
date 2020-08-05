@@ -208,5 +208,9 @@ public class MatchlistService {
 		}
 		return lane;
 	}
+	
+	public MatchlistDto findOnly(SummonerDto summonerDto) {
+		return matchlistRepository.findBySummonerId(summonerDto.getId());
+	}
 
 }

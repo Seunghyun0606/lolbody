@@ -15,7 +15,7 @@ pipeline {
                         def springC = docker.container('spring')
                         springC.stop()
                     }
-                    def makespringC = docker.image("springboot:0.1").run("--name spring -i -t --publish 8889:8888")
+                    docker.image("springboot:0.1").run("--name spring -i -t --publish 8889:8888")
                 }
                 dir('front'){
                     sh 'yarn install'

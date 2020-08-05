@@ -13,8 +13,6 @@ pipeline {
                     sh 'whoami'
                     sh 'mvn -version'
                     sh 'java -version'
-                    sh 'export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin'
-                    sh 'export PATH=$PATH:$JAVA_HOME/bin'
                     sh 'export'
                     sh 'mvn package'
                     script{

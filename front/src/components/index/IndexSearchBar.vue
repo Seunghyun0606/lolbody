@@ -32,6 +32,9 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex'
+
 export default {
   name: "IndexSearchBar",
   data() {
@@ -39,10 +42,13 @@ export default {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2
     }
   },
+  computed: {
+    ...mapState(['searchSummernerIDs'])
+  },
   methods: {
     onClickSearchButton() {
       this.parseInputSummonerID()
-      console.log('axios요청', this.searchSummernerIDs)
+      // console.log('axios요청', this.searchSummernerIDs)
 
       // nav search bar 없애는 로직
       this.$store.commit('toggleNavSearch', false)
@@ -51,7 +57,7 @@ export default {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로
       let tmpSearchSummernerIDs = this.inputSummonerID.replace(/(\n|\r\n)/g, ',').split(',')
-
+      // console.log(1, tmpSearchSummernerIDs)
       // // 따옴표로 구분된 아이디 Array
       // searchSummernerID = this.inputSummonerID.split('\n')
 
@@ -59,7 +65,7 @@ export default {
       const regExp = /[{}[\]/?.,;:|)*~`!^-_+<>@#$%&\\=('"]/gi;
 
       // 복붙시 딸려오는 문자
-      const trashInput = /님이 방에 참가했습니다/
+      const trashInput = /님이 로비에 참가하셨습니다/
 
       // 아이디 Array에 대해
       tmpSearchSummernerIDs.forEach((ID, idx) => {
@@ -81,12 +87,30 @@ export default {
         // console.log(ID + '공백제거')
       })
 
-      this.searchSummernerIDs = tmpSearchSummernerIDs
+      console.log(2, tmpSearchSummernerIDs)
+      // this.searchSummernerIDs = tmpSearchSummernerIDs
+
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
-      console.log(1)
+      // 1개면 유저프로필. 1개이상이면 멀티서치.
+      if (tmpSearchSummernerIDs.length > 1) {
+        this.getMultiSearchDatas(tmpSearchSummernerIDs)
+        this.$router.push('MultiSearch')
+      }
+      else {
+        console.log(3, tmpSearchSummernerIDs)
+        this.$router.push('/Profile/'+tmpSearchSummernerIDs);
+
+      }
+      // console.log(1)
       // console.log(this.searchSummernerIDs)
       // console.log(tmpSearchSummernerIDs)
-      this.$router.push('/Profile/'+this.searchSummernerIDs);
+    },
+    getMultiSearchDatas(tmpSearchSummernerIDs) {
+      this.$store.dispatch('getMultiSearchDatas', tmpSearchSummernerIDs)
+      this.getUserDatas(tmpSearchSummernerIDs)
+    },
+    getUserDatas(tmpSearchSummernerIDs) {
+      this.$store.dispatch('getUserDatas', tmpSearchSummernerIDs)
     },
     onPaste (e) {
         var clipboardData, pastedData;
@@ -106,12 +130,11 @@ export default {
         // 붙여넣기한 데이터를 parse
         this.parseInputSummonerID()
         // 사용자가 수정이 가능하도록 input 창에 띄워줌
-        console.log(2)
+        // console.log(2)
 
-        console.log(this.inputSummonerID)
+        // console.log(this.inputSummonerID)
         this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
-        console.log(3)
-        console.log(this.inputSummonerID)
+        // console.log(3)
     },
   },
 }

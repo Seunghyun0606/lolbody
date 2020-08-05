@@ -10,8 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('back/mongoApi'){
-                    sh 'mvn clean install -DskipTests'
-                    sh 'mvn package'
+                    sh 'mvn package -Dmaven.test.skip=true'
                     script{
                         try {
                             sh 'sudo docker stop spring'

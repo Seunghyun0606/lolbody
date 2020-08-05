@@ -13,7 +13,7 @@ pipeline {
                     sh 'whoami'
                     sh 'mvn -version'
                     sh 'java -version'
-                    sg 'export'
+                    sh 'export'
                     sh 'mvn package'
                     script{
                         try {

@@ -16,42 +16,61 @@ export default {
     },
     computed: {
       ...mapState([
-        'radarChartDatas',
+        'matchDatas',
       ])
     },
-    // methods: {
-      // change() {
-      //   let lane1 = radarChartDatas.lane1;
-      //   let lane2 = radarChartDatas.lane2;
+    created() {
+      this.change()
+    },
+    methods: {
+      // 일단 짜고 나중에 리팩토링하자.
+      // Line Chart 값넣기.
+      change() {
+        for ( var matchData of this.matchDatas ) {
+          if ( matchData.myTeam === 'blueTeam' ) {
 
-      //   this. lane1 
-      // }
-    // },
+            this.series[0].data.unshift(matchData.blueTeam.teammate[matchData.myIndex].kda.toFixed(2))
+          }
+          else {
+            this.series[0].data.unshift(matchData.redTeam.teammate[matchData.myIndex].kda.toFixed(2))
+            
+          }
+          this.chartOptions.xaxis.categories.unshift(this.calcDate(matchData.timestamp))
+          
+          
+        }
+      },
+      calcDate(timestamp) {
+        let month = new Date(timestamp).getMonth() + 1 + '월 '
+        let day = new Date(timestamp).getDate() + '일 '
+        // let hour = new Date(timestamp).getHours() + '시'
+        
+        return month + day // + hour
+      },
+    },
     data() {
         return {
 
           series: [
             {
-              name: "Lane1",
-              data: [1, 2, 3, 4, 5, 6.3, 7.5] 
+              name: "KDA",
+              data: [] 
             },
-            {
-              name: "Lane2",
-              data: [3, 4, 5, 6, 5, 6.3, 7.5] 
-            }
+            // {
+            //   name: "Lane2",
+            //   data: [3, 4, 5, 6, 5, 6.3, 7.5] 
+            // }
           ],
           chartOptions: {
             chart: {
               height: 150,
               type: 'line',
+              zoom: {
+                enabled: false,
+              },
               toolbar: {
                 show: false
               },
-              // annotations:{
-              //   yaxis:[{
-              //     y:
-              //   }]
-              // }
             },
             colors: ['#77B6EA', '#545454'],
             grid: {
@@ -62,12 +81,19 @@ export default {
               shape: "circle",
               radius: 1,
             },
+            labels: [3, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             xaxis: {
-              categories: [
-                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'
-              ],
+              labels: {
+                showDuplicates: false,
+                style: {
+                  fontSize: '10px',
+                }
+              },
+              tickAmount: 3,
+              categories: [],
+              type: 'category',
               title: {
-                text: '최근 20게임'
+                // text: '최근 10게임 KDA'
               }
             },
             yaxis: {
@@ -81,14 +107,7 @@ export default {
           },
         }
     },
-    methods:{
-      changeData(){
-        
-      }
-    },
-    mounted() {
 
-    }
 }
 </script>
 

@@ -22,7 +22,7 @@
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
 								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalRecord">전적 갱신</v-btn>
-								<span class="leastUpdate fs-10">최근 업데이트: 3시간 전</span>
+								<span class="leastUpdate fs-10">최근 업데이트: 방금 전</span>
 							</div>
 						</v-col>
 					</v-row>
@@ -107,12 +107,17 @@
 						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">LP</a></li>
 						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
 					</ul>
-			
+
+					<!-- LineChart -->
 					<div class="px-5">
+
 						<ProfileLineChart/>
+
 					</div>
 				</v-card>
 
+
+				<!-- RadarChart -->
 				<div class="d-inline-block">
 					<v-card class="ma-1 mb-2 bg_card float-left" width="260.5px" height="160px" outlined>
 						<div class="ml-7">
@@ -123,6 +128,8 @@
 					</v-card>
 				</div>
 
+
+				<!-- 롤비티아이 부분 -->
 				<div class="d-inline-block">
 					<v-card class="ma-1 mb-2 bg_card float-right" width="380.5px" height="160px" outlined>
 						<div class="d-inline">
@@ -131,6 +138,8 @@
 					</v-card>
 				</div>
 
+
+				<!-- 게임 기록 부분 -->
 				<ProfileGameHistory/>
 			</td>
 		</tr>

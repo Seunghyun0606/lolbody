@@ -44,13 +44,13 @@
 
                         <td class="text-center" width="90px">
                             <div class="fs-15 font-weight-bold">
-                                <span>{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].kills}}</span>/
-                                <span class="fc_red">{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].deaths}}</span>/
+                                <span>{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].kills}}</span> /
+                                <span class="fc_red">{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].deaths}}</span> /
                                 <span>{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].assists}}</span>
                             </div>
                             <div class="fs-13">
                                 <span v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].kda == 'Infinity'">Perfect</span>
-                                <span v-else>{{Math.round(matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].kda*100)/100}}:1 평점</span>
+                                <span v-else>평점 {{Math.round(matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].kda*100)/100}}</span>
                             </div>
                             <div class="fs-13">
                                 <span>킬관여 {{Math.round(matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].ka)}}%</span>

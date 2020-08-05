@@ -10,6 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('back/mongoApi'){
+                    sh 'whoami'
                     sg 'mvn -version'
                     sg 'java -version'
                     sg 'mvn package'

@@ -31,20 +31,13 @@
 					<v-row>
 						<v-col cols="12">
 							<div class="ml-2">
-								<v-chip class="ma-2" color="green" text-color="white">
-									배지1
-								</v-chip>
-								<v-chip class="ma-2" color="green" text-color="white">
-									배지2
-								</v-chip>
-								<v-chip class="ma-2" color="green" text-color="white">
-									배지3
-								</v-chip>
+								<ProfileBedge />
 							</div>
 						</v-col>
 					</v-row>
 				</v-card>
 				
+				<!-- 랭크, 일반 등 -->
 				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" algin="center">
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
@@ -104,7 +97,7 @@
 			<td style="vertical-align: top">
 				<v-card class="text-center ma-1 mb-2 bg_card" outlined>
 					<ul class="options">
-						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">LP</a></li>
+						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">KDA</a></li>
 						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
 					</ul>
 
@@ -155,8 +148,10 @@
 //import RadarChart from '@/components/profile/RadarChart';
 import ProfileLineChart from '@/components/profile/ProfileLineChart';
 import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
-
 import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
+import ProfileBedge from "@/components/profile/ProfileBedge"
+
+
 //import { mapActions } from "vuex"
 import { mapState } from "vuex"
 //import { mapGetters } from    "vuex"
@@ -168,6 +163,7 @@ export default {
 		ProfileLineChart,
 		ProfileGameHistory,
 		ProfileRadarChart,
+		ProfileBedge,
 	},
 	data: ()=>({
 		triger:{

@@ -11,9 +11,9 @@ pipeline {
             steps {
                 dir('back/mongoApi'){
                     sh 'whoami'
-                    sg 'mvn --version'
-                    sg 'java --version'
-                    sg 'mvn package'
+                    sh 'mvn -version'
+                    sh 'java -version'
+                    sh 'mvn package'
                     script{
                         try {
                             sh 'sudo docker stop spring'

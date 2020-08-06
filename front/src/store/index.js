@@ -14,7 +14,6 @@ export default new Vuex.Store({
     multiSearchDatas: [],
     userDatas: [],
     isIndex: '',
-    radarChartDatas: [],
     profileLineChartOption: {
 
       series: [
@@ -72,6 +71,38 @@ export default new Vuex.Store({
         }
       },
     },
+    profileRadarChartOption: {
+      options: {
+        chart: {
+          toolbar: {
+            show: false,
+          },
+        },
+        legend: {
+          show: false,
+        },
+        xaxis: {
+          categories: ['공격력', '안정성', '영향력']
+        },
+        yaxis: {
+          show: false,
+          tickAmount: 5,
+          min: 0,
+          max: 100,
+        },
+        markers: {
+          size: 3
+        }
+      },
+      series: [{
+        name: 'Lane1',
+        data: []
+      },
+      {
+        name: 'Lane2',
+        data: []
+      }]
+    },
 
     // 호철
     searchSummonerIDs: [],
@@ -126,6 +157,21 @@ export default new Vuex.Store({
         }
         state.profileLineChartOption.chartOptions.xaxis.categories.unshift(calcDate(matchData.timestamp))
           
+      }
+    },
+    // 나중에 리팩토링하자
+    setProfileRadarChartOption(state, Datas) {
+      state.profileRadarChartOption.series[0].name = state.profileDatas.rankedRecord.mostLine
+      state.profileRadarChartOption.series[1].name = state.profileDatas.rankedRecord.secondLine
+      state.profileRadarChartOption.series[0].data = []
+      state.profileRadarChartOption.series[1].data = []
+      for ( let index1 in Datas.lane1) {
+        state.profileRadarChartOption.series[0].data.push((Datas.lane1[index1]*100).toFixed(1))
+
+      }
+      for ( let index2 in Datas.lane2) {
+        state.profileRadarChartOption.series[1].data.push((Datas.lane2[index2]*100).toFixed(1))
+
       }
     },
 
@@ -194,10 +240,10 @@ export default new Vuex.Store({
     },
     // 승현, RadarChartData
     getRadarChartDatas( { commit }, userName ) {
-      axios
-        .get(SERVER_URL + `/api/radar/${userName}`)
+      return axios
+        .get(SERVER_URL + `/summonervalue/${userName}`)
         .then(res => {
-          commit('setRadarChartDatas', res)
+          commit('setProfileRadarChartOption', res.data)
         })
         .catch(err => {
           console.log(err)
@@ -223,6 +269,7 @@ export default new Vuex.Store({
         // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
             .then(res => {
               commit('setMatchDatas', res.data)
+              // 라인차트 데이터
               commit('setProfileLineChartOption', res.data)
             }).catch(function (error) {
                 if (error.response) {

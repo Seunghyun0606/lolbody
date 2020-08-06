@@ -499,19 +499,32 @@ public class ProfileService {
 							blueTeammate.add(tmp);
 						else
 							redTeammate.add(tmp);
+
 						JSONObject obj = new JSONObject();
 						obj.put("kill", tmp.getKills());
 						obj.put("assist", tmp.getAssists());
 						obj.put("death", tmp.getDeaths());
 						obj.put("duration", matchRecordDto.getDuration());
-						obj.put("kda", tmp.getKda());
+						if (Double.isInfinite(tmp.getKda()))
+							obj.put("kda", -1.0);
+						else if (Double.isNaN(tmp.getKda()))
+							obj.put("kda", 0.0);
+						else
+							obj.put("kda", tmp.getKda());
 						obj.put("killRatio", tmp.getKa());
-						obj.put("deathRatio", 100.0 * tmp.getDeaths() / (j < 5 ? blueDeaths : redDeaths));
+						double deathRatio = 100.0 * tmp.getDeaths() / (j < 5 ? blueDeaths : redDeaths);
+						if (Double.isInfinite(deathRatio))
+							obj.put("deathRatio", -1.0);
+						else if (Double.isNaN(deathRatio))
+							obj.put("deathRatio", 0.0);
+						else
+							obj.put("deathRatio", deathRatio);
 						obj.put("gold", tmp.getGold());
 						obj.put("cs", tmp.getCs());
 						obj.put("csPerMin", tmp.getCsPerMin());
 						obj.put("damageDealt", p.getStats().getTotalDamageDealtToChampions());
 						obj.put("damageTaken", p.getStats().getTotalDamageTaken());
+						obj.put("visionScore", p.getStats().getVisionScore());
 						try {
 							List<LeagueEntryDto> leagueEntryList = leagueEntryService
 									.findOnly(summonerService.findOnly(tmp.getName()).getId());

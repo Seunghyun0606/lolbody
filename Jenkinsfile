@@ -5,38 +5,25 @@ pipeline {
         stage('Pull') {
             steps {
                 git credentialsId: 'git_id', url: 'https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105.git'
+                sh 'pwd'
+                sh 'ls'
             }
         }
         stage('Build') {
             steps {
-                dir('/'){
-                    sh 'ls'
-                    sh 'pwd'
-                }
                 dir('back/mongoApi'){
                     sh 'mvn clean package -Dmaven.test.skip=true'
-                    sh 'ls'
-                    sh 'pwd'
                     script{
                         try {
-                            sh 'ls'
-                            sh 'pwd'
-                            // sh 'sudo cp -r csv/ target/'
-                            // sh 'sudo cp SummonerValue.py target/'
-                            // sh 'sudo cp Dockerfile target/'
-                            sh 'docker stop spring-develop'
-                            sh 'docker rm spring-develop'
-                            // sh 'docker rmi spring-develop:0.1'
-                            // sh 'cd target/'
-                            // sh 'docker build -t spring-develop:0.1'
+                            sh 'docker stop spring'
+                            sh 'docker rm spring'
                             }catch(e){
                         }
                     }
-                    sh 'docker run -d --name spring-develop -p 8888:8888 spring-develop:0.1'
+                    sh 'docker run -d --name spring -p 8889:8888 springboot:0.1'
 
                 }
                 dir('front'){
-                    sh 'pwd'
                     sh 'yarn install'
                     sh 'yarn build'
                     sh 'sudo cp -r dist /home/ubuntu/hrtest/s03p13b105/nginx/var/www/html/'

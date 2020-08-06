@@ -24,6 +24,11 @@ public class PlayerRecordDto {
 	private int cs;
 	private double csPerMin;
 	private String line;
+	private double deathRatio;
+	private long damageDealt;
+	private long damageTaken;
+	private long visionScore;
+	private String tier;
 	private double matchGrade;
 
 	public String getName() {
@@ -210,6 +215,46 @@ public class PlayerRecordDto {
 		this.line = line;
 	}
 
+	public double getDeathRatio() {
+		return deathRatio;
+	}
+
+	public void setDeathRatio(double deathRatio) {
+		this.deathRatio = deathRatio;
+	}
+
+	public long getDamageDealt() {
+		return damageDealt;
+	}
+
+	public void setDamageDealt(long damageDealt) {
+		this.damageDealt = damageDealt;
+	}
+
+	public long getDamageTaken() {
+		return damageTaken;
+	}
+
+	public void setDamageTaken(long damageTaken) {
+		this.damageTaken = damageTaken;
+	}
+
+	public long getVisionScore() {
+		return visionScore;
+	}
+
+	public void setVisionScore(long visionScore) {
+		this.visionScore = visionScore;
+	}
+
+	public String getTier() {
+		return tier;
+	}
+
+	public void setTier(String tier) {
+		this.tier = tier;
+	}
+
 	public double getMatchGrade() {
 		return matchGrade;
 	}
@@ -225,7 +270,8 @@ public class PlayerRecordDto {
 				+ ", item0=" + item0 + ", item1=" + item1 + ", item2=" + item2 + ", item3=" + item3 + ", item4=" + item4
 				+ ", item5=" + item5 + ", item6=" + item6 + ", perk=" + perk + ", perkStyle=" + perkStyle + ", level="
 				+ level + ", gold=" + gold + ", cs=" + cs + ", csPerMin=" + csPerMin + ", line=" + line
-				+ ", matchGrade=" + matchGrade + "]";
+				+ ", deathRatio=" + deathRatio + ", damageDealt=" + damageDealt + ", damageTaken=" + damageTaken
+				+ ", visionScore=" + visionScore + ", tier=" + tier + ", matchGrade=" + matchGrade + "]";
 	}
 
 }

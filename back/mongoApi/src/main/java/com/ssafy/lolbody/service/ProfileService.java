@@ -495,55 +495,41 @@ public class ProfileService {
 							tmp.setLine("SUPPORT");
 						} else
 							tmp.setLine(line);
-						if (j < 5)
-							blueTeammate.add(tmp);
-						else
-							redTeammate.add(tmp);
+						if (j < 5) {
+							if (blueDeaths == 0)
+								tmp.setDeathRatio(0.0);
+							else
+								tmp.setDeathRatio(100.0 * tmp.getDeaths() / blueDeaths);
+						} else {
+							if (redDeaths == 0)
+								tmp.setDeathRatio(0.0);
+							else
+								tmp.setDeathRatio(100.0 * tmp.getDeaths() / redDeaths);
+						}
+						tmp.setDamageDealt(p.getStats().getTotalDamageDealtToChampions());
+						tmp.setDamageTaken(p.getStats().getTotalDamageTaken());
+						tmp.setVisionScore(p.getStats().getVisionScore());
 
-						JSONObject obj = new JSONObject();
-						obj.put("kill", tmp.getKills());
-						obj.put("assist", tmp.getAssists());
-						obj.put("death", tmp.getDeaths());
-						obj.put("duration", matchRecordDto.getDuration());
-						if (Double.isInfinite(tmp.getKda()))
-							obj.put("kda", -1.0);
-						else if (Double.isNaN(tmp.getKda()))
-							obj.put("kda", 0.0);
-						else
-							obj.put("kda", tmp.getKda());
-						obj.put("killRatio", tmp.getKa());
-						double deathRatio = 100.0 * tmp.getDeaths() / (j < 5 ? blueDeaths : redDeaths);
-						if (Double.isNaN(deathRatio))
-							obj.put("deathRatio", 0.0);
-						else
-							obj.put("deathRatio", deathRatio);
-						obj.put("gold", tmp.getGold());
-						obj.put("cs", tmp.getCs());
-						obj.put("csPerMin", tmp.getCsPerMin());
-						obj.put("damageDealt", p.getStats().getTotalDamageDealtToChampions());
-						obj.put("damageTaken", p.getStats().getTotalDamageTaken());
-						obj.put("visionScore", p.getStats().getVisionScore());
 						try {
 							List<LeagueEntryDto> leagueEntryList = leagueEntryService
 									.findOnly(summonerService.findOnly(tmp.getName()).getId());
 							for (LeagueEntryDto l : leagueEntryList) {
 								if (l.getQueueType().equals("RANKED_SOLO_5x5")) {
-									obj.put("tier", l.getTier());
+									tmp.setTier(l.getTier());
 									break;
 								}
 							}
-							if (!obj.has("tier"))
-								obj.put("tier", "null");
+							if (tmp.getTier() == null)
+								tmp.setTier("null");
 						} catch (Exception e) {
-							obj.put("tier", "GOLD");
+							tmp.setTier("GOLD");
 						}
-						try {
-							tmp.setMatchGrade(Double.parseDouble(
-									Api.getAnalysisData("MatchGrade.py", obj.toString().replaceAll("\"", "'"))));
-						} catch (Exception e) {
-							e.printStackTrace();
-							continue;
-						}
+
+						if (j < 5)
+							blueTeammate.add(tmp);
+						else
+							redTeammate.add(tmp);
+
 					}
 					Collections.sort(blueTeammate, (o1, o2) -> map.get(o1.getLine()) - map.get(o2.getLine()));
 					Collections.sort(redTeammate, (o1, o2) -> map.get(o1.getLine()) - map.get(o2.getLine()));
@@ -569,6 +555,39 @@ public class ProfileService {
 						matchRecordDto.setMyTeam("redTeam");
 						matchRecordDto.setMyIndex(j);
 						break;
+					}
+				}
+
+				PlayerRecordDto tmp = new PlayerRecordDto();
+				if (matchRecordDto.getMyTeam().equals("blueTeam"))
+					tmp = matchRecordDto.getBlueTeam().getTeammate().get(matchRecordDto.getMyIndex());
+				else
+					tmp = matchRecordDto.getRedTeam().getTeammate().get(matchRecordDto.getMyIndex());
+				if (tmp.getMatchGrade() == 0) {
+					JSONObject obj = new JSONObject();
+					obj.put("kill", tmp.getKills());
+					obj.put("assist", tmp.getAssists());
+					obj.put("death", tmp.getDeaths());
+					obj.put("duration", matchRecordDto.getDuration());
+					if (Double.isInfinite(tmp.getKda()))
+						obj.put("kda", -1.0);
+					else
+						obj.put("kda", tmp.getKda());
+					obj.put("killRatio", tmp.getKa());
+					obj.put("deathRatio", tmp.getDeathRatio());
+					obj.put("gold", tmp.getGold());
+					obj.put("cs", tmp.getCs());
+					obj.put("csPerMin", tmp.getCsPerMin());
+					obj.put("damageDealt", tmp.getDamageDealt());
+					obj.put("damageTaken", tmp.getDamageTaken());
+					obj.put("visionScore", tmp.getVisionScore());
+					obj.put("tier", tmp.getTier());
+					try {
+						tmp.setMatchGrade(Double.parseDouble(
+								Api.getAnalysisData("MatchGrade.py", obj.toString().replaceAll("\"", "'"))));
+						matchRecordRepository.save(matchRecordDto);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 				matchRecords.add(matchRecordDto);

@@ -6,21 +6,27 @@ pipeline {
             steps {
                 git credentialsId: 'git_id', url: 'https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105.git'
                 sh 'git checkout develop'
-                sh 'ls'
             }
         }
         stage('Build') {
             steps {
                 dir('back/mongoApi'){
-                    sh 'mvn package -Dmaven.test.skip=true'
+                    sh 'mvn clean package -Dmaven.test.skip=true'
                     script{
                         try {
-                            sh 'docker stop spring'
-                            sh 'docker rm spring'
+                            sh 'docker stop spring-develop'
+                            sh 'docker rm spring-develop'
+                            sh """
+                                sudo cp -r csv/ target/
+                                sudo cp SummonerValue.py target/
+                                sudo cp Dockerfile target/
+                                cd target/
+                            """
+                            sh 'sudo docker build -t spring-develop:0.1 .'
                             }catch(e){
                         }
                     }
-                    sh 'docker run -d --name spring -p 8889:8888 springboot:0.1'
+                    sh 'docker run -d --name spring-develop -p 8888:8888 spring-develop:0.1'
 
                 }
                 dir('front'){

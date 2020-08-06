@@ -18,7 +18,7 @@ services:
                 image: nginx:latest
                 container_name: nginx
                 ports:
-                        - "8001:80"
+                        - "80:80"
                 volumes:
                         - "/home/ubuntu/hrtest/s03p13b105/nginx/conf.d:/etc/nginx/conf.d"
                         - "/home/ubuntu/hrtest/s03p13b105/nginx/var/www/html:/usr/share/nginx/html"

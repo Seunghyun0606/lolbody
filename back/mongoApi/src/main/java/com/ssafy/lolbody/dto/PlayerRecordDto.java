@@ -24,6 +24,7 @@ public class PlayerRecordDto {
 	private int cs;
 	private double csPerMin;
 	private String line;
+	private double matchGrade;
 
 	public String getName() {
 		return name;
@@ -209,13 +210,22 @@ public class PlayerRecordDto {
 		this.line = line;
 	}
 
+	public double getMatchGrade() {
+		return matchGrade;
+	}
+
+	public void setMatchGrade(double matchGrade) {
+		this.matchGrade = matchGrade;
+	}
+
 	@Override
 	public String toString() {
 		return "PlayerRecordDto [name=" + name + ", champ=" + champ + ", kills=" + kills + ", deaths=" + deaths
 				+ ", assists=" + assists + ", kda=" + kda + ", ka=" + ka + ", spell1=" + spell1 + ", spell2=" + spell2
 				+ ", item0=" + item0 + ", item1=" + item1 + ", item2=" + item2 + ", item3=" + item3 + ", item4=" + item4
 				+ ", item5=" + item5 + ", item6=" + item6 + ", perk=" + perk + ", perkStyle=" + perkStyle + ", level="
-				+ level + ", gold=" + gold + ", cs=" + cs + ", csPerMin=" + csPerMin + ", line=" + line + "]";
+				+ level + ", gold=" + gold + ", cs=" + cs + ", csPerMin=" + csPerMin + ", line=" + line
+				+ ", matchGrade=" + matchGrade + "]";
 	}
 
 }

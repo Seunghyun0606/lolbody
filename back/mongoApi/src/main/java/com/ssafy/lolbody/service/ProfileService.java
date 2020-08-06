@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.lolbody.api.Api;
 import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.dto.MatchDto;
 import com.ssafy.lolbody.dto.MatchRecordDto;
@@ -78,6 +80,7 @@ public class ProfileService {
 					profileReferenceDto.setTier(i.getTier());
 					profileReferenceDto.setRank(i.getRank());
 					profileReferenceDto.setLeaguePoints(i.getLeaguePoints());
+					break;
 				}
 			}
 			MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
@@ -441,16 +444,19 @@ public class ProfileService {
 					List<PlayerRecordDto> redTeammate = new ArrayList<>();
 
 					int[][] kda = new int[10][3];
-					int blueKills = 0, redKills = 0;
+					int blueKills = 0, redKills = 0, blueDeaths = 0, redDeaths = 0;
 					for (int j = 0; j < 10; j++) {
 						ParticipantDto p = participants.get(j);
 						kda[j][0] = p.getStats().getKills();
 						kda[j][1] = p.getStats().getDeaths();
 						kda[j][2] = p.getStats().getAssists();
-						if (j < 5)
+						if (j < 5) {
 							blueKills += kda[j][0];
-						else
+							blueDeaths += kda[j][1];
+						} else {
 							redKills += kda[j][0];
+							redDeaths += kda[j][1];
+						}
 					}
 					for (int j = 0; j < 10; j++) {
 						PlayerRecordDto tmp = new PlayerRecordDto();
@@ -493,6 +499,33 @@ public class ProfileService {
 							blueTeammate.add(tmp);
 						else
 							redTeammate.add(tmp);
+						JSONObject obj = new JSONObject();
+						obj.put("kill", tmp.getKills());
+						obj.put("assist", tmp.getAssists());
+						obj.put("death", tmp.getDeaths());
+						obj.put("duration", matchRecordDto.getDuration());
+						obj.put("kda", tmp.getKda());
+						obj.put("killRatio", tmp.getKa());
+						obj.put("deathRatio", 100.0 * tmp.getDeaths() / (j < 5 ? blueDeaths : redDeaths));
+						obj.put("gold", tmp.getGold());
+						obj.put("cs", tmp.getCs());
+						obj.put("csPerMin", tmp.getCsPerMin());
+						obj.put("damageDealt", p.getStats().getTotalDamageDealtToChampions());
+						obj.put("damageTaken", p.getStats().getTotalDamageTaken());
+						try {
+							List<LeagueEntryDto> leagueEntryList = leagueEntryService
+									.findOnly(summonerService.findOnly(tmp.getName()).getId());
+							for (LeagueEntryDto l : leagueEntryList) {
+								if (l.getQueueType().equals("RANKED_SOLO_5x5")) {
+									obj.put("tier", l.getTier());
+									break;
+								}
+							}
+							tmp.setMatchGrade(Double.parseDouble(
+									Api.getAnalysisData("MatchGrade", obj.toString().replaceAll("\"", "'"))));
+						} catch (Exception e) {
+							continue;
+						}
 					}
 					Collections.sort(blueTeammate, (o1, o2) -> map.get(o1.getLine()) - map.get(o2.getLine()));
 					Collections.sort(redTeammate, (o1, o2) -> map.get(o1.getLine()) - map.get(o2.getLine()));

@@ -1,5 +1,6 @@
 package com.ssafy.lolbody.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -532,10 +533,11 @@ public class ProfileService {
 									break;
 								}
 							}
+							if (!obj.has("tier"))
+								obj.put("tier", "null");
 							tmp.setMatchGrade(Double.parseDouble(
 									Api.getAnalysisData("MatchGrade.py", obj.toString().replaceAll("\"", "'"))));
 						} catch (Exception e) {
-							e.printStackTrace();
 							continue;
 						}
 					}

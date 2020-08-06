@@ -3,7 +3,7 @@ package com.ssafy.lolbody.dto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "matchrecords")
+@Document(collection = "tmprecords")
 public class MatchRecordDto {
 	@Id
 	private long gameId;

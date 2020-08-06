@@ -5,14 +5,14 @@ pipeline {
         stage('Pull') {
             steps {
                 git credentialsId: 'git_id', url: 'https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105.git'
-                sh 'pwd'
+                sh 'git checkout develop'
                 sh 'ls'
             }
         }
         stage('Build') {
             steps {
                 dir('back/mongoApi'){
-                    sh 'mvn clean package -Dmaven.test.skip=true'
+                    sh 'mvn package -Dmaven.test.skip=true'
                     script{
                         try {
                             sh 'docker stop spring'

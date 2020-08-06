@@ -218,7 +218,7 @@ public class Api {
 	
 	public static String getAnalysisData(String fileName, String argument) throws IOException {
 		
-		Process process = Runtime.getRuntime().exec("python "+fileName+" "+argument);
+		Process process = Runtime.getRuntime().exec("/usr/bin/python3 "+fileName+" "+argument);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		BufferedReader er = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 		String s = "";
@@ -226,7 +226,9 @@ public class Api {
 		while((s = er.readLine()) != null) {
 			sb.append(s);
 		}
-//		System.out.println(sb.toString());
+		if (sb.toString().length()!=0) {
+			throw new IOException(sb.toString());
+		}
 		sb.setLength(0);
 		while((s = br.readLine()) != null) {
 			sb.append(s);

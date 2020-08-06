@@ -226,7 +226,9 @@ public class Api {
 		while((s = er.readLine()) != null) {
 			sb.append(s);
 		}
-//		System.out.println(sb.toString());
+		if (sb.toString().length()!=0) {
+			throw new IOException(sb.toString());
+		}
 		sb.setLength(0);
 		while((s = br.readLine()) != null) {
 			sb.append(s);

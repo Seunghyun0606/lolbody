@@ -66,7 +66,7 @@ export default new Vuex.Store({
     // 승현, multisearch
     getMultiSearchDatas( { commit }, userName ) {
       axios
-        .get(`http://13.125.220.135:8888/api/multisearch/${userName}`)
+        .get(`api/multisearch/${userName}`)
         .then(res => {
           commit('setMultiSearchDatas', res.data)
         })
@@ -77,7 +77,7 @@ export default new Vuex.Store({
     },
     getUserDatas( { commit }, userName ) {
       axios
-        .get(`http://13.125.220.135:8888/user/${userName}`)
+        .get(`api/user/${userName}`)
         .then(res => {
           //자유랭크가 같이와서 솔로만 넣게 처리했습니다.
           for (var data_i of res.data) {
@@ -93,8 +93,8 @@ export default new Vuex.Store({
     // 형래, profile
     },
     getProfileDatas( { commit }, userName){
-        return axios.get(`http://13.125.220.135:8888/profile/${userName}`)
-        // return axios.get(`http://localhost:8888/profile/${userName}`)
+        //return axios.get(`http://13.125.220.135:8888/profile/${userName}`)
+        return axios.get(`api/profile/${userName}`)
         .then(res => {
             commit('setProfileDatas', res.data)
         }).catch(function (error) {
@@ -106,8 +106,8 @@ export default new Vuex.Store({
         });
     },
     getMatchDatas( { commit }, {userName, num}){
-        return axios.get(`http://13.125.220.135:8888/profile/${userName}/${num}`)
-        // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
+        //return axios.get(`http://13.125.220.135:8888/profile/${userName}/${num}`)
+        return axios.get(`api/profile/${userName}/${num}`)
             .then(res => {
                 commit('setMatchDatas', res.data)
             }).catch(function (error) {

@@ -11,13 +11,16 @@ pipeline {
             steps {
                 dir('/'){
                     sh 'ls'
+                    sh 'pwd'
                 }
                 dir('back/mongoApi'){
                     sh 'mvn clean package -Dmaven.test.skip=true'
                     sh 'ls'
+                    sh 'pwd'
                     script{
                         try {
                             sh 'ls'
+                            sh 'pwd'
                             // sh 'sudo cp -r csv/ target/'
                             // sh 'sudo cp SummonerValue.py target/'
                             // sh 'sudo cp Dockerfile target/'
@@ -33,6 +36,7 @@ pipeline {
 
                 }
                 dir('front'){
+                    sh 'pwd'
                     sh 'yarn install'
                     sh 'yarn build'
                     sh 'sudo cp -r dist /home/ubuntu/hrtest/s03p13b105/nginx/var/www/html/'

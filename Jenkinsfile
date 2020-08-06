@@ -14,6 +14,7 @@ pipeline {
                     sh 'mvn clean package -Dmaven.test.skip=true'
                     script{
                         try {
+                            
                             sh 'docker stop spring-develop'
                             sh 'docker rm spring-develop'
                             sh """

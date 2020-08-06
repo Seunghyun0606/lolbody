@@ -9,6 +9,9 @@ pipeline {
         }
         stage('Build') {
             steps {
+                dir('/'){
+                    sh 'ls'
+                }
                 dir('back/mongoApi'){
                     sh 'mvn clean package -Dmaven.test.skip=true'
                     sh 'ls'

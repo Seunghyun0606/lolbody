@@ -25,7 +25,7 @@ public class MatchService {
 			matchDto = new MatchDto();
 			String json = Api.multi("https://kr.api.riotgames.com/lol/match/v4/matches", gameId + "");
 			if(json.equals("Fail"))
-				throw new TimeoutException();
+				throw new TimeoutException("api key에 문제가 있습니다.");
 			matchDto = new Gson().fromJson(json, MatchDto.class);
 			save(matchDto);
 		}

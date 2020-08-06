@@ -42,6 +42,8 @@ def get_player_match_grade(player_data):
 
     stats = pd.read_csv('./csv/2008/%s/2008_stastics.csv' % tier.lower())
     # 포지션 유사도 판별로 정해볼 예정
+    # 데이터 정규화 후에 유클리디안 거리를 구한것 == 마할라노비스 거리를 구한 것
+    # 정규화 => 평균 0, 분산 1을 갖는 표준정규분포로 전환한 것이기 때문에
     min_distance = float('inf')
     tmp_position = ''
     player_p_value = dict()

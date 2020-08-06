@@ -11,16 +11,18 @@ pipeline {
             steps {
                 dir('back/mongoApi'){
                     sh 'mvn clean package -Dmaven.test.skip=true'
-                    sh 'sudo cp -r csv/ target/'
-                    sh 'sudo cp SummonerValue.py target/'
-                    sh 'sudo cp Dockerfile target/'
-                    sh 'cd target/'
+                    sh 'ls'
                     script{
                         try {
+                            sh 'ls'
+                            // sh 'sudo cp -r csv/ target/'
+                            // sh 'sudo cp SummonerValue.py target/'
+                            // sh 'sudo cp Dockerfile target/'
                             sh 'docker stop spring-develop'
                             sh 'docker rm spring-develop'
-                            sh 'docker rmi spring-develop:0.1'
-                            sh 'docker build -t spring-develop:0.1 .'
+                            // sh 'docker rmi spring-develop:0.1'
+                            // sh 'cd target/'
+                            // sh 'docker build -t spring-develop:0.1'
                             }catch(e){
                         }
                     }

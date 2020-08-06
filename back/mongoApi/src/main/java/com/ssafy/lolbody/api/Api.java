@@ -1,6 +1,7 @@
 package com.ssafy.lolbody.api;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -16,18 +17,14 @@ import org.json.JSONObject;
 public class Api {
 	private final static String token = "RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c";
 	private final static String[] tokens = {
-			"RGAPI-673600b9-88ff-4459-8a6e-195e87cd0057",
-			"RGAPI-3408ce53-b363-45f0-bc6d-b45ac19dacd5",
-			"RGAPI-597023c5-75d2-49a8-8f89-46183a436bad",
-			"RGAPI-51abf473-5ff6-4d25-94c0-9153b676379f",
-			"RGAPI-d7e025f7-0ea6-4324-b2d3-1f969ba6eccd",
-			"RGAPI-ee48e977-68a8-4222-92c6-6d5f381bb7f5",
+			"RGAPI-3fe77bcf-67f4-4086-9c4e-1676e79a99ab",
+			"RGAPI-cd2da715-526f-4c21-807d-07e1e2e3ae6d",
+			"RGAPI-b66844f8-2452-46ac-a154-596cd41cc083",
 			"RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c",
-			"RGAPI-80dc4c4d-07f9-4800-a344-d969b5967b47",
-			"RGAPI-9c1047a7-7adc-47c4-a7c8-646aff5c4404",
-			"RGAPI-45f06699-a20f-4287-94d0-7d4396aeff53",
-			"RGAPI-b129e076-891d-4776-a6a1-83e42b331744",
-			"RGAPI-9a08de7d-b0b0-41d1-950b-8052f695ea81"
+			"RGAPI-a7258008-1f24-4502-b815-78f08e35119e",
+			"RGAPI-b5776f7c-b9f3-4f0d-8e08-cc1da836bdaf",
+			"RGAPI-400c3f9f-b050-4e82-b38c-d7d605a14cd7",
+			"RGAPI-325bef05-8616-4939-bb7f-c2ed5ab1906e"
 	};
 	// 안먹히는 키 찾는 방법
 	// https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/parkjamal?api_key=여기에키입력
@@ -218,4 +215,24 @@ public class Api {
 			x.printStackTrace();
 		}
 	}
+	
+	public static String getAnalysisData(String fileName, String argument) throws IOException {
+		
+		Process process = Runtime.getRuntime().exec("python "+fileName+" "+argument);
+		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		BufferedReader er = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+		String s = "";
+		StringBuilder sb = new StringBuilder();
+		while((s = er.readLine()) != null) {
+			sb.append(s);
+		}
+//		System.out.println(sb.toString());
+		sb.setLength(0);
+		while((s = br.readLine()) != null) {
+			sb.append(s);
+		}
+		return sb.toString();
+	}
+	
+	
 }

@@ -65,7 +65,8 @@ def get_player_lane_value(player_data):
         player_mean = player_df.mean()
         # player_std = player_df.std()
 
-        stats = pd.read_csv('./csv/2008/%s/2008_stastics.csv' % rank)
+        stats = pd.read_csv('/csv/2008/%s/2008_stastics.csv' % rank.lower())
+        # stats = pd.read_csv('./csv/2008/%s/2008_stastics.csv' % rank)
         lane_stats = stats[stats['position'] == position].reset_index(drop=True)
         # print(lane_stats)
         player_p_value = dict()

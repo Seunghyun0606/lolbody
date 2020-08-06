@@ -533,8 +533,9 @@ public class ProfileService {
 								}
 							}
 							tmp.setMatchGrade(Double.parseDouble(
-									Api.getAnalysisData("MatchGrade", obj.toString().replaceAll("\"", "'"))));
+									Api.getAnalysisData("MatchGrade.py", obj.toString().replaceAll("\"", "'"))));
 						} catch (Exception e) {
+							e.printStackTrace();
 							continue;
 						}
 					}

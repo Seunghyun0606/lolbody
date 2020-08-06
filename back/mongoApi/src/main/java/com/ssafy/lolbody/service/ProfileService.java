@@ -513,9 +513,7 @@ public class ProfileService {
 							obj.put("kda", tmp.getKda());
 						obj.put("killRatio", tmp.getKa());
 						double deathRatio = 100.0 * tmp.getDeaths() / (j < 5 ? blueDeaths : redDeaths);
-						if (Double.isInfinite(deathRatio))
-							obj.put("deathRatio", -1.0);
-						else if (Double.isNaN(deathRatio))
+						if (Double.isNaN(deathRatio))
 							obj.put("deathRatio", 0.0);
 						else
 							obj.put("deathRatio", deathRatio);

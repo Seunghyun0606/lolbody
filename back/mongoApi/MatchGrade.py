@@ -31,7 +31,7 @@ def get_player_match_grade(player_data):
         # gold : player_data.get('gold')
         # cs : player_data.get('cs')
     }
-    tier = player_data.get('tier')
+    tier = player_data.get('tier') if player_data.get('tier') != 'null' else 'iron'
     cols = ['visionScore', 'csPerMin', 'deathsRatio', 'killAssistPerMin', 'damageDealtPerMin', 'damageTakenPerMin', 'killsRatio']
     # cols2 = ['visionScore', 'csPerMin', 'damageDealtPerMin', 'damageTakenPerMin']
 

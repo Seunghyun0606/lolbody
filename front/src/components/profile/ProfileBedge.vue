@@ -1,7 +1,7 @@
 <template>
-  <div :tooltip="content" class="basic-bedge">
+  <span :tooltip="content" class="basic-bedge">
     뱃지
-  </div>
+  </span>
 </template>
 
 <script>
@@ -31,11 +31,5 @@ export default {
 .basic-bedge:hover {
   background-color: rgb(155, 221, 247);
 }
-
-
-
-
-
-
 
 </style>

@@ -9,6 +9,7 @@
 			<td style="vertical-align: top" width="34%">
 				<v-card class="ma-1 mb-2 bg_card"  outlined height="150px" :loading="triger.isLoading">
 					
+					<!-- 유저프로필 -->
 					<v-row>
 						<v-col cols="3">
 							<div class="avatar mt-3 ml-3 text-center">
@@ -29,11 +30,14 @@
 
 					<!-- 배지 컴포넌트가 들어가야함. -->
 					<v-row>
-						<v-col cols="12">
-							<div class="ml-2">
-								<ProfileBedge />
-							</div>
-						</v-col>
+						<ProfileBedge class="ml-2"/>
+						<ProfileBedge class="ml-2"/>
+						<ProfileBedge class="ml-2"/>
+						<ProfileBedge class="ml-2"/>
+						<ProfileBedge class="ml-2 mt-1"/>
+						<ProfileBedge class="ml-2 mt-1"/>
+						<ProfileBedge class="ml-2 mt-1"/>
+						<ProfileBedge class="ml-2 mt-1"/>
 					</v-row>
 				</v-card>
 				

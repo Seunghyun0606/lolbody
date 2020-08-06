@@ -59,7 +59,7 @@ export default {
       const regExp = /[{}[\]/?.,;:|)*~`!^-_+<>@#$%&\\=('"]/gi;
 
       // 복붙시 딸려오는 문자
-      const trashInput = /님이 로비에 참가하셨습니다/
+      const trashInput = /님이 방에 참가했습니다/
 
       // 아이디 Array에 대해
       tmpSearchSummernerIDs.forEach((ID, idx) => {

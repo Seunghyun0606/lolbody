@@ -87,7 +87,7 @@ export default {
         // console.log(ID + '공백제거')
       })
 
-      console.log(2, tmpSearchSummernerIDs)
+      // console.log(2, tmpSearchSummernerIDs)
       // this.searchSummernerIDs = tmpSearchSummernerIDs
 
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
@@ -97,7 +97,7 @@ export default {
         this.$router.push('MultiSearch')
       }
       else {
-        console.log(3, tmpSearchSummernerIDs)
+        // console.log(3, tmpSearchSummernerIDs)
         this.$router.push('/Profile/'+tmpSearchSummernerIDs);
 
       }

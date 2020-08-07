@@ -17,6 +17,7 @@ import org.json.JSONObject;
 public class Api {
 	private final static String token = "RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c";
 	private final static String[] tokens = {
+			"RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c",
 			"RGAPI-45f9076c-7e64-4fa5-8a7c-77938204d040",
 			"RGAPI-253194ed-462e-4c6f-b245-69e14864282f",
 			"RGAPI-3d63fcf6-320f-411f-ba09-2b7ebdb01d32",
@@ -24,7 +25,7 @@ public class Api {
 			"RGAPI-05c0655d-1024-49f5-afbb-449222944bf0",
 			"RGAPI-d0baedfc-b931-4d2e-9760-0cc4124195f3",
 			"RGAPI-fb08c7e1-0f10-433e-bc9d-eb3b80f45587",
-			"RGAPI-6dfb7ceb-6771-4f9d-b61c-35acb13df7b5",
+			"RGAPI-50898d80-b256-40f5-834c-8c7d7d91c4e5",
 			"RGAPI-3e334341-1e0b-4321-910e-4c505b2c6365",
 			"RGAPI-f2c7e326-cfe1-4e6b-b4f1-c69ce10f3cfd"
 	};
@@ -33,7 +34,7 @@ public class Api {
 	private static int idx = 0;
 	
 	public static String multi(String input, String summonerName) {
-		boolean isOk = false;
+		boolean isOk = false, isForbidden = false;
 		String result = "";
 		int cnt = 10 * tokens.length;
 		while (cnt-- > 0) {
@@ -60,7 +61,8 @@ public class Api {
 				} else if (con.getResponseMessage().equals("Too Many Requests") || con.getResponseMessage().equals("Gateway Timeout")) {
 					continue;
 				} else {
-					break;
+					isForbidden = true;
+					continue;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -68,6 +70,8 @@ public class Api {
 		}
 		if(isOk)
 			return result;
+		else if(isForbidden)
+			return "Forbidden";
 		else
 			return "Fail";
 	}	

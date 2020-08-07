@@ -17,6 +17,7 @@ import org.json.JSONObject;
 public class Api {
 	private final static String token = "RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c";
 	private final static String[] tokens = {
+			"RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c",
 			"RGAPI-45f9076c-7e64-4fa5-8a7c-77938204d040",
 			"RGAPI-253194ed-462e-4c6f-b245-69e14864282f",
 			"RGAPI-3d63fcf6-320f-411f-ba09-2b7ebdb01d32",
@@ -33,7 +34,7 @@ public class Api {
 	private static int idx = 0;
 	
 	public static String multi(String input, String summonerName) {
-		boolean isOk = false;
+		boolean isOk = false, isForbidden = false;
 		String result = "";
 		int cnt = 10 * tokens.length;
 		while (cnt-- > 0) {
@@ -60,7 +61,8 @@ public class Api {
 				} else if (con.getResponseMessage().equals("Too Many Requests") || con.getResponseMessage().equals("Gateway Timeout")) {
 					continue;
 				} else {
-					return "Forbidden";
+					isForbidden = true;
+					continue;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -68,6 +70,8 @@ public class Api {
 		}
 		if(isOk)
 			return result;
+		else if(isForbidden)
+			return "Forbidden";
 		else
 			return "Fail";
 	}	

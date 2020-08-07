@@ -27,7 +27,7 @@ public class MatchService {
 			if(json.equals("Fail"))
 				throw new TimeoutException("요청이 너무 많습니다.");
 			else if(json.equals("Forbidden"))
-				throw new TimeoutException("Api key가 만료되었습니다.");
+				throw new TimeoutException("요청이 너무 많습니다. (만료된 key 포함)");
 			matchDto = new Gson().fromJson(json, MatchDto.class);
 			save(matchDto);
 		}

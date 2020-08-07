@@ -27,7 +27,7 @@ public class SummonerService {
 	public SummonerDto findBySubName(String name) throws Exception {
 		String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
 		if (json.equals("Fail")) {
-			throw new Exception("존재하지 않는 소환사입니다.");
+			throw new Exception("존재하지 않는 소환사입니다.("+name+")");
 		}
 		SummonerDto summonerDto = new Gson().fromJson(json, SummonerDto.class);
 		JSONObject object = new JSONObject(json);
@@ -41,7 +41,7 @@ public class SummonerService {
 		if (summonerDto == null) {
 			String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
 			if (json.equals("Fail")) {
-				throw new Exception("존재하지 않는 소환사입니다.");
+				throw new Exception("존재하지 않는 소환사입니다.("+name+")");
 			}
 			summonerDto = new Gson().fromJson(json, SummonerDto.class);
 			JSONObject object = new JSONObject(json);

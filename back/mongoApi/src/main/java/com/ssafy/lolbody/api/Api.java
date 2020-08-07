@@ -60,7 +60,7 @@ public class Api {
 				} else if (con.getResponseMessage().equals("Too Many Requests") || con.getResponseMessage().equals("Gateway Timeout")) {
 					continue;
 				} else {
-					break;
+					return "Forbidden";
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

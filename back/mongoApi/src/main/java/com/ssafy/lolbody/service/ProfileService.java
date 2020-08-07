@@ -374,6 +374,7 @@ public class ProfileService {
 		ProfileDto profileDto = profileRepository.findBySummonerId(summonerDto.getId());
 		if (profileDto == null) {
 			updateProfile(name);
+			profileDto = profileRepository.findBySummonerId(summonerDto.getId());
 		}
 		List<ProfileReferenceDto> profiles = profileDto.getProfiles();
 		return profiles.get(profiles.size() - 1);

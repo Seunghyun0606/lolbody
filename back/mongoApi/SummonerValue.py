@@ -84,7 +84,8 @@ def get_player_lane_value(player_data):
         ret['badges'] = get_badges(player_p_value)
     return ret
 
-# print(player_data)
-player_data = json.loads(sys.argv[1].replace("'", '"'))
-# print(type(player_data))
-print(get_player_lane_value(player_data))
+if __name__ == '__main__':
+    # print(player_data)
+    player_data = json.loads(sys.argv[1].replace("'", '"'))
+    # print(type(player_data))
+    print(get_player_lane_value(player_data))

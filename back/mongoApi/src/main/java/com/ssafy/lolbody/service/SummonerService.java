@@ -41,7 +41,7 @@ public class SummonerService {
 		if (summonerDto == null) {
 			String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
 			if (json.equals("Fail")) {
-				throw new Exception("해당하는 소환사가 없습니다.");
+				throw new Exception();
 			}
 			summonerDto = new Gson().fromJson(json, SummonerDto.class);
 			JSONObject object = new JSONObject(json);

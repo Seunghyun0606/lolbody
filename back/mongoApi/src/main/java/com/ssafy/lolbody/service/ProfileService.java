@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.lolbody.api.Api;
 import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.dto.MatchDto;
 import com.ssafy.lolbody.dto.MatchRecordDto;
@@ -80,7 +78,6 @@ public class ProfileService {
 					profileReferenceDto.setTier(i.getTier());
 					profileReferenceDto.setRank(i.getRank());
 					profileReferenceDto.setLeaguePoints(i.getLeaguePoints());
-					break;
 				}
 			}
 			MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
@@ -445,19 +442,16 @@ public class ProfileService {
 					List<PlayerRecordDto> redTeammate = new ArrayList<>();
 
 					int[][] kda = new int[10][3];
-					int blueKills = 0, redKills = 0, blueDeaths = 0, redDeaths = 0;
+					int blueKills = 0, redKills = 0;
 					for (int j = 0; j < 10; j++) {
 						ParticipantDto p = participants.get(j);
 						kda[j][0] = p.getStats().getKills();
 						kda[j][1] = p.getStats().getDeaths();
 						kda[j][2] = p.getStats().getAssists();
-						if (j < 5) {
+						if (j < 5)
 							blueKills += kda[j][0];
-							blueDeaths += kda[j][1];
-						} else {
+						else
 							redKills += kda[j][0];
-							redDeaths += kda[j][1];
-						}
 					}
 					for (int j = 0; j < 10; j++) {
 						PlayerRecordDto tmp = new PlayerRecordDto();
@@ -496,41 +490,10 @@ public class ProfileService {
 							tmp.setLine("SUPPORT");
 						} else
 							tmp.setLine(line);
-						if (j < 5) {
-							if (blueDeaths == 0)
-								tmp.setDeathRatio(0.0);
-							else
-								tmp.setDeathRatio(100.0 * tmp.getDeaths() / blueDeaths);
-						} else {
-							if (redDeaths == 0)
-								tmp.setDeathRatio(0.0);
-							else
-								tmp.setDeathRatio(100.0 * tmp.getDeaths() / redDeaths);
-						}
-						tmp.setDamageDealt(p.getStats().getTotalDamageDealtToChampions());
-						tmp.setDamageTaken(p.getStats().getTotalDamageTaken());
-						tmp.setVisionScore(p.getStats().getVisionScore());
-
-						try {
-							List<LeagueEntryDto> leagueEntryList = leagueEntryService
-									.findOnly(summonerService.findOnly(tmp.getName()).getId());
-							for (LeagueEntryDto l : leagueEntryList) {
-								if (l.getQueueType().equals("RANKED_SOLO_5x5")) {
-									tmp.setTier(l.getTier());
-									break;
-								}
-							}
-							if (tmp.getTier() == null)
-								tmp.setTier("null");
-						} catch (Exception e) {
-							tmp.setTier("GOLD");
-						}
-
 						if (j < 5)
 							blueTeammate.add(tmp);
 						else
 							redTeammate.add(tmp);
-
 					}
 					Collections.sort(blueTeammate, (o1, o2) -> map.get(o1.getLine()) - map.get(o2.getLine()));
 					Collections.sort(redTeammate, (o1, o2) -> map.get(o1.getLine()) - map.get(o2.getLine()));
@@ -556,39 +519,6 @@ public class ProfileService {
 						matchRecordDto.setMyTeam("redTeam");
 						matchRecordDto.setMyIndex(j);
 						break;
-					}
-				}
-
-				PlayerRecordDto tmp = new PlayerRecordDto();
-				if (matchRecordDto.getMyTeam().equals("blueTeam"))
-					tmp = matchRecordDto.getBlueTeam().getTeammate().get(matchRecordDto.getMyIndex());
-				else
-					tmp = matchRecordDto.getRedTeam().getTeammate().get(matchRecordDto.getMyIndex());
-				if (tmp.getMatchGrade() == 0) {
-					JSONObject obj = new JSONObject();
-					obj.put("kill", tmp.getKills());
-					obj.put("assist", tmp.getAssists());
-					obj.put("death", tmp.getDeaths());
-					obj.put("duration", matchRecordDto.getDuration());
-					if (Double.isInfinite(tmp.getKda()))
-						obj.put("kda", -1.0);
-					else
-						obj.put("kda", tmp.getKda());
-					obj.put("killRatio", tmp.getKa());
-					obj.put("deathRatio", tmp.getDeathRatio());
-					obj.put("gold", tmp.getGold());
-					obj.put("cs", tmp.getCs());
-					obj.put("csPerMin", tmp.getCsPerMin());
-					obj.put("damageDealt", tmp.getDamageDealt());
-					obj.put("damageTaken", tmp.getDamageTaken());
-					obj.put("visionScore", tmp.getVisionScore());
-					obj.put("tier", tmp.getTier());
-					try {
-						tmp.setMatchGrade(Double.parseDouble(
-								Api.getAnalysisData("MatchGrade.py", obj.toString().replaceAll("\"", "'"))));
-						matchRecordRepository.save(matchRecordDto);
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
 				matchRecords.add(matchRecordDto);

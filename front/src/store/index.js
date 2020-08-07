@@ -250,6 +250,19 @@ export default new Vuex.Store({
         })
     },
 
+    // 승현, renewalUserData
+
+    renewalUserData( { commit }, userName ) {
+      axios.put(SERVER_URL + `/profile/${userName}`)
+        .then(res => {
+          commit('setProfileDatas', res.data)
+          console.log(res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
     // 형래, profile
     getProfileDatas( { commit }, userName){
         return axios.get(SERVER_URL + `/profile/${userName}`)

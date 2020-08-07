@@ -22,7 +22,7 @@
 						<v-col cols="8">
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
-								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalRecord">전적 갱신</v-btn>
+								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalUserData(profileDatas.summonerName)">전적 갱신</v-btn>
 								<span class="leastUpdate fs-10">최근 업데이트: 방금 전</span>
 							</div>
 						</v-col>
@@ -164,10 +164,6 @@ export default {
 	name:'Profile',
 	components:{
 		//RadarChart,
-    // Logo: () => ({
-    //   component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'../components/Logo.vue')), 5000)),
-    //   loading: Loading
-    // })
 		ProfileLineChart: () => ({
 			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileLineChart.vue')), 500)),
 		}),
@@ -251,8 +247,12 @@ export default {
 			this.isLoading = false;
 		},
 		// 새로고침시 리다이렉트하면서 전적갱신.
-		renewalRecord() {
-			this.$router.go()
+		async renewalUserData(userName) {
+			await this.$store.dispatch('renewalUserData', userName)
+			await setTimeout(() => {
+				this.$router.go()
+
+			}, 3000)
 		},
 
 		getRankData(){

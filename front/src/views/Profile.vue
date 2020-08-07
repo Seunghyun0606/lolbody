@@ -150,9 +150,9 @@
 <script>
 //import axios from 'axios';
 //import RadarChart from '@/components/profile/RadarChart';
-import ProfileLineChart from '@/components/profile/ProfileLineChart';
-import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
-import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
+// import ProfileLineChart from '@/components/profile/ProfileLineChart';
+// import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
+// import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
 import ProfileBedge from "@/components/profile/ProfileBedge"
 
 
@@ -164,9 +164,19 @@ export default {
 	name:'Profile',
 	components:{
 		//RadarChart,
-		ProfileLineChart,
-		ProfileGameHistory,
-		ProfileRadarChart,
+    // Logo: () => ({
+    //   component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'../components/Logo.vue')), 5000)),
+    //   loading: Loading
+    // })
+		ProfileLineChart: () => ({
+			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileLineChart.vue')), 500)),
+		}),
+		ProfileRadarChart: () => ({
+			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileRadarChart.vue')), 2500)),
+		}),
+		ProfileGameHistory: () => ({
+			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileGameHistory.vue')), 2500)),
+		}),
 		ProfileBedge,
 	},
 	data: ()=>({
@@ -185,7 +195,7 @@ export default {
 		this.getProfileDatas(userName);
 		next()
 	},
-	mounted(){
+	created(){
 		const userName = this.$route.params.userName;
 		//const userName =  window.location.href.split("/");
 		//console.log(userName);
@@ -235,8 +245,8 @@ export default {
 		},
 
 		// 승현, radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
-		async getRadarChartDatas(userName) {
-			await this.$store.dispatch('getRadarChartDatas', userName)
+		getRadarChartDatas(userName) {
+			this.$store.dispatch('getRadarChartDatas', userName)
 
 			this.isLoading = false;
 		},

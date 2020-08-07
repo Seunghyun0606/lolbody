@@ -225,10 +225,10 @@ export default new Vuex.Store({
             // 자유랭크가 같이와서 솔로만 넣게 처리했습니다.
             // 무조건 0번이 솔로라서 0번 기준으로 처리. 만약 없으면 그냥 널 값처리.
               if (res.data[0].queueType === "RANKED_SOLO_5x5") {
-                commit('setUserDatas', res.data[0])
+                commit('setMultiUserDatas', res.data[0])
               }
               else {
-                commit('setUserDatas', { tier: "unranked", rank: ""})
+                commit('setMultiUserDatas', { tier: "unranked", rank: ""})
 
               }
             }

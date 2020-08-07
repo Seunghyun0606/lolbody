@@ -23,7 +23,7 @@
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
 								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalUserData(profileDatas.summonerName)">전적 갱신</v-btn>
-								<span class="leastUpdate fs-10">최근 업데이트: 방금 전</span>
+								<span class="leastUpdate fs-10">최근 업데이트: {{ updateTime }}</span>
 							</div>
 						</v-col>
 					</v-row>
@@ -201,6 +201,40 @@ export default {
 		...mapState([
 			'profileDatas',
 		]),
+		updateTime() {
+			let time = this.profileDatas.timestamp
+			// console.log(time)
+			let calcDate = function(time) {
+				let now = new Date();
+				let gametime = new Date(time);
+				let result = "";
+				let diff = now.getTime() - gametime.getTime();
+				if(Math.floor(diff/(1000*3600*24)) > 0){
+						result = (gametime.getMonth()+1) + "/" + gametime.getDate();
+				}else{
+						let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
+						if ( diff1 === 0 ) {
+							result = '방금 전';
+						}
+						else if ( diff1 === 1 ) {
+							result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
+
+						}
+
+						else {
+							result = '약 ' + diff1 +"시간 전";
+						}
+				}
+				// console.log(result)
+				return result;
+			}
+			// let changeTime = function(time){
+			// 	return Math.floor(time/60)+ "분 " + (time - Math.floor(time/60)*60) +"초"
+			// }
+			// console.log(calcDate(time))
+
+			return calcDate(time)
+		}
 		//     ...mapGetters([
 		//             'profileDatas'
 		//     ]),

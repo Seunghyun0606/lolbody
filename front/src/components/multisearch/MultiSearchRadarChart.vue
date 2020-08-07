@@ -8,6 +8,7 @@
 import apexchart from 'vue-apexcharts'
 
 export default {
+  name: 'MultiSearchRadarChart',
   components: {
     apexchart
   },

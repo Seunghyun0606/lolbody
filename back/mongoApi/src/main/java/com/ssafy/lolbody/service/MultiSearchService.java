@@ -50,7 +50,7 @@ public class MultiSearchService {
 		SummonerDto summonerDto = summonerService.findBySubName(summonerName);
 		
 		// 소환사 이름, 소환사 레벨
-		result.setSummonerName(summonerName);
+		result.setSummonerName(summonerDto.getName());
 		result.setSummonerLevel(summonerDto.getSummonerLevel());
 		
 		// 전체 랭크 ( 전적, 승 / 패 )
@@ -103,11 +103,12 @@ public class MultiSearchService {
 			MatchDto matchDto = matchService.findByGameId(matchRefDto.getGameId());
 			if(matchDto == null) break;
 			for(ParticipantIdentityDto identites: matchDto.getParticipantIdentities()) {
-				if(identites.getPlayer().getSummonerName().toLowerCase().equals(summonerName.toLowerCase())) {
+				if(identites.getPlayer().getSummonerName().toLowerCase().replaceAll(" ", "").equals(summonerName.toLowerCase().replaceAll(" ", ""))) {
 					participantId = identites.getParticipantId();
 					break;
 				}
 			}
+			if(participantId == 0) break;
 			if(matchRefDto.getRole().equals("DUO_SUPPORT")) {
 				if(!matchRefDto.getLane().equals("NONE"))
 					recentGame.setLane(matchRefDto.getLane());
@@ -175,11 +176,12 @@ public class MultiSearchService {
 				MatchDto matchDto = matchService.findByGameId(matchRefDto.getGameId());
 				if(matchDto == null) break;
 				for(ParticipantIdentityDto identites: matchDto.getParticipantIdentities()) {
-					if(identites.getPlayer().getSummonerName().toLowerCase().equals(summonerName.toLowerCase())) {
+					if(identites.getPlayer().getSummonerName().toLowerCase().replaceAll(" ", "").equals(summonerName.toLowerCase().replaceAll(" ", ""))) {
 						participantId = identites.getParticipantId();
 						break;
 					}
 				}
+				if(participantId == 0) break;
 				for(ParticipantDto participant: matchDto.getParticipants()) {
 					if(participant.getParticipantId() == participantId) {
 						recentMatchResults.add(participant.getStats().isWin());

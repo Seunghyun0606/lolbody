@@ -5,8 +5,11 @@
 	<v-main>
 	<table width="1000px">
 		<tr>
+			<!-- 여기서부터 좌측 공간 -->
 			<td style="vertical-align: top" width="34%">
 				<v-card class="ma-1 mb-2 bg_card"  outlined height="150px" :loading="triger.isLoading">
+					
+					<!-- 유저프로필 -->
 					<v-row>
 						<v-col cols="3">
 							<div class="avatar mt-3 ml-3 text-center">
@@ -19,32 +22,26 @@
 						<v-col cols="8">
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
-								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn"  color="info">전적 갱신</v-btn>
-								<span class="leastUpdate fs-10">최근 업데이트: 3시간 전</span>
-							</div>
-						</v-col>
-						</v-row>
-						<v-row>
-						<v-col cols="12">
-							<div class="ml-2">
-								<v-chip class="ma-2" color="green" text-color="white">
-									배지1
-								</v-chip>
-								<v-chip class="ma-2" color="green" text-color="white">
-									배지2
-								</v-chip>
-								<v-chip class="ma-2" color="green" text-color="white">
-									배지3
-								</v-chip>
+								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalUserData(profileDatas.summonerName)">전적 갱신</v-btn>
+								<span class="leastUpdate fs-10">최근 업데이트: {{ updateTime }}</span>
 							</div>
 						</v-col>
 					</v-row>
+
+					<!-- 배지 컴포넌트가 들어가야함. -->
+					<v-row>
+						<ProfileBedge class="ml-2"/>
+
+					</v-row>
 				</v-card>
+				
+				<!-- 랭크, 일반 등 -->
 				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" algin="center">
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
 						<li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
 					</ul>
+				
 					<div class="mt-2 text-center" v-if="now.src != null"> 
 						<div class="icon pa-1 d-inline-block">
 							<span class="rank fs-14">{{now.rank}}</span>
@@ -53,6 +50,7 @@
 								<span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.totalRecord.wins}}승</span> <span class="fc_red fs-13">{{now.totalRecord.losses}}패</span>)</span>
 							</v-card-text>
 						</div>
+				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="70">
 								<v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" @error="errorImage" alt="모스트 픽" v-if="now.mostCham != 'null'"/>
@@ -61,6 +59,7 @@
 								<span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostChamRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
 							</v-card-text>
 						</div>
+				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
 								<v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')" @error="errorImage" v-if="now.mostLine != 'null'"/>
@@ -69,6 +68,7 @@
 								<span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
 							</v-card-text>
 						</div>
+				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
 								<v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')" @error="errorImage" v-if="now.secondLine != 'null'"/>
@@ -78,35 +78,59 @@
 							</v-card-text>
 						</div>
 					</div>
+				
 					<div class="mt-2 text-center" v-if="now.src == null">
 						<p>전적이 없습니다.</p>
 					</div>
 				</v-card>
+
+				<!-- 듀오 전적이나 최근 자주한 챔피언? -->
+				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" algin="center">
+					<div>
+						<!-- 여기에 뭐 들어갈지 고민해봐야할듯. 너무 빈공간이라 하나 쓰면 좋겠음 -->
+					</div>
+				</v-card>
 			</td>
+			<!-- 여기서부터 우측 공간 -->
 			<td style="vertical-align: top">
 				<v-card class="text-center ma-1 mb-2 bg_card" outlined>
 					<ul class="options">
-						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">LP</a></li>
+						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">KDA</a></li>
 						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
 					</ul>
+
+					<!-- LineChart -->
 					<div class="px-5">
-						<LineChart/>
+
+						<ProfileLineChart/>
+
 					</div>
 				</v-card>
+
+
+				<!-- RadarChart -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 mb-2 bg_card float-left" width="320.5px" height="160px" outlined>
+					<v-card class="ma-1 mb-2 bg_card float-left" width="260.5px" height="160px" outlined>
 						<div class="ml-7">
-							<MultiSearchRadarChart/>
+
+							<ProfileRadarChart/>
+
 						</div>
 					</v-card>
 				</div>
+
+
+				<!-- 롤비티아이 부분 -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 mb-2 bg_card float-right" width="320.5px" height="160px" outlined>
+					<v-card class="ma-1 mb-2 bg_card float-right" width="380.5px" height="160px" outlined>
 						<div class="d-inline">
-							<span>유저 성향</span>
+							<!-- <span>유저 성향</span> -->
 						</div>
 					</v-card>
 				</div>
+
+
+				<!-- 게임 기록 부분 -->
 				<ProfileGameHistory/>
 			</td>
 		</tr>
@@ -114,16 +138,18 @@
 	</v-main>
 	</v-app>
 	</v-row>
-    </v-container>
+</v-container>
 </template>
 
 <script>
 //import axios from 'axios';
 //import RadarChart from '@/components/profile/RadarChart';
-import LineChart from '@/components/profile/LineChart';
-import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
+// import ProfileLineChart from '@/components/profile/ProfileLineChart';
+// import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
+// import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
+import ProfileBedge from "@/components/profile/ProfileBedge"
 
-import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
+
 //import { mapActions } from "vuex"
 import { mapState } from "vuex"
 //import { mapGetters } from    "vuex"
@@ -132,9 +158,16 @@ export default {
 	name:'Profile',
 	components:{
 		//RadarChart,
-		LineChart,
-		ProfileGameHistory,
-		MultiSearchRadarChart
+		ProfileLineChart: () => ({
+			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileLineChart.vue')), 500)),
+		}),
+		ProfileRadarChart: () => ({
+			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileRadarChart.vue')), 2500)),
+		}),
+		ProfileGameHistory: () => ({
+			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileGameHistory.vue')), 2500)),
+		}),
+		ProfileBedge,
 	},
 	data: ()=>({
 		triger:{
@@ -152,7 +185,7 @@ export default {
 		this.getProfileDatas(userName);
 		next()
 	},
-	mounted(){
+	created(){
 		const userName = this.$route.params.userName;
 		//const userName =  window.location.href.split("/");
 		//console.log(userName);
@@ -162,6 +195,40 @@ export default {
 		...mapState([
 			'profileDatas',
 		]),
+		updateTime() {
+			let time = this.profileDatas.timestamp
+			// console.log(time)
+			let calcDate = function(time) {
+				let now = new Date();
+				let gametime = new Date(time);
+				let result = "";
+				let diff = now.getTime() - gametime.getTime();
+				if(Math.floor(diff/(1000*3600*24)) > 0){
+						result = (gametime.getMonth()+1) + "/" + gametime.getDate();
+				}else{
+						let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
+						if ( diff1 === 0 ) {
+							result = '방금 전';
+						}
+						else if ( diff1 === 1 ) {
+							result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
+
+						}
+
+						else {
+							result = '약 ' + diff1 +"시간 전";
+						}
+				}
+				// console.log(result)
+				return result;
+			}
+			// let changeTime = function(time){
+			// 	return Math.floor(time/60)+ "분 " + (time - Math.floor(time/60)*60) +"초"
+			// }
+			// console.log(calcDate(time))
+
+			return calcDate(time)
+		}
 		//     ...mapGetters([
 		//             'profileDatas'
 		//     ]),
@@ -177,7 +244,7 @@ export default {
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
 			this.now = this.profileDatas.rankedRecord;
-			if(this.profileDatas.tier == 'null'){
+			if(this.profileDatas.tier === null){
 				this.profileDatas.tier= 'unranked';
 				this.profileDatas.rank = 'unranked';
 				this.changeNomarlGame();
@@ -186,6 +253,9 @@ export default {
 				this.now.rank = this.profileDatas.rank;
 			}
 			this.getMatchDatas();
+
+			this.getRadarChartDatas(userName);
+
 			this.triger.isLoading = false;
 		},
 		async getMatchDatas(){
@@ -197,6 +267,22 @@ export default {
 			this.isLoading = false;
 			//console.log("loading done");
 		},
+
+		// 승현, radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
+		getRadarChartDatas(userName) {
+			this.$store.dispatch('getRadarChartDatas', userName)
+
+			this.isLoading = false;
+		},
+		// 새로고침시 리다이렉트하면서 전적갱신.
+		async renewalUserData(userName) {
+			await this.$store.dispatch('renewalUserData', userName)
+			await setTimeout(() => {
+				this.$router.go()
+
+			}, 3000)
+		},
+
 		getRankData(){
 			//LineChart에 데이터    전달
 		},

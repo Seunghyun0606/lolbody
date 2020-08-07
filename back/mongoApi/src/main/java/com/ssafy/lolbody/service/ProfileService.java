@@ -56,7 +56,7 @@ public class ProfileService {
 	@Autowired
 	MatchRecordRepository matchRecordRepository;
 
-	public ProfileReferenceDto getProfile(String name) throws Exception {
+	public void updateProfile(String name) throws Exception {
 		SummonerDto summonerDto = summonerService.findBySubName(name);
 		ProfileDto profileDto = profileRepository.findBySummonerId(summonerDto.getId());
 		ProfileReferenceDto profileReferenceDto = new ProfileReferenceDto();
@@ -364,7 +364,17 @@ public class ProfileService {
 		}
 
 		profileRepository.save(profileDto);
-		return profileReferenceDto;
+	}
+
+	public ProfileReferenceDto getProfile(String name) throws Exception {
+		SummonerDto summonerDto = summonerService.findOnly(name);
+		ProfileDto profileDto = profileRepository.findBySummonerId(summonerDto.getId());
+		if (profileDto == null) {
+			updateProfile(name);
+			profileDto = profileRepository.findBySummonerId(summonerDto.getId());
+		}
+		List<ProfileReferenceDto> profiles = profileDto.getProfiles();
+		return profiles.get(profiles.size() - 1);
 	}
 
 	public WinRateDto calcWinRate(WinRateDto winRateDto, boolean isWin) {
@@ -379,8 +389,8 @@ public class ProfileService {
 
 	public List<MatchRecordDto> getMatchRecord(String name, String num) throws Exception {
 		List<MatchRecordDto> matchRecords = new ArrayList<>();
-		SummonerDto summonerDto = summonerService.findBySubName(name);
-		MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
+		SummonerDto summonerDto = summonerService.findOnly(name);
+		MatchlistDto matchlistDto = matchlistService.findOnly(summonerDto);
 		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
 		matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
 				.collect(Collectors.toList());
@@ -495,7 +505,7 @@ public class ProfileService {
 
 					matchRecordRepository.save(matchRecordDto);
 				}
-				
+
 				matchRecordDto.setMyTeam("blueTeam");
 				matchRecordDto.setMyIndex(0);
 

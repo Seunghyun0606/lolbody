@@ -31,13 +31,7 @@
 					<!-- 배지 컴포넌트가 들어가야함. -->
 					<v-row>
 						<ProfileBedge class="ml-2"/>
-						<ProfileBedge class="ml-2"/>
-						<ProfileBedge class="ml-2"/>
-						<ProfileBedge class="ml-2"/>
-						<ProfileBedge class="ml-2 mt-1"/>
-						<ProfileBedge class="ml-2 mt-1"/>
-						<ProfileBedge class="ml-2 mt-1"/>
-						<ProfileBedge class="ml-2 mt-1"/>
+
 					</v-row>
 				</v-card>
 				
@@ -93,7 +87,7 @@
 				<!-- 듀오 전적이나 최근 자주한 챔피언? -->
 				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" algin="center">
 					<div>
-						여기에 뭐 들어갈지 고민해봐야할듯. 너무 빈공간이라 하나 쓰면 좋겠음
+						<!-- 여기에 뭐 들어갈지 고민해봐야할듯. 너무 빈공간이라 하나 쓰면 좋겠음 -->
 					</div>
 				</v-card>
 			</td>
@@ -130,7 +124,7 @@
 				<div class="d-inline-block">
 					<v-card class="ma-1 mb-2 bg_card float-right" width="380.5px" height="160px" outlined>
 						<div class="d-inline">
-							<span>유저 성향</span>
+							<!-- <span>유저 성향</span> -->
 						</div>
 					</v-card>
 				</div>

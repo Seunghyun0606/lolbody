@@ -40,6 +40,8 @@ public class RadarChartService {
 		.stream().filter(o -> o.getQueueType().contains("SOLO")).collect(Collectors.toList());
 		if(leagueEntries.size() != 0)
 			radarChart.setTier(leagueEntries.get(0).getTier());
+		else
+			radarChart.setTier("iron");
 		Map<String,Integer> lane = matchlistService.getLaneFrequency(summonerDto);
 		
 		List<Map.Entry<String, Integer>> entries = new LinkedList<>(lane.entrySet());

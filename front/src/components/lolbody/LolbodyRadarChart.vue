@@ -1,6 +1,6 @@
 <template>
 
-  <apexchart class='move-apexchart' type="radar" width="235" :options="options" :series="series"></apexchart>
+  <apexchart type="radar" width="350" :options="options" :series="series"></apexchart>
 
 </template>
 
@@ -8,7 +8,7 @@
 import apexchart from 'vue-apexcharts'
 
 export default {
-  name: 'MultiSearchRadarChart',
+  name: 'LolbodyRadarChart',
   components: {
     apexchart
   },
@@ -95,10 +95,5 @@ export default {
 
 <style scoped>
 
-.move-apexchart {
-  position: relative;
-  left: -45px;
-  top: 30px;
-}
 
 </style>

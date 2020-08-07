@@ -5,6 +5,7 @@
         <v-tab router-link to="/">Main</v-tab>
         <!-- <v-tab router-link to="/Profile">Profile</v-tab> -->
         <v-tab router-link to="/MultiSearch">Multi Search</v-tab>
+        <v-tab router-link to="/Lolbody">Lolbody</v-tab>
       </v-tabs>
       <v-spacer></v-spacer>
       <NavSearchBar v-if="isIndex ? false : true"/>
@@ -116,4 +117,43 @@ export default {
 .vertical-align-center{
     vertical-align: center;
 }
+
+
+[tooltip]:hover {
+	position: relative;
+  cursor: pointer;
+
+}
+
+[tooltip]:after {
+  content: attr(tooltip);
+
+  transition: bottom .3s ease-in-out, opacity .3s ease-in-out;
+	background-color: rgba(0, 0, 0, 0.8);
+  word-wrap: break-word;
+  opacity: 0;
+	left: -9999px;
+
+  position: absolute;
+	bottom: 90%;
+
+  padding: 10px;
+  border-radius: 10px;
+	color: #FFFFFF;
+	font-size: 10px;
+
+
+	z-index: 9999;
+
+}
+
+[tooltip]:hover:after {
+
+  bottom: 130%;
+	left: 0;
+	opacity: 1;
+}
+
+
+
 </style>

@@ -25,7 +25,7 @@ pipeline {
                         try {
                             sh 'docker stop spring-distribute'
                             sh 'docker rm spring-distribute'
-                            sh 'docker create --name spring-distribute --entrypoint="java" -it -p 8888:8888 test1 -Djava.security.egd=file:/dev/./urandom -jar *.jar'
+                            sh 'docker create --name spring-distribute --entrypoint="java" -it -p 8888:8888 test1 -Djava.security.egd=file:/dev/./urandom -jar mongoApi-0.0.1-SNAPSHOT.jar'
                             sh """
                                 sudo docker cp csv/ spring-distribute:/
                                 sudo docker cp SummonerValue.py spring-distribute:/
@@ -38,6 +38,7 @@ pipeline {
                         }
                     }
                     sh 'docker start spring-distribute'
+                    sh 'docker logs spring-distribute'
 
                 }
                 mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "빌드 성공: ${env.JOB_NAME} ${env.BUILD_NUMBER}"

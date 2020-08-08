@@ -29,15 +29,18 @@ pipeline {
                             sh """
                                 sudo docker cp csv/ spring-distribute:/
                                 sudo docker cp SummonerValue.py spring-distribute:/
+                                cd target/
                                 sudo docker cp *.jar spring-distribute:/
                             """
                             }catch(e){
+                              mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "빌드 실패: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${e}"
+
                         }
                     }
                     sh 'docker start spring-distribute'
 
                 }
-                mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "빌드 성공: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
             }
         }
     }  

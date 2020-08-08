@@ -4,6 +4,7 @@ pipeline {
     stages {
         stage('Pull') {
             steps {
+              
                 sh 'git branch'
                 sh 'git log'
                 // git credentialsId: 'git_id', url: 'https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105.git'

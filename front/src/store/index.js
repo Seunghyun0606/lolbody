@@ -161,8 +161,22 @@ export default new Vuex.Store({
     },
     // 나중에 리팩토링하자
     setProfileRadarChartOption(state, Datas) {
-      state.profileRadarChartOption.series[0].name = state.profileDatas.rankedRecord.mostLine
-      state.profileRadarChartOption.series[1].name = state.profileDatas.rankedRecord.secondLine
+      if ( state.profileDatas.rankedRecord.mostLine === undefined) {
+        state.profileRadarChartOption.series[0].name = 'Unknown'
+        
+      }
+      else {
+        state.profileRadarChartOption.series[0].name = state.profileDatas.rankedRecord.mostLine
+
+      }
+      if ( state.profileDatas.rankedRecord.secondLine === undefined) {
+
+        state.profileRadarChartOption.series[1].name = 'Unknown'
+      }
+      else {
+        state.profileRadarChartOption.series[1].name = state.profileDatas.rankedRecord.secondLine
+
+      }
       state.profileRadarChartOption.series[0].data = []
       state.profileRadarChartOption.series[1].data = []
       for ( let index1 in Datas.lane1) {
@@ -239,15 +253,19 @@ export default new Vuex.Store({
       }
     },
     // 승현, RadarChartData
-    getRadarChartDatas( { commit }, userName ) {
-      return axios
-        .get(SERVER_URL + `/summonervalue/${userName}`)
-        .then(res => {
-          commit('setProfileRadarChartOption', res.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    async getRadarChartDatas( { commit }, userNames ) {
+      console.log(1)
+      for ( let userName of userNames) {
+        await axios
+          .get(SERVER_URL + `/summonervalue/${userName}`)
+          .then(res => {
+            commit('setProfileRadarChartOption', res.data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+        }
     },
 
     // 승현, renewalUserData

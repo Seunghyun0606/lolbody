@@ -92,6 +92,7 @@ export default {
       // this.getMultiSearchDatas(tmpSearchSummernerIDs)
       this.$store.dispatch('getMultiSearchDatas', tmpSearchSummernerIDs)
       this.$store.dispatch('getUserDatas', tmpSearchSummernerIDs)
+      this.$store.dispatch('getRadarChartDatas', tmpSearchSummernerIDs)
 
     },
     onPaste (e) {

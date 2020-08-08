@@ -5,8 +5,8 @@ pipeline {
         stage('Pull') {
             steps {
                 git credentialsId: 'git_id', url: 'https://lab.ssafy.com/s03-webmobile1-sub3/s03p13b105.git'
-                sh 'git pull origin develop'
-                sh 'git checkout develop'
+                // sh 'git pull origin develop'
+                // sh 'git checkout develop'
             }
         }
         stage('Build') {

@@ -23,7 +23,7 @@ pipeline {
                     sh 'mvn clean package -Dmaven.test.skip=true'
                     script{
                         try {
-                            sh 'docker build -t spring-image:0.1'
+                            sh 'docker build -t spring-image:0.1 .'
                             sh 'docker stop spring-distribute'
                             sh 'docker rm spring-distribute'
                         }catch(e){

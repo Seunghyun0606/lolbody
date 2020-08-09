@@ -20,9 +20,9 @@ pipeline {
                     sh 'sudo docker cp dist nginx-0807:/usr/share/nginx/'
                 }
                 dir('back/mongoApi'){
-                    sh 'mvn clean package -Dmaven.test.skip=true'
                     script{
                         try {
+                            sh 'mvn clean package -Dmaven.test.skip=true'
                             sh 'docker build -t spring-image:0.1 .'
                             sh 'docker stop spring-distribute'
                             sh 'docker rm spring-distribute'

@@ -1,5 +1,5 @@
 <template>
-  <span :tooltip="content" class="basic-bedge">
+  <span :tooltip="tooltip_content" class="basic-bedge">
     뱃지
   </span>
 </template>
@@ -9,7 +9,7 @@ export default {
   name: 'ProfileBedge',
   data() {
     return {
-      content: '설명 설명 설명aaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      tooltip_content: '설명 설명 설명aaaaaaaaaaaaaaaaaaaaaaaaaaaa'
     }
   }
 

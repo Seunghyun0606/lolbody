@@ -1,5 +1,5 @@
 <template>
-  <BarChart type="bar" height="230" :options="chartOptions" :series="series"></BarChart>
+  <BarChart type="bar" height="300" :options="chartOptions" :series="series"></BarChart>
 </template>
 
 <script>
@@ -12,15 +12,26 @@ export default {
   },
   data() {
     return {
-      series: [{
+      series: [
+      {
+        name: '동 티어대비',
         data: [44, 55, 41, 64, 22, 43, 21]
-      }, {
+      },
+      {
+        name: '현재 기준',
         data: [53, 32, 33, 52, 13, 44, 32]
-      }],
+      },
+      {
+        name: '이전 기준',
+        data: [23, 42, 12, 44, 88, 34, 32]
+      },
+      ],
       chartOptions: {
         chart: {
           type: 'bar',
-          height: 430
+          toolbar: {
+            show: false,
+          },
         },
         plotOptions: {
           bar: {
@@ -44,7 +55,7 @@ export default {
           colors: ['#fff']
         },
         xaxis: {
-          categories: [2001, 2002, 2003, 2004, 2005, 2006, 2007],
+          categories: ['딜량', '회복량', '2003', 2004, 2005, 2006, 2007],
         },
       },
     }

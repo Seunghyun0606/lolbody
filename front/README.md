@@ -7,11 +7,11 @@
 - vue-router
 - vuetify
 - axios
-- apexcharts
+- apexcharts ( MIT license  )
 - vue-apexcharts
 - material-design-icons-iconfont
   - yarn add material-design-icons-iconfont -D
-
+- vuewordcloud ( MIT license )
 
 ## Project setup
 ```

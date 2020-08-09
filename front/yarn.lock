@@ -8071,6 +8071,11 @@ vuetify@^2.2.11:
   resolved "https://registry.npm.taobao.org/vuetify/download/vuetify-2.3.4.tgz?cache=0&sync_timestamp=1594164079275&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvuetify%2Fdownload%2Fvuetify-2.3.4.tgz#fdb03b3281d40a8420b0295ea865843abdc69792"
   integrity sha1-/bA7MoHUCoQgsCleqGWEOr3Gl5I=
 
+vuewordcloud@^18.7.12:
+  version "18.7.12"
+  resolved "https://registry.yarnpkg.com/vuewordcloud/-/vuewordcloud-18.7.12.tgz#7cd02aafc57315f0548c9b9940f9f5e9de1d07f6"
+  integrity sha512-0oqqI47bGj+PxHSFrFe+8EAj1Vwb2lXj0EYFz9a1PO7CuGDCPjxdYKOPN4TlWuXYsstZX8lQTVRkCPEjE55PiA==
+
 vuex@^3.4.0:
   version "3.5.1"
   resolved "https://registry.npm.taobao.org/vuex/download/vuex-3.5.1.tgz#f1b8dcea649bc25254cf4f4358081dbf5da18b3d"

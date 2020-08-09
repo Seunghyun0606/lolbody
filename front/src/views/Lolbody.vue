@@ -11,8 +11,10 @@
         <v-row class='test-row justify-space-around align-content-space-around' style="height: 10em;">
           <!-- 랭크 -->
           <v-col cols="3" class='test-col'>
-            <v-row class='test-row '>
-              <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+            <v-row class='test-row'>
+              <v-col class="center">
+                <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+              </v-col>
               <!-- <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily"> -->
             </v-row>
             <!-- 많이가는 라인 -->
@@ -99,13 +101,13 @@
                   <v-col cols="4">
                     <v-row class="justify-space-around">
                       <!-- 여기서 for문 돌릴 예정 -->
-                      <v-col :tooltip="tooltip_content">
+                      <v-col :tooltip="tooltip_content" class="center">
                         <img class="icon small" :src="require(`@/assets/images/error.png`)" alt="temporarily">
                       </v-col>
-                      <v-col :tooltip="tooltip_content">
+                      <v-col :tooltip="tooltip_content" class="center">
                         <img class="icon small" :src="require(`@/assets/images/error.png`)" alt="temporarily">
                       </v-col>
-                      <v-col :tooltip="tooltip_content">
+                      <v-col :tooltip="tooltip_content" class="center">
                         <img class="icon small" :src="require(`@/assets/images/error.png`)" alt="temporarily">
                       </v-col>
                     </v-row>
@@ -140,7 +142,9 @@
 
               </v-col>
               <v-col>
-                데마시아의 용맹한 전사 (데마시아 // 용맹한 // fighter 느낌)
+                데마시아의 용맹한 전사
+                <br>
+                (데마시아 // 용맹한 // fighter 느낌)
                 <br>
                 당신은 데마시아의 용맹한 어쩌구저쩌구입니다. ~~ 하면서 text를 짜야함.
               </v-col>
@@ -174,10 +178,10 @@
               공격성:  ????????????????????
             </div>
             <div>
-              공격성:  ????????????????????
+              안정성:  ????????????????????
             </div>
             <div>
-              공격성:  ????????????????????
+              영향력:  ????????????????????
             </div>
           </v-col>
 
@@ -197,9 +201,11 @@
 
         <!-- 워드 클라우드? -->
         <v-row class='test-row test-height2'>
-          <div>
+          <!-- <div>
             워드 클라우드 형태로 뱃지 획득? 표현
-          </div>
+          </div> -->
+          <LolbodyWordCloud/>
+
         </v-row>
       </v-col>
     </v-row>
@@ -212,6 +218,7 @@ import { mapState } from 'vuex'
 import LolbodyBarChart from '@/components/lolbody/LolbodyBarChart'
 import LolbodyColumnChart from '@/components/lolbody/LolbodyColumnChart'
 import LolbodyRadarChart from '@/components/lolbody/LolbodyRadarChart'
+import LolbodyWordCloud from '@/components/lolbody/LolbodyWordCloud'
 // import MultiSearchBedge from '@/components/multisearch/MultiSearchBedge'
 
 export default {
@@ -220,6 +227,7 @@ export default {
     LolbodyBarChart,
     LolbodyColumnChart,
     LolbodyRadarChart,
+    LolbodyWordCloud,
     // MultiSearchBedge,
   },
   data() {

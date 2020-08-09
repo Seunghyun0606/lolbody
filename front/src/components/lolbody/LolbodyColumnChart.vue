@@ -1,6 +1,6 @@
 <template>
 
-  <ColumnChart type="bar" height="150" :options="chartOptions" :series="series"></ColumnChart>
+  <ColumnChart type="bar" height="200" :options="chartOptions" :series="series"></ColumnChart>
 
 </template>
 
@@ -15,25 +15,27 @@ export default {
   data() {
     return {        
       series: [{
-        name: 'Net Profit',
+        name: '공격성',
         data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
       }, {
-        name: 'Revenue',
+        name: '안정성',
         data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
       }, {
-        name: 'Free Cash Flow',
+        name: '영향력',
         data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
       }],
       chartOptions: {
         chart: {
           type: 'bar',
-          height: 150
+          toolbar: {
+            show: false,
+          },
         },
         plotOptions: {
           bar: {
             horizontal: false,
             columnWidth: '55%',
-            endingShape: 'rounded'
+            // endingShape: 'rounded'
           },
         },
         dataLabels: {
@@ -45,20 +47,20 @@ export default {
           colors: ['transparent']
         },
         xaxis: {
-          categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+          categories: ['7/7', '7/8', '7/9', '7/10', '8/1', '8/3', '8/4', '8/10', '8/11'],
         },
-        yaxis: {
-          title: {
-            text: '$ (thousands)'
-          }
-        },
+        // yaxis: {
+        //   title: {
+        //     text: '$ (thousands)'
+        //   }
+        // },
         fill: {
           opacity: 1
         },
         tooltip: {
           y: {
             formatter: function (val) {
-              return "$ " + val + " thousands"
+              return val + " 점"
             }
           }
         }
@@ -70,6 +72,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+
 
 </style>

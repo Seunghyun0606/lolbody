@@ -149,7 +149,7 @@ export default {
 
 [tooltip]:hover:after {
 
-  bottom: 130%;
+  bottom: 110%;
 	left: 0;
 	opacity: 1;
 }

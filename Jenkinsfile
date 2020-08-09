@@ -23,21 +23,15 @@ pipeline {
                     sh 'mvn clean package -Dmaven.test.skip=true'
                     script{
                         try {
+                            sh 'docker build -t spring-image:0.1'
                             sh 'docker stop spring-distribute'
                             sh 'docker rm spring-distribute'
-                            sh 'docker create --name spring-distribute --entrypoint="java" -it -p 8888:8888 test1 -Djava.security.egd=file:/dev/./urandom -jar mongoApi-0.0.1-SNAPSHOT.jar'
-                            sh """
-                                sudo docker cp csv/ spring-distribute:/
-                                sudo docker cp SummonerValue.py spring-distribute:/
-                                cd target/
-                                sudo docker cp *.jar spring-distribute:/
-                            """
-                            }catch(e){
-                              mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "빌드 실패: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${e}"
+                        }catch(e){
+                            mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "빌드 실패: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${e}"
 
                         }
                     }
-                    sh 'docker start spring-distribute'
+                    sh 'docker run --name spring-distribute -it -d -p 8888:8888 spring-image:0.1'
                     sh 'docker logs spring-distribute'
 
                 }

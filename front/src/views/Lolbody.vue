@@ -1,24 +1,24 @@
 <template>
 
   <!-- 나중에 만들때 전체 넓이랑 높이 고정값 주고 퍼센트 값으로 높이 정하자.. -->
-  <v-container class='test-con'>
-    <v-row class='test-row justify-space-around'>
+  <v-container>
+    <v-row class='justify-space-around'>
 
       <!-- 좌측 구역 -->
-      <v-col class='test-col' cols='5'>
+      <v-col cols='5'>
 
         <!-- 유저 프로필, 랭크, 아이디, 레벨, 챔피언 라인정보. -->
-        <v-row class='test-row justify-space-around align-content-space-around' style="height: 10em;">
+        <v-row class='justify-space-around align-content-space-around' style="height: 15em;">
           <!-- 랭크 -->
-          <v-col cols="3" class='test-col'>
-            <v-row class='test-row'>
+          <v-col cols="3">
+            <v-row>
               <v-col class="center">
                 <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily">
               </v-col>
               <!-- <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily"> -->
             </v-row>
             <!-- 많이가는 라인 -->
-            <v-row class='test-row'>
+            <v-row>
               <v-col :tooltip="tooltip_content" class="center">
                 <img class="icon small" :src="require(`@/assets/images/error.png`)" alt="temporarily">
               </v-col>
@@ -31,10 +31,10 @@
           </v-col>
 
           <!-- 유저 텍스트정보 -->
-          <v-col cols="8" class='test-col'>
-            <v-row class='test-row'>
+          <v-col cols="8">
+            <v-row>
               <v-col>
-                <v-row class='test-row'>
+                <v-row>
                   유저 이름
                   <!-- {{ multiSearchData.summonerName }} -->
                 </v-row>
@@ -48,36 +48,24 @@
                 </v-row>
               </v-col>
             </v-row>
-            <v-row class='test-row'>
+            <v-row>
               이쯤에 배지.
               <!-- <MultiSearchBedge :index="index"/> -->
             </v-row>
           </v-col>
         </v-row>
 
-
-        <!-- 분석 데이터 산출물 이용. 전체랑 최근 20게임 평균 비교 col 하나 먹이고 row로 3~4개로 나눠서하면될듯 -->
-        <v-row class='test-row test-height'>
-          <v-col>
-            <!-- 우측 막대 그래프 분석 데이터 산출물 이용. 전체랑 최근 20게임 평균 비교 col 하나 먹이고 row로 3~4개로 나눠서하면될듯 -->
-            <!-- 동티어 동일챔프 기준? -->
-            <LolbodyBarChart/>
-          </v-col>
-        
-        </v-row>
-
-
         <!-- 유저 챔피언 숙련도 부분 -->
-        <v-row class='test-row test-height'>
+        <v-row class='test-height2'>
           <v-col>
             <!-- 라인 선택해서 볼수있게. -->
             <v-row>
               <v-col class="border-box center">
-                라인1
+                숙련도 높은 챔피언 1
               </v-col>
               
               <v-col class="border-box center">
-                라인2
+                숙련도 높은 챔피언 2
               </v-col>
             </v-row>
 
@@ -127,14 +115,26 @@
             하단에 성향에 맞는 추천 챔피언과 이유. 로 2구역
           </div> -->
         </v-row>
+
+        <!-- 분석 데이터 산출물 이용. 전체랑 최근 20게임 평균 비교 col 하나 먹이고 row로 3~4개로 나눠서하면될듯 -->
+        <v-row style="height: 30em;">
+          <v-col>
+            <!-- 우측 막대 그래프 분석 데이터 산출물 이용. 전체랑 최근 20게임 평균 비교 col 하나 먹이고 row로 3~4개로 나눠서하면될듯 -->
+            <!-- 동티어 동일챔프 기준? -->
+            <LolbodyBarChart/>
+          </v-col>
+        
+        </v-row>
+
+
       </v-col>
 
 
       <!-- 우측 구역 -->
-      <v-col class='test-col' cols='6'>
+      <v-col cols='6'>
 
         <!-- 롤비티아이 구역 -->
-        <v-row class='test-row test-height2 align-content-center'>
+        <v-row class='test-height2 align-content-center'>
           <v-col>
             <v-row>
               <v-col cols='4' class="center" >
@@ -164,7 +164,7 @@
         </v-row>
 
         <!-- 레이더 차트 구역 -->
-        <v-row class='test-row test-height2'>
+        <v-row class='test-height2'>
           <!-- <div>
             레이더 차트 컴포넌트
             좌측에 레이더 차트 넣고 우측에는 레이더 차트 설명
@@ -188,7 +188,7 @@
         </v-row>
 
         <!-- 레이더차트 변화, Column 차트 구역 -->
-        <v-row class='test-row test-height2'>
+        <v-row class='test-height2'>
           <!-- <div>
             레이더 차트의 변화 // 전체 // 현재 // 이전 막대그래프
           </div> -->
@@ -200,7 +200,7 @@
         </v-row>
 
         <!-- 워드 클라우드? -->
-        <v-row class='test-row test-height2'>
+        <v-row class='test-height2'>
           <!-- <div>
             워드 클라우드 형태로 뱃지 획득? 표현
           </div> -->
@@ -244,23 +244,20 @@ export default {
 
 <style scoped>
 
-* {
-  padding: 0;
-  margin: 0;
-}
-
-.test-con {
+.container {
   border: 2px solid black;
   padding: 0;
 }
-.test-row {
-  border: 2px solid red;
+
+.row {
   padding: 0;
   margin: 0;
+  border: 2px solid red;
 }
-.test-col {
-  border: 2px solid blue;
+.col {
   padding: 0;
+  margin: 0;
+  border: 2px solid blue;
 }
 
 .test-height {

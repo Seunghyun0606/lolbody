@@ -18,16 +18,21 @@ public class Api {
 	private final static String token = "RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c";
 	private final static String[] tokens = {
 			"RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c",
-			"RGAPI-45f9076c-7e64-4fa5-8a7c-77938204d040",
-			"RGAPI-253194ed-462e-4c6f-b245-69e14864282f",
-			"RGAPI-3d63fcf6-320f-411f-ba09-2b7ebdb01d32",
-			"RGAPI-5e2c87f1-d3f7-48af-84df-ec086dad30c8",
-			"RGAPI-05c0655d-1024-49f5-afbb-449222944bf0",
-			"RGAPI-d0baedfc-b931-4d2e-9760-0cc4124195f3",
-			"RGAPI-fb08c7e1-0f10-433e-bc9d-eb3b80f45587",
-			"RGAPI-50898d80-b256-40f5-834c-8c7d7d91c4e5",
-			"RGAPI-3e334341-1e0b-4321-910e-4c505b2c6365",
-			"RGAPI-f2c7e326-cfe1-4e6b-b4f1-c69ce10f3cfd"
+			"RGAPI-12b8062e-1e20-4937-adb7-aa6c08249f59",
+			"RGAPI-df42da15-3ee5-4c06-ac94-57c561c7012f",
+			"RGAPI-d4ef623d-ef00-41e2-a300-1cd56909e698",
+			"RGAPI-492273d9-d5da-433f-a552-33cec6c37a3e",
+			"RGAPI-66e89e64-863a-4d12-ae98-5ba88c27bd43",
+			"RGAPI-9cfc691e-ff05-4663-a1cf-78aaa4617103",
+			"RGAPI-1d7083ad-1918-413e-b964-a0a0de890ab2",
+			"RGAPI-f3cb02c3-73ba-498e-b240-6f12832a0604",
+			"RGAPI-6ea18dcd-14da-49b1-b061-b439456dbf4c",
+			"RGAPI-dc6ec7ce-7989-43b3-9f90-39fe7341b0d5",
+			"RGAPI-1867a360-e2df-46f1-ac75-a50f7bed5efc",
+			"RGAPI-c1618a30-95c2-47db-bdd4-6a376b78e80e",
+			"RGAPI-133c453f-8f18-4109-b67f-20e1692d9492",
+			"RGAPI-e1e53b0d-f464-479f-8a07-3011be456be1",
+			"RGAPI-f5bd0dc8-c1c5-493a-8563-2080fc2f02dc"
 	};
 	// 안먹히는 키 찾는 방법
 	// https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/parkjamal?api_key=여기에키입력

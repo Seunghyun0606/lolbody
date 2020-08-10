@@ -164,11 +164,11 @@ export default {
             isLoading : true
         }
     },
-    // mounted(){
-    //     this.getMatchDatas();
-    //     console.log(this.matchDatas[0][this.matchDatas[0].myTeam].win);
-    //     //console.log(new Date(1595840710509));
-    // },
+	// mounted(){
+	// 	this.getMatchDatas();
+	// 	console.log(this.matchDatas[0][this.matchDatas[0].myTeam].win);
+	// 	//console.log(new Date(1595840710509));
+	// },
     computed: {
       ...mapState([
         'profileDatas',
@@ -179,15 +179,15 @@ export default {
         // ...mapActions([
         //     'getMatchDatas'
         // ]),
-        // async getMatchDatas(){
-        //     await this.$store.dispatch('getMatchDatas', {
-        //         userName: this.profileDatas.summonerName, 
-        //         num : 1
-        //     });
-            
-        //     this.isLoading = false;
-        //     console.log("loading done");
-        // },
+		// async getMatchDatas(){
+		//     await this.$store.dispatch('getMatchDatas', {
+		//         userName: this.profileDatas.summonerName, 
+		//         num : 1
+		//     });
+			
+		//     this.isLoading = false;
+		//     console.log("loading done");
+		// },
         calcDate(time) {
             let now = new Date();
             let gametime = new Date(time);

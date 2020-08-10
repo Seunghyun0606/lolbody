@@ -79,7 +79,7 @@ def get_player_lane_value(player_data):
             'aggressiveness': (player_p_value.get('killAssistPerMin') + player_p_value.get('damageDealtPerMin') + player_p_value.get('damageTakenPerMin')) / 3,
             'stability': (player_p_value.get('visionScore') + player_p_value.get('csPerMin') + (1 - player_p_value.get('deathsRatio'))) / 3,
             'influence': (player_p_value.get('visionScore') + player_p_value.get('killsRatio')) / 2,
-            'lane': position
+            'lane': lane[0].get('position')
         }
         ret[l_name] = lane_data
         ret['badges'] = get_badges(player_p_value)

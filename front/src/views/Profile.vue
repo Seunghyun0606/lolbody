@@ -143,10 +143,9 @@
 
 <script>
 //import axios from 'axios';
-//import RadarChart from '@/components/profile/RadarChart';
-// import ProfileLineChart from '@/components/profile/ProfileLineChart';
-// import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
-// import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
+import ProfileLineChart from '@/components/profile/ProfileLineChart';
+import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
+import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
 import ProfileBedge from "@/components/profile/ProfileBedge"
 
 
@@ -157,43 +156,37 @@ import { mapState } from "vuex"
 export default {
 	name:'Profile',
 	components:{
-		//RadarChart,
-		ProfileLineChart: () => ({
-			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileLineChart.vue')), 500)),
-		}),
-		ProfileRadarChart: () => ({
-			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileRadarChart.vue')), 2500)),
-		}),
-		ProfileGameHistory: () => ({
-			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileGameHistory.vue')), 2500)),
-		}),
+		// ProfileLineChart: () => ({
+		// 	component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileLineChart.vue')), 500)),
+		// }),
+		// ProfileRadarChart: () => ({
+		// 	component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileRadarChart.vue')), 2500)),
+		// }),
+		ProfileLineChart,
+		ProfileRadarChart,
+		ProfileGameHistory,
 		ProfileBedge,
 	},
-	data: ()=>({
-		triger:{
-			totalPointActive: false,
-			LPActive: true,
-			nomalGameActive : false,
-			rankGameActive : true,
-			isLoading : true
-		},
-		now:{},
-		item:{}
-	}),
-	beforeRouteUpdate (to, from, next) {
+	data(){
+        return {
+            triger:{
+                totalPointActive: false,
+                LPActive: true,
+                nomalGameActive : false,
+                rankGameActive : true,
+                isLoading : true
+            },
+            now:{},
+            item:{}
+        }
+    },
+	mounted(){
 		const userName = this.$route.params.userName;
-		this.getProfileDatas(userName);
-		next()
-	},
-	created(){
-		const userName = this.$route.params.userName;
-		//const userName =  window.location.href.split("/");
-		//console.log(userName);
 		this.getProfileDatas(userName);
 	},
 	computed: {
 		...mapState([
-			'profileDatas',
+            'profileDatas',
 		]),
 		updateTime() {
 			let time = this.profileDatas.timestamp
@@ -206,18 +199,16 @@ export default {
 				if(Math.floor(diff/(1000*3600*24)) > 0){
 						result = (gametime.getMonth()+1) + "/" + gametime.getDate();
 				}else{
-						let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
-						if ( diff1 === 0 ) {
-							result = '방금 전';
-						}
-						else if ( diff1 === 1 ) {
-							result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
-
-						}
-
-						else {
-							result = '약 ' + diff1 +"시간 전";
-						}
+                    let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
+                    if ( diff1 === 0 ) {
+                        result = '방금 전';
+                    }
+                    else if ( diff1 === 1 ) {
+                        result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
+                    }
+                    else {
+                        result = '약 ' + diff1 +"시간 전";
+                    }
 				}
 				// console.log(result)
 				return result;
@@ -228,19 +219,12 @@ export default {
 			// console.log(calcDate(time))
 
 			return calcDate(time)
-		}
+		},
 		//     ...mapGetters([
 		//             'profileDatas'
-		//     ]),
+        //     ]),
 	},
 	methods:{
-		// ...mapActions([
-		//         'getProfileDatas',
-		// ]),
-		loadDatas(){
-			const userName = this.$route.params.userName;
-			this.getProfileDatas(userName);
-		},
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
 			this.now = this.profileDatas.rankedRecord;
@@ -255,7 +239,6 @@ export default {
 			this.getMatchDatas();
 
 			this.getRadarChartDatas(userName);
-
 			this.triger.isLoading = false;
 		},
 		async getMatchDatas(){
@@ -267,19 +250,16 @@ export default {
 			this.isLoading = false;
 			//console.log("loading done");
 		},
-
-		// 승현, radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
-		getRadarChartDatas(userName) {
-			this.$store.dispatch('getRadarChartDatas', userName)
-
-			this.isLoading = false;
+		
+		// radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
+		async getRadarChartDatas(userName) {
+			await this.$store.dispatch('getProfileRadarChartDatas', userName);
 		},
 		// 새로고침시 리다이렉트하면서 전적갱신.
 		async renewalUserData(userName) {
 			await this.$store.dispatch('renewalUserData', userName)
 			await setTimeout(() => {
 				this.$router.go()
-
 			}, 3000)
 		},
 

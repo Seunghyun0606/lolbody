@@ -7,7 +7,12 @@ Vue.use(Vuex)
 
 const SERVER_URL = 'http://13.125.220.135:8888'
 
-
+function calcDate(timestamp) {
+    let month = new Date(timestamp).getMonth() + 1 + '월 '
+    let day = new Date(timestamp).getDate() + '일 '
+    // let hour = new Date(timestamp).getHours() + '시'
+    return month + day // + hour
+}
 export default new Vuex.Store({
   state: {
     // 승현
@@ -15,93 +20,70 @@ export default new Vuex.Store({
     userDatas: [],
     isIndex: '',
     profileLineChartOption: {
-
-      series: [
-        {
-          name: "KDA",
-          data: [] 
-        },
-        // {
-        //   name: "Lane2",
-        //   data: [3, 4, 5, 6, 5, 6.3, 7.5] 
-        // }
-      ],
-      chartOptions: {
-        chart: {
-          height: 150,
-          type: 'line',
-          zoom: {
-            enabled: false,
-          },
-          toolbar: {
-            show: false
-          },
-        },
-        colors: ['#77B6EA', '#545454'],
-        grid: {
-          borderColor: '#e7e7e7'
-        },
-        markers: {
-          size: 5,
-          shape: "circle",
-          radius: 1,
-        },
-        labels: [3, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        xaxis: {
-          labels: {
-            showDuplicates: false,
-            style: {
-              fontSize: '10px',
+        series: [
+            {
+                name: "KDA",
+                data: [] 
+            },
+            // {
+            //   name: "Lane2",
+            //   data: [3, 4, 5, 6, 5, 6.3, 7.5] 
+            // }
+        ],
+        chartOptions: {
+            chart: {
+                height: 150,
+                type: 'line',
+                zoom: {
+                    enabled: false,
+                },
+                toolbar: {
+                    show: false
+                },
+            },
+            colors: ['#77B6EA', '#545454'],
+            grid: {
+                borderColor: '#e7e7e7'
+            },
+            markers: {
+                size: 5,
+                shape: "circle",
+                radius: 1,
+            },
+            labels: [],
+            xaxis: {
+                labels: {
+                    showDuplicates: false,
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tickAmount: 3,
+                categories: [],
+                type: 'category',
+                title: {
+                    // text: '최근 10게임 KDA'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'KDA'
+                },
+            // tickAmount: 5,
+            // min: 0,
+            // max: 10
             }
-          },
-          tickAmount: 3,
-          categories: [],
-          type: 'category',
-          title: {
-            // text: '최근 10게임 KDA'
-          }
         },
-        yaxis: {
-          title: {
-            text: 'KDA'
-          },
-          // tickAmount: 5,
-          // min: 0,
-          // max: 10
-        }
-      },
     },
     profileRadarChartOption: {
-      options: {
-        chart: {
-          toolbar: {
-            show: false,
-          },
+        series: [{
+            name: 'Lane1',
+            data: []
         },
-        legend: {
-          show: false,
-        },
-        xaxis: {
-          categories: ['공격력', '안정성', '영향력']
-        },
-        yaxis: {
-          show: false,
-          tickAmount: 5,
-          min: 0,
-          max: 100,
-        },
-        markers: {
-          size: 3
-        }
-      },
-      series: [{
-        name: 'Lane1',
-        data: []
-      },
-      {
-        name: 'Lane2',
-        data: []
-      }]
+        {
+            name: 'Lane2',
+            data: []
+        }]
     },
 
     // 호철
@@ -109,7 +91,7 @@ export default new Vuex.Store({
 
     // 형래
     profileDatas: {},
-    matchDatas: []
+	matchDatas: [],
   },
   // 형래
   getters: {
@@ -137,13 +119,6 @@ export default new Vuex.Store({
       state.userDatas = [ ...state.userDatas, userDatas ]
     },
     setProfileLineChartOption(state, matchDatas) {
-      var calcDate = function(timestamp) {
-        let month = new Date(timestamp).getMonth() + 1 + '월 '
-        let day = new Date(timestamp).getDate() + '일 '
-        // let hour = new Date(timestamp).getHours() + '시'
-        
-        return month + day // + hour
-      }
       state.profileLineChartOption.series[0].data = []
       state.profileLineChartOption.chartOptions.xaxis.categories = []
 
@@ -196,7 +171,17 @@ export default new Vuex.Store({
 
     // Radar Chart Data
     setRadarChartDatas(state, datas) {
-      state.radarChartDatas = datas
+		state.profileRadarChartOption.series[0].name = datas.lane1["lane"];
+		state.profileRadarChartOption.series[1].name = datas.lane2["lane"];
+		state.profileRadarChartOption.series[0].data = [];
+		state.profileRadarChartOption.series[1].data = [];
+		state.profileRadarChartOption.series[0].data.push((datas.lane1["aggressiveness"]*100).toFixed(1));
+		state.profileRadarChartOption.series[0].data.push((datas.lane1["stability"]*100).toFixed(1));
+		state.profileRadarChartOption.series[0].data.push((datas.lane1["influence"]*100).toFixed(1));
+
+		state.profileRadarChartOption.series[1].data.push((datas.lane2["aggressiveness"]*100).toFixed(1));
+		state.profileRadarChartOption.series[1].data.push((datas.lane2["stability"]*100).toFixed(1));
+		state.profileRadarChartOption.series[1].data.push((datas.lane2["influence"]*100).toFixed(1));
     },
 
 
@@ -233,7 +218,7 @@ export default new Vuex.Store({
     async getUserDatas( { commit }, userNames ) {
       for ( var userName of userNames ) {
         await axios
-          .get(SERVER_URL + `/user/${userName}`)
+          .get(SERVER_URL + `/api/user/${userName}`)
           // .get(`http://localhost:8888/user/${userName}`)
           .then(res => {
             // 자유랭크가 같이와서 솔로만 넣게 처리했습니다.
@@ -257,7 +242,7 @@ export default new Vuex.Store({
       console.log(1)
       for ( let userName of userNames) {
         await axios
-          .get(SERVER_URL + `/summonervalue/${userName}`)
+          .get(SERVER_URL + `/api/summonervalue/${userName}`)
           .then(res => {
             commit('setProfileRadarChartOption', res.data)
           })
@@ -271,7 +256,7 @@ export default new Vuex.Store({
     // 승현, renewalUserData
 
     renewalUserData( { commit }, userName ) {
-      axios.put(SERVER_URL + `/profile/${userName}`)
+      return axios.put(SERVER_URL + `/profile/${userName}`)
         .then(res => {
           commit('setProfileDatas', res.data)
           console.log(res.data)
@@ -283,7 +268,7 @@ export default new Vuex.Store({
 
     // 형래, profile
     getProfileDatas( { commit }, userName){
-      return axios.get(SERVER_URL + `/profile/${userName}`)
+        return axios.get(SERVER_URL + `/api/profile/${userName}`)
         // return axios.get(`http://localhost:8888/profile/${userName}`)
         .then(res => {
             commit('setProfileDatas', res.data)
@@ -296,21 +281,29 @@ export default new Vuex.Store({
         });
     },
     getMatchDatas( { commit }, {userName, num}){
-      return axios.get(SERVER_URL + `/profile/${userName}/${num}`)
-      // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
-          .then(res => {
+        return axios.get(SERVER_URL + `/api/profile/${userName}/${num}`)
+        // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
+        .then(res => {
             commit('setMatchDatas', res.data)
             // 라인차트 데이터
             commit('setProfileLineChartOption', res.data)
-          }).catch(function (error) {
-              if (error.response) {
-                  console.log(error.response.data);
-                  console.log(error.response.status);
-                  console.log(error.response.headers);
-              }
-          });
+        }).catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+        });
     },
-    
+    getProfileRadarChartDatas( { commit }, userNames ) {
+		return axios.get(SERVER_URL + `/api/summonervalue/${userNames}`)
+		.then(res => {
+			commit('setRadarChartDatas', res.data)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+	},
   },
   modules: {
   }

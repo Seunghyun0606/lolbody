@@ -1,6 +1,6 @@
 <template>
 
-  <apexchart class='move-apexchart' type="radar" width="350" :options="profileRadarChartOption.options" :series="profileRadarChartOption.series"></apexchart>
+  <apexchart class='move-apexchart' type="radar" width="350" :options="chartOptions" :series="series.series"></apexchart>
 
 </template>
 
@@ -9,17 +9,49 @@ import apexchart from 'vue-apexcharts'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'ProfileRadarChart',
-  components: {
-    apexchart
-  },
-  computed: {
-    ...mapState([
-      'profileRadarChartOption',
-    ]),
-
-  },
-
+    name: 'ProfileRadarChart',
+    components: {
+        apexchart
+    },
+    computed: {
+        ...mapState([
+            'profileRadarChartOption',
+        ]),
+        
+        chartOptions() {
+            return {
+                chart: {
+                    toolbar: {
+                        show: false,
+                    }
+                },
+                xaxis: {
+                    categories: ['공격력', '안정성', '영향력']
+                },
+                yaxis: {
+                    show: false,
+                    tickAmount: 5,
+                    min: 0,
+                    max: 100,
+                },
+                markers: {
+                    size: 3
+                }
+            };
+        },
+        series(){
+            return {
+                series: [{
+                    name: this.profileRadarChartOption.series[0].name,
+                    data: this.profileRadarChartOption.series[0].data
+                },
+                {
+                    name: this.profileRadarChartOption.series[1].name,
+                    data: this.profileRadarChartOption.series[1].data
+                }],
+            };
+        }
+    }
 }
 </script>
 

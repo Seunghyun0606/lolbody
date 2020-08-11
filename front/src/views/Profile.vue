@@ -255,6 +255,13 @@ export default {
 		async getRadarChartDatas(userName) {
 			await this.$store.dispatch('getProfileRadarChartDatas', userName);
 		},
+		// 새로고침시 리다이렉트하면서 전적갱신.
+		async renewalUserData(userName) {
+			await this.$store.dispatch('renewalUserData', userName)
+			await setTimeout(() => {
+				this.$router.go()
+			}, 3000)
+		},
 
 		getRankData(){
 			//LineChart에 데이터    전달

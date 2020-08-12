@@ -24,8 +24,8 @@
                         </td>
 
                         <td class="text-center" width="110px">
-                            <div class="float-left">
-                                <v-avatar class="mr-1" size="40">
+                            <div class="float-left pr-1">
+                                <v-avatar size="48">
                                     <img :src="imageload('champion/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].champ + '.png')" />
                                 </v-avatar>
                             </div>
@@ -39,7 +39,7 @@
                                     <img :src="imageload('perk/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].perkStyle.toLowerCase() + '.png')" class="vertical-align-bottom border-rounded bg_gray_op" width="22px"/>
                                 </div>
                             </div>
-                            <small class="d-block clear fs-12 font-weight-bold">{{champoins.data[matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].champ].name}}</small>
+                            <small class="d-block clear fs-12 pt-2 font-weight-bold">{{champoins.data[matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].champ].name}}</small>
                         </td>
 
                         <td class="text-center" width="90px">
@@ -82,7 +82,7 @@
                                     <td width="22px" class="item-border" v-else>
                                     </td>
 
-                                    <td width="22px" v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item6 != 0">
+                                    <td width="22px" rowspan="2" v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item6 != 0">
                                         <img :src="imageload('item/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item6 + '.png')" class="item-border" width="22px"/>
                                     </td>
                                     <td width="22px" class="item-border" v-else>
@@ -108,14 +108,12 @@
                                     <td width="22px" class="item-border" v-else>
                                     </td>
 
-                                    <td width="22px" height="22px" class="item-border">
-                                    </td>
                                 </tr>
                             </table>
                         </td>
 
                         <td width="160px">
-                            <div class="fs-0">
+                            <div class="fs-0 ml-2">
                                 <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].blueTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
                                 <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[0].name)">{{matchDatas[idx].blueTeam.teammate[0].name}}</a></div>
                                 <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].redTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
@@ -205,7 +203,7 @@ export default {
             return Math.floor(time/60)+ "분 " + (time - Math.floor(time/60)*60) +"초"
         },
         toProfile(nickname){
-            this.$router.push('/Profile/' + nickname);
+            window.open(this.$router.resolve('/Profile/' + nickname).href, '_blank');
         },
 		imageload(URL){
             try{

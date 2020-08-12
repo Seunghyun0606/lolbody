@@ -41,10 +41,10 @@
 						<li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
 					</ul>
 				
-					<div class="mt-2 text-center" v-if="profileDatas.tier != null"> 
+					<div class="mt-2 text-center" v-if="now.src != null"> 
 						<div class="icon pa-1 d-inline-block">
 							<span class="rank fs-14">{{now.rank}}</span>
-							<img :src="imageload('tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
+							<img :src="imageload('tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px" />
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.totalRecord.wins}}승</span> <span class="fc_red fs-13">{{now.totalRecord.losses}}패</span>)</span>
 							</v-card-text>
@@ -52,7 +52,7 @@
 				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="70">
-								<v-img :src="imageload('champion/'+now.mostCham+'.png')"  alt="모스트 픽" v-if="now.mostCham != 'null'"/>
+								<v-img :src="imageload('champion/'+now.mostCham+'.png')" alt="모스트 픽" />
 							</v-avatar>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostChamRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
@@ -61,7 +61,7 @@
 				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
-								<v-img :src="imageload('position/'+now.mostLine+'.png')"  v-if="now.mostLine != 'null'"/>
+								<v-img :src="imageload('position/'+now.mostLine+'.png')" />
 							</v-avatar>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
@@ -70,7 +70,7 @@
 				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
-								<v-img :src="imageload('position/'+now.secondLine+'.png')" v-if="now.secondLine != 'null'"/>
+								<v-img :src="imageload('position/'+now.secondLine+'.png')" />
 							</v-avatar>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.secondLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.secondLineRecord.losses}}패</span>)</span>
@@ -78,7 +78,7 @@
 						</div>
 					</div>
 				
-					<div class="mt-2 text-center" v-if="profileDatas.tier == null">
+					<div class="mt-2 text-center" v-if="now.src == null">
 						<p>전적이 없습니다.</p>
 					</div>
 				</v-card>
@@ -110,7 +110,7 @@
 				<div class="d-inline-block">
 					<v-card class="ma-1 bg_card float-left" width="260.5px" height="160px" outlined>
 						<div class="ml-7">
-							<ProfileRadarChart/>
+							<RadarChart/>
 						</div>
 					</v-card>
 				</div>
@@ -138,9 +138,11 @@
 <script>
 //import axios from 'axios';
 import ProfileLineChart from '@/components/profile/ProfileLineChart';
-import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
+//import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
 import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
-import ProfileBedge from "@/components/profile/ProfileBedge"
+import ProfileBedge from "@/components/profile/ProfileBedge";
+import Loading from "@/components/profile/Loading";
+import LoadError from "@/components/profile/LoadError";
 
 
 //import { mapActions } from "vuex"
@@ -157,7 +159,15 @@ export default {
 		// 	component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileRadarChart.vue')), 2500)),
 		// }),
 		ProfileLineChart,
-		ProfileRadarChart,
+		RadarChart:() => ({
+            component: import("@/components/profile/ProfileRadarChart"),
+            loading: Loading,
+            error: LoadError,
+            //loading: import("@/components/profile/Loading"),
+            //error: import("@/components/profile/LoadError"),
+            delay: 200,
+            timeout: 3000
+        }),
 		ProfileGameHistory,
 		ProfileBedge,
 	},
@@ -177,7 +187,6 @@ export default {
 	mounted(){
 		const userName = this.$route.params.userName;
 		this.getProfileDatas(userName);
-		console.log(this.profileDatas.profileIconId);
 	},
 	computed: {
 		...mapState([
@@ -223,8 +232,7 @@ export default {
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
 			this.now = this.profileDatas.rankedRecord;
-			console.log(this.profileDatas.tier);
-			if(this.profileDatas.tier == 'null'){
+			if(this.profileDatas.tier == null){
 				// this.profileDatas.tier= 'unranked';
 				// this.profileDatas.rank = 'unranked';
 				this.changeNomarlGame();
@@ -253,7 +261,8 @@ export default {
 		},
 		// 전적갱신 전적 리스트 미구현상태
 		async renewalUserData(userName) {
-			await this.$store.dispatch('renewalUserData', userName)
+            await this.$store.dispatch('renewalUserData', userName);
+            this.getMatchDatas();
 		},
 
 		getRankData(){

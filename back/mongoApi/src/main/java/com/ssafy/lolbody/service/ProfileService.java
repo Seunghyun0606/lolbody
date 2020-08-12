@@ -78,6 +78,7 @@ public class ProfileService {
 					profileReferenceDto.setTier(i.getTier());
 					profileReferenceDto.setRank(i.getRank());
 					profileReferenceDto.setLeaguePoints(i.getLeaguePoints());
+					break;
 				}
 			}
 			MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
@@ -225,6 +226,7 @@ public class ProfileService {
 					profileReferenceDto.setTier(i.getTier());
 					profileReferenceDto.setRank(i.getRank());
 					profileReferenceDto.setLeaguePoints(i.getLeaguePoints());
+					break;
 				}
 			}
 

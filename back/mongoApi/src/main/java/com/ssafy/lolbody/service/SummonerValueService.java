@@ -19,7 +19,7 @@ public class SummonerValueService {
 	public SummonerValueResultDto getSummonerValue(String summonerName)
 			throws JsonSyntaxException, IOException, Exception {
 		SummonerValueResultDto summonerValueResultDto = new Gson().fromJson(
-				Api.getAnalysisData("SummonerValue.py",
+				Api.getAnalysisData("Analysis\\SummonerValue.py",
 						new JSONObject(radarChartService.getRadarChar(summonerName)).toString().replaceAll("\"", "'")),
 				SummonerValueResultDto.class);
 

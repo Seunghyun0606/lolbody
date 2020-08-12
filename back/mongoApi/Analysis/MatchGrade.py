@@ -68,7 +68,7 @@ def get_player_match_grade(player_data):
         'killAssistPerMin',
     ]
     # cols2 = ['visionScore', 'csPerMin', 'damageDealtPerMin', 'damageTakenPerMin']
-    print(data)
+    # print(data)
 
     stats = pd.read_csv('./Analysis/csv/20.08/stastics/stastics.csv')
 
@@ -111,10 +111,10 @@ def get_player_match_grade(player_data):
     return total/7
 
 if __name__ == '__main__':
-    # player_data = json.loads(sys.argv[1].replace("'", '"'))
-    # print(get_player_match_grade(player_data))
+    player_data = json.loads(sys.argv[1].replace("'", '"'))
+    print(get_player_match_grade(player_data))
 
     # d = "{'death':11,'kda':0.7272727272727273,'deathRatio':32.35294117647059,'kill':8,'csPerMin':3.3412322274881516,'duration':1688,'gold':9846,'cs':94,'tier':'BRONZE','assist':0,'killRatio':53.333333333333336,'damageDealt':12712,'damageTaken':25843,'visionScore':15}"
-    d = "{'death':5,'visionScore':28,'kda':5.4,'deathRatio':16.666666666666668,'kill':1,'csPerMin':0.976491862567812,'duration':1659,'gold':8030,'cs':27,'tier':'SILVER','assist':26,'killRatio':77.14285714285714,'damageDealt':9923,'damageTaken':16545}"
-    player_data = json.loads(d.replace("'", '"'))
-    print(get_player_match_grade(player_data))
+    # d = "{'death':5,'visionScore':28,'kda':5.4,'deathRatio':16.666666666666668,'kill':1,'csPerMin':0.976491862567812,'duration':1659,'gold':8030,'cs':27,'tier':'SILVER','assist':26,'killRatio':77.14285714285714,'damageDealt':9923,'damageTaken':16545}"
+    # player_data = json.loads(d.replace("'", '"'))
+    # print(get_player_match_grade(player_data))

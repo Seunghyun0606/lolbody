@@ -170,47 +170,7 @@ def auto_mode():
                     tmp_s += len(tmp)
                 row.append(tmp_s / len(position_tier_data))
             csvfile.writerow(row)
-    file.close()
-
-    
-
-
-
-def asd():
-    ##
-    df = pd.read_csv(source + 'player_in_game_data.csv')
-    df.drop_duplicates(keep='first', inplace=True)
-    df = df.drop(columns=['account_id', 'summoner_name', 'match_id']).reset_index(drop=True)
-    # print(list(df))
-    # print([i for i in list(df) if 'cor' in i])
-
-    corr_df = df[['position', 'tier', 'team', 'spell1', 'spell2'] + [i for i in list(df) if 'cor' in i]]
-    corr_df = corr_df[corr_df['tier'] == 'BRONZE']
-    # corr_df = corr_df[corr_df['position'] != 'JUNGLE']
-    # corr_df = corr_df[corr_df['position'] != 'MID']
-    # blue_df = corr_df[corr_df['team'] == 200]
-    # red_df = corr_df[corr_df['team'] == 100]
-    # print(corr_df.reset_index(drop=True))
-    # for col in list(corr_df):
-    #     if 'cor_' not in col: continue
-    #     blue_df[col] = 15000 - blue_df[col]
-    # corr_df = pd.concat([red_df, blue_df])
-
-
-    # g = sns.lmplot(x='xcor_1', y='ycor_1', data=blue_df, hue='position', fit_reg=False)
-    # plt.show()
-
-    # g = sns.lmplot(x='xcor_1', y='ycor_1', data=red_df, hue='position', fit_reg=False)
-    # plt.show()
-
-    g = sns.lmplot(x='xcor_2', y='ycor_2', data=corr_df, hue='position', fit_reg=False)
-    plt.show()
-    # team 100 = 450
-    # team 200 = 14400
-    # map_size = 15000 * 15000
-
-            
-
+    file.close()          
 
 if __name__ == '__main__':
     auto_mode()

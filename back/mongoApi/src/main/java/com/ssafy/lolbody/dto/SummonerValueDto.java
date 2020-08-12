@@ -4,6 +4,7 @@ public class SummonerValueDto {
 	private double aggressiveness;
 	private double stability;
 	private double influence;
+	private String lane;
 	public double getAggressiveness() {
 		return aggressiveness;
 	}
@@ -22,9 +23,15 @@ public class SummonerValueDto {
 	public void setInfluence(double influence) {
 		this.influence = influence;
 	}
+	public String getLane() {
+		return lane;
+	}
+	public void setLane(String lane) {
+		this.lane = lane;
+	}
 	@Override
 	public String toString() {
 		return "SummonerValueDto [aggressiveness=" + aggressiveness + ", stability=" + stability + ", influence="
-				+ influence + "]";
+				+ influence + ", lane=" + lane + "]";
 	}
 }	

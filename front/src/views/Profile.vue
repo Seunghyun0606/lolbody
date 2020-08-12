@@ -3,7 +3,7 @@
 	<v-row align="center" justify="center">
 	<v-app id="sandbox">
 	<v-main>
-	<table width="1000px">
+	<table width="1000px" v-if="profileDatas != '' && matchDatas != ''">
 		<tr>
 			<!-- 여기서부터 좌측 공간 -->
 			<td style="vertical-align: top" width="34%">
@@ -14,7 +14,7 @@
 						<v-col cols="3">
 							<div class="avatar mt-3 ml-3 text-center">
 								<v-avatar size="70">
-									<v-img :src="require('@/assets/images/profileicon/'+profileDatas.profileIconId+'.png')" @error="errorImage" v-if="profileDatas.profileIconId != 'null'"/>
+									<v-img :src="imageload('profileicon/'+profileDatas.profileIconId+'.png')" alt="icon" />
 								</v-avatar>
 								<span class="level fs-10">{{profileDatas.summonerLevel}}</span>
 							</div>
@@ -31,7 +31,6 @@
 					<!-- 배지 컴포넌트가 들어가야함. -->
 					<v-row>
 						<ProfileBedge class="ml-2"/>
-
 					</v-row>
 				</v-card>
 				
@@ -41,47 +40,7 @@
 						<li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
 						<li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
 					</ul>
-				
-					<div class="mt-2 text-center" v-if="now.src != null"> 
-						<div class="icon pa-1 d-inline-block">
-							<span class="rank fs-14">{{now.rank}}</span>
-							<img :src="require('@/assets/images/tier/'+now.src+'.png')" @error="errorImage" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
-							<v-card-text>
-								<span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.totalRecord.wins}}승</span> <span class="fc_red fs-13">{{now.totalRecord.losses}}패</span>)</span>
-							</v-card-text>
-						</div>
-				
-						<div class="icon pa-1 d-inline-block">
-							<v-avatar class="ma-3" size="70">
-								<v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" @error="errorImage" alt="모스트 픽" v-if="now.mostCham != 'null'"/>
-							</v-avatar>
-							<v-card-text>
-								<span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostChamRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
-							</v-card-text>
-						</div>
-				
-						<div class="icon pa-1 d-inline-block">
-							<v-avatar class="ma-3" size="50">
-								<v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')" @error="errorImage" v-if="now.mostLine != 'null'"/>
-							</v-avatar>
-							<v-card-text>
-								<span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
-							</v-card-text>
-						</div>
-				
-						<div class="icon pa-1 d-inline-block">
-							<v-avatar class="ma-3" size="50">
-								<v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')" @error="errorImage" v-if="now.secondLine != 'null'"/>
-							</v-avatar>
-							<v-card-text>
-								<span class="fs-14">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.secondLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.secondLineRecord.losses}}패</span>)</span>
-							</v-card-text>
-						</div>
-					</div>
-				
-					<div class="mt-2 text-center" v-if="now.src == null">
-						<p>전적이 없습니다.</p>
-					</div>
+                    <ProfileGameData/>
 				</v-card>
 
 				<!-- 듀오 전적이나 최근 자주한 챔피언? -->
@@ -107,34 +66,33 @@
 					</div>
 				</v-card>
 
-
 				<!-- RadarChart -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 mb-2 bg_card float-left" width="260.5px" height="160px" outlined>
+					<v-card class="ma-1 bg_card float-left" width="260.5px" height="160px" outlined>
 						<div class="ml-7">
-
-							<ProfileRadarChart/>
-
+							<RadarChart/>
 						</div>
 					</v-card>
 				</div>
 
-
 				<!-- 롤비티아이 부분 -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 mb-2 bg_card float-right" width="380.5px" height="160px" outlined>
+					<v-card class="ma-1 bg_card float-right" width="380.5px" height="160px" outlined>
 						<div class="d-inline">
 							<!-- <span>유저 성향</span> -->
 						</div>
 					</v-card>
 				</div>
 
-
 				<!-- 게임 기록 부분 -->
 				<ProfileGameHistory/>
+                <v-btn class="mx-1 mb-2" width="649px" height="50px" @click="getMatchDatas(++numOfMatch)" outlined>
+                    더보기
+                </v-btn>
 			</td>
 		</tr>
 	</table>
+    <p v-if="profileDatas == '' || matchDatas == ''">등록되지 않은 소환사입니다.</p>
 	</v-main>
 	</v-app>
 	</v-row>
@@ -142,13 +100,13 @@
 </template>
 
 <script>
-//import axios from 'axios';
-//import RadarChart from '@/components/profile/RadarChart';
-// import ProfileLineChart from '@/components/profile/ProfileLineChart';
-// import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
-// import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
-import ProfileBedge from "@/components/profile/ProfileBedge"
-
+import ProfileLineChart from '@/components/profile/ProfileLineChart';
+//import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
+//import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
+import ProfileBedge from "@/components/profile/ProfileBedge";
+import Loading from "@/components/profile/Loading";
+import LoadError from "@/components/profile/LoadError";
+//import ProfileGameData from "@/components/profile/ProfileGameData";
 
 //import { mapActions } from "vuex"
 import { mapState } from "vuex"
@@ -157,43 +115,58 @@ import { mapState } from "vuex"
 export default {
 	name:'Profile',
 	components:{
-		//RadarChart,
-		ProfileLineChart: () => ({
-			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileLineChart.vue')), 500)),
-		}),
-		ProfileRadarChart: () => ({
-			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileRadarChart.vue')), 2500)),
-		}),
-		ProfileGameHistory: () => ({
-			component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileGameHistory.vue')), 2500)),
-		}),
-		ProfileBedge,
+		// ProfileLineChart: () => ({
+		// 	component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileLineChart.vue')), 500)),
+		// }),
+		// ProfileRadarChart: () => ({
+		// 	component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileRadarChart.vue')), 2500)),
+		// }),
+		ProfileLineChart,
+		RadarChart:() => ({
+            component: import("@/components/profile/ProfileRadarChart"),
+            loading: Loading,
+            error: LoadError,
+            delay: 0,
+            timeout: 3000
+        }),
+		ProfileGameHistory:() => ({
+            component: import("@/components/profile/ProfileGameHistory"),
+            loading: Loading,
+            error: LoadError,
+            delay: 0,
+            timeout: 3000
+        }),
+        ProfileBedge,
+        ProfileGameData:() => ({
+            component: import("@/components/profile/ProfileGameData"),
+            loading: Loading,
+            error: LoadError,
+            delay: 0,
+            timeout: 3000
+        }),
 	},
-	data: ()=>({
-		triger:{
-			totalPointActive: false,
-			LPActive: true,
-			nomalGameActive : false,
-			rankGameActive : true,
-			isLoading : true
-		},
-		now:{},
-		item:{}
-	}),
-	beforeRouteUpdate (to, from, next) {
+	data(){
+        return {
+            triger:{
+                totalPointActive: false,
+                LPActive: true,
+                nomalGameActive : false,
+                rankGameActive : true,
+                isLoading : true
+            },
+            //now:{},
+            numOfMatch: 1
+        }
+    },
+	mounted(){
 		const userName = this.$route.params.userName;
-		this.getProfileDatas(userName);
-		next()
-	},
-	created(){
-		const userName = this.$route.params.userName;
-		//const userName =  window.location.href.split("/");
-		//console.log(userName);
 		this.getProfileDatas(userName);
 	},
 	computed: {
 		...mapState([
-			'profileDatas',
+            'profileDatas',
+            'nowProfileDatas',
+            'matchDatas'
 		]),
 		updateTime() {
 			let time = this.profileDatas.timestamp
@@ -206,18 +179,16 @@ export default {
 				if(Math.floor(diff/(1000*3600*24)) > 0){
 						result = (gametime.getMonth()+1) + "/" + gametime.getDate();
 				}else{
-						let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
-						if ( diff1 === 0 ) {
-							result = '방금 전';
-						}
-						else if ( diff1 === 1 ) {
-							result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
-
-						}
-
-						else {
-							result = '약 ' + diff1 +"시간 전";
-						}
+                    let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
+                    if ( diff1 === 0 ) {
+                        result = '방금 전';
+                    }
+                    else if ( diff1 === 1 ) {
+                        result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
+                    }
+                    else {
+                        result = '약 ' + diff1 +"시간 전";
+                    }
 				}
 				// console.log(result)
 				return result;
@@ -228,59 +199,42 @@ export default {
 			// console.log(calcDate(time))
 
 			return calcDate(time)
-		}
+		},
 		//     ...mapGetters([
 		//             'profileDatas'
-		//     ]),
+        //     ]),
 	},
 	methods:{
-		// ...mapActions([
-		//         'getProfileDatas',
-		// ]),
-		loadDatas(){
-			const userName = this.$route.params.userName;
-			this.getProfileDatas(userName);
-		},
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
-			this.now = this.profileDatas.rankedRecord;
-			if(this.profileDatas.tier === null){
-				this.profileDatas.tier= 'unranked';
-				this.profileDatas.rank = 'unranked';
+            //this.now = this.profileDatas.rankedRecord;
+            if(this.profileDatas == '')
+                return;
+			if(this.profileDatas.tier == null){
 				this.changeNomarlGame();
 			}else {
-				this.now.src = this.profileDatas.tier;
-				this.now.rank = this.profileDatas.rank;
+                this.changeRankGame();
 			}
-			this.getMatchDatas();
-
-			this.getRadarChartDatas(userName);
-
+			this.getMatchDatas(1);
+            this.getRadarChartDatas(userName);
+            console.log("test");
 			this.triger.isLoading = false;
 		},
-		async getMatchDatas(){
+		async getMatchDatas(n){
 			await this.$store.dispatch('getMatchDatas', {
 				userName: this.profileDatas.summonerName, 
-				num : 1
+				num : n
 			});
-			
-			this.isLoading = false;
-			//console.log("loading done");
 		},
-
-		// 승현, radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
-		getRadarChartDatas(userName) {
-			this.$store.dispatch('getRadarChartDatas', userName)
-
-			this.isLoading = false;
+		
+		// radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
+		async getRadarChartDatas(userName) {
+			await this.$store.dispatch('getProfileRadarChartDatas', userName);
 		},
-		// 새로고침시 리다이렉트하면서 전적갱신.
+		// 전적갱신 전적 리스트 미구현상태
 		async renewalUserData(userName) {
-			await this.$store.dispatch('renewalUserData', userName)
-			await setTimeout(() => {
-				this.$router.go()
-
-			}, 3000)
+            await this.$store.dispatch('renewalUserData', userName);
+            this.getMatchDatas(1);
 		},
 
 		getRankData(){
@@ -291,17 +245,19 @@ export default {
 		},
 		changeNomarlGame(){
 			this.triger.nomalGameActive = true;
-			this.triger.rankGameActive = false;
-			this.now = this.profileDatas.blindRecord;
-			this.now.src = 'unranked';
-			this.now.rank = 'unranked';
+            this.triger.rankGameActive = false;
+            this.$store.commit('setNowProfileDatas', this.profileDatas.blindRecord);
+			//this.nowProfileDatas = this.profileDatas.blindRecord;
+			this.nowProfileDatas.src = 'unranked';
+			this.nowProfileDatas.rank = 'unranked';
 		},
 		changeRankGame(){
 			this.triger.nomalGameActive = false;
-			this.triger.rankGameActive = true;
-			this.now = this.profileDatas.rankedRecord;
-			this.now.src = this.profileDatas.tier;
-			this.now.rank = this.profileDatas.rank;
+            this.triger.rankGameActive = true;
+            this.$store.commit('setNowProfileDatas', this.profileDatas.rankedRecord);
+			//this.nowProfileDatas = this.profileDatas.rankedRecord;
+			this.nowProfileDatas.src = this.profileDatas.tier;
+			this.nowProfileDatas.rank = this.profileDatas.rank;
 		},
 		changeLP(){
 			this.triger.LPActive = true;
@@ -310,10 +266,21 @@ export default {
 		changeTotalPointDate(){
 			this.triger.LPActive = false;
 			this.triger.totalPointActive = true;
-		},
-		errorImage(event){
-			event.target.src = require('@/assets/images/error.png');
-		}
+        },
+        imageload(URL){
+            try{
+                return require('@/assets/images/'+ URL);
+            }catch{
+                return require('@/assets/images/error.png');
+            }
+        },
+        round(num){
+            try{
+                return Math.round(num*100)/100;
+            }catch{
+                return 0;
+            }
+        }
 	}
 }
 </script>
@@ -349,12 +316,6 @@ export default {
 .v-chip{
 	padding: 2px 10px 0 10px !important;
 }
-.rank{
-	font-family: cursive;
-	color: rgb(231, 197, 0);
-	font-weight: 500;
-	text-shadow: -1px 0 #000000, 0 1px #5e5e5e, 1px 0 #5e5e5e, 0 -1px #5e5e5e;
-}
 
 .apexcharts-canvas {
 	text-align: center;
@@ -389,10 +350,5 @@ export default {
 	background-color: #fafafa !important;
 	box-shadow: 2px 2px 2px rgb(161, 161, 161) !important;
 }
-
-.icon {
-	width: 130px;
-}
-
 
 </style> 

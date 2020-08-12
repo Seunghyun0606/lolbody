@@ -25,6 +25,9 @@ export default {
                         show: false,
                     }
                 },
+                legend:{
+                        position: 'top'
+                },
                 xaxis: {
                     categories: ['공격력', '안정성', '영향력']
                 },

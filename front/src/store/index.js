@@ -256,10 +256,9 @@ export default new Vuex.Store({
     // 승현, renewalUserData
 
     renewalUserData( { commit }, userName ) {
-      return axios.put(SERVER_URL + `/profile/${userName}`)
+      return axios.put(SERVER_URL + `/api/profile/${userName}`)
         .then(res => {
           commit('setProfileDatas', res.data)
-          console.log(res.data)
         })
         .catch(err => {
           console.log(err)

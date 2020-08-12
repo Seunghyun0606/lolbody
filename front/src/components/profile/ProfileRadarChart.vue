@@ -29,13 +29,18 @@ export default {
                         position: 'top'
                 },
                 xaxis: {
-                    categories: ['공격력', '안정성', '영향력']
+                    categories: ['공격력', '안정성', '영향력'],
+                    // offsetX: -10,
+                    // offsetY: -10,
                 },
                 yaxis: {
                     show: false,
                     tickAmount: 5,
                     min: 0,
                     max: 100,
+                },
+                legend: {
+                    position: 'top',
                 },
                 markers: {
                     size: 3

@@ -14,7 +14,7 @@
 						<v-col cols="3">
 							<div class="avatar mt-3 ml-3 text-center">
 								<v-avatar size="70">
-									<v-img :src="require('@/assets/images/profileicon/'+profileDatas.profileIconId+'.png')" @error="errorImage" v-if="profileDatas.profileIconId != 'null'"/>
+									<v-img :src="require('@/assets/images/profileicon/'+profileDatas.profileIconId+'.png')" @error="errorImage" alt="icon" />
 								</v-avatar>
 								<span class="level fs-10">{{profileDatas.summonerLevel}}</span>
 							</div>
@@ -31,7 +31,6 @@
 					<!-- 배지 컴포넌트가 들어가야함. -->
 					<v-row>
 						<ProfileBedge class="ml-2"/>
-
 					</v-row>
 				</v-card>
 				
@@ -42,7 +41,7 @@
 						<li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
 					</ul>
 				
-					<div class="mt-2 text-center" v-if="now.src != null"> 
+					<div class="mt-2 text-center" v-if="profileDatas.tier != null"> 
 						<div class="icon pa-1 d-inline-block">
 							<span class="rank fs-14">{{now.rank}}</span>
 							<img :src="require('@/assets/images/tier/'+now.src+'.png')" @error="errorImage" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
@@ -79,7 +78,7 @@
 						</div>
 					</div>
 				
-					<div class="mt-2 text-center" v-if="now.src == null">
+					<div class="mt-2 text-center" v-if="profileDatas.tier == null">
 						<p>전적이 없습니다.</p>
 					</div>
 				</v-card>
@@ -107,28 +106,23 @@
 					</div>
 				</v-card>
 
-
 				<!-- RadarChart -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 mb-2 bg_card float-left" width="260.5px" height="160px" outlined>
+					<v-card class="ma-1 bg_card float-left" width="260.5px" height="160px" outlined>
 						<div class="ml-7">
-
 							<ProfileRadarChart/>
-
 						</div>
 					</v-card>
 				</div>
 
-
 				<!-- 롤비티아이 부분 -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 mb-2 bg_card float-right" width="380.5px" height="160px" outlined>
+					<v-card class="ma-1 bg_card float-right" width="380.5px" height="160px" outlined>
 						<div class="d-inline">
 							<!-- <span>유저 성향</span> -->
 						</div>
 					</v-card>
 				</div>
-
 
 				<!-- 게임 기록 부분 -->
 				<ProfileGameHistory/>
@@ -183,6 +177,7 @@ export default {
 	mounted(){
 		const userName = this.$route.params.userName;
 		this.getProfileDatas(userName);
+		console.log(this.profileDatas.profileIconId);
 	},
 	computed: {
 		...mapState([
@@ -228,9 +223,10 @@ export default {
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
 			this.now = this.profileDatas.rankedRecord;
-			if(this.profileDatas.tier === null){
-				this.profileDatas.tier= 'unranked';
-				this.profileDatas.rank = 'unranked';
+			console.log(this.profileDatas.tier);
+			if(this.profileDatas.tier == 'null'){
+				// this.profileDatas.tier= 'unranked';
+				// this.profileDatas.rank = 'unranked';
 				this.changeNomarlGame();
 			}else {
 				this.now.src = this.profileDatas.tier;
@@ -255,12 +251,9 @@ export default {
 		async getRadarChartDatas(userName) {
 			await this.$store.dispatch('getProfileRadarChartDatas', userName);
 		},
-		// 새로고침시 리다이렉트하면서 전적갱신.
+		// 전적갱신 전적 리스트 미구현상태
 		async renewalUserData(userName) {
 			await this.$store.dispatch('renewalUserData', userName)
-			await setTimeout(() => {
-				this.$router.go()
-			}, 3000)
 		},
 
 		getRankData(){
@@ -291,7 +284,8 @@ export default {
 			this.triger.LPActive = false;
 			this.triger.totalPointActive = true;
 		},
-		errorImage(event){
+		errorImage(){
+			console.log("error");
 			event.target.src = require('@/assets/images/error.png');
 		}
 	}

@@ -5,7 +5,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const SERVER_URL = 'http://13.125.220.135:8888'
+const SERVER_URL = 'https://lolbody.gq'
 
 function calcDate(timestamp) {
     let month = new Date(timestamp).getMonth() + 1 + '월 '

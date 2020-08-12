@@ -23,15 +23,13 @@ export default {
                 chart: {
                     toolbar: {
                         show: false,
-                    }
-                },
+                    },
                 legend:{
-                        position: 'top'
+                    position: 'top'
+                },
                 },
                 xaxis: {
                     categories: ['공격력', '안정성', '영향력'],
-                    // offsetX: -10,
-                    // offsetY: -10,
                 },
                 yaxis: {
                     show: false,

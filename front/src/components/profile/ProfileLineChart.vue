@@ -39,7 +39,6 @@ export default {
                     shape: "circle",
                     radius: 1,
                 },
-                labels: [],
                 xaxis: {
                     labels: {
                         showDuplicates: false,
@@ -50,17 +49,11 @@ export default {
                     tickAmount: 3,
                     categories: this.profileLineChartOption.chartOptions.xaxis.categories,
                     type: 'category',
-                    title: {
-                        // text: '최근 10게임 KDA'
-                    }
                 },
                 yaxis: {
                     title: {
                         text: this.profileLineChartOption.series[0].name
                     },
-                // tickAmount: 5,
-                // min: 0,
-                // max: 10
                 }
             };
         },

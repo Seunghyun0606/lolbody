@@ -14,7 +14,7 @@
 						<v-col cols="3">
 							<div class="avatar mt-3 ml-3 text-center">
 								<v-avatar size="70">
-									<v-img :src="require('@/assets/images/profileicon/'+profileDatas.profileIconId+'.png')" @error="errorImage" alt="icon" />
+									<v-img :src="imageload('profileicon/'+profileDatas.profileIconId+'.png')" alt="icon" />
 								</v-avatar>
 								<span class="level fs-10">{{profileDatas.summonerLevel}}</span>
 							</div>
@@ -44,7 +44,7 @@
 					<div class="mt-2 text-center" v-if="profileDatas.tier != null"> 
 						<div class="icon pa-1 d-inline-block">
 							<span class="rank fs-14">{{now.rank}}</span>
-							<img :src="require('@/assets/images/tier/'+now.src+'.png')" @error="errorImage" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
+							<img :src="imageload('tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px" v-if="now.src != 'null'"/>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.totalRecord.wins}}승</span> <span class="fc_red fs-13">{{now.totalRecord.losses}}패</span>)</span>
 							</v-card-text>
@@ -52,7 +52,7 @@
 				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="70">
-								<v-img :src="require('@/assets/images/champion/'+now.mostCham+'.png')" @error="errorImage" alt="모스트 픽" v-if="now.mostCham != 'null'"/>
+								<v-img :src="imageload('champion/'+now.mostCham+'.png')"  alt="모스트 픽" v-if="now.mostCham != 'null'"/>
 							</v-avatar>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostChamRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
@@ -61,7 +61,7 @@
 				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
-								<v-img :src="require('@/assets/images/position/'+now.mostLine+'.png')" @error="errorImage" v-if="now.mostLine != 'null'"/>
+								<v-img :src="imageload('position/'+now.mostLine+'.png')"  v-if="now.mostLine != 'null'"/>
 							</v-avatar>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
@@ -70,7 +70,7 @@
 				
 						<div class="icon pa-1 d-inline-block">
 							<v-avatar class="ma-3" size="50">
-								<v-img :src="require('@/assets/images/position/'+now.secondLine+'.png')" @error="errorImage" v-if="now.secondLine != 'null'"/>
+								<v-img :src="imageload('position/'+now.secondLine+'.png')" v-if="now.secondLine != 'null'"/>
 							</v-avatar>
 							<v-card-text>
 								<span class="fs-14">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.secondLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.secondLineRecord.losses}}패</span>)</span>
@@ -283,11 +283,14 @@ export default {
 		changeTotalPointDate(){
 			this.triger.LPActive = false;
 			this.triger.totalPointActive = true;
-		},
-		errorImage(){
-			console.log("error");
-			event.target.src = require('@/assets/images/error.png');
-		}
+        },
+        imageload(URL){
+            try{
+                return require('@/assets/images/'+ URL);
+            }catch{
+                return require('@/assets/images/error.png');
+            }
+        }
 	}
 }
 </script>

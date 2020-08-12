@@ -1,21 +1,21 @@
 <template>
-  <v-app>
-    <v-app-bar app color="primary" dense dark flat>
-      <v-tabs align-with-title>
-        <v-tab router-link to="/">Main</v-tab>
-        <!-- <v-tab router-link to="/Profile">Profile</v-tab> -->
-        <v-tab router-link to="/MultiSearch">Multi Search</v-tab>
-        <v-tab router-link to="/Lolbody">Lolbody</v-tab>
-      </v-tabs>
-      <v-spacer></v-spacer>
-      <NavSearchBar v-if="isIndex ? false : true"/>
-    </v-app-bar>
+    <v-app>
+        <v-app-bar app color="primary" dense dark flat>
+            <v-tabs align-with-title>
+            <v-tab router-link to="/">Main</v-tab>
+            <!-- <v-tab router-link to="/Profile">Profile</v-tab> -->
+            <v-tab router-link to="/MultiSearch">Multi Search</v-tab>
+            <v-tab router-link to="/Lolbody">Lolbody</v-tab>
+            </v-tabs>
+            <v-spacer></v-spacer>
+            <NavSearchBar v-if="isIndex ? false : true"/>
+        </v-app-bar>
 
-    <v-main class='mt-16 pt-0'>
-      
-      <router-view :key="$route.fullPath"></router-view>
+        <v-main class='mt-16 pt-0'>
+        
+            <router-view :key="$route.fullPath"></router-view>
 
-    </v-main>
+        </v-main>
 
   </v-app>
 </template>
@@ -115,7 +115,7 @@ export default {
     vertical-align: bottom;
 }
 .vertical-align-center{
-    vertical-align: center;
+    vertical-align: center !important;
 }
 
 
@@ -136,19 +136,15 @@ export default {
 
   position: absolute;
 	bottom: 90%;
-
+  
   padding: 10px;
   border-radius: 10px;
 	color: #FFFFFF;
 	font-size: 10px;
-
-
 	z-index: 9999;
-
 }
 
 [tooltip]:hover:after {
-
   bottom: 110%;
 	left: 0;
 	opacity: 1;

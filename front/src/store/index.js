@@ -91,7 +91,8 @@ export default new Vuex.Store({
 
     // 형래
     profileDatas: {},
-	matchDatas: [],
+    matchDatas: [],
+    nowProfileDatas:{},
   },
   // 형래
   getters: {
@@ -192,12 +193,15 @@ export default new Vuex.Store({
 
     // 형래
     setProfileDatas(state, profileDatas){
-      state.profileDatas = profileDatas;
+        state.profileDatas = profileDatas;
+        state.matchDatas = [];
     },
     setMatchDatas(state, matchDatas){
-        state.matchDatas = matchDatas;
+        state.matchDatas = state.matchDatas.concat(matchDatas);
+    },
+    setNowProfileDatas(state, data){
+        state.nowProfileDatas = data;
     }
-
   },
   actions: {
     // 승현, multisearch
@@ -249,17 +253,15 @@ export default new Vuex.Store({
           .catch(err => {
             console.log(err)
           })
-
         }
     },
 
     // 승현, renewalUserData
 
     renewalUserData( { commit }, userName ) {
-      return axios.put(SERVER_URL + `/profile/${userName}`)
+      return axios.put(SERVER_URL + `/api/profile/${userName}`)
         .then(res => {
           commit('setProfileDatas', res.data)
-          console.log(res.data)
         })
         .catch(err => {
           console.log(err)
@@ -274,10 +276,9 @@ export default new Vuex.Store({
             commit('setProfileDatas', res.data)
         }).catch(function (error) {
             if (error.response) {
-                console.log(error.response.data);
                 console.log(error.response.status);
-                console.log(error.response.headers);
             }
+            commit('setProfileDatas', '')
         });
     },
     getMatchDatas( { commit }, {userName, num}){
@@ -289,10 +290,10 @@ export default new Vuex.Store({
             commit('setProfileLineChartOption', res.data)
         }).catch(function (error) {
             if (error.response) {
-                console.log(error.response.data);
                 console.log(error.response.status);
-                console.log(error.response.headers);
             }
+            commit('setMatchDatas', '')
+            commit('setProfileLineChartOption', '')
         });
     },
     getProfileRadarChartDatas( { commit }, userNames ) {
@@ -300,10 +301,13 @@ export default new Vuex.Store({
 		.then(res => {
 			commit('setRadarChartDatas', res.data)
 		})
-		.catch(err => {
-			console.log(err)
+		.catch(function (error) {
+            if (error.response) {
+                console.log(error.response.status);
+            }
+            commit('setRadarChartDatas', '')
 		})
-	},
+    }
   },
   modules: {
   }

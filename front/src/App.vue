@@ -136,19 +136,15 @@ export default {
 
   position: absolute;
 	bottom: 90%;
-
+  
   padding: 10px;
   border-radius: 10px;
 	color: #FFFFFF;
 	font-size: 10px;
-
-
 	z-index: 9999;
-
 }
 
 [tooltip]:hover:after {
-
   bottom: 110%;
 	left: 0;
 	opacity: 1;

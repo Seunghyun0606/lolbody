@@ -70,7 +70,7 @@ def get_player_match_grade(player_data):
     # cols2 = ['visionScore', 'csPerMin', 'damageDealtPerMin', 'damageTakenPerMin']
     print(data)
 
-    stats = pd.read_csv('./csv/20.08/stastics/stastics.csv')
+    stats = pd.read_csv('./Analysis/csv/20.08/stastics/stastics.csv')
 
     # 포지션 유사도 판별로 정해볼 예정
     # 데이터 정규화 후에 유클리디안 거리를 구한것 == 마할라노비스 거리를 구한 것

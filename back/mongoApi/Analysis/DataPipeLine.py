@@ -378,8 +378,8 @@ def auto_mode():
     now = "%02d.%02d" % (int(str(now.tm_year)[2:]), now.tm_mon)
     print(now)
     # 폴더 생성
-    create_folder('./csv/' + now)
-    source = './csv/' + now + '/source/'
+    create_folder('./Analysis/csv/' + now)
+    source = './Analysis/csv/' + now + '/source/'
     create_folder(source)
 
     # summoner_list가 있으면 불러오고 아니면 구하기

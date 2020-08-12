@@ -92,8 +92,8 @@ def auto_mode():
     print(now)
 
     # 폴더 생성
-    source = './csv/' + now + '/source/'
-    stastics = './csv/' + now + '/stastics/'
+    source = './Analysis/csv/' + now + '/source/'
+    stastics = './Analysis/csv/' + now + '/stastics/'
     create_folder(stastics)
 
     # 통계 파일 생성
@@ -209,77 +209,6 @@ def asd():
     # team 200 = 14400
     # map_size = 15000 * 15000
 
-
-
-
-
-
-
-
-
-
-
-    # for rank in ranks:
-    #     try:
-    #         file = open('./csv/%s/%s/%s_stastics.csv' % (now[:4], rank, now[:4]), 'w', newline='', encoding='utf-8')
-    #         csvfile = csv.writer(file)
-    #         csvfile.writerow([
-    #             'position', 
-    #             'visionScoreMean', 
-    #             'visionScoreStd', 
-    #             'csPerMinMean',
-    #             'csPerMinStd', 
-    #             'deathsRatioMean',
-    #             'deathsRatioStd',
-    #             'killAssistPerMinMean',
-    #             'killAssistPerMinStd',
-    #             'damageDealtPerMinMean',
-    #             'damageDealtPerMinStd',
-    #             'damageTakenPerMinMean',
-    #             'damageTakenPerMinStd',
-    #             'killsRatioMean',
-    #             'killsRatioStd',
-    #             ])
-    #     except:
-    #         continue
-
-    #     for position in positions:
-    #         data = pd.read_csv('./csv/2008/%s/2008_%s.csv' % (rank, position), encoding='utf-8')
-    #         # print(data)
-
-    #         # 중복된 소환사 제거
-    #         data.drop_duplicates(keep='first', inplace=True)
-    #         # print(data)
-
-    #         using_data = pd.DataFrame()
-    #         # 안정성
-    #         using_data['visionScore'] = data['visionScore']
-    #         using_data['csPerMin'] = data['totalMinionsKilled'] / (data['playtime'] / 60)
-    #         ## 낮을수록 좋기때문에 음수로 바꿔서 사용해야함
-    #         using_data['deathsRatio'] = data['deathsRatio']
-
-    #         # 공격성
-    #         using_data['killAssistPerMin'] = (data['kills'] + data['assists']) / (data['playtime'] / 60)
-    #         using_data['damageDealtPerMin'] = data['totalDamageDealtToChampions'] / (data['playtime'] / 60)
-    #         using_data['damageTakenPerMin'] = data['totalDamageTaken'] / (data['playtime'] / 60)
-
-    #         # 영향력
-    #         using_data['killsRatio'] = data['killsRatio']
-
-    #         # 이상치 제거
-    #         idxs = []
-    #         for column in list(using_data.columns):
-    #             idxs += list(outliers(using_data[column]).index)
-    #             # csPerMin_outlier_idx = list(outliers(using_data.csPerMin).index)
-    #             # deathsRatio_outlier_idx = list(outliers(using_data.deathsRatio).index)
-    #         using_data = using_data.drop(idxs).reset_index(drop=True)
-
-    #         # 랭크별로 각 요소의 평균 삽입
-    #         row = [position, ]
-    #         for column in list(using_data.columns):
-    #             row.extend([using_data[column].mean(), using_data[column].std()])
-    #         print(row)
-    #         csvfile.writerow(row)
             
 
 

@@ -1,7 +1,8 @@
 <template>
-
-  <apexchart class='move-apexchart' type="radar" width="350" :options="chartOptions" :series="series.series"></apexchart>
-
+    <div>
+    <apexchart class='move-apexchart' type="radar" width="350" :options="chartOptions" :series="series.series" v-if="this.profileRadarChartOption.series[0].name != null"></apexchart>
+    <div v-else> 전적이 없습니다. </div>
+    </div>
 </template>
 
 <script>
@@ -12,6 +13,7 @@ export default {
     name: 'ProfileRadarChart',
     components: {
         apexchart
+
     },
     computed: {
         ...mapState([
@@ -23,10 +25,13 @@ export default {
                 chart: {
                     toolbar: {
                         show: false,
-                    }
+                    },
+                    legend:{
+                        position: 'top'
+                    },
                 },
                 xaxis: {
-                    categories: ['공격력', '안정성', '영향력']
+                    categories: ['공격력', '안정성', '영향력'],
                 },
                 yaxis: {
                     show: false,
@@ -34,12 +39,16 @@ export default {
                     min: 0,
                     max: 100,
                 },
+                legend: {
+                    position: 'top',
+                },
                 markers: {
                     size: 3
                 }
             };
         },
         series(){
+            console.log(this.profileRadarChartOption.series);
             return {
                 series: [{
                     name: this.profileRadarChartOption.series[0].name,

@@ -1,5 +1,6 @@
 package com.ssafy.lolbody.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -49,6 +50,14 @@ public class SummonerService {
 			insert(summonerDto);
 		}
 		return summonerDto;
+	}
+	
+	public List<SummonerDto> findByNameStartingWith(String name) {
+		List<SummonerDto> summonerDtos = summonerRepository.findBySubNameStartingWith(name.toLowerCase().replaceAll(" ", ""));
+		if(summonerDtos == null) {
+			return new ArrayList<>();
+		}
+		return summonerDtos;
 	}
 
 }

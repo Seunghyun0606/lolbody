@@ -3,7 +3,7 @@
 	<v-row align="center" justify="center">
 	<v-app id="sandbox">
 	<v-main>
-	<table width="1000px">
+	<table width="1000px" v-if="profileDatas != '' && matchDatas != ''">
 		<tr>
 			<!-- 여기서부터 좌측 공간 -->
 			<td style="vertical-align: top" width="34%">
@@ -40,47 +40,7 @@
 						<li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
 						<li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
 					</ul>
-				
-					<div class="mt-2 text-center" v-if="now.src != null"> 
-						<div class="icon pa-1 d-inline-block">
-							<span class="rank fs-14">{{now.rank}}</span>
-							<img :src="imageload('tier/'+now.src+'.png')" class="d-block mx-auto" height= "75px" />
-							<v-card-text>
-								<span class="fs-14">{{Math.round(now.totalRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.totalRecord.wins}}승</span> <span class="fc_red fs-13">{{now.totalRecord.losses}}패</span>)</span>
-							</v-card-text>
-						</div>
-				
-						<div class="icon pa-1 d-inline-block">
-							<v-avatar class="ma-3" size="70">
-								<v-img :src="imageload('champion/'+now.mostCham+'.png')" alt="모스트 픽" />
-							</v-avatar>
-							<v-card-text>
-								<span class="fs-14">{{Math.round(now.mostChamRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostChamRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostChamRecord.losses}}패</span>)</span>
-							</v-card-text>
-						</div>
-				
-						<div class="icon pa-1 d-inline-block">
-							<v-avatar class="ma-3" size="50">
-								<v-img :src="imageload('position/'+now.mostLine+'.png')" />
-							</v-avatar>
-							<v-card-text>
-								<span class="fs-14">{{Math.round(now.mostLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.mostLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.mostLineRecord.losses}}패</span>)</span>
-							</v-card-text>
-						</div>
-				
-						<div class="icon pa-1 d-inline-block">
-							<v-avatar class="ma-3" size="50">
-								<v-img :src="imageload('position/'+now.secondLine+'.png')" />
-							</v-avatar>
-							<v-card-text>
-								<span class="fs-14">{{Math.round(now.secondLineRecord.winRate*100)/100}}% (<span class="fc_blue fs-13">{{now.secondLineRecord.wins}}승</span> <span class="fc_red fs-13">{{now.secondLineRecord.losses}}패</span>)</span>
-							</v-card-text>
-						</div>
-					</div>
-				
-					<div class="mt-2 text-center" v-if="now.src == null">
-						<p>전적이 없습니다.</p>
-					</div>
+                    <ProfileGameData/>
 				</v-card>
 
 				<!-- 듀오 전적이나 최근 자주한 챔피언? -->
@@ -126,9 +86,13 @@
 
 				<!-- 게임 기록 부분 -->
 				<ProfileGameHistory/>
+                <v-btn class="mx-1 mb-2" width="649px" height="50px" @click="getMatchDatas(++numOfMatch)" outlined>
+                    더보기
+                </v-btn>
 			</td>
 		</tr>
 	</table>
+    <p v-if="profileDatas == '' || matchDatas == ''">등록되지 않은 소환사입니다.</p>
 	</v-main>
 	</v-app>
 	</v-row>
@@ -136,14 +100,13 @@
 </template>
 
 <script>
-//import axios from 'axios';
 import ProfileLineChart from '@/components/profile/ProfileLineChart';
 //import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
-import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
+//import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
 import ProfileBedge from "@/components/profile/ProfileBedge";
 import Loading from "@/components/profile/Loading";
 import LoadError from "@/components/profile/LoadError";
-
+//import ProfileGameData from "@/components/profile/ProfileGameData";
 
 //import { mapActions } from "vuex"
 import { mapState } from "vuex"
@@ -163,13 +126,24 @@ export default {
             component: import("@/components/profile/ProfileRadarChart"),
             loading: Loading,
             error: LoadError,
-            //loading: import("@/components/profile/Loading"),
-            //error: import("@/components/profile/LoadError"),
-            delay: 200,
+            delay: 0,
             timeout: 3000
         }),
-		ProfileGameHistory,
-		ProfileBedge,
+		ProfileGameHistory:() => ({
+            component: import("@/components/profile/ProfileGameHistory"),
+            loading: Loading,
+            error: LoadError,
+            delay: 0,
+            timeout: 3000
+        }),
+        ProfileBedge,
+        ProfileGameData:() => ({
+            component: import("@/components/profile/ProfileGameData"),
+            loading: Loading,
+            error: LoadError,
+            delay: 0,
+            timeout: 3000
+        }),
 	},
 	data(){
         return {
@@ -180,8 +154,8 @@ export default {
                 rankGameActive : true,
                 isLoading : true
             },
-            now:{},
-            item:{}
+            //now:{},
+            numOfMatch: 1
         }
     },
 	mounted(){
@@ -191,6 +165,8 @@ export default {
 	computed: {
 		...mapState([
             'profileDatas',
+            'nowProfileDatas',
+            'matchDatas'
 		]),
 		updateTime() {
 			let time = this.profileDatas.timestamp
@@ -231,28 +207,24 @@ export default {
 	methods:{
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
-			this.now = this.profileDatas.rankedRecord;
+            //this.now = this.profileDatas.rankedRecord;
+            if(this.profileDatas == '')
+                return;
 			if(this.profileDatas.tier == null){
-				// this.profileDatas.tier= 'unranked';
-				// this.profileDatas.rank = 'unranked';
 				this.changeNomarlGame();
 			}else {
-				this.now.src = this.profileDatas.tier;
-				this.now.rank = this.profileDatas.rank;
+                this.changeRankGame();
 			}
-			this.getMatchDatas();
-
-			this.getRadarChartDatas(userName);
+			this.getMatchDatas(1);
+            this.getRadarChartDatas(userName);
+            console.log("test");
 			this.triger.isLoading = false;
 		},
-		async getMatchDatas(){
+		async getMatchDatas(n){
 			await this.$store.dispatch('getMatchDatas', {
 				userName: this.profileDatas.summonerName, 
-				num : 1
+				num : n
 			});
-			
-			this.isLoading = false;
-			//console.log("loading done");
 		},
 		
 		// radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
@@ -262,7 +234,7 @@ export default {
 		// 전적갱신 전적 리스트 미구현상태
 		async renewalUserData(userName) {
             await this.$store.dispatch('renewalUserData', userName);
-            this.getMatchDatas();
+            this.getMatchDatas(1);
 		},
 
 		getRankData(){
@@ -273,17 +245,19 @@ export default {
 		},
 		changeNomarlGame(){
 			this.triger.nomalGameActive = true;
-			this.triger.rankGameActive = false;
-			this.now = this.profileDatas.blindRecord;
-			this.now.src = 'unranked';
-			this.now.rank = 'unranked';
+            this.triger.rankGameActive = false;
+            this.$store.commit('setNowProfileDatas', this.profileDatas.blindRecord);
+			//this.nowProfileDatas = this.profileDatas.blindRecord;
+			this.nowProfileDatas.src = 'unranked';
+			this.nowProfileDatas.rank = 'unranked';
 		},
 		changeRankGame(){
 			this.triger.nomalGameActive = false;
-			this.triger.rankGameActive = true;
-			this.now = this.profileDatas.rankedRecord;
-			this.now.src = this.profileDatas.tier;
-			this.now.rank = this.profileDatas.rank;
+            this.triger.rankGameActive = true;
+            this.$store.commit('setNowProfileDatas', this.profileDatas.rankedRecord);
+			//this.nowProfileDatas = this.profileDatas.rankedRecord;
+			this.nowProfileDatas.src = this.profileDatas.tier;
+			this.nowProfileDatas.rank = this.profileDatas.rank;
 		},
 		changeLP(){
 			this.triger.LPActive = true;
@@ -298,6 +272,13 @@ export default {
                 return require('@/assets/images/'+ URL);
             }catch{
                 return require('@/assets/images/error.png');
+            }
+        },
+        round(num){
+            try{
+                return Math.round(num*100)/100;
+            }catch{
+                return 0;
             }
         }
 	}
@@ -335,12 +316,6 @@ export default {
 .v-chip{
 	padding: 2px 10px 0 10px !important;
 }
-.rank{
-	font-family: cursive;
-	color: rgb(231, 197, 0);
-	font-weight: 500;
-	text-shadow: -1px 0 #000000, 0 1px #5e5e5e, 1px 0 #5e5e5e, 0 -1px #5e5e5e;
-}
 
 .apexcharts-canvas {
 	text-align: center;
@@ -375,10 +350,5 @@ export default {
 	background-color: #fafafa !important;
 	box-shadow: 2px 2px 2px rgb(161, 161, 161) !important;
 }
-
-.icon {
-	width: 130px;
-}
-
 
 </style> 

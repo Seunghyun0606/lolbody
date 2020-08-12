@@ -115,7 +115,7 @@ export default {
     vertical-align: bottom;
 }
 .vertical-align-center{
-    vertical-align: center;
+    vertical-align: center !important;
 }
 
 

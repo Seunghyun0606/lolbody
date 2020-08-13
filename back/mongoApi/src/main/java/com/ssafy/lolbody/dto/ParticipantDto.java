@@ -13,6 +13,13 @@ public class ParticipantDto {
 	private int spell2Id;
 	private String highestAchievedSeasonTier;
 	private List<MasteryDto> masteries;
+	private String name;
+	private String tier;
+	private int x;
+	private int y;
+	private String line;
+	private double matchGrade;
+	private AnalysisDto analysis;
 
 	public int getParticipantId() {
 		return participantId;
@@ -94,11 +101,69 @@ public class ParticipantDto {
 		this.masteries = masteries;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTier() {
+		return tier;
+	}
+
+	public void setTier(String tier) {
+		this.tier = tier;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public String getLine() {
+		return line;
+	}
+
+	public void setLine(String line) {
+		this.line = line;
+	}
+
+	public double getMatchGrade() {
+		return matchGrade;
+	}
+
+	public void setMatchGrade(double matchGrade) {
+		this.matchGrade = matchGrade;
+	}
+
+	public AnalysisDto getAnalysis() {
+		return analysis;
+	}
+
+	public void setAnalysis(AnalysisDto analysis) {
+		this.analysis = analysis;
+	}
+
 	@Override
 	public String toString() {
 		return "ParticipantDto [participantId=" + participantId + ", championId=" + championId + ", runes=" + runes
 				+ ", stats=" + stats + ", teamId=" + teamId + ", timeline=" + timeline + ", spell1Id=" + spell1Id
 				+ ", spell2Id=" + spell2Id + ", highestAchievedSeasonTier=" + highestAchievedSeasonTier + ", masteries="
-				+ masteries + "]";
+				+ masteries + ", name=" + name + ", tier=" + tier + ", x=" + x + ", y=" + y + ", line=" + line
+				+ ", matchGrade=" + matchGrade + ", analysis=" + analysis + "]";
 	}
+
 }

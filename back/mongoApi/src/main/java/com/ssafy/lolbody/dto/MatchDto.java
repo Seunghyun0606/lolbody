@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "matches")
+@Document(collection = "tmp")
 public class MatchDto {
 	@Id
 	private long gameId;
@@ -21,6 +21,7 @@ public class MatchDto {
 	private int mapId;
 	private String gameMode;
 	private List<ParticipantDto> participants;
+	private boolean flag;
 
 	public long getGameId() {
 		return gameId;
@@ -126,12 +127,21 @@ public class MatchDto {
 		this.participants = participants;
 	}
 
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+
 	@Override
 	public String toString() {
 		return "MatchDto [gameId=" + gameId + ", participantIdentities=" + participantIdentities + ", queueId="
 				+ queueId + ", gameType=" + gameType + ", gameDuration=" + gameDuration + ", teams=" + teams
 				+ ", platformId=" + platformId + ", gameCreation=" + gameCreation + ", seasonId=" + seasonId
 				+ ", gameVersion=" + gameVersion + ", mapId=" + mapId + ", gameMode=" + gameMode + ", participants="
-				+ participants + "]";
+				+ participants + ", flag=" + flag + "]";
 	}
+
 }

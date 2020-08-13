@@ -26,17 +26,29 @@ public class LeagueEntryService {
 	}
 	
 	public List<LeagueEntryDto> findBySummonerId(String summonerId) {
-//		List<LeagueEntryDto> leagueEntryList = leagueEntryRepository.findBySummonerId(summonerId);
-//		if(leagueEntryList.size() == 0) {
+		JSONArray arr = new JSONArray(Api.get("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner", summonerId));
+		List<LeagueEntryDto> leagueEntryList = new ArrayList<>();
+		for(int i = 0; i < arr.length(); i++) {
+			String json = arr.getJSONObject(i).toString();
+			LeagueEntryDto leagueEntry = new Gson().fromJson(json, LeagueEntryDto.class);
+			leagueEntryList.add(leagueEntry);
+		}
+		save(leagueEntryList);
+		return leagueEntryList;
+	}
+	
+	public List<LeagueEntryDto> findOnly(String summonerId) {
+		List<LeagueEntryDto> leagueEntryList = leagueEntryRepository.findBySummonerId(summonerId);
+		if(leagueEntryList == null) {
 			JSONArray arr = new JSONArray(Api.get("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner", summonerId));
-			List<LeagueEntryDto> leagueEntryList = new ArrayList<>();
+			leagueEntryList = new ArrayList<>();
 			for(int i = 0; i < arr.length(); i++) {
 				String json = arr.getJSONObject(i).toString();
 				LeagueEntryDto leagueEntry = new Gson().fromJson(json, LeagueEntryDto.class);
 				leagueEntryList.add(leagueEntry);
 			}
 			save(leagueEntryList);
-//		}
+		}
 		return leagueEntryList;
 	}
 }

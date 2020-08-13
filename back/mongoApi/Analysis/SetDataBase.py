@@ -1,4 +1,4 @@
-import pymongo
+import pymongo, sys
 import pandas as pd
 from scipy.stats import norm
 
@@ -57,14 +57,17 @@ stats = pd.read_csv('./csv/%s/stastics/stastics.csv' % now)
 def update_match_data(summoner_name, idx):
     profile_id = db_root.summoners.find_one({'name': summoner_name}).get('_id')
     match_list = db_root.matchlists.find_one({'_id': profile_id}).get('matches')[idx:]
-    print(len(match_list))
-    match_id_list = [i.get('gameId') for i in match_list if i.get('timestamp') >= 1578596400000 and (i.get('queue') == 420 or i.get('queue') == 430) and i.get('gameDuration') > 300]
+    print(match_list[-1])
+    match_id_list = [i.get('gameId') for i in match_list if i.get('timestamp') >= 1578596400000 and (i.get('queue') == 420 or i.get('queue') == 430)]
 
     for match_id in match_id_list:
         print(match_id)
         tmp_collection = db_root.tmp
         match_data = tmp_collection.find_one({'_id': match_id})
         
+        # 다시하기는 넘어감
+        if match_data.get('gameDuration') <= 300: continue
+
         # 이미 매치데이터 갱신 했으면 넘어감
         if match_data.get('flag'): continue
 
@@ -167,10 +170,10 @@ def update_match_data(summoner_name, idx):
             # print(participant['matchGrade'], participant['lane'])
             ######################################################################333
             # print(participants_data)
-            # tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
+            tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
 
         # print(participants_data)
         
 
 if __name__ == '__main__':
-    update_match_data('동남구청장', 420)
+    update_match_data(sys.argv[1], int(sys.argv[2]))

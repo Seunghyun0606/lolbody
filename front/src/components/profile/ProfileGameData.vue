@@ -52,9 +52,6 @@ export default {
             'nowProfileDatas',
         ]),
     },
-    mounted(){
-        console.log(this.nowProfileDatas.src);
-    },
     methods:{
         imageload(URL){
             try{

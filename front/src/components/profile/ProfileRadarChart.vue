@@ -48,7 +48,6 @@ export default {
             };
         },
         series(){
-            console.log(this.profileRadarChartOption.series);
             return {
                 series: [{
                     name: this.profileRadarChartOption.series[0].name,

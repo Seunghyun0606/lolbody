@@ -92,6 +92,7 @@
 			</td>
 		</tr>
 	</table>
+    <v-card v-if="triger.isLoading" :loading="triger.isLoading" class="text-center" width="1000px" height="50px">Loading</v-card>
     <p v-if="profileDatas == '' || matchDatas == ''">등록되지 않은 소환사입니다.</p>
 	</v-main>
 	</v-app>
@@ -217,14 +218,14 @@ export default {
 			}
 			this.getMatchDatas(1);
             this.getRadarChartDatas(userName);
-            console.log("test");
 			this.triger.isLoading = false;
 		},
 		async getMatchDatas(n){
-			await this.$store.dispatch('getMatchDatas', {
-				userName: this.profileDatas.summonerName, 
-				num : n
-			});
+            await this.$store.dispatch('getMatchDatas', {
+                userName: this.profileDatas.summonerName, 
+                num : n
+            });
+            console.log(this.matchDatas);
 		},
 		
 		// radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정

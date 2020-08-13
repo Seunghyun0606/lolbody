@@ -120,20 +120,19 @@ export default new Vuex.Store({
       state.userDatas = [ ...state.userDatas, userDatas ]
     },
     setProfileLineChartOption(state, matchDatas) {
-      state.profileLineChartOption.series[0].data = []
-      state.profileLineChartOption.chartOptions.xaxis.categories = []
+        state.profileLineChartOption.series[0].data = []
+        state.profileLineChartOption.chartOptions.xaxis.categories = []
 
-      for ( let matchData of matchDatas ) {
-        if ( matchData.myTeam === 'blueTeam' ) {
-
-          state.profileLineChartOption.series[0].data.unshift(matchData.blueTeam.teammate[matchData.myIndex].kda.toFixed(2))
+        for ( let matchData of matchDatas ) {
+            if ( matchData.myTeam === 'blueTeam' ) {
+                state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.blueTeam.teammate[matchData.myIndex].kda*100)/100)
+            }
+            else {
+                state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.redTeam.teammate[matchData.myIndex].kda*100)/100)
+            }
+            state.profileLineChartOption.chartOptions.xaxis.categories.unshift(calcDate(matchData.timestamp))
         }
-        else {
-          state.profileLineChartOption.series[0].data.unshift(matchData.redTeam.teammate[matchData.myIndex].kda.toFixed(2))
-        }
-        state.profileLineChartOption.chartOptions.xaxis.categories.unshift(calcDate(matchData.timestamp))
-          
-      }
+        console.log(state.profileLineChartOption)
     },
     // 나중에 리팩토링하자
     setProfileRadarChartOption(state, Datas) {
@@ -156,11 +155,11 @@ export default new Vuex.Store({
       state.profileRadarChartOption.series[0].data = []
       state.profileRadarChartOption.series[1].data = []
       for ( let index1 in Datas.lane1) {
-        state.profileRadarChartOption.series[0].data.push((Datas.lane1[index1]*100).toFixed(1))
+        state.profileRadarChartOption.series[0].data.push(Math.round((Datas.lane1[index1]*100)*10)/10)
 
       }
       for ( let index2 in Datas.lane2) {
-        state.profileRadarChartOption.series[1].data.push((Datas.lane2[index2]*100).toFixed(1))
+        state.profileRadarChartOption.series[1].data.push(Math.round((Datas.lane2[index2]*100)*10)/10)
 
       }
     },
@@ -176,13 +175,13 @@ export default new Vuex.Store({
 		state.profileRadarChartOption.series[1].name = datas.lane2["lane"];
 		state.profileRadarChartOption.series[0].data = [];
 		state.profileRadarChartOption.series[1].data = [];
-		state.profileRadarChartOption.series[0].data.push((datas.lane1["aggressiveness"]*100).toFixed(1));
-		state.profileRadarChartOption.series[0].data.push((datas.lane1["stability"]*100).toFixed(1));
-		state.profileRadarChartOption.series[0].data.push((datas.lane1["influence"]*100).toFixed(1));
+		state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["aggressiveness"]*100)*10)/10);
+		state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["stability"]*100)*10)/10);
+		state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["influence"]*100)*10)/10);
 
-		state.profileRadarChartOption.series[1].data.push((datas.lane2["aggressiveness"]*100).toFixed(1));
-		state.profileRadarChartOption.series[1].data.push((datas.lane2["stability"]*100).toFixed(1));
-		state.profileRadarChartOption.series[1].data.push((datas.lane2["influence"]*100).toFixed(1));
+		state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["aggressiveness"]*100)*10)/10);
+		state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["stability"]*100)*10)/10);
+		state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["influence"]*100)*10)/10);
     },
 
 
@@ -292,7 +291,7 @@ export default new Vuex.Store({
             if (error.response) {
                 console.log(error.response.status);
             }
-            commit('setMatchDatas', '')
+            console.log(error)
             commit('setProfileLineChartOption', '')
         });
     },

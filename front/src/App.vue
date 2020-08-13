@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app style="background-color: #fafafa;">
         <v-app-bar app color="primary" dense dark flat>
             <v-tabs align-with-title>
             <v-tab router-link to="/">Main</v-tab>
@@ -51,7 +51,7 @@ export default {
 }
 
 .fs-0{
-    font-size: 0;
+  font-size: 0;
 }
 .fs-15{
 	font-size: 0.938em;

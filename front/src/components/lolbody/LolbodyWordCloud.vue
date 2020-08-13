@@ -1,5 +1,5 @@
 <template>
-<div style="height: 100%; width: 100%; padding: 50px; border: 1px solid black; border-radius: 70%">
+<div style="height: 100%; width: 100%; padding: 50px;">
   <VueWordCloud
     :words="words"
     :color="([, weight]) => weight > 15 ? 'DeepPink' : weight > 10 ? 'RoyalBlue' : weight > 5 ? 'Red' : 'Black'"

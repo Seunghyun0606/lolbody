@@ -1,109 +1,109 @@
 <template>
     <v-container>
         <v-flex v-for="(matchData, idx) in matchDatas" :key="idx + '_matchData'">
-            <v-card class="ma-1 mb-2 vertical-align-center" :class="{ bg_win : matchDatas[idx][matchDatas[idx].myTeam].win, bg_fail : !matchDatas[idx][matchDatas[idx].myTeam].win, bg_gray : matchDatas[idx].noGame}" outlined>
+            <v-card class="ma-1 mb-2 vertical-align-center" :class="{ bg_win : matchData[matchData.myTeam].win, bg_fail : !matchData[matchData.myTeam].win, bg_gray : matchData.noGame}" outlined>
                 <table height="100px">
                     <tr>
                         <td class="text-center" width="80px">
                             <v-row justify="center">
                                 <div class="pa-1 text-center">
-                                    <small class="d-block fs-11 font-weight-bold">{{queues[matchDatas[idx].queue].shortName}}</small>
-                                    <small class="d-block fs-11">{{calcDate(matchDatas[idx].timestamp)}}</small>
+                                    <small class="d-block fs-11 font-weight-bold">{{queues[matchData.queue].shortName}}</small>
+                                    <small class="d-block fs-11">{{calcDate(matchData.timestamp)}}</small>
                                 </div>
                             </v-row>
                             <v-row justify="center">
                                 <hr class="mb-2 mt-1" style="border:1px color:silver;" width="30%">
                             </v-row>
                             <v-row justify="center">
-                                <small class="fs-11 font-weight-bold" v-if="matchDatas[idx].noGame">다시하기</small>
-                                <small class="fs-11 font-weight-bold" :class="{ fc_blue : matchDatas[idx][matchDatas[idx].myTeam].win, fc_red: !matchDatas[idx][matchDatas[idx].myTeam].win}" v-else>{{matchDatas[idx][matchDatas[idx].myTeam].win ? '승리' : '패배'}}</small>
+                                <small class="fs-11 font-weight-bold" v-if="matchData.noGame">다시하기</small>
+                                <small class="fs-11 font-weight-bold" :class="{ fc_blue : matchData[matchData.myTeam].win, fc_red: !matchData[matchData.myTeam].win}" v-else>{{matchData[matchData.myTeam].win ? '승리' : '패배'}}</small>
                             </v-row>
                             <v-row justify="center">
-                                <small class="fs-11">{{changeTime(matchDatas[idx].duration)}}</small>
+                                <small class="fs-11">{{changeTime(matchData.duration)}}</small>
                             </v-row>
                         </td>
 
                         <td class="text-center" width="110px">
                             <div class="float-left pr-1">
                                 <v-avatar size="48">
-                                    <img :src="imageload('champion/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].champ + '.png')" />
+                                    <img :src="imageload('champion/' + matchData[matchData.myTeam].teammate[matchData.myIndex].champ + '.png')" />
                                 </v-avatar>
                             </div>
                             <div class="float-left">
                                 <div>
-                                    <img :src="imageload('spell/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].spell1 + '.png')"  class="vertical-align-bottom mr-1" width="22px"/>
-                                    <img :src="imageload('perk/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].perk.toLowerCase() + '.png')"  class="vertical-align-bottom border-rounded bg_black" width="22px"/>
+                                    <img :src="imageload('spell/' + matchData[matchData.myTeam].teammate[matchData.myIndex].spell1 + '.png')"  class="vertical-align-bottom mr-1" width="22px"/>
+                                    <img :src="imageload('perk/' + matchData[matchData.myTeam].teammate[matchData.myIndex].perk.toLowerCase() + '.png')"  class="vertical-align-bottom border-rounded bg_black" width="22px"/>
                                 </div>
                                 <div>
-                                    <img :src="imageload('spell/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].spell2 + '.png')" class="vertical-align-bottom mr-1" width="22px"/>
-                                    <img :src="imageload('perk/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].perkStyle.toLowerCase() + '.png')" class="vertical-align-bottom border-rounded bg_gray_op" width="22px"/>
+                                    <img :src="imageload('spell/' + matchData[matchData.myTeam].teammate[matchData.myIndex].spell2 + '.png')" class="vertical-align-bottom mr-1" width="22px"/>
+                                    <img :src="imageload('perk/' + matchData[matchData.myTeam].teammate[matchData.myIndex].perkStyle.toLowerCase() + '.png')" class="vertical-align-bottom border-rounded bg_gray_op" width="22px"/>
                                 </div>
                             </div>
-                            <small class="d-block clear fs-12 pt-2 font-weight-bold">{{champoins.data[matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].champ].name}}</small>
+                            <small class="d-block clear fs-12 pt-2 font-weight-bold">{{champoins.data[matchData[matchData.myTeam].teammate[matchData.myIndex].champ].name}}</small>
                         </td>
 
                         <td class="text-center" width="90px">
                             <div class="fs-15 font-weight-bold">
-                                <span>{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].kills}}</span> /
-                                <span class="fc_red">{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].deaths}}</span> /
-                                <span>{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].assists}}</span>
+                                <span>{{matchData[matchData.myTeam].teammate[matchData.myIndex].kills}}</span> /
+                                <span class="fc_red">{{matchData[matchData.myTeam].teammate[matchData.myIndex].deaths}}</span> /
+                                <span>{{matchData[matchData.myTeam].teammate[matchData.myIndex].assists}}</span>
                             </div>
                             <div class="fs-13">
-                                <span v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].kda == 'Infinity'">Perfect</span>
-                                <span v-else>평점 {{Math.round(matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].kda*100)/100}}</span>
+                                <span v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].kda == 'Infinity'">Perfect</span>
+                                <span v-else>평점 {{Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100}}</span>
                             </div>
                             <div class="fs-13">
-                                <span>킬관여 {{Math.round(matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].ka)}}%</span>
+                                <span>킬관여 {{Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].ka)}}%</span>
                             </div>
                         </td>
                         <td class="text-center" width="85px">
-                            <span class="d-block fs-12">레벨 {{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].level}}</span>
-                            <span class="d-block fs-12">{{matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].cs}} ({{Math.round(matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].csPerMin*100)/100}}) CS</span>
+                            <span class="d-block fs-12">레벨 {{matchData[matchData.myTeam].teammate[matchData.myIndex].level}}</span>
+                            <span class="d-block fs-12">{{matchData[matchData.myTeam].teammate[matchData.myIndex].cs}} ({{Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].csPerMin*100)/100}}) CS</span>
                         </td>
 
                         <td width="90px">
                             <table>
                                 <tr>
-                                    <td width="22px" v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item0 != 0">
-                                        <img :src="imageload('item/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item0 + '.png')" class="item-border" width="22px"/>
+                                    <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item0 != 0">
+                                        <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item0 + '.png')" class="item-border" width="22px"/>
                                     </td>
                                     <td width="22px" class="item-border" v-else>
                                     </td>
 
-                                    <td width="22px" v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item1 != 0">
-                                        <img :src="imageload('item/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item1 + '.png')" class="item-border" width="22px"/>
+                                    <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item1 != 0">
+                                        <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item1 + '.png')" class="item-border" width="22px"/>
                                     </td>
                                     <td width="22px" class="item-border" v-else>
                                     </td>
                                     
-                                    <td width="22px" v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item2 != 0">
-                                        <img :src="imageload('item/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item2 + '.png')" class="item-border" width="22px"/>
+                                    <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item2 != 0">
+                                        <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item2 + '.png')" class="item-border" width="22px"/>
                                     </td>
                                     <td width="22px" class="item-border" v-else>
                                     </td>
 
-                                    <td width="22px" rowspan="2" v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item6 != 0">
-                                        <img :src="imageload('item/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item6 + '.png')" class="item-border" width="22px"/>
+                                    <td width="22px" rowspan="2" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item6 != 0">
+                                        <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item6 + '.png')" class="item-border" width="22px"/>
                                     </td>
                                     <td width="22px" class="item-border" v-else>
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <td width="22px" v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item3 != 0">
-                                        <img :src="imageload('item/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item3 + '.png')" class="item-border" width="22px"/>
+                                    <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item3 != 0">
+                                        <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item3 + '.png')" class="item-border" width="22px"/>
                                     </td>
                                     <td width="22px" class="item-border" v-else>
                                     </td>
 
-                                    <td width="22px" v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item4 != 0">
-                                        <img :src="imageload('item/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item4 + '.png')" class="item-border" width="22px"/>
+                                    <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item4 != 0">
+                                        <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item4 + '.png')" class="item-border" width="22px"/>
                                     </td>
                                     <td width="22px" class="item-border" v-else>
                                     </td>
                                     
-                                    <td width="22px" v-if="matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item5 != 0">
-                                        <img :src="imageload('item/' + matchDatas[idx][matchDatas[idx].myTeam].teammate[matchDatas[idx].myIndex].item5 + '.png')" class="item-border" width="22px"/>
+                                    <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item5 != 0">
+                                        <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item5 + '.png')" class="item-border" width="22px"/>
                                     </td>
                                     <td width="22px" class="item-border" v-else>
                                     </td>
@@ -114,30 +114,30 @@
 
                         <td width="160px">
                             <div class="fs-0 ml-2">
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].blueTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[0].name)">{{matchDatas[idx].blueTeam.teammate[0].name}}</a></div>
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].redTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[0].name)">{{matchDatas[idx].redTeam.teammate[0].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.blueTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.blueTeam.teammate[0].name)">{{matchData.blueTeam.teammate[0].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.redTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.redTeam.teammate[0].name)">{{matchData.redTeam.teammate[0].name}}</a></div>
                             
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].blueTeam.teammate[1].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[1].name)">{{matchDatas[idx].blueTeam.teammate[1].name}}</a></div>
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].redTeam.teammate[1].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[1].name)">{{matchDatas[idx].redTeam.teammate[1].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.blueTeam.teammate[1].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.blueTeam.teammate[1].name)">{{matchData.blueTeam.teammate[1].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.redTeam.teammate[1].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.redTeam.teammate[1].name)">{{matchData.redTeam.teammate[1].name}}</a></div>
                             
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].blueTeam.teammate[2].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[2].name)">{{matchDatas[idx].blueTeam.teammate[2].name}}</a></div>
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].redTeam.teammate[2].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[2].name)">{{matchDatas[idx].redTeam.teammate[2].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.blueTeam.teammate[2].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.blueTeam.teammate[2].name)">{{matchData.blueTeam.teammate[2].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.redTeam.teammate[2].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.redTeam.teammate[2].name)">{{matchData.redTeam.teammate[2].name}}</a></div>
                             
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].blueTeam.teammate[3].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[3].name)">{{matchDatas[idx].blueTeam.teammate[3].name}}</a></div>
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].redTeam.teammate[3].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[3].name)">{{matchDatas[idx].redTeam.teammate[3].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.blueTeam.teammate[3].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.blueTeam.teammate[3].name)">{{matchData.blueTeam.teammate[3].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.redTeam.teammate[3].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.redTeam.teammate[3].name)">{{matchData.redTeam.teammate[3].name}}</a></div>
                             
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].blueTeam.teammate[4].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].blueTeam.teammate[4].name)">{{matchDatas[idx].blueTeam.teammate[4].name}}</a></div>
-                                <div class="summonerNametd"><img :src="imageload('champion/' + matchDatas[idx].redTeam.teammate[4].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
-                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchDatas[idx].redTeam.teammate[4].name)">{{matchDatas[idx].redTeam.teammate[4].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.blueTeam.teammate[4].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.blueTeam.teammate[4].name)">{{matchData.blueTeam.teammate[4].name}}</a></div>
+                                <div class="summonerNametd"><img :src="imageload('champion/' + matchData.redTeam.teammate[4].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
+                                <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.redTeam.teammate[4].name)">{{matchData.redTeam.teammate[4].name}}</a></div>
                             </div>
                         </td>
                     </tr>

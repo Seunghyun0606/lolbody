@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     stages {
-        // stage('Pull') {
+        // stage('Pull') { 
         //     steps {
 
         //         sh 'git branch'

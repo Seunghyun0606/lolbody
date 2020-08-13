@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.lolbody.dto.AnalysisDto;
 import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.dto.MatchDto;
 import com.ssafy.lolbody.dto.MatchRecordDto;
@@ -99,15 +100,19 @@ public class ProfileService {
 				MatchReferenceDto matchReferenceDto = matchReferences.get(i);
 				int queue = matchReferenceDto.getQueue();
 				if (queue == 420 || queue == 430) {
+					matchService.findByGameId(matchReferenceDto.getGameId());
+				}
+			}
+
+			// python 호출
+
+			for (int i = 0; i < e; i++) {
+				MatchReferenceDto matchReferenceDto = matchReferences.get(i);
+				int queue = matchReferenceDto.getQueue();
+				if (queue == 420 || queue == 430) {
 					MatchDto matchDto = matchService.findByGameId(matchReferenceDto.getGameId());
 					if (matchDto.getGameDuration() < 300) // 다시하기는 통계에 집계되지 않음
 						continue;
-
-					String line = matchReferenceDto.getLane();
-					if (matchReferenceDto.getRole().equals("DUO_SUPPORT")) {
-						if (line.equals("BOTTOM") || line.equals("NONE"))
-							line = "SUPPORT";
-					}
 
 					String cham = preset.findByKey(matchReferenceDto.getChampion() + "").getName();
 					List<ParticipantIdentityDto> participantIdentityList = matchDto.getParticipantIdentities();
@@ -120,7 +125,10 @@ public class ProfileService {
 					}
 					if (participantId == -1)
 						continue;
+
 					List<ParticipantDto> participantList = matchDto.getParticipants();
+					String line = participantList.get(participantId - 1).getLine();
+
 					if (participantList.get(participantId - 1).getStats().isWin()) {
 						if (queue == 420) {
 							calcWinRate(rankedTotal, true);
@@ -250,15 +258,19 @@ public class ProfileService {
 				MatchReferenceDto matchReferenceDto = matchReferences.get(i);
 				int queue = matchReferenceDto.getQueue();
 				if (queue == 420 || queue == 430) {
+					matchService.findByGameId(matchReferenceDto.getGameId());
+				}
+			}
+
+			// python 호출
+
+			for (int i = s; i < e; i++) {
+				MatchReferenceDto matchReferenceDto = matchReferences.get(i);
+				int queue = matchReferenceDto.getQueue();
+				if (queue == 420 || queue == 430) {
 					MatchDto matchDto = matchService.findByGameId(matchReferenceDto.getGameId());
 					if (matchDto.getGameDuration() < 300) // 다시하기는 통계에 집계되지 않음
 						continue;
-
-					String line = matchReferenceDto.getLane();
-					if (matchReferenceDto.getRole().equals("DUO_SUPPORT")) {
-						if (line.equals("BOTTOM") || line.equals("NONE"))
-							line = "SUPPORT";
-					}
 
 					String cham = preset.findByKey(matchReferenceDto.getChampion() + "").getName();
 					List<ParticipantIdentityDto> participantIdentityList = matchDto.getParticipantIdentities();
@@ -271,7 +283,10 @@ public class ProfileService {
 					}
 					if (participantId == -1)
 						continue;
+
 					List<ParticipantDto> participantList = matchDto.getParticipants();
+					String line = participantList.get(participantId - 1).getLine();
+
 					if (participantList.get(participantId - 1).getStats().isWin()) {
 						if (queue == 420) {
 							calcWinRate(rankedTotal, true);
@@ -363,6 +378,23 @@ public class ProfileService {
 
 			profiles.add(profileReferenceDto);
 			profileDto.setProfiles(profiles);
+		}
+
+		MatchlistDto matchlistDto = matchlistService.findOnly(summonerDto);
+		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches().stream()
+				.filter(o -> o.getTimestamp() >= 1578596400000l && o.getQueue() == 420).collect(Collectors.toList());
+
+		Map<String, AnalysisDto> valueMap = new HashMap<>();
+		Map<String, Integer> countMap = new HashMap<>();
+		int e = matchReferences.size(), idx = 0;
+		for (int i = e; i >= 0; i--) {
+			if (idx++ == 20)
+				break;
+			MatchDto match = matchService.findByGameId(matchReferences.get(i).getGameId());
+			List<ParticipantDto> participants = match.getParticipants();
+			for (ParticipantDto participant : participants) {
+				if (participant.getName().equals(anObject))
+			}
 		}
 
 		profileRepository.save(profileDto);

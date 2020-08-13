@@ -15,6 +15,8 @@ public class ProfileReferenceDto {
 	private TotalRecordDto rankedRecord;
 	private TotalRecordDto blindRecord;
 
+	private SummonerValueResultDto summonerValue;
+
 	public long getTimestamp() {
 		return timestamp;
 	}
@@ -95,12 +97,20 @@ public class ProfileReferenceDto {
 		this.blindRecord = blindRecord;
 	}
 
+	public SummonerValueResultDto getSummonerValue() {
+		return summonerValue;
+	}
+
+	public void setSummonerValue(SummonerValueResultDto summonerValue) {
+		this.summonerValue = summonerValue;
+	}
+
 	@Override
 	public String toString() {
 		return "ProfileReferenceDto [timestamp=" + timestamp + ", games=" + games + ", profileIconId=" + profileIconId
 				+ ", summonerLevel=" + summonerLevel + ", summonerName=" + summonerName + ", tier=" + tier + ", rank="
 				+ rank + ", leaguePoints=" + leaguePoints + ", rankedRecord=" + rankedRecord + ", blindRecord="
-				+ blindRecord + "]";
+				+ blindRecord + ", summonerValue=" + summonerValue + "]";
 	}
 
 }

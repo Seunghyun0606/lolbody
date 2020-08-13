@@ -7,7 +7,7 @@ class API_KEYs:
         self.idx = 0
     
     def key(self):
-        time.sleep(1.2/len(self.keys))
+        # time.sleep(1.2/len(self.keys))
         return self.keys[self.idx]
 
     def key_chage(self):
@@ -17,12 +17,19 @@ class API_KEYs:
             self.idx += 1
 
 API_DUMMY = [
-    'RGAPI-31efe26f-41dd-4b34-9d1e-92cb479139a2',
+    'RGAPI-9041c188-f0f9-42ad-8204-b41f5da22e6a',
     'RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c',
-    'RGAPI-dc6ec7ce-7989-43b3-9f90-39fe7341b0d5',
+    'RGAPI-ad13b224-7b6f-4358-8ff9-3c93df6cda80',
+    'RGAPI-e1a57063-3429-414b-87f7-891538676189',
+    'RGAPI-8cbfda0a-c52d-4a75-8aa5-b87491f13b3c',
+    'RGAPI-44c9480b-4f14-4046-ab15-c181222f1d39',
+    'RGAPI-b91dd012-eb39-41ef-9d5f-5bd2f54612a9',
+    'RGAPI-255f85c9-c59c-4754-aee4-96abf7adebbf',
+    'RGAPI-18a6cad9-eb35-4437-96ec-be050345e935',
     ]
 
 API = API_KEYs(API_DUMMY)
+print(1.2/len(API.keys))
 
 tiers = ['DIAMOND', 'PLATINUM', 'GOLD', 'SILVER', 'BRONZE', 'IRON']
 ranks = ['', 'I', 'II', 'III', 'IV']
@@ -51,18 +58,18 @@ save_stats_list =     [
         # "unrealKills",
         'totalDamageDealtToChampions',  # 챔피언에게 입힌 피해량
         'totalHeal',                    # 총 회복량
-        # "totalUnitsHealed"              # 회복시켜준 유저수
+        "totalUnitsHealed",              # 회복시켜준 유저수
         'damageSelfMitigated',          # 감소시킨 피해량(방어막?)
-        # "damageDealtToObjectives"       # 오브젝트에게 준 피해량
-        # "damageDealtToTurrets",         # 타워에 준 피해량
+        "damageDealtToObjectives",       # 오브젝트에게 준 피해량
+        "damageDealtToTurrets",         # 타워에 준 피해량
         'visionScore',                  # 시야점수
-        # 'timeCCingOthers',              # cc기에 맞은 총 시간
+        'timeCCingOthers',              # cc기에 맞은 총 시간
         'totalDamageTaken',             # 받은 피해량
         'goldEarned',                   # 총 골드
         'totalMinionsKilled',           # cs
         'neutralMinionsKilled',         # 중립몹 킬수
         'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
-        # 'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
+        'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
         'visionWardsBoughtInGame',      # 핑와 구매 개수
         'wardsPlaced',                  # 와드 설치수
         'wardsKilled',                  # 와드 파괴수
@@ -110,10 +117,11 @@ def get_summoner_name_list(tier, rank):
             if len(summoner_accounts) == 0: continue
             summoner_name_list = [v.get('summonerName') for v in summoner_accounts]
             success_api_data = True
+            return summoner_name_list
         if type(summoner_accounts) == type({'k':'v'}):
             print(summoner_accounts)
             limit += 1
-    return summoner_name_list
+    return False
 
 
 # 소환사 닉네임을 입력하면 accountId를 반환함
@@ -251,17 +259,14 @@ def get_teams_data(participants, playtime):
 def mix(timeline, match):
     # timeline은 list(1분단위), time은 dict, match는 list(유저별로 10개)
     for idx, time in enumerate(timeline):
-        # print(time.get('participantFrames').keys())
         if idx > 15: break
         xcor = 'xcor_%s' % idx
         ycor = 'ycor_%s' % idx
         for v in time.get('participantFrames').values():
             if v.get('position') is None: break
             k = int(v.get('participantId')) - 1
-            # print(k, v)
             match[k]['stats'][xcor] = v.get('position').get('x')
             match[k]['stats'][ycor] = v.get('position').get('y')
-            # print(match[k]['stats'])
     return
 
 
@@ -395,7 +400,7 @@ def auto_mode():
                 print(idx)
                 account = get_account_id(name)
                 if account is None: continue
-                match = get_match_id(account, 13)
+                match = get_match_id(account, season=13)
                 if match is None: continue
                 API.key_chage()
                 csvfile.writerow([name, account, match, tier])

@@ -51,7 +51,7 @@ def get_player_lane_value(player_data):
         # 'totalHeal',                    # 총 회복량
         # "totalUnitsHealed"              # 회복시켜준 유저수
         # 'damageSelfMitigated',          # 감소시킨 피해량(방어막?)
-        # "damageDealtToObjectives"       # 오브젝트에게 준 피해량
+        # "damageDealtToObjectives",       # 오브젝트에게 준 피해량
         # "damageDealtToTurrets",         # 타워에 준 피해량
         'visionScorePerMin',                  # 시야점수
         # 'timeCCingOthers',              # cc기에 맞은 총 시간
@@ -92,15 +92,20 @@ def get_player_lane_value(player_data):
         player_df = pd.DataFrame(columns=cols)
         for l in lane:
             tmp_data = {
+                # 안정성
                 'visionScorePerMin': l.get('visionScore') / (l.get('gameDuration') / 60),
                 'totalMinionsKilledPerMin': l.get('csPerMin'),
                 'deathsRatio': l.get('deaths') / l.get('teamDeaths'),
 
+                # 공격성
                 'killAssistPerMin': (l.get('kills') + l.get('assist')) / (l.get('gameDuration') / 60),
                 'totalDamageDealtToChampionsPerMin': l.get('totalDamageDealtToChampions') / (l.get('gameDuration') / 60),
                 'totalDamageTakenPerMin': l.get('totalDamageTaken') / (l.get('gameDuration') / 60),
 
-                'killsRatio': l.get('kills') /l.get('teamKills')
+                # 영향력
+                'killsRatio': l.get('kills') /l.get('teamKills'),
+                "damageDealtToObjectives": l.get("damageDealtToObjectives"),
+                # vison
             }
             player_df = player_df.append(tmp_data, ignore_index=True)
 

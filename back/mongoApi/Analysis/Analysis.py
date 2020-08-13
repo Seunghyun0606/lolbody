@@ -1,13 +1,8 @@
 import csv, os, time
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 from IPython.display import display
-# from sklearn.preprocessing import MinMaxScaler
 
-# %matplotlib inline
-# sns.set_style('darkgrid')
 
 pd.set_option('display.max_row', 500)
 pd.set_option('display.max_columns', 100)
@@ -29,18 +24,18 @@ save_stats_list = [
         # "unrealKills": 0,
         'totalDamageDealtToChampions',  # 챔피언에게 입힌 피해량
         'totalHeal',                    # 총 회복량
-        # "totalUnitsHealed"              # 회복시켜준 유저수
+        # "totalUnitsHealed",             # 회복시켜준 유저수
         'damageSelfMitigated',          # 감소시킨 피해량(방어막?)
-        # "damageDealtToObjectives"       # 오브젝트에게 준 피해량
-        # "damageDealtToTurrets",         # 타워에 준 피해량
+        "damageDealtToObjectives",      # 오브젝트에게 준 피해량
+        "damageDealtToTurrets",         # 타워에 준 피해량
         'visionScore',                  # 시야점수
-        # 'timeCCingOthers',              # cc기에 맞은 총 시간
+        'timeCCingOthers',              # cc기에 맞은 총 시간
         'totalDamageTaken',             # 받은 피해량
         'goldEarned',                   # 총 골드
         'totalMinionsKilled',           # cs
         'neutralMinionsKilled',         # 중립몹 킬수
         'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
-        # 'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
+        'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
         'visionWardsBoughtInGame',      # 핑와 구매 개수
         'wardsPlaced',                  # 와드 설치수
         'wardsKilled',                  # 와드 파괴수
@@ -116,7 +111,6 @@ def auto_mode():
     source_data = get_source_data(source, 'player_in_game_data')
     df = pd.DataFrame(source_data[1:], columns=source_data[0])
     df = df.drop_duplicates(['summoner_name'], keep=False).reset_index(drop=True)
-    # print(df)
 
     for position in ['TOP', 'MID', 'JUNGLE', 'BOTTOM', 'SUPPORT']:
         for tier in tiers:
@@ -132,20 +126,17 @@ def auto_mode():
                     or column == 'match_id'\
                     or not is_number(position_tier_data[column][0]): continue
                 position_tier_data[column] = pd.to_numeric(position_tier_data[column])
-                # if 'cor_' in column: continue
+                # 일단 이상치 제거 안함
                 if True: continue
                 tmp = list(outliers(position_tier_data[column]).index)
                 print(column, len(tmp))
                 idxs += tmp
             position_tier_data = position_tier_data.drop(idxs).reset_index(drop=True)
-            # print(b, len(position_tier_data))
-            # print(len(set(idxs)))
 
 
             for stats in save_stats_list:
                 if 'killAssist' == stats:
                     tmp_data = (position_tier_data['kills'] + position_tier_data['assists']) / (position_tier_data['playtime'] / 60)
-                    # print(tmp_data)
                     row.extend([tmp_data.mean(), tmp_data.std()])
                     continue
                 position_tier_data[stats] = pd.to_numeric(position_tier_data[stats])
@@ -163,26 +154,14 @@ def auto_mode():
                     position_tier_data['ycor_%s' % i].std(),
                 ])
             for s in spells:
-                # print(position_tier_data[spell])
                 tmp_s = 0
                 for spell in ['spell1', 'spell2']:
                     tmp = position_tier_data[position_tier_data[spell] == s]
                     tmp_s += len(tmp)
                 row.append(tmp_s / len(position_tier_data))
             csvfile.writerow(row)
-    file.close()          
+    file.close()
+
 
 if __name__ == '__main__':
     auto_mode()
-    # data_stastics = [d.mean(), d.std()]
-    # print(data_stastics)
-
-    # z값으로 변환
-    # z_d = (d - d.mean()) / d.std()
-    # print(d)
-    # print(z_d)
-
-    # 정규화
-    # d = d.reset_index(drop=True)
-    # normal_d = pd.DataFrame(MinMaxScaler().fit_transform(d), columns=d.columns)
-    # print(normal_d)

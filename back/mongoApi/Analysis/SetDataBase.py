@@ -57,7 +57,6 @@ stats = pd.read_csv('./csv/%s/stastics/stastics.csv' % now)
 def update_match_data(summoner_name, idx):
     profile_id = db_root.summoners.find_one({'name': summoner_name}).get('_id')
     match_list = db_root.matchlists.find_one({'_id': profile_id}).get('matches')[idx:]
-    print(match_list[-1])
     match_id_list = [i.get('gameId') for i in match_list if i.get('timestamp') >= 1578596400000 and (i.get('queue') == 420 or i.get('queue') == 430)]
 
     for match_id in match_id_list:
@@ -152,7 +151,7 @@ def update_match_data(summoner_name, idx):
                     min_distance = tmp_distance
                     tmp_position = position
                     player_p_value = tmp_player_p_value
-            print(tmp_position)
+            # print(tmp_position)
             participant['line'] = tmp_position
             participant['analysis'] = player_p_value
             #####################################################################33
@@ -171,7 +170,7 @@ def update_match_data(summoner_name, idx):
             ######################################################################333
             # print(participants_data)
             tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
-
+    tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
         # print(participants_data)
         
 

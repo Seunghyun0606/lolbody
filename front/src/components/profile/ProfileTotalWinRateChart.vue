@@ -10,7 +10,7 @@ import DonutChart from 'vue-apexcharts'
 // https://apexcharts.com/docs/chart-types/pie-donut/ 참고하세요
 
 export default {
-  name: 'ProfileEachWinRateChart',
+  name: 'ProfileTotalWinRateChart',
   components: {
     DonutChart,
   },
@@ -71,7 +71,6 @@ export default {
 
                   color: 'black',
                   formatter: function(val) {
-                    console.log(val)
                     let nums = val.config.series
                     let result = 0
                     for ( let i in nums ) {
@@ -98,8 +97,7 @@ export default {
         }]
       },
     }
-  }
-
+  },
 }
 </script>
 

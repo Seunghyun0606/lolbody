@@ -8,7 +8,7 @@ import DonutChart from 'vue-apexcharts'
 
 
 export default {
-  name: 'ProfileWinRateChart',
+  name: 'ProfileEachWinRateChart',
   components: {
     DonutChart,
   },

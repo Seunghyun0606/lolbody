@@ -132,7 +132,7 @@ export default new Vuex.Store({
             }
             state.profileLineChartOption.chartOptions.xaxis.categories.unshift(calcDate(matchData.timestamp))
         }
-        console.log(state.profileLineChartOption)
+        // console.log(state.profileLineChartOption)
     },
     // 나중에 리팩토링하자
     setProfileRadarChartOption(state, Datas) {

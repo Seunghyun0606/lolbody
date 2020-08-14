@@ -56,7 +56,7 @@ public class MatchService {
 		}
 		return matchDto;
 	}
-	
+
 	public boolean gameCheck(long gameId) throws Exception {
 		MatchDto matchDto = matchRepository.findByGameId(gameId);
 		if (matchDto == null) {
@@ -86,5 +86,9 @@ public class MatchService {
 			return true;
 		}
 		return false;
+	}
+
+	public void deleteByGameId(long gameId) {
+		matchRepository.deleteById(gameId);
 	}
 }

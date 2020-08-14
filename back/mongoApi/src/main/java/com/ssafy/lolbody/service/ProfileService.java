@@ -110,6 +110,8 @@ public class ProfileService {
 				break;
 			}
 		}
+		if (tier.equals("CHALLENGER") || tier.equals("GRANDMASTER") || tier.equals("MASTER"))
+			tier = "DIAMOND";
 
 		int size = matchReferences.size(), idx = Integer.parseInt(num);
 		if (size - ((idx - 1) * 10) <= 0) {
@@ -125,17 +127,28 @@ public class ProfileService {
 				left = 0;
 			}
 
+			System.out.println("----------match 불러오기----------");
 			boolean isNew = false;
 			for (int i = s; i >= 0; i--) {
 				if (matchService.gameCheck(matchReferences.get(i).getGameId()))
 					isNew = true;
 			}
 
-			if (isNew)
-				Api.runAnalysis("Analysis\\SetDataBase.py",
-						summonerDto.getId() + " " + left + " " + right + " " + tier);
-
+			System.out.println("----------python 코드 실행----------");
+			if (isNew) {
+				try {
+					System.out.println(summonerDto.getId() + " " + left + " " + right + " " + tier);
+					Api.runAnalysis("Analysis\\SetDataBase.py",
+							summonerDto.getId() + " " + left + " " + right + " " + tier);
+				} catch (Exception e) {
+					for (int i = s; i >= 0; i--) {
+						matchService.deleteByGameId(matchReferences.get(i).getGameId());
+					}
+					throw new Exception(e);
+				}
+			}
 			for (int i = s; i >= 0; i--) {
+				System.out.println("----------match 데이터 정리----------");
 				MatchReferenceDto matchReferenceDto = matchReferences.get(i);
 				MatchDto match = matchService.findByGameId(matchReferenceDto.getGameId());
 				List<ParticipantIdentityDto> users = match.getParticipantIdentities();
@@ -242,6 +255,7 @@ public class ProfileService {
 				matchRecords.add(matchRecordDto);
 			}
 		}
+		System.out.println("----------return----------");
 		return matchRecords;
 	}
 

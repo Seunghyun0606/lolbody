@@ -54,7 +54,7 @@ def z_value(d, mean, std):
 # mongodb에 match_id를 받아서 라인구분, match_grade 저장
 db_root = connection.test
 stats = pd.read_csv('./csv/%s/stastics/stastics.csv' % now)
-def update_match_data(summoner_name, idx):
+def update_match_data(summoner_name, idx, tier):
     profile_id = db_root.summoners.find_one({'name': summoner_name}).get('_id')
     match_list = db_root.matchlists.find_one({'_id': profile_id}).get('matches')[idx:]
     match_id_list = [i.get('gameId') for i in match_list if i.get('timestamp') >= 1578596400000 and (i.get('queue') == 420 or i.get('queue') == 430)]
@@ -117,7 +117,7 @@ def update_match_data(summoner_name, idx):
             player_p_value = dict()
             for position in ['TOP', 'JUNGLE', 'MID', 'BOTTOM', 'SUPPORT']:
                 if position == 'JUNGLE' and participant.get('spell1Id') != 11 and participant.get('spell2Id') != 11: continue
-                tier_lane_stats = stats[(stats['position'] == position) & (stats['tier'] == participant.get('tier'))].reset_index(drop=True)
+                tier_lane_stats = stats[(stats['position'] == position) & (stats['tier'] == tier)].reset_index(drop=True)
 
                 tmp_distance = 0
                 tmp_player_p_value = dict()
@@ -175,4 +175,4 @@ def update_match_data(summoner_name, idx):
         
 
 if __name__ == '__main__':
-    update_match_data(sys.argv[1], int(sys.argv[2]))
+    update_match_data(sys.argv[1], int(sys.argv[2]), sys.argv[3])

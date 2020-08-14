@@ -14,7 +14,6 @@ public class ParticipantDto {
 	private String highestAchievedSeasonTier;
 	private List<MasteryDto> masteries;
 	private String name;
-	private String tier;
 	private int x;
 	private int y;
 	private String line;
@@ -109,14 +108,6 @@ public class ParticipantDto {
 		this.name = name;
 	}
 
-	public String getTier() {
-		return tier;
-	}
-
-	public void setTier(String tier) {
-		this.tier = tier;
-	}
-
 	public int getX() {
 		return x;
 	}
@@ -162,8 +153,8 @@ public class ParticipantDto {
 		return "ParticipantDto [participantId=" + participantId + ", championId=" + championId + ", runes=" + runes
 				+ ", stats=" + stats + ", teamId=" + teamId + ", timeline=" + timeline + ", spell1Id=" + spell1Id
 				+ ", spell2Id=" + spell2Id + ", highestAchievedSeasonTier=" + highestAchievedSeasonTier + ", masteries="
-				+ masteries + ", name=" + name + ", tier=" + tier + ", x=" + x + ", y=" + y + ", line=" + line
-				+ ", matchGrade=" + matchGrade + ", analysis=" + analysis + "]";
+				+ masteries + ", name=" + name + ", x=" + x + ", y=" + y + ", line=" + line + ", matchGrade="
+				+ matchGrade + ", analysis=" + analysis + "]";
 	}
 
 }

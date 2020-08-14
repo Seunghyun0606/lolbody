@@ -251,5 +251,18 @@ public class Api {
 		return sb.toString();
 	}
 	
+	public static void runAnalysis(String fileName, String argument) throws IOException {
+		Process process = Runtime.getRuntime().exec("python " + fileName + " " + argument);
+		BufferedReader er = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+		String s = "";
+		StringBuilder sb = new StringBuilder();
+		while((s = er.readLine()) != null) {
+			sb.append(s);
+		}
+		if (sb.toString().length()!=0) {
+			throw new IOException(sb.toString());
+		}
+	}
+	
 	
 }

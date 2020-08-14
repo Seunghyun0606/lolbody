@@ -67,20 +67,32 @@
 				</v-card>
 
 				<!-- RadarChart -->
+				<!-- 수정본, 전체 게임 승률 -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 bg_card float-left" width="260.5px" height="160px" outlined>
-						<div class="ml-7">
+					<v-card class="ma-1 bg_card float-left" width="200px" height="160px" outlined>
+						<!-- <div class="ml-7">
 							<RadarChart/>
-						</div>
+						</div> -->
+						<ProfileTotalWinRateChart/>
 					</v-card>
 				</div>
 
 				<!-- 롤비티아이 부분 -->
+				<!-- 수정본, 각 게임 모드별 승률 -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 bg_card float-right" width="380.5px" height="160px" outlined>
-						<div class="d-inline">
-							<!-- <span>유저 성향</span> -->
-						</div>
+					<v-card class="ma-1 bg_card float-left" width="240px" height="160px" outlined>
+						<!-- <div class="d-inline">
+							<span>유저 성향</span>
+						</div> -->
+						<ProfileEachWinRateChart/>
+					</v-card>
+				</div>
+
+
+				<!-- 수정본, 챔피언 승률 634px-->
+				<div class="d-inline-block">
+					<v-card class="ma-1 bg_card float-right" width="194px" height="160px" outlined>
+						<ProfileChampRate/>
 					</v-card>
 				</div>
 
@@ -109,6 +121,11 @@ import Loading from "@/components/profile/Loading";
 import LoadError from "@/components/profile/LoadError";
 //import ProfileGameData from "@/components/profile/ProfileGameData";
 
+import ProfileTotalWinRateChart from "@/components/profile/ProfileTotalWinRateChart"
+import ProfileEachWinRateChart from "@/components/profile/ProfileEachWinRateChart"
+import ProfileChampRate from "@/components/profile/ProfileChampRate"
+
+
 //import { mapActions } from "vuex"
 import { mapState } from "vuex"
 //import { mapGetters } from    "vuex"
@@ -122,14 +139,18 @@ export default {
 		// ProfileRadarChart: () => ({
 		// 	component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileRadarChart.vue')), 2500)),
 		// }),
+		ProfileTotalWinRateChart,
+		ProfileEachWinRateChart,
+		ProfileChampRate,
+
 		ProfileLineChart,
-		RadarChart:() => ({
-            component: import("@/components/profile/ProfileRadarChart"),
-            loading: Loading,
-            error: LoadError,
-            delay: 0,
-            timeout: 3000
-        }),
+		// RadarChart:() => ({
+    //         component: import("@/components/profile/ProfileRadarChart"),
+    //         loading: Loading,
+    //         error: LoadError,
+    //         delay: 0,
+    //         timeout: 3000
+    //     }),
 		ProfileGameHistory:() => ({
             component: import("@/components/profile/ProfileGameHistory"),
             loading: Loading,

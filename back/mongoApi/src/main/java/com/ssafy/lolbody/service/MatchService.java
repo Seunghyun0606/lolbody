@@ -15,10 +15,13 @@ import com.ssafy.lolbody.dto.MatchPositionDto;
 import com.ssafy.lolbody.dto.MatchTimelineDto;
 import com.ssafy.lolbody.dto.ParticipantDto;
 import com.ssafy.lolbody.dto.ParticipantIdentityDto;
+import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.repository.MatchRepository;
 
 @Service
 public class MatchService {
+	@Autowired
+	private SummonerService summonerService;
 	@Autowired
 	private MatchRepository matchRepository;
 	@Autowired
@@ -48,19 +51,19 @@ public class MatchService {
 			for (int i = 0; i < participants.size(); i++) {
 				ParticipantDto participant = participants.get(i);
 				participant.setName(participantIdentitys.get(i).getPlayer().getSummonerName());
+				participant.setTier("IRON");
 				try {
-					List<LeagueEntryDto> leagueEntryList = leagueEntryService
-							.findOnly(participantIdentitys.get(i).getPlayer().getSummonerId());
+					SummonerDto summoner = summonerService.findOnly(participant.getName());
+					List<LeagueEntryDto> leagueEntryList = leagueEntryService.findOnly(summoner.getId());
 					for (LeagueEntryDto j : leagueEntryList) {
 						if (j.getQueueType().equals("RANKED_SOLO_5x5")) {
 							participant.setTier(j.getTier());
 							break;
 						}
 					}
-					if (participant.getTier() == null)
-						participant.setTier("IRON");
+				} catch (TimeoutException e) {
+					throw new TimeoutException("요청이 너무 많습니다.");
 				} catch (Exception e) {
-					participant.setTier("GOLD");
 				}
 				MatchPositionDto position = matchTimeline.getFrames().get(2).getParticipantFrames().get((i + 1) + "")
 						.getPosition();

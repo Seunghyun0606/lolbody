@@ -2,6 +2,7 @@ package com.ssafy.lolbody.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,8 @@ public class SummonerService {
 		String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
 		if (json.equals("Fail")) {
 			throw new Exception("존재하지 않는 소환사입니다. ("+name+")");
-		}
+		} else if (json.equals("Timeout"))
+			throw new TimeoutException("요청이 너무 많습니다.");
 		SummonerDto summonerDto = new Gson().fromJson(json, SummonerDto.class);
 		JSONObject object = new JSONObject(json);
 		summonerDto.setSubName(object.getString("name").toLowerCase().replaceAll(" ", ""));
@@ -43,7 +45,8 @@ public class SummonerService {
 			String json = Api.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name", name);
 			if (json.equals("Fail")) {
 				throw new Exception("존재하지 않는 소환사입니다. ("+name+")");
-			}
+			} else if (json.equals("Timeout"))
+				throw new TimeoutException("요청이 너무 많습니다.");
 			summonerDto = new Gson().fromJson(json, SummonerDto.class);
 			JSONObject object = new JSONObject(json);
 			summonerDto.setSubName(object.getString("name").toLowerCase().replaceAll(" ", ""));

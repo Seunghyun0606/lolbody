@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.lolbody.api.Api;
 import com.ssafy.lolbody.dto.MatchRecordDto;
-import com.ssafy.lolbody.dto.ProfileReferenceDto;
 import com.ssafy.lolbody.dto.SummonerValueResultDto;
+import com.ssafy.lolbody.dto.UserCardReferenceDto;
 import com.ssafy.lolbody.service.ProfileService;
 import com.ssafy.lolbody.service.SummonerValueService;
 
@@ -31,12 +31,12 @@ public class ProfileController {
 	@Autowired
 	private SummonerValueService summonerValueService;
 
-	@ApiOperation(value = "소환사 이름으로 유저 프로필을 검색합니다.")
+	@ApiOperation(value = "소환사 이름으로 유저 카드를 리턴받습니다.")
 	@GetMapping("/api/profile/{name}")
-	public ResponseEntity<ProfileReferenceDto> getProfile(@PathVariable String name) {
-		ProfileReferenceDto profile = new ProfileReferenceDto();
+	public ResponseEntity<UserCardReferenceDto> getUserCard(@PathVariable String name) {
+		UserCardReferenceDto userCard = new UserCardReferenceDto();
 		try {
-			profile = profileService.getProfile(name.replaceAll(" ", ""));
+			userCard = profileService.getUserCard(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
@@ -46,16 +46,16 @@ public class ProfileController {
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(profile, HttpStatus.OK);
+		return new ResponseEntity<>(userCard, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "소환사 이름으로 유저 프로필을 갱신합니다.")
 	@PutMapping("/api/profile/{name}")
-	public ResponseEntity<ProfileReferenceDto> getNewProfile(@PathVariable String name) {
-		ProfileReferenceDto profile = new ProfileReferenceDto();
+	public ResponseEntity<UserCardReferenceDto> updateUserCard(@PathVariable String name) {
+		UserCardReferenceDto userCard = new UserCardReferenceDto();
 		try {
 			profileService.updateProfile(name.replaceAll(" ", ""));
-			profile = profileService.getProfile(name.replaceAll(" ", ""));
+			userCard = profileService.getUserCard(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
@@ -65,7 +65,7 @@ public class ProfileController {
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(profile, HttpStatus.OK);
+		return new ResponseEntity<>(userCard, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (num: 1부터 시작, 10개씩)")
@@ -103,5 +103,5 @@ public class ProfileController {
 		}
 		return new ResponseEntity<>(summonerValueResultDto, HttpStatus.OK);
 	}
-
+	
 }

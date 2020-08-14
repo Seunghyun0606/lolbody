@@ -1,11 +1,6 @@
 package com.ssafy.lolbody.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "leagues")
 public class LeagueEntryDto {
-	@Id
 	private String summonerId;
 	private String leagueId;
 	private String summonerName;

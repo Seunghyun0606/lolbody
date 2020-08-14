@@ -33,6 +33,7 @@ print(1.2/len(API.keys))
 
 tiers = ['DIAMOND', 'PLATINUM', 'GOLD', 'SILVER', 'BRONZE', 'IRON']
 ranks = ['', 'I', 'II', 'III', 'IV']
+queues = [420, 430, 440, 450]
 
 position_pair = [
     [ 'NONE', 'JUNGLE'],
@@ -43,7 +44,7 @@ position_pair = [
 ]
 
 # 각 플레이어 인게임 데이터가 가지는 요소
-save_stats_list =     [
+save_stats_list_450 = [
         'kills',                        # kill
         'deaths',                       # deaths
         'assists',                      # assists
@@ -68,15 +69,28 @@ save_stats_list =     [
         'goldEarned',                   # 총 골드
         'totalMinionsKilled',           # cs
         'neutralMinionsKilled',         # 중립몹 킬수
-        'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
+        # 'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
         'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
         'visionWardsBoughtInGame',      # 핑와 구매 개수
-        'wardsPlaced',                  # 와드 설치수
-        'wardsKilled',                  # 와드 파괴수
+        # 'wardsPlaced',                  # 와드 설치수
+        # 'wardsKilled',                  # 와드 파괴수
       # 'killsRatio',                   # 킬관여율
       # 'deathsRatio',                  # 데스관여울
     ]
 
+save_stats_list_420 = save_stats_list_450 + [
+        'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
+        'wardsPlaced',                  # 와드 설치수
+        'wardsKilled',                  # 와드 파괴수
+    ]
+
+
+
+def get_save_stats_list(queue):
+    if queue == 420:
+        return save_stats_list_420
+    else:
+        return save_stats_list_450
 
 cors_list = []
 for i in range(16):
@@ -155,6 +169,8 @@ def get_match_id(account_id, queue=420, season=13):
         print('게임 결과가 없습니다.')
         return None
     for match in matches_list:
+        if queue == 450:
+            return match.get('gameId')
         if [match.get('role'), match.get('lane')] in position_pair:
             return match.get('gameId')
     print('해당하는 데이터가 없습니다')
@@ -162,7 +178,7 @@ def get_match_id(account_id, queue=420, season=13):
 #####################################################################################
 
 
-def get_teams_data(participants, playtime):
+def get_teams_data(participants, playtime, queue):
     # 반환 할 팀 데이터 값
     teams_data = [{
         'kills': 0,
@@ -187,58 +203,64 @@ def get_teams_data(participants, playtime):
         'isTrash': False,
     }]
 
-    # 데이터 정합성 판별 => 포지션이 잘 파악이 되었는가?
-    for idx in range(10):
-        if idx < 5:
-            team_idx = 0
-        else:
-            team_idx = 1
-        
-        # 팀 데이터가 쓰레기로 판별되면 나머지 팀원 데이터도 그냥 넘겨버림
-        if teams_data[team_idx]['isTrash']: continue
+    # 데이터 정합성 판별 => 포지션이 잘 파악이 되었는가? 420인 경우만
+    if queue == 420:
+        for idx in range(10):
+            if idx < 5:
+                team_idx = 0
+            else:
+                team_idx = 1
+            
+            # 팀 데이터가 쓰레기로 판별되면 나머지 팀원 데이터도 그냥 넘겨버림 420인 경우만
+            if teams_data[team_idx]['isTrash']: continue
 
-        lane = participants[idx].get('timeline').get('lane')
-        role = participants[idx].get('timeline').get('role')
+            lane = participants[idx].get('timeline').get('lane')
+            role = participants[idx].get('timeline').get('role')
 
 
-        # 정글러 판별(riot 정보 + 강타 스펠)
-        if (participants[idx]['spell1Id'] == 11 or participants[idx]['spell2Id'] == 11)\
-            and lane == 'JUNGLE' and role == 'NONE':
-            teams_data[team_idx]['jungle'] += 1
-            # 포지션 데이터 추가
-            participants[idx]['timeline']['position'] = 'JUNGLE'
-
-        # 탑라이너 판별
-        elif lane == 'TOP' and role == 'SOLO':
-            teams_data[team_idx]['top'] += 1
-            # 포지션 데이터 추가
-            participants[idx]['timeline']['position'] = 'TOP'
-
-        # 미드라이너 판별
-        elif lane == 'MIDDLE' and role == 'SOLO':
-            teams_data[team_idx]['mid'] += 1
-            # 포지션 데이터 추가
-            participants[idx]['timeline']['position'] = 'MID'
-
-        # 원딜, 서폿 판별
-        elif lane == 'BOTTOM':
-            if role == 'DUO_CARRY':
-                teams_data[team_idx]['carry'] += 1
+            # 정글러 판별(riot 정보 + 강타 스펠)
+            if (participants[idx]['spell1Id'] == 11 or participants[idx]['spell2Id'] == 11)\
+                and lane == 'JUNGLE' and role == 'NONE':
+                teams_data[team_idx]['jungle'] += 1
                 # 포지션 데이터 추가
-                participants[idx]['timeline']['position'] = 'BOTTOM'
+                participants[idx]['timeline']['position'] = 'JUNGLE'
 
-            elif role == 'DUO_SUPPORT':
-                teams_data[team_idx]['support'] += 1
+            # 탑라이너 판별
+            elif lane == 'TOP' and role == 'SOLO':
+                teams_data[team_idx]['top'] += 1
                 # 포지션 데이터 추가
-                participants[idx]['timeline']['position'] = 'SUPPORT'
+                participants[idx]['timeline']['position'] = 'TOP'
 
+            # 미드라이너 판별
+            elif lane == 'MIDDLE' and role == 'SOLO':
+                teams_data[team_idx]['mid'] += 1
+                # 포지션 데이터 추가
+                participants[idx]['timeline']['position'] = 'MID'
+
+            # 원딜, 서폿 판별
+            elif lane == 'BOTTOM':
+                if role == 'DUO_CARRY':
+                    teams_data[team_idx]['carry'] += 1
+                    # 포지션 데이터 추가
+                    participants[idx]['timeline']['position'] = 'BOTTOM'
+
+                elif role == 'DUO_SUPPORT':
+                    teams_data[team_idx]['support'] += 1
+                    # 포지션 데이터 추가
+                    participants[idx]['timeline']['position'] = 'SUPPORT'
+
+                # 쓰레기 데이터
+                else:
+                    teams_data[team_idx]['isTrash'] = True
             # 쓰레기 데이터
             else:
                 teams_data[team_idx]['isTrash'] = True
-        # 쓰레기 데이터
-        else:
-            teams_data[team_idx]['isTrash'] = True
-        participants[idx]['timeline']['playtime'] = playtime
+            participants[idx]['timeline']['playtime'] = playtime
+    # 450인경우
+    else:
+        for idx in range(10):
+            participants[idx]['timeline']['position'] = 'NONE'
+            participants[idx]['timeline']['playtime'] = playtime
 
     # team_kda 저장
     for idx in range(10):
@@ -247,8 +269,8 @@ def get_teams_data(participants, playtime):
         else:
             team_idx = 1
 
-        # 쓰레기 데이터가 아닌경우 team kda 불러오기
-        if teams_data[team_idx]['isTrash']: continue
+        # 쓰레기 데이터가 아닌경우 team kda 불러오기 420만
+        if teams_data[team_idx]['isTrash'] and queue == 420: continue
 
         teams_data[team_idx]['kills'] += participants[idx].get('stats').get('kills')
         teams_data[team_idx]['deaths'] += participants[idx].get('stats').get('deaths')
@@ -273,7 +295,7 @@ def mix(timeline, match):
 # match id를 입력하면 데이터 값을 반환
 # input: int, 또는 숫자형 리터럴
 # output: 'lane': [[플레이어 인게임 데이터]...]를 가지는 dict
-def get_match_data(match_id, tier):
+def get_match_data(match_id, tier, queue):
     if type(match_id) == type(123456789):
         match_id = str(match_id)
     if type(match_id) != type('String'):
@@ -294,6 +316,9 @@ def get_match_data(match_id, tier):
     if timeline_data.get('status') is not None:
         print(match_data.get('status'))
         return None
+    if match_data.get('gameDuration') < 300:
+        print('다시하기인 매치입니다.')
+        return None
 
     player_in_game_data = []
 
@@ -303,7 +328,7 @@ def get_match_data(match_id, tier):
     # timeline 추가
     mix(timeline_data, match_participants)
     match_participantIdentities = match_data.get('participantIdentities')
-    teams_data = get_teams_data(match_participants, match_data.get('gameDuration'))
+    teams_data = get_teams_data(match_participants, match_data.get('gameDuration'), queue)
 
     # 받아온 teams_data로 유저별 인게임 stats 리스트로 저장
     for idx in range(10):
@@ -312,8 +337,8 @@ def get_match_data(match_id, tier):
         else:
             team_idx = 1
         
-        # 팀데이터가 쓰레기경우 그냥 넘겨버림
-        if teams_data[team_idx]['isTrash']: continue
+        # 팀데이터가 쓰레기경우 그냥 넘겨버림 420인경우만
+        if teams_data[team_idx]['isTrash'] and queue == 420: continue
         if match_participants[idx]['timeline'].get('position') is None: continue
 
         account_id = match_participantIdentities[idx].get('player').get('accountId')
@@ -324,10 +349,11 @@ def get_match_data(match_id, tier):
         spell1 = match_participants[idx]['spell1Id']
         spell2 = match_participants[idx]['spell2Id']
 
-        player_in_game_stats = [account_id, summoner_name, tier, match_id, team, position, playtime, spell1, spell2]
+        player_in_game_stats = [account_id, summoner_name, tier, match_id, queue, team, position, playtime, spell1, spell2]
 
         # 플레이어 stats 삽입
-        for stats in save_stats_list:
+        save_stats_list = get_save_stats_list(queue)
+        for stats in get_save_stats_list(queue):
             if stats == 'totalHeal':
                 if match_participants[idx].get('stats').get('totalUnitsHealed') <= 1:
                     player_in_game_stats.append(0)
@@ -335,20 +361,20 @@ def get_match_data(match_id, tier):
             player_in_game_stats.append(match_participants[idx].get('stats')[stats])
         
         # killsRatio, deathsRatio
-        if int(player_in_game_stats[9]) + int(player_in_game_stats[11]) == 0:
+        if int(player_in_game_stats[10]) + int(player_in_game_stats[12]) == 0:
             player_in_game_stats.append(0)
         else:
-            kills_ratio = int((player_in_game_stats[9]) + int(player_in_game_stats[11])) / teams_data[team_idx]['kills']
+            kills_ratio = int((player_in_game_stats[10]) + int(player_in_game_stats[12])) / teams_data[team_idx]['kills']
             player_in_game_stats.append(kills_ratio)
 
-        if int(player_in_game_stats[10]) == 0:
+        if int(player_in_game_stats[11]) == 0:
             player_in_game_stats.append(0)
         else:
-            deaths_ratio = int(player_in_game_stats[10]) / int(teams_data[team_idx]['deaths'])
+            deaths_ratio = int(player_in_game_stats[11]) / int(teams_data[team_idx]['deaths'])
             player_in_game_stats.append(deaths_ratio)
 
         for cor in cors_list:
-            player_in_game_stats.append(match_participants[idx].get('stats')[cor])
+            player_in_game_stats.append(match_participants[idx].get('stats').get(cor))
         
         player_in_game_data.append(player_in_game_stats)
 
@@ -383,12 +409,13 @@ def auto_mode():
     now = "%02d.%02d" % (int(str(now.tm_year)[2:]), now.tm_mon)
     print(now)
     # 폴더 생성
-    create_folder('./Analysis/csv/' + now)
-    source = './Analysis/csv/' + now + '/source/'
+    create_folder('./csv/' + now)
+    source = './csv/' + now + '/source/'
     create_folder(source)
 
     # summoner_list가 있으면 불러오고 아니면 구하기
     summoner_list = get_source_data(source, 'name_account_match_tier')
+    print(summoner_list[0])
     if not summoner_list:
         file = open(source + 'name_account_match_tier.csv', 'w', newline='', encoding='utf-8')
         csvfile = csv.writer(file)
@@ -400,34 +427,41 @@ def auto_mode():
                 print(idx)
                 account = get_account_id(name)
                 if account is None: continue
-                match = get_match_id(account, season=13)
-                if match is None: continue
+                for queue in [420, 450]:
+                    match = get_match_id(account, season=13, queue=queue)
+                    if match is None: continue
+                    csvfile.writerow([name, account, match, tier, queue])
                 API.key_chage()
-                csvfile.writerow([name, account, match, tier])
         summoner_list = get_source_data(source, 'name_account_match_tier')
         print('소스파일 생성 완료')
     #####################################################33
-    df = pd.DataFrame(summoner_list, columns=['소환사명', 'account', 'match', 'tier'])
+    df = pd.DataFrame(summoner_list, columns=['소환사명', 'account', 'match', 'tier', 'queue'])
     print(df)
-    
+
+
     # player_in_game_data_list 작성
-    player_in_game_data = get_source_data(source, 'player_in_game_data')
-    if not player_in_game_data:
-        file = open(source + 'player_in_game_data.csv', 'w', newline='', encoding='utf-8')
-        csvfile = csv.writer(file)
-        columns = ['account_id', 'summoner_name', 'tier', 'match_id', 'team', 'position', 'playtime', 'spell1', 'spell2'] + save_stats_list + ['killsRatio', 'deathsRatio'] + cors_list
-        csvfile.writerow(columns)
-        print(len(df))
-        for idx, match_id in enumerate(df['match']):
-            print(idx)
-            tier = df.iloc[idx]['tier']
-            if not idx % 20:
-                API.key_chage()
-            tmp_data = get_match_data(match_id, tier)
-            if tmp_data is None: continue
-            # player_in_game_data.extend(tmp_data)
-            for tmp in tmp_data:
-                csvfile.writerow(tmp)
+    for queue in [420, 450]:
+        queue_df = df[df['queue'] == str(queue)]
+        player_in_game_data = get_source_data(source, 'player_in_game_data_%s' % queue)
+        if not player_in_game_data:
+            file = open(source + 'player_in_game_data_%s.csv' % queue, 'w', newline='', encoding='utf-8')
+            csvfile = csv.writer(file)
+            save_stats_list = get_save_stats_list(queue)
+            columns = ['account_id', 'summoner_name', 'tier', 'match_id', 'queue', 'team', 'position', 'playtime', 'spell1', 'spell2'] + save_stats_list + ['killsRatio', 'deathsRatio'] + cors_list
+            # columns = ['account_id', 'summoner_name', 'tier', 'match_id', 'team', 'position', 'playtime', 'spell1', 'spell2'] + save_stats_list + ['killsRatio', 'deathsRatio'] + cors_list
+            csvfile.writerow(columns)
+            print(len(queue_df))
+            for idx, match_id in enumerate(queue_df['match']):
+                print(idx)
+                tier = queue_df.iloc[idx]['tier']
+                # queue = queue_df.iloc[idx]['queue']
+                tmp_data = get_match_data(match_id, tier, queue)
+                if tmp_data is None: continue
+                # player_in_game_data.extend(tmp_data)
+                for tmp in tmp_data:
+                    csvfile.writerow(tmp)
+                if not idx % 20:
+                    API.key_chage()
     return
     
     # player_in_game_data_list tier별로 csv파일로 저장

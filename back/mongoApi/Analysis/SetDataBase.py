@@ -1,6 +1,8 @@
-import pymongo, sys
+import pymongo, sys, time
+# s = time.time()
 import pandas as pd
 from scipy.stats import norm
+# s2 = time.time()
 
 connection = pymongo.MongoClient('mongodb://lolbody:fhfqkelchlrhdi3%232%401!@13.125.220.135:27017/test?authSource=test&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false')
 
@@ -51,19 +53,22 @@ def z_value(d, mean, std):
     return (d - mean) / std
 
 
+
 # mongodb에 match_id를 받아서 라인구분, match_grade 저장
 db_root = connection.test
-stats = pd.read_csv('./Analysis/csv/%s/stastics/stastics.csv' % now)
+def get_stats(queue):
+    return pd.read_csv('./csv/%s/stastics/stastics_%s.csv' % (now, queue))
+
 def update_match_data(profile_id, left, right, tier):
     match_list = list(filter(lambda i: i.get('timestamp') >= 1578596400000 and i.get('queue') != 2000 and i.get('queue') != 2010 and i.get('queue') != 2020, db_root.matchlists.find_one({'_id': profile_id}).get('matches')))[left:right]
-    match_id_list = [i.get('gameId') for i in match_list if i.get('queue') == 420 or i.get('queue') == 430 or i.get('queue') == 440]
-
+    # print(match_list)
+    match_id_list = [i.get('gameId') for i in match_list if i.get('queue') == 420 or i.get('queue') == 430 or i.get('queue') == 440 or i.get('queue') == 450]
 
     for match_id in match_id_list:
-        print(match_id)
         tmp_collection = db_root.tmp
         match_data = tmp_collection.find_one({'_id': match_id})
-        
+        if match_data is None: continue
+
         # 다시하기는 넘어감
         if match_data.get('gameDuration') <= 300: continue
 
@@ -72,6 +77,8 @@ def update_match_data(profile_id, left, right, tier):
 
         # 공통데이터
         # 플레이 시간
+        queue = 450 if int(match_data.get('queueId')) == 450 else 420
+        stats = get_stats(queue)
         duration = match_data.get('gameDuration') / 60
 
         # team kill, death, assist
@@ -115,45 +122,54 @@ def update_match_data(profile_id, left, right, tier):
             min_distance = float('inf')
             tmp_position = ''
             player_p_value = dict()
-            for position in ['TOP', 'JUNGLE', 'MID', 'BOTTOM', 'SUPPORT']:
-                if position == 'JUNGLE' and participant.get('spell1Id') != 11 and participant.get('spell2Id') != 11: continue
-                tier_lane_stats = stats[(stats['position'] == position) & (stats['tier'] == tier)].reset_index(drop=True)
+            if queue == 420:
+                for position in ['TOP', 'JUNGLE', 'MID', 'BOTTOM', 'SUPPORT']:
+                    if position == 'JUNGLE' and participant.get('spell1Id') != 11 and participant.get('spell2Id') != 11: continue
+                    tier_lane_stats = stats[(stats['position'] == position) & (stats['tier'] == tier)].reset_index(drop=True)
+                    # print(list(tier_lane_stats))
 
-                tmp_distance = 0
+                    tmp_distance = 0
+                    tmp_player_p_value = dict()
+                    for spell in spells:
+                        d = 1 if (participant.get('spell1Id') == spell or participant.get('spell2Id') == spell) else 0
+                        # print(spell, tier_lane_stats['spell_%s' % spell][0], d)
+                        tmp_distance += (tier_lane_stats['spell_%s' % spell][0] - d)**2
+                    for col in cols:
+                        mean = col + 'Mean'
+                        std = col + 'Std'
+                        # print(col)
+                        tmp_player_p_value[col] = change_to_p_value(z_value(data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0]))
+                        player_z_value = z_value(data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0])
+                        if col == 'deathsRatio':
+                            player_z_value = 1 - player_z_value
+                        if col == 'totalMinionsKilledPerMin':
+                            player_z_value *= 1.5
+                        tmp_distance += player_z_value**2
+                    for t in [('xcor_2', 'x'), ('ycor_2', 'y')]:
+                        col, p = t
+                        mean = col + 'Mean'
+                        std = col + 'Std'
+                        d = z_value(participant.get(p), tier_lane_stats[mean][0], tier_lane_stats[std][0])
+                        # print(d)
+                        # 게임 시작 2분후 위치에는 가중치 부여
+                        tmp_distance += d**2 * 2
+                    tmp_distance = tmp_distance**0.5
+                    # print(position, tmp_distance)
+                    if tmp_distance < min_distance:
+                        min_distance = tmp_distance
+                        tmp_position = position
+                        player_p_value = tmp_player_p_value
+                # print(tmp_position)
+                participant['line'] = tmp_position
+                participant['analysis'] = player_p_value
+            else:
+                tier_lane_stats = stats[(stats['tier'] == tier)].reset_index(drop=True)
                 tmp_player_p_value = dict()
-                for spell in spells:
-                    d = 1 if (participant.get('spell1Id') == spell or participant.get('spell2Id') == spell) else 0
-                    # print(spell, tier_lane_stats['spell_%s' % spell][0], d)
-                    tmp_distance += (tier_lane_stats['spell_%s' % spell][0] - d)**2
                 for col in cols:
                     mean = col + 'Mean'
                     std = col + 'Std'
-                    # if col == 'killsRatio':
-                    #     print(participant['name'], data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0])
                     tmp_player_p_value[col] = change_to_p_value(z_value(data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0]))
-                    player_z_value = z_value(data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0])
-                    if col == 'deathsRatio':
-                        player_z_value = 1 - player_z_value
-                    if col == 'totalMinionsKilledPerMin':
-                        player_z_value *= 1.5
-                    tmp_distance += player_z_value**2
-                for t in [('xcor_2', 'x'), ('ycor_2', 'y')]:
-                    col, p = t
-                    mean = col + 'Mean'
-                    std = col + 'Std'
-                    d = z_value(participant.get(p), tier_lane_stats[mean][0], tier_lane_stats[std][0])
-                    # print(d)
-                    # 게임 시작 2분후 위치에는 가중치 부여
-                    tmp_distance += d**2 * 2
-                tmp_distance = tmp_distance**0.5
-                # print(position, tmp_distance)
-                if tmp_distance < min_distance:
-                    min_distance = tmp_distance
-                    tmp_position = position
-                    player_p_value = tmp_player_p_value
-            # print(tmp_position)
-            participant['line'] = tmp_position
-            participant['analysis'] = player_p_value
+                player_p_value = tmp_player_p_value
             #####################################################################33
 
             # 판별된 라인 기준으로 matchGrade 계산
@@ -169,10 +185,12 @@ def update_match_data(profile_id, left, right, tier):
             # print(participant['matchGrade'], participant['lane'])
             ######################################################################333
             # print(participants_data)
-            tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
-        tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
+        #     tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
+        # tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
         # print(participants_data)
         
 
 if __name__ == '__main__':
     update_match_data(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
+    # print(time.time() - s)
+    # print(time.time() - s2)

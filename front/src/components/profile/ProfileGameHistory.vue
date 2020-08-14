@@ -67,25 +67,29 @@
                                     <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item0 != 0">
                                         <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item0 + '.png')" class="item-border" width="22px"/>
                                     </td>
-                                    <td width="22px" class="item-border" v-else>
+                                    <td width="22px" v-else>
+                                        <img :src="imageload('item/empty.png')" class="item-border empty" width="22px"/>
                                     </td>
 
                                     <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item1 != 0">
                                         <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item1 + '.png')" class="item-border" width="22px"/>
                                     </td>
-                                    <td width="22px" class="item-border" v-else>
+                                    <td width="22px" v-else>
+                                        <img :src="imageload('item/empty.png')" class="item-border empty" width="22px"/>
                                     </td>
                                     
                                     <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item2 != 0">
                                         <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item2 + '.png')" class="item-border" width="22px"/>
                                     </td>
-                                    <td width="22px" class="item-border" v-else>
+                                    <td width="22px" v-else>
+                                        <img :src="imageload('item/empty.png')" class="item-border empty" width="22px"/>
                                     </td>
 
                                     <td width="22px" rowspan="2" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item6 != 0">
                                         <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item6 + '.png')" class="item-border" width="22px"/>
                                     </td>
-                                    <td width="22px" class="item-border" v-else>
+                                    <td width="22px" v-else>
+                                        <img :src="imageload('item/empty.png')" class="item-border empty" width="22px"/>
                                     </td>
                                 </tr>
 
@@ -93,19 +97,23 @@
                                     <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item3 != 0">
                                         <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item3 + '.png')" class="item-border" width="22px"/>
                                     </td>
-                                    <td width="22px" class="item-border" v-else>
+                                    <td width="22px" v-else>
+                                        <img :src="imageload('item/empty.png')" class="item-border empty" width="22px"/>
                                     </td>
 
                                     <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item4 != 0">
                                         <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item4 + '.png')" class="item-border" width="22px"/>
                                     </td>
-                                    <td width="22px" class="item-border" v-else>
+                                    <td width="22px" v-else>
+                                        <img :src="imageload('item/empty.png')" class="item-border empty" width="22px"/>
                                     </td>
                                     
                                     <td width="22px" v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].item5 != 0">
                                         <img :src="imageload('item/' + matchData[matchData.myTeam].teammate[matchData.myIndex].item5 + '.png')" class="item-border" width="22px"/>
                                     </td>
-                                    <td width="22px" class="item-border" v-else>
+                                    <td width="22px" v-else>
+                                        <img :src="imageload('item/empty.png')" class="item-border empty" width="22px"/>
+                                        <!--<div :style="{ 'background-image': 'url('+ imageload('item/empty.png') +')' }" class="empty item-border" width="22px"/>-->
                                     </td>
 
                                 </tr>
@@ -140,8 +148,20 @@
                                 <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.redTeam.teammate[4].name)">{{matchData.redTeam.teammate[4].name}}</a></div>
                             </div>
                         </td>
+                        <td>
+                            <v-btn class="infobtn" @click="matchData.display = !matchData.display" outlined>v</v-btn>
+                        </td>
                     </tr>
                 </table>
+                    <v-row v-if="matchData.display">
+                        <v-col cols="6">
+                            <barchart/>
+                        </v-col>
+
+                        <v-col cols="6">
+                            <barchart/>
+                        </v-col>
+                    </v-row>
             </v-card>
         </v-flex>
     </v-container>
@@ -152,9 +172,13 @@
 import { mapState } from "vuex"
 import champoins from "@/assets/data/champion.json";
 import queues from "@/assets/data/queues.json";
+import barchart from "@/components/profile/barchart";
 
 export default {
     name: "ProfileGameHistory",
+    components:{
+        barchart
+    },
     data: function() {
         return {
             champoins,
@@ -162,11 +186,12 @@ export default {
             isLoading : true
         }
     },
-	// mounted(){
+	//mounted(){
 	// 	this.getMatchDatas();
 	// 	console.log(this.matchDatas[0][this.matchDatas[0].myTeam].win);
-	// 	//console.log(new Date(1595840710509));
-	// },
+    // 	//console.log(new Date(1595840710509));
+
+	//},
     computed: {
       ...mapState([
         'profileDatas',
@@ -211,13 +236,27 @@ export default {
             }catch{
                 return require('@/assets/images/error.png');
             }
-        }
+        },
+        seemore(key){
+            this.key = !key;
+        },
+        //addDisplayNone(){
+        //    trigerseemore.push('none');
+        //}
     }
 };
 </script>
 
 <style>
-
+.empty{
+    height: 22px;
+    opacity: 0.1;
+}
+.infobtn{
+    height: 100% !important;
+    min-width: 10px !important;
+    padding : 0 !important;
+}
 .textover {
     overflow: hidden !important;
     text-overflow: ellipsis !important;

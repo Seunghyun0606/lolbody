@@ -87,9 +87,9 @@
 				</div>
 
 
-				<!-- 수정본, 챔피언 승률 634px-->
+				<!-- 수정본, 챔피언 승률 639px-->
 				<div class="d-inline-block">
-					<v-card class="ma-1 bg_card float-right" width="194px" height="160px" outlined>
+					<v-card class="ma-1 bg_card float-right" width="199px" height="160px" outlined>
 						<ProfileChampRate/>
 					</v-card>
 				</div>
@@ -143,7 +143,7 @@ export default {
 		ProfileEachWinRateChart,
 		ProfileChampRate,
 
-		ProfileLineChart,
+		// ProfileLineChart,
 		// RadarChart:() => ({
     //         component: import("@/components/profile/ProfileRadarChart"),
     //         loading: Loading,

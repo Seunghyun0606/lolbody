@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.lolbody.api.Api;
 import com.ssafy.lolbody.dto.LeagueEntryDto;
-import com.ssafy.lolbody.dto.MatchDto;
 import com.ssafy.lolbody.dto.MatchlistDto;
 import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.service.LeagueEntryService;
-import com.ssafy.lolbody.service.MatchService;
 import com.ssafy.lolbody.service.MatchlistService;
 import com.ssafy.lolbody.service.SummonerService;
 
@@ -35,8 +33,6 @@ public class SummonerController {
 	private LeagueEntryService leagueEntryService;
 	@Autowired
 	private MatchlistService matchlistService;
-	@Autowired
-	private MatchService matchService;
 
 	@GetMapping("/api/user/{name}")
 	@ApiOperation(value = "사용자의 소환사 이름을 name 변수로 받아 소환사 정보를 검색합니다.")
@@ -76,25 +72,6 @@ public class SummonerController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(matchlistDto, HttpStatus.OK);
-	}
-
-	@GetMapping("/api/match/{gameId}")
-	@ApiOperation(value = "게임 id를 변수로 받아 매치 상세정보를 검색합니다.")
-	public ResponseEntity<MatchDto> getUserMatch(@PathVariable long gameId) {
-		MatchDto matchDto = new MatchDto();
-
-		try {
-			matchDto = matchService.findByGameId(gameId);
-		} catch (TimeoutException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "매치 상세정보 검색 중 오류 발생");
-			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "매치 상세정보 검색 중 오류 발생");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(matchDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/auto/{name}")

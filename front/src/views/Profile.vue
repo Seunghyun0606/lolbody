@@ -69,28 +69,30 @@
 				<!-- RadarChart -->
 				<!-- 수정본, 전체 게임 승률 -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 bg_card float-left" width="320.5px" height="160px" outlined>
+					<v-card class="ma-1 bg_card float-left" width="200px" height="160px" outlined>
 						<!-- <div class="ml-7">
 							<RadarChart/>
 						</div> -->
-
-						<ProfileWinRate/>
-
-
+						<ProfileTotalWinRateChart/>
 					</v-card>
 				</div>
 
 				<!-- 롤비티아이 부분 -->
-				<!-- 수정본, 챔피언 승률 -->
+				<!-- 수정본, 각 게임 모드별 승률 -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 bg_card float-right" width="320.5px" height="160px" outlined>
+					<v-card class="ma-1 bg_card float-left" width="240px" height="160px" outlined>
 						<!-- <div class="d-inline">
 							<span>유저 성향</span>
 						</div> -->
+						<ProfileEachWinRateChart/>
+					</v-card>
+				</div>
 
 
+				<!-- 수정본, 챔피언 승률 634px-->
+				<div class="d-inline-block">
+					<v-card class="ma-1 bg_card float-right" width="194px" height="160px" outlined>
 						<ProfileChampRate/>
-
 					</v-card>
 				</div>
 
@@ -119,7 +121,8 @@ import Loading from "@/components/profile/Loading";
 import LoadError from "@/components/profile/LoadError";
 //import ProfileGameData from "@/components/profile/ProfileGameData";
 
-import ProfileWinRate from "@/components/profile/ProfileWinRate"
+import ProfileTotalWinRateChart from "@/components/profile/ProfileTotalWinRateChart"
+import ProfileEachWinRateChart from "@/components/profile/ProfileEachWinRateChart"
 import ProfileChampRate from "@/components/profile/ProfileChampRate"
 
 
@@ -136,8 +139,9 @@ export default {
 		// ProfileRadarChart: () => ({
 		// 	component: new Promise(resolve => setTimeout(() => resolve(import(/* webpackChunkName: 'logo' */'@/components/profile/ProfileRadarChart.vue')), 2500)),
 		// }),
+		ProfileTotalWinRateChart,
+		ProfileEachWinRateChart,
 		ProfileChampRate,
-		ProfileWinRate,
 
 		ProfileLineChart,
 		// RadarChart:() => ({

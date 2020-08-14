@@ -1,49 +1,54 @@
 <template>
-  <v-container class="full-height">
-    <v-row class="align-center full-height">
-      <!-- for 문 돌려서 3개 뽑으시면 됩니다. col에서 돌리세요 아래 3개는 디자인 예시입니다. -->
-      <v-col>
-        <v-row class="center">
-          <v-col>
-            <img class="icon mdi" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+  <v-container class="full-height align-content-center">
+    <!-- for 문 돌려서 3개 뽑으시면 됩니다. col에서 돌리세요 아래 3개는 디자인 예시입니다. -->
+    <v-row class="full-height">
+      <v-col class="align-self-center">
+
+        <v-row class="justify-space-around align-center">
+          <v-col cols=3>
+
+            <img class="icon small d-flex" :src="require(`@/assets/images/error.png`)" alt="temporarily">
 
           </v-col>
-        </v-row>
-        <v-row class="center">
-          <v-col>
-            3승 3패
+          <v-col cols=4>
+            <div>
+              1승 1패
+            </div>  
           </v-col>
-        </v-row>
-      </v-col>
 
-
-      <v-col>
-        <v-row class="center">
-          <v-col>
-            <img class="icon mdi" :src="require(`@/assets/images/error.png`)" alt="temporarily">
-
-          </v-col>
         </v-row>
-        <v-row class="center">
-          <v-col>
-            3승 3패
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col>
-        <v-row class="center">
-          <v-col>
-            <img class="icon mdi" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+        
+        <v-row class="justify-space-around align-center">
+          <v-col cols=3>
+
+            <img class="icon small d-flex" :src="require(`@/assets/images/error.png`)" alt="temporarily">
 
           </v-col>
-        </v-row>
-        <v-row class="center">
-          <v-col>
-            3승 3패
+          <v-col cols=4>
+            <div>
+              1승 1패
+            </div>  
           </v-col>
+
+        </v-row>
+        <v-row class="justify-space-around align-center">
+          <v-col cols=3>
+
+            <img class="icon small d-flex" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+
+          </v-col>
+          <v-col cols=4>
+            <div>
+              1승 1패
+            </div>  
+          </v-col>
+
         </v-row>
       </v-col>
     </v-row>
+
+
+
   </v-container>
 
 </template>
@@ -91,6 +96,9 @@ export default {
 
 .mdi {
   height: 4rem;
+}
+.small {
+  height: 3rem;
 }
 
 .center {

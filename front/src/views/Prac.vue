@@ -1,31 +1,24 @@
 <template>
   <div>
     <div class="d-inline-block">
-      <v-card class="ma-1 bg_card float-left" width="320.5px" height="160px" outlined>
+      <v-card class="ma-1 bg_card float-left" width="200px" height="160px" outlined>
 
-        <ProfileWinRate>
-
-          <ProfileDonutChart/>
-
-        </ProfileWinRate>
-
+        <ProfileTotalWinRateChart/>
       </v-card>
     </div>
 
     <div class="d-inline-block">
-      <v-card class="ma-1 bg_card float-left" width="320.5px" height="160px" outlined>
-        <ProfileWinRate>
+      <v-card class="ma-1 bg_card float-left" width="240px" height="160px" outlined>
 
-          <ProfileDonutChart2/>
+          <ProfileEachWinRateChart/>
 
-        </ProfileWinRate>
 
 
 
       </v-card>
     </div>
     <div class="d-inline-block">
-      <v-card class="ma-1 bg_card float-right" width="320.5px" height="160px" outlined>
+      <v-card class="ma-1 bg_card float-right" width="201px" height="160px" outlined>
 
         <ProfileChampRate/>
 
@@ -39,19 +32,19 @@
 <script>
 
 import ProfileChampRate from "@/components/profile/ProfileChampRate"
-import ProfileWinRate from "@/components/profile/ProfileWinRate"
+// import ProfileWinRate from "@/components/profile/ProfileWinRate"
 
-import ProfileDonutChart from "@/components/profile/ProfileDonutChart"
-import ProfileDonutChart2 from "@/components/profile/ProfileDonutChart2"
+import ProfileEachWinRateChart from "@/components/profile/ProfileEachWinRateChart"
+import ProfileTotalWinRateChart from "@/components/profile/ProfileTotalWinRateChart"
 
 
 export default {
   name: "Prac",
   components: {
     ProfileChampRate,
-    ProfileWinRate,
-    ProfileDonutChart,
-    ProfileDonutChart2,
+    // ProfileWinRate,
+    ProfileEachWinRateChart,
+    ProfileTotalWinRateChart,
   },
 
   data() {

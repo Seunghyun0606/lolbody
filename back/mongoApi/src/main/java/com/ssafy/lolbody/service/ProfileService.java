@@ -115,20 +115,21 @@ public class ProfileService {
 		if (size - ((idx - 1) * 10) <= 0) {
 			return null;
 		} else {
-			int s = 0;
+			int s = 0, left = size - (idx * 10), right = size - ((idx - 1) * 10);
 			if (size - (idx * 10) >= 0) {
 				matchReferences = matchReferences.subList(size - (idx * 10), size - ((idx - 1) * 10));
 				s = 9;
 			} else {
 				matchReferences = matchReferences.subList(0, size - ((idx - 1) * 10));
 				s = size - ((idx - 1) * 10) - 1;
+				left = 0;
 			}
 
 			for (int i = s; i >= 0; i--) {
 				matchService.findByGameId(matchReferences.get(i).getGameId());
 			}
-			
-			Api.runAnalysis("Analysis\\SetDataBase.py", summonerDto.getId() + " " + tier);
+
+			Api.runAnalysis("Analysis\\SetDataBase.py", summonerDto.getId() + " " + left + " " + right + " " + tier);
 
 //			for (int i = s; i >= 0; i--) {
 //				MatchReferenceDto matchReferenceDto = matchReferences.get(i);

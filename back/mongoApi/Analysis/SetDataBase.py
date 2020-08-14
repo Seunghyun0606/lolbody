@@ -53,11 +53,11 @@ def z_value(d, mean, std):
 
 # mongodb에 match_id를 받아서 라인구분, match_grade 저장
 db_root = connection.test
-stats = pd.read_csv('./csv/%s/stastics/stastics.csv' % now)
-def update_match_data(summoner_name, idx, tier):
-    profile_id = db_root.summoners.find_one({'name': summoner_name}).get('_id')
-    match_list = db_root.matchlists.find_one({'_id': profile_id}).get('matches')[idx:]
-    match_id_list = [i.get('gameId') for i in match_list if i.get('timestamp') >= 1578596400000 and (i.get('queue') == 420 or i.get('queue') == 430)]
+stats = pd.read_csv('./Analysis/csv/%s/stastics/stastics.csv' % now)
+def update_match_data(profile_id, left, right, tier):
+    match_list = list(filter(lambda i: i.get('timestamp') >= 1578596400000 and i.get('queue') != 2000 and i.get('queue') != 2010 and i.get('queue') != 2020, db_root.matchlists.find_one({'_id': profile_id}).get('matches')))[left:right]
+    match_id_list = [i.get('gameId') for i in match_list if i.get('queue') == 420 or i.get('queue') == 430 or i.get('queue') == 440]
+
 
     for match_id in match_id_list:
         print(match_id)
@@ -170,9 +170,9 @@ def update_match_data(summoner_name, idx, tier):
             ######################################################################333
             # print(participants_data)
             tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
-    tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
+        tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
         # print(participants_data)
         
 
 if __name__ == '__main__':
-    update_match_data(sys.argv[1], int(sys.argv[2]), sys.argv[3])
+    update_match_data(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4])

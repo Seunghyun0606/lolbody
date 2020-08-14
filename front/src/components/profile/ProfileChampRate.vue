@@ -1,72 +1,101 @@
 <template>
   <v-container class="full-height align-content-center">
-    <!-- for 문 돌려서 3개 뽑으시면 됩니다. col에서 돌리세요 아래 3개는 디자인 예시입니다. -->
     <v-row class="full-height">
-      <v-col class="align-self-center">
+      <v-col class="align-self-center mt-3">
 
-        <v-row class="justify-space-around align-center">
-          <v-col cols=3>
-
-            <img class="icon small d-flex" :src="require(`@/assets/images/error.png`)" alt="temporarily">
-
+        <!-- row에서 for 문 돌려서 3개 챔피언 뽑으시고, 챔피언 고유값이나 for문의 index값으로 hover 이벤트를 구분해주세요 아래 3개는 디자인 예시입니다. -->
+        <v-row class="justify-space-around" v-for="val in [0, 1, 2]" :key="val">
+          <v-col cols=3 @mouseenter="mouseOn(val)" @mouseleave="mouseOn(val)">
+            <img style="position: absolute; z-index: 5" :class="[{ dis: init[val] }, 'icon', 'small', 'd-flex']" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+            <ProfileChampWinRateChart/>
           </v-col>
-          <v-col cols=4>
+          <v-col cols=4 class="mt-2">
             <div>
               1승 1패
             </div>  
           </v-col>
-
         </v-row>
-        
-        <v-row class="justify-space-around align-center">
-          <v-col cols=3>
 
-            <img class="icon small d-flex" :src="require(`@/assets/images/error.png`)" alt="temporarily">
 
+
+
+
+        <!-- 살짝 문제가 있어서 꼼수 쓴 부분입니다. 무시하시면됩니다. -->
+        <v-row class="justify-space-around" >
+          <v-col cols=3 @mouseenter="mouseOn()" @mouseleave="mouseOn()">
+            <!-- <img style="position: absolute; z-index: 5" :class="[{ dis: init1 }, 'icon', 'small', 'd-flex']" :src="require(`@/assets/images/error.png`)" alt="temporarily"> -->
+            <!-- <ProfileChampWinRateChart/> -->
+            <div :class="[{ dis: init1 }]"></div>
           </v-col>
-          <v-col cols=4>
+          <!-- <v-col cols=4 class="mt-2">
             <div>
               1승 1패
             </div>  
-          </v-col>
-
+          </v-col> -->
         </v-row>
-        <v-row class="justify-space-around align-center">
-          <v-col cols=3>
 
-            <img class="icon small d-flex" :src="require(`@/assets/images/error.png`)" alt="temporarily">
-
-          </v-col>
-          <v-col cols=4>
-            <div>
-              1승 1패
-            </div>  
-          </v-col>
-
-        </v-row>
+ 
       </v-col>
     </v-row>
-
-
-
   </v-container>
-
 </template>
 
 <script>
+
+import ProfileChampWinRateChart from "@/components/profile/ProfileChampWinRateChart"
+
 export default {
   name: 'ProfileChampRate',
+  components: {
+    ProfileChampWinRateChart,
+  },
   data() {
     return {
+      init: [false, false, false],
+      init1: false,
+      mouseOver: {
+        display: "none !important;",
+      }
+
       
     }
-  }
+  },
+  // computed: {
+  //   init2() {
+  //     return this.init[0]
+  //   }
+  // },
+  // watch: {
+  //   init: {
+  //     deep: true,
+  //     handler: function() {
+  //       console.log('a')
+  //     }
+  //   }
+  // },
+  methods: {
+    mouseOn(val) {
+      console.log(val)
+
+      console.log(this.init[val])
+      this.init[val] = !this.init[val]
+      console.log(this.init[val])
+
+      this.init1 = !this.init1
+
+    },
+  },
 
 
 }
 </script>
 
 <style scoped>
+
+.dis {
+  display: none !important;
+}
+
 
 .container {
   margin: 0;
@@ -98,7 +127,7 @@ export default {
   height: 4rem;
 }
 .small {
-  height: 3rem;
+  height: 2.5rem;
 }
 
 .center {

@@ -4,6 +4,7 @@
       <v-card class="ma-1 bg_card float-left" width="200px" height="160px" outlined>
 
         <ProfileTotalWinRateChart/>
+
       </v-card>
     </div>
 

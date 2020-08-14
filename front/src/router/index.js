@@ -6,6 +6,9 @@ import Index from '@/views/Index.vue'
 import MultiSearch from '@/views/MultiSearch.vue'
 import Lolbody from '@/views/Lolbody.vue'
 
+import Prac from '@/views/Prac.vue'
+
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,6 +32,11 @@ const routes = [
     name: 'Lolbody',
     component: Lolbody,
   },
+  {
+    path: '/Prac',
+    name: 'Prac',
+    component: Prac,
+  }
 
 ]
 

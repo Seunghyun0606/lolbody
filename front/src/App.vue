@@ -6,6 +6,9 @@
             <!-- <v-tab router-link to="/Profile">Profile</v-tab> -->
             <v-tab router-link to="/MultiSearch">Multi Search</v-tab>
             <v-tab router-link to="/Lolbody">Lolbody</v-tab>
+
+            <v-tab router-link to="/Prac">Prac</v-tab>
+            
             </v-tabs>
             <v-spacer></v-spacer>
             <NavSearchBar v-if="isIndex ? false : true"/>

@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     stages {
-        // stage('Pull') {
+        // stage('Pull') { 
         //     steps {
 
         //         sh 'git branch'
@@ -17,7 +17,7 @@ pipeline {
                 dir('front'){
                     sh 'yarn install'
                     sh 'yarn build'
-                    sh 'sudo docker cp dist nginx-0807:/usr/share/nginx/'
+                    sh 'sudo docker cp dist nginx-deploy:/usr/share/nginx/'
                 }
                 dir('back/mongoApi'){
                     script{

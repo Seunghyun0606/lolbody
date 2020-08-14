@@ -125,6 +125,7 @@ export default new Vuex.Store({
                 state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100});
             state.profileLineChartOption.chartOptions.xaxis.categories.unshift(matchData.timestamp + matchData[matchData.myTeam].teammate[matchData.myIndex].champ)
         }
+        // console.log(state.profileLineChartOption)
     },
     // 나중에 리팩토링하자
     setProfileRadarChartOption(state, Datas) {

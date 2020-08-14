@@ -78,6 +78,7 @@ public class ProfileService {
 					profileReferenceDto.setTier(i.getTier());
 					profileReferenceDto.setRank(i.getRank());
 					profileReferenceDto.setLeaguePoints(i.getLeaguePoints());
+					break;
 				}
 			}
 			MatchlistDto matchlistDto = matchlistService.findBySummonerId(summonerDto);
@@ -225,6 +226,7 @@ public class ProfileService {
 					profileReferenceDto.setTier(i.getTier());
 					profileReferenceDto.setRank(i.getRank());
 					profileReferenceDto.setLeaguePoints(i.getLeaguePoints());
+					break;
 				}
 			}
 
@@ -393,6 +395,7 @@ public class ProfileService {
 		MatchlistDto matchlistDto = matchlistService.findOnly(summonerDto);
 		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
 		matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
+				.filter(o -> o.getQueue() != 2000 && o.getQueue() != 2010 && o.getQueue() != 2020)
 				.collect(Collectors.toList());
 		Map<String, Integer> map = new HashMap<>();
 		map.put("TOP", 0);
@@ -432,7 +435,7 @@ public class ProfileService {
 
 					TeamRecordDto blueTeam = new TeamRecordDto();
 					TeamRecordDto redTeam = new TeamRecordDto();
-
+					
 					blueTeam.setTeam(100);
 					blueTeam.setWin(match.getTeams().get(0).getWin().equals("Win") ? true : false);
 					redTeam.setTeam(200);
@@ -469,8 +472,11 @@ public class ProfileService {
 							tmp.setKa(0.0);
 						else
 							tmp.setKa(100.0 * (tmp.getKills() + tmp.getAssists()) / (j < 5 ? blueKills : redKills));
-						tmp.setSpell1(spellRepository.findByKey(p.getSpell1Id() + "").getName());
-						tmp.setSpell2(spellRepository.findByKey(p.getSpell2Id() + "").getName());
+						try {
+							tmp.setSpell1(spellRepository.findByKey(p.getSpell1Id() + "").getName());
+							tmp.setSpell2(spellRepository.findByKey(p.getSpell2Id() + "").getName());
+						} catch (Exception e) {
+						}
 						tmp.setItem0(p.getStats().getItem0());
 						tmp.setItem1(p.getStats().getItem1());
 						tmp.setItem2(p.getStats().getItem2());

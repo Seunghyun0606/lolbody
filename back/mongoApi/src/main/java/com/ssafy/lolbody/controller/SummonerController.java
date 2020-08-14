@@ -24,7 +24,7 @@ import com.ssafy.lolbody.service.SummonerService;
 import io.swagger.annotations.ApiOperation;
 
 //http://localhost:8888/swagger-ui.html
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
+@CrossOrigin
 @RestController
 public class SummonerController {
 	
@@ -37,7 +37,7 @@ public class SummonerController {
 	@Autowired
 	private MatchService matchService;
 	
-	@GetMapping("/user/{name}")
+	@GetMapping("/api/user/{name}")
 	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 소환사 정보를 검색합니다.")
 	public ResponseEntity<List<LeagueEntryDto>> getUserInfo(@PathVariable String name) {
 		SummonerDto summonerDto = new SummonerDto();
@@ -56,7 +56,7 @@ public class SummonerController {
 	}
 	
 	
-	@GetMapping("/matchlist/{name}")
+	@GetMapping("/api/matchlist/{name}")
 	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 매치 리스트를 검색합니다.")
 	public ResponseEntity<MatchlistDto> getUserMatchlist(@PathVariable String name) {
 		SummonerDto summonerDto = new SummonerDto();
@@ -74,7 +74,7 @@ public class SummonerController {
 		return new ResponseEntity<>(matchlistService.findBySummonerId(summonerDto),HttpStatus.OK);
 	}
 	
-	@GetMapping("/match/{gameId}")
+	@GetMapping("/api/match/{gameId}")
 	@ApiOperation(value="게임 id를 변수로 받아 매치 상세정보를 검색합니다.")
 	public ResponseEntity<MatchDto> getUserMatch(@PathVariable long gameId) {
 		MatchDto matchDto = new MatchDto();
@@ -91,6 +91,12 @@ public class SummonerController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(matchDto,HttpStatus.OK);
+	}
+	
+	@GetMapping("/auto/{name}")
+	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 맞는 소환사 이름을 모두 반환합니다.")
+	public ResponseEntity<List<SummonerDto>> getSummoners(@PathVariable String name) {
+		return new ResponseEntity<>(summonerService.findByNameStartingWith(name),HttpStatus.OK);
 	}
 	
 }

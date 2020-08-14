@@ -23,7 +23,7 @@ import com.ssafy.lolbody.service.SummonerValueService;
 import io.swagger.annotations.ApiOperation;
 
 //http://localhost:8888/swagger-ui.html
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
+@CrossOrigin
 @RestController
 public class ProfileController {
 	@Autowired
@@ -32,7 +32,7 @@ public class ProfileController {
 	private SummonerValueService summonerValueService;
 
 	@ApiOperation(value = "소환사 이름으로 유저 프로필을 검색합니다.")
-	@GetMapping("/profile/{name}")
+	@GetMapping("/api/profile/{name}")
 	public ResponseEntity<ProfileReferenceDto> getProfile(@PathVariable String name) {
 		ProfileReferenceDto profile = new ProfileReferenceDto();
 		try {
@@ -50,7 +50,7 @@ public class ProfileController {
 	}
 	
 	@ApiOperation(value = "소환사 이름으로 유저 프로필을 갱신합니다.")
-	@PutMapping("/profile/{name}")
+	@PutMapping("/api/profile/{name}")
 	public ResponseEntity<ProfileReferenceDto> getNewProfile(@PathVariable String name) {
 		ProfileReferenceDto profile = new ProfileReferenceDto();
 		try {
@@ -69,7 +69,7 @@ public class ProfileController {
 	}
 
 	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (num: 1부터 시작, 10개씩)")
-	@GetMapping("/profile/{name}/{num}")
+	@GetMapping("/api/profile/{name}/{num}")
 	public ResponseEntity<List<MatchRecordDto>> getMatchInfo(@PathVariable String name, @PathVariable String num) {
 		List<MatchRecordDto> matchRecords = new ArrayList<>();
 		try {
@@ -87,7 +87,7 @@ public class ProfileController {
 	}
 	
 	@ApiOperation(value = "소환사 이름으로 유저 성향을 검색합니다.")
-	@GetMapping("/summonervalue/{name}")
+	@GetMapping("/api/summonervalue/{name}")
 	public ResponseEntity<SummonerValueResultDto> getSummonerValue(@PathVariable String name) {
 		SummonerValueResultDto summonerValueResultDto;
 		try {

@@ -1,11 +1,14 @@
 <template>
-    <v-app>
+    <v-app style="background-color: #fafafa;">
         <v-app-bar app color="primary" dense dark flat>
             <v-tabs align-with-title>
             <v-tab router-link to="/">Main</v-tab>
             <!-- <v-tab router-link to="/Profile">Profile</v-tab> -->
             <v-tab router-link to="/MultiSearch">Multi Search</v-tab>
             <v-tab router-link to="/Lolbody">Lolbody</v-tab>
+
+            <!-- <v-tab router-link to="/Prac">Prac</v-tab> -->
+            
             </v-tabs>
             <v-spacer></v-spacer>
             <NavSearchBar v-if="isIndex ? false : true"/>
@@ -51,7 +54,7 @@ export default {
 }
 
 .fs-0{
-    font-size: 0;
+  font-size: 0;
 }
 .fs-15{
 	font-size: 0.938em;

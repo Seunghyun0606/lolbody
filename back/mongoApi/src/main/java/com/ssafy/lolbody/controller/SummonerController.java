@@ -1,5 +1,6 @@
 package com.ssafy.lolbody.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -27,7 +28,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @RestController
 public class SummonerController {
-	
+
 	@Autowired
 	private SummonerService summonerService;
 	@Autowired
@@ -36,13 +37,15 @@ public class SummonerController {
 	private MatchlistService matchlistService;
 	@Autowired
 	private MatchService matchService;
-	
+
 	@GetMapping("/api/user/{name}")
-	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 소환사 정보를 검색합니다.")
+	@ApiOperation(value = "사용자의 소환사 이름을 name 변수로 받아 소환사 정보를 검색합니다.")
 	public ResponseEntity<List<LeagueEntryDto>> getUserInfo(@PathVariable String name) {
 		SummonerDto summonerDto = new SummonerDto();
+		List<LeagueEntryDto> leagueEntryList = new ArrayList<>();
 		try {
 			summonerDto = summonerService.findBySubName(name.replaceAll(" ", ""));
+			leagueEntryList = leagueEntryService.findBySummonerId(summonerDto.getId());
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
@@ -52,16 +55,17 @@ public class SummonerController {
 			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(leagueEntryService.findBySummonerId(summonerDto.getId()),HttpStatus.OK);
+		return new ResponseEntity<>(leagueEntryList, HttpStatus.OK);
 	}
-	
-	
+
 	@GetMapping("/api/matchlist/{name}")
-	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 매치 리스트를 검색합니다.")
+	@ApiOperation(value = "사용자의 소환사 이름을 name 변수로 받아 매치 리스트를 검색합니다.")
 	public ResponseEntity<MatchlistDto> getUserMatchlist(@PathVariable String name) {
 		SummonerDto summonerDto = new SummonerDto();
+		MatchlistDto matchlistDto = new MatchlistDto();
 		try {
 			summonerDto = summonerService.findBySubName(name.replaceAll(" ", ""));
+			matchlistDto = matchlistService.findBySummonerId(summonerDto);
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
@@ -71,14 +75,14 @@ public class SummonerController {
 			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(matchlistService.findBySummonerId(summonerDto),HttpStatus.OK);
+		return new ResponseEntity<>(matchlistDto, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/api/match/{gameId}")
-	@ApiOperation(value="게임 id를 변수로 받아 매치 상세정보를 검색합니다.")
+	@ApiOperation(value = "게임 id를 변수로 받아 매치 상세정보를 검색합니다.")
 	public ResponseEntity<MatchDto> getUserMatch(@PathVariable long gameId) {
 		MatchDto matchDto = new MatchDto();
-		
+
 		try {
 			matchDto = matchService.findByGameId(gameId);
 		} catch (TimeoutException e) {
@@ -90,13 +94,13 @@ public class SummonerController {
 			Api.postHttpsRequest(e, "매치 상세정보 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(matchDto,HttpStatus.OK);
+		return new ResponseEntity<>(matchDto, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/auto/{name}")
-	@ApiOperation(value="사용자의 소환사 이름을 name 변수로 받아 맞는 소환사 이름을 모두 반환합니다.")
+	@ApiOperation(value = "사용자의 소환사 이름을 name 변수로 받아 맞는 소환사 이름을 모두 반환합니다.")
 	public ResponseEntity<List<SummonerDto>> getSummoners(@PathVariable String name) {
-		return new ResponseEntity<>(summonerService.findByNameStartingWith(name),HttpStatus.OK);
+		return new ResponseEntity<>(summonerService.findByNameStartingWith(name), HttpStatus.OK);
 	}
-	
+
 }

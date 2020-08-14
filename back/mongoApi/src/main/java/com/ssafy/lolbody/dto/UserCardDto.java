@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "profiles")
-public class ProfileDto {
+@Document(collection = "usercards")
+public class UserCardDto {
 	@Id
 	private String summonerId;
-	private List<ProfileReferenceDto> profiles;
+	private List<UserCardReferenceDto> userCardList;
 
 	public String getSummonerId() {
 		return summonerId;
@@ -19,17 +19,17 @@ public class ProfileDto {
 		this.summonerId = summonerId;
 	}
 
-	public List<ProfileReferenceDto> getProfiles() {
-		return profiles;
+	public List<UserCardReferenceDto> getUserCardList() {
+		return userCardList;
 	}
 
-	public void setProfiles(List<ProfileReferenceDto> profiles) {
-		this.profiles = profiles;
+	public void setUserCardList(List<UserCardReferenceDto> userCardList) {
+		this.userCardList = userCardList;
 	}
 
 	@Override
 	public String toString() {
-		return "ProfileDto [summonerId=" + summonerId + ", profiles=" + profiles + "]";
+		return "UserCardDto [summonerId=" + summonerId + ", userCardList=" + userCardList + "]";
 	}
 
 }

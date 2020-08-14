@@ -18,7 +18,6 @@ public class Api {
 	private final static String token = "RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c";
 	private final static String[] tokens = {
 			// 개인키
-			"RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c",
 			"RGAPI-ad13b224-7b6f-4358-8ff9-3c93df6cda80",
 			"RGAPI-e1a57063-3429-414b-87f7-891538676189",
 			"RGAPI-8cbfda0a-c52d-4a75-8aa5-b87491f13b3c",
@@ -50,7 +49,8 @@ public class Api {
 				con.addRequestProperty("X-Riot-Token", tokens[idx]);
 				con.setRequestMethod("GET");
 				idx = (idx + 1) % tokens.length;
-				
+				System.out.println(url);
+				System.out.println(con.getResponseMessage());
 				StringBuilder sb = new StringBuilder();
 				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
@@ -81,7 +81,7 @@ public class Api {
 	}	
 	
 	public static String get(String input, String summonerName) {
-		boolean isOk = false;
+		boolean isOk = false, isTimeout = false;
 		String result = "";
 		try {
 			String name = summonerName.replaceAll("\\s", "%20");
@@ -93,7 +93,8 @@ public class Api {
 			con.setReadTimeout(5000);
 			con.addRequestProperty("X-Riot-Token", token);
 			con.setRequestMethod("GET");
-			
+			System.out.println(url);
+			System.out.println(con.getResponseMessage());
 			StringBuilder sb = new StringBuilder();
 			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
@@ -104,12 +105,16 @@ public class Api {
 				br.close();
 				isOk = true;
 				result = sb.toString();
+			} else if (con.getResponseMessage().equals("Too Many Requests") || con.getResponseMessage().equals("Gateway Timeout")) {
+				isTimeout = true;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if(isOk)
 			return result;
+		else if(isTimeout)
+			return "Timeout";
 		else
 			return "Fail";
 	}

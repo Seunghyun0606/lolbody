@@ -50,7 +50,7 @@
         </div>
         <!-- 레이더차트 컴포넌트 -->
         <div>
-          <MultiSearchRadarChart :multiSearchRadarData="multiSearchRadarDatas[index]"/>
+          <MultiSearchRadarChart :index="index"/>
         </div>
 
         <!-- 라인 차트 컴포넌트-->

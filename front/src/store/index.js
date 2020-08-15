@@ -19,7 +19,41 @@ export default new Vuex.Store({
     multiSearchDatas: [],
     multiUserDatas: [],
     isIndex: '',
-    multiSearchRadarDatas: [],
+    multiSearchRadarData: {
+        options: {
+          chart: {
+            type: "radar",
+            toolbar: {
+              show: false,
+            },
+          },
+          legend: {
+            show: false,
+          },
+          xaxis: {
+            categories: ['공격력', '안정성', '영향력']
+          },
+          yaxis: {
+            show: false,
+            tickAmount: 5,
+            min: 0,
+            max: 100,
+          },
+          markers: {
+            size: 3
+          }
+        },
+      series: [
+        {
+          name: '초반',
+          data: [40, 40, 40]
+        },
+        {
+          name: '후반',
+          data: [90, 80, 80]
+        }
+      ]
+    },
     profileLineChartOption: {
         series: [
             {
@@ -101,7 +135,11 @@ export default new Vuex.Store({
   getters: {
     profileDatas(state){
       return state.profileDatas;
+    },
+    multiSearchRadarData(state) {
+      return state.multiSearchRadarData
     }
+
   },
   mutations: {
     // 승현
@@ -122,8 +160,27 @@ export default new Vuex.Store({
       // 20.07.30 userData가 자유랭크 데이터도 넘기기때문에 스프레드 시키면안됨. 단일 오브젝트만 넣습니다.
       state.multiUserDatas = [ ...state.multiUserDatas, userDatas ]
     },
-    setMultiSearchRadarChartDatas(state, Datas) {
-      state.multiSearchRadarDatas = [ ...state.multiSearchRadarDatas, Datas]
+    setMultiSearchRadarData(state, Datas) {
+      state.multiSearchRadarData.series[0].name = Datas.lane1.lane
+      state.multiSearchRadarData.series[1].name = Datas.lane2.lane
+
+      state.multiSearchRadarData.series[0].data = []
+      state.multiSearchRadarData.series[1].data = []
+      for ( var obj in Datas.lane1 ) {
+        if (obj === "lane") {
+          continue
+        }
+        state.multiSearchRadarData.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
+        // console.log(this.multiSearchRadarData.lane1[obj])
+      }
+      for ( var obj2 in Datas.lane2 ) {
+        if (obj2 === "lane" ) {
+          continue
+        }
+        state.multiSearchRadarData.series[1].data.push((Datas.lane2[obj2]*100).toFixed(0))
+      }
+
+
     },
 
 
@@ -167,7 +224,7 @@ export default new Vuex.Store({
     // 호철
     changeSearchSummonerIDs(state, arr) {
       state.searchSummonerIDs = arr
-      console.log(arr)
+      // console.log(arr)
     },
 
     // 형래
@@ -182,48 +239,44 @@ export default new Vuex.Store({
         state.nowProfileDatas = data;
     }
   },
+
+  
   actions: {
     // 승현, multisearch
-    getMultiSearchDatas( { commit }, userNames ) {
-      for ( var userName of userNames ) {
-        axios
-          .get(SERVER_URL + `/api/multisearch/${userName}`)
-          .then(res => {
-            commit('setMultiSearchDatas', res.data)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
-    },      
-    getMultiUserDatas( { commit }, userNames ) {
-      for ( var userName of userNames ) {
-        axios
-          .get(SERVER_URL + `/api/profile/${userName}`)
-          .then(res => {
-            commit('setMultiUserDatas', res.data)
-          })
-  
-          .catch(err => {
-            console.log(err)
-          })
-      }
+    getMultiSearchDatas( { commit }, userName ) {
+      return axios
+        .get(SERVER_URL + `/api/multisearch/${userName}`)
+        .then(res => {
+          commit('setMultiSearchDatas', res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getMultiUserDatas( { commit }, userName ) {
+      return axios
+        .get(SERVER_URL + `/api/profile/${userName}`)
+        .then(res => {
+          commit('setMultiUserDatas', res.data)
+        })
+
+        .catch(err => {
+          console.log(err)
+        })
     },
     // 승현, multiSearchRadarChartData
-    getMultiSearchRadarChartDatas( { commit }, userNames ) {
-      // console.log(userName)
-      for ( var userName of userNames ) {
-        axios
-        .get(SERVER_URL + `/api/summonervalue/${userName}`)
-        .then(res => {
-            // console.log(res.data)
-            commit('setMultiSearchRadarChartDatas', res.data)
-            // console.log(55)
-          })
-          .catch((err) => {
-            console.log(err)
-          })        
-      }
+    getMultiSearchRadarDatas( { commit }, userName ) {
+      // console.log(userNames)
+      return axios
+      .get(SERVER_URL + `/api/summonervalue/${userName}`)
+      .then(res => {
+          // console.log(res.data)
+          commit('setMultiSearchRadarData', res.data)
+          // console.log(55)
+        })
+        .catch((err) => {
+          console.log(err)
+        })        
     },
 
     // 승현, renewalUserData

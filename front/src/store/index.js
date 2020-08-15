@@ -19,44 +19,7 @@ export default new Vuex.Store({
     multiSearchDatas: [],
     multiUserDatas: [],
     isIndex: '',
-    multiSearchRadarChartOption: {
-      data() {
-        return {
-          options: {
-            chart: {
-              type: "radar",
-              toolbar: {
-                show: false,
-              },
-            },
-            legend: {
-              show: false,
-            },
-            xaxis: {
-              categories: ['공격력', '안정성', '영향력']
-            },
-            yaxis: {
-              show: false,
-              tickAmount: 5,
-              min: 0,
-              max: 100,
-            },
-            markers: {
-              size: 3
-            }
-          },
-          series: [{
-            name: 'abc',
-            data: [10, 60, 90]
-          },
-          {
-            name: 'abc',
-            data: [50, 40, 60]
-          }]
-        }
-      },
-
-    },
+    multiSearchRadarDatas: [],
     profileLineChartOption: {
         series: [
             {
@@ -113,6 +76,8 @@ export default new Vuex.Store({
             }
         },
     },
+
+
     profileRadarChartOption: {
         series: [{
             name: 'Lane1',
@@ -157,43 +122,11 @@ export default new Vuex.Store({
       // 20.07.30 userData가 자유랭크 데이터도 넘기기때문에 스프레드 시키면안됨. 단일 오브젝트만 넣습니다.
       state.multiUserDatas = [ ...state.multiUserDatas, userDatas ]
     },
-    // 나중에 리팩토링하자
-    setMultiSearchRadarChartOption(state, Datas) {
-      console.log(state, Datas)
-      // console.log(1, Datas)
-      // console.log(2, state.userDatas)
-      // console.log(33, state.multiSearchRadarChartOption)
-      // // console.log(4, state.multiSearchDatas)
-
-      // if ( state.multiSearchDatas.mainLane === undefined) {
-      //   state.multiSearchRadarChartOption.series[0].name = 'Unknown'
-      //   console.log(0, state.multiSearchRadarChartOption.series[0].name)
-
-        
-      // }
-      // else {
-      //   state.multiSearchRadarChartOption.series[0].name = 'Unkown' // state.multiSearchDatas[0].mainLane
-      //   console.log(1, state.multiSearchRadarChartOption.series[0].name)
-      // }
-      // if ( state.multiSearchDatas.subLane === undefined) {
-      //   state.multiSearchRadarChartOption.series[1].name = 'Unknown'
-      // }
-      // else {
-      //   state.multiSearchRadarChartOption.series[1].name = 'Unkown' // state.multiSearchDatas[0].subLane
-      //   console.log(2, state.multiSearchRadarChartOption.series[1].name)
-
-      // }
-      // state.multiSearchRadarChartOption.series[0].data = []
-      // state.multiSearchRadarChartOption.series[1].data = []
-      // for ( let index1 in Datas.lane1) {
-      //   state.multiSearchRadarChartOption.series[0].data.push(Math.round((Datas.lane1[index1]*100)*10)/10)
-      //   console.log(3, Datas.lane1)
-      // }
-      // for ( let index2 in Datas.lane2) {
-      //   state.multiSearchRadarChartOption.series[1].data.push(Math.round((Datas.lane2[index2]*100)*10)/10)
-
-      // }
+    setMultiSearchRadarChartDatas(state, Datas) {
+      state.multiSearchRadarDatas = [ ...state.multiSearchRadarDatas, Datas]
     },
+
+
     setProfileLineChartOption(state, matchDatas) {
       state.profileLineChartOption.series[0].data = []
       state.profileLineChartOption.chartOptions.xaxis.categories = []
@@ -279,8 +212,8 @@ export default new Vuex.Store({
       .get(SERVER_URL + `/api/summonervalue/${userName}`)
       .then(res => {
           // console.log(res.data)
-          commit('setMultiSearchRadarChartOption', res.data)
-          console.log(55)
+          commit('setMultiSearchRadarChartDatas', res.data)
+          // console.log(55)
         })
         .catch((err) => {
           console.log(err)

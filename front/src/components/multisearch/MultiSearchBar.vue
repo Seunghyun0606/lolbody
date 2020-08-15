@@ -97,11 +97,11 @@ export default {
 
 
     },
-    async getMultiSearch(temp) {
+    getMultiSearch(temp) {
       
-      await this.$store.dispatch('getMultiUserDatas', temp)
-      await this.$store.dispatch('getMultiSearchDatas', temp)
-      await this.$store.dispatch('getMultiSearchRadarChartDatas', temp)
+      this.$store.dispatch('getMultiUserDatas', temp)
+      this.$store.dispatch('getMultiSearchDatas', temp)
+      this.$store.dispatch('getMultiSearchRadarChartDatas', temp)
     },
     onPaste (e) {
       var clipboardData, pastedData;

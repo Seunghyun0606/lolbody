@@ -50,7 +50,7 @@
         </div>
         <!-- 레이더차트 컴포넌트 -->
         <div>
-          <!-- <MultiSearchRadarChart/> -->
+          <MultiSearchRadarChart :multiSearchRadarData="multiSearchRadarDatas[index]"/>
         </div>
 
         <!-- 라인 차트 컴포넌트-->
@@ -89,7 +89,7 @@
 import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart" 
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
-// import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
+import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
 import MultiSearchBedge from "@/components/multisearch/MultiSearchBedge"
 import MultiSearchBar from "@/components/multisearch/MultiSearchBar"
 
@@ -103,7 +103,7 @@ export default {
       MultiSearchLineChart,
       MultiSearchLatestChamp,
       MultiSearchMostChamp,
-      // MultiSearchRadarChart,
+      MultiSearchRadarChart,
       MultiSearchBedge,
       MultiSearchBar,
     },
@@ -116,6 +116,7 @@ export default {
       ...mapState([
         "multiSearchDatas",
         "multiUserDatas",
+        "multiSearchRadarDatas",
       ]),
       ...mapGetters([
       ]),

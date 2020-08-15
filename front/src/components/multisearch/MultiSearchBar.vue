@@ -134,7 +134,7 @@ export default {
 }
 
 .multi-search-row {
-  height: 150px;
+  height: 100px;
   width: 1000px;
   max-width: 1000px;
   margin: 0;
@@ -146,7 +146,7 @@ export default {
   font-weight: 700;
 }
 .multi-search-col2 {
-  height: 130px;
+  height: 80px;
   width: 100%;
   resize: none;
   padding: 5px;
@@ -168,7 +168,7 @@ export default {
 
 .icon-place {
   position: relative;
-  top: 38%;
+  top: 32%;
   left: 30%;
   font-size: 40px;
   color: white;

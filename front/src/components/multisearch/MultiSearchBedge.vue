@@ -18,7 +18,8 @@ export default {
         "학살자",
       ]
     }
-  }
+  },
+  
 }
 </script>
 

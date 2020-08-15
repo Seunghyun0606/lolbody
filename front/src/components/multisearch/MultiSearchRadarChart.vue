@@ -1,7 +1,7 @@
 <template>
 
   <!-- <MultiRadarChart class='move-apexchart' type="radar" width="235" :options="options" :series="series"></MultiRadarChart> -->
-  <apexchart  ref="apex" class="move-apexchart" type="radar" width="235" :options="options" :series="series"></apexchart>
+  <apexchart class="move-apexchart" type="radar" width="235" :options="options" :series="series"></apexchart>
 
 </template>
 
@@ -27,14 +27,11 @@ export default {
   },
 
   methods: {
-    update() {
-      this.$forceUpdate()
-    },
     changeSeries() {
-      console.log(2, this.multiSearchRadarData)
+      // console.log(2, this.multiSearchRadarData)
       this.series[0].name = this.multiSearchRadarData.lane1.lane
       this.series[1].name = this.multiSearchRadarData.lane2.lane
-      console.log(3, this.series)
+      // console.log(3, this.series)
       this.series[0].data = []
       this.series[1].data = []
       for ( var obj in this.multiSearchRadarData.lane1 ) {
@@ -42,7 +39,7 @@ export default {
           continue
         }
         this.series[0].data.push((this.multiSearchRadarData.lane1[obj]*100).toFixed(0))
-        console.log(this.multiSearchRadarData.lane1[obj])
+        // console.log(this.multiSearchRadarData.lane1[obj])
       }
       for ( var obj2 in this.multiSearchRadarData.lane2 ) {
         if (obj2 === "lane" ) {

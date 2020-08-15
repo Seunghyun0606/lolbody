@@ -88,21 +88,16 @@ export default {
       // this.searchSummernerIDs = tmpSearchSummernerIDs
 
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
+
       // 1개면 유저프로필. 1개이상이면 멀티서치.
       // this.getMultiSearchDatas(tmpSearchSummernerIDs)
-
-      for ( var temp of tmpSearchSummernerIDs) {
-        this.getMultiSearch(temp)
-      }
-
+      // console.log(tmpSearchSummernerIDs)
+      this.$store.dispatch('getMultiSearchDatas', tmpSearchSummernerIDs)
+      this.$store.dispatch('getMultiUserDatas', tmpSearchSummernerIDs)
+      this.$store.dispatch('getMultiSearchRadarChartDatas', tmpSearchSummernerIDs)
 
     },
-    getMultiSearch(temp) {
-      
-      this.$store.dispatch('getMultiUserDatas', temp)
-      this.$store.dispatch('getMultiSearchDatas', temp)
-      this.$store.dispatch('getMultiSearchRadarChartDatas', temp)
-    },
+
     onPaste (e) {
       var clipboardData, pastedData;
 

@@ -167,6 +167,7 @@ export default new Vuex.Store({
     // 호철
     changeSearchSummonerIDs(state, arr) {
       state.searchSummonerIDs = arr
+      console.log(arr)
     },
 
     // 형래
@@ -183,41 +184,46 @@ export default new Vuex.Store({
   },
   actions: {
     // 승현, multisearch
-    getMultiSearchDatas( { commit }, userName ) {
-      axios
-        .get(SERVER_URL + `/api/multisearch/${userName}`)
-        .then(res => {
-          commit('setMultiSearchDatas', res.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    getMultiUserDatas( { commit }, userName ) {
-      axios
-        .get(SERVER_URL + `/api/profile/${userName}`)
-        .then(res => {
-          commit('setMultiUserDatas', res.data)
-        
-        })
-
-        .catch(err => {
-          console.log(err)
-        })
+    getMultiSearchDatas( { commit }, userNames ) {
+      for ( var userName of userNames ) {
+        axios
+          .get(SERVER_URL + `/api/multisearch/${userName}`)
+          .then(res => {
+            commit('setMultiSearchDatas', res.data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    },      
+    getMultiUserDatas( { commit }, userNames ) {
+      for ( var userName of userNames ) {
+        axios
+          .get(SERVER_URL + `/api/profile/${userName}`)
+          .then(res => {
+            commit('setMultiUserDatas', res.data)
+          })
+  
+          .catch(err => {
+            console.log(err)
+          })
+      }
     },
     // 승현, multiSearchRadarChartData
-    getMultiSearchRadarChartDatas( { commit }, userName ) {
-      console.log(userName)
-      axios
-      .get(SERVER_URL + `/api/summonervalue/${userName}`)
-      .then(res => {
-          // console.log(res.data)
-          commit('setMultiSearchRadarChartDatas', res.data)
-          // console.log(55)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+    getMultiSearchRadarChartDatas( { commit }, userNames ) {
+      // console.log(userName)
+      for ( var userName of userNames ) {
+        axios
+        .get(SERVER_URL + `/api/summonervalue/${userName}`)
+        .then(res => {
+            // console.log(res.data)
+            commit('setMultiSearchRadarChartDatas', res.data)
+            // console.log(55)
+          })
+          .catch((err) => {
+            console.log(err)
+          })        
+      }
     },
 
     // 승현, renewalUserData

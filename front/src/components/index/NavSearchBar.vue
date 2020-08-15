@@ -45,7 +45,7 @@ export default {
   methods: {
     onClickSearchButton() {
       this.parseInputSummonerID()
-      console.log('axios요청', this.searchSummernerIDs)
+      // console.log('axios요청', this.searchSummernerIDs)
     },
     parseInputSummonerID() {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
@@ -83,8 +83,8 @@ export default {
 
       this.searchSummernerIDs = tmpSearchSummernerIDs
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
-      console.log(1)
-      console.log(this.searchSummernerIDs)
+      // console.log(1)
+      // console.log(this.searchSummernerIDs)
       this.$router.push('/Profile/'+this.searchSummernerIDs);
     },
     onPaste (e) {
@@ -105,7 +105,7 @@ export default {
         // 붙여넣기한 데이터를 parse
         this.parseInputSummonerID()
         // 사용자가 수정이 가능하도록 input 창에 띄워줌
-        console.log(2)
+        // console.log(2)
         this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
     },
   },

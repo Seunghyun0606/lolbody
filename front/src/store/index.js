@@ -17,8 +17,46 @@ export default new Vuex.Store({
   state: {
     // 승현
     multiSearchDatas: [],
-    userDatas: [],
+    multiUserDatas: [],
     isIndex: '',
+    multiSearchRadarChartOption: {
+      data() {
+        return {
+          options: {
+            chart: {
+              type: "radar",
+              toolbar: {
+                show: false,
+              },
+            },
+            legend: {
+              show: false,
+            },
+            xaxis: {
+              categories: ['공격력', '안정성', '영향력']
+            },
+            yaxis: {
+              show: false,
+              tickAmount: 5,
+              min: 0,
+              max: 100,
+            },
+            markers: {
+              size: 3
+            }
+          },
+          series: [{
+            name: 'abc',
+            data: [10, 60, 90]
+          },
+          {
+            name: 'abc',
+            data: [50, 40, 60]
+          }]
+        }
+      },
+
+    },
     profileLineChartOption: {
         series: [
             {
@@ -117,51 +155,59 @@ export default new Vuex.Store({
     setMultiUserDatas(state, userDatas) {
       // userData는 array로 오기 때문에 sperad시킴
       // 20.07.30 userData가 자유랭크 데이터도 넘기기때문에 스프레드 시키면안됨. 단일 오브젝트만 넣습니다.
-      state.userDatas = [ ...state.userDatas, userDatas ]
-    },
-    setProfileLineChartOption(state, matchDatas) {
-        state.profileLineChartOption.series[0].data = []
-        state.profileLineChartOption.chartOptions.xaxis.categories = []
-
-        for ( let matchData of matchDatas ) {
-            if ( matchData.myTeam === 'blueTeam' ) {
-                state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.blueTeam.teammate[matchData.myIndex].kda*100)/100)
-            }
-            else {
-                state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.redTeam.teammate[matchData.myIndex].kda*100)/100)
-            }
-            state.profileLineChartOption.chartOptions.xaxis.categories.unshift(calcDate(matchData.timestamp))
-        }
-        // console.log(state.profileLineChartOption)
+      state.multiUserDatas = [ ...state.multiUserDatas, userDatas ]
     },
     // 나중에 리팩토링하자
-    setProfileRadarChartOption(state, Datas) {
-      if ( state.profileDatas.rankedRecord.mostLine === undefined) {
-        state.profileRadarChartOption.series[0].name = 'Unknown'
+    setMultiSearchRadarChartOption(state, Datas) {
+      console.log(state, Datas)
+      // console.log(1, Datas)
+      // console.log(2, state.userDatas)
+      // console.log(33, state.multiSearchRadarChartOption)
+      // // console.log(4, state.multiSearchDatas)
+
+      // if ( state.multiSearchDatas.mainLane === undefined) {
+      //   state.multiSearchRadarChartOption.series[0].name = 'Unknown'
+      //   console.log(0, state.multiSearchRadarChartOption.series[0].name)
+
         
-      }
-      else {
-        state.profileRadarChartOption.series[0].name = state.profileDatas.rankedRecord.mostLine
+      // }
+      // else {
+      //   state.multiSearchRadarChartOption.series[0].name = 'Unkown' // state.multiSearchDatas[0].mainLane
+      //   console.log(1, state.multiSearchRadarChartOption.series[0].name)
+      // }
+      // if ( state.multiSearchDatas.subLane === undefined) {
+      //   state.multiSearchRadarChartOption.series[1].name = 'Unknown'
+      // }
+      // else {
+      //   state.multiSearchRadarChartOption.series[1].name = 'Unkown' // state.multiSearchDatas[0].subLane
+      //   console.log(2, state.multiSearchRadarChartOption.series[1].name)
 
-      }
-      if ( state.profileDatas.rankedRecord.secondLine === undefined) {
+      // }
+      // state.multiSearchRadarChartOption.series[0].data = []
+      // state.multiSearchRadarChartOption.series[1].data = []
+      // for ( let index1 in Datas.lane1) {
+      //   state.multiSearchRadarChartOption.series[0].data.push(Math.round((Datas.lane1[index1]*100)*10)/10)
+      //   console.log(3, Datas.lane1)
+      // }
+      // for ( let index2 in Datas.lane2) {
+      //   state.multiSearchRadarChartOption.series[1].data.push(Math.round((Datas.lane2[index2]*100)*10)/10)
 
-        state.profileRadarChartOption.series[1].name = 'Unknown'
-      }
-      else {
-        state.profileRadarChartOption.series[1].name = state.profileDatas.rankedRecord.secondLine
+      // }
+    },
+    setProfileLineChartOption(state, matchDatas) {
+      state.profileLineChartOption.series[0].data = []
+      state.profileLineChartOption.chartOptions.xaxis.categories = []
 
+      for ( let matchData of matchDatas ) {
+          if ( matchData.myTeam === 'blueTeam' ) {
+              state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.blueTeam.teammate[matchData.myIndex].kda*100)/100)
+          }
+          else {
+              state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.redTeam.teammate[matchData.myIndex].kda*100)/100)
+          }
+          state.profileLineChartOption.chartOptions.xaxis.categories.unshift(calcDate(matchData.timestamp))
       }
-      state.profileRadarChartOption.series[0].data = []
-      state.profileRadarChartOption.series[1].data = []
-      for ( let index1 in Datas.lane1) {
-        state.profileRadarChartOption.series[0].data.push(Math.round((Datas.lane1[index1]*100)*10)/10)
-
-      }
-      for ( let index2 in Datas.lane2) {
-        state.profileRadarChartOption.series[1].data.push(Math.round((Datas.lane2[index2]*100)*10)/10)
-
-      }
+      // console.log(state.profileLineChartOption)
     },
 
     // NavSearch toggle 용도
@@ -204,55 +250,41 @@ export default new Vuex.Store({
   },
   actions: {
     // 승현, multisearch
-    async getMultiSearchDatas( { commit }, userNames ) {
-      for ( var userName of userNames ) {
-        await axios
-          .get(SERVER_URL + `/api/multisearch/${userName}`)
-          // .get(`http://localhost:8888/api/multisearch/${userName}`)
-          .then(res => {
-            commit('setMultiSearchDatas', res.data)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
-
+    getMultiSearchDatas( { commit }, userName ) {
+      axios
+        .get(SERVER_URL + `/api/multisearch/${userName}`)
+        .then(res => {
+          commit('setMultiSearchDatas', res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    async getUserDatas( { commit }, userNames ) {
-      for ( var userName of userNames ) {
-        await axios
-          .get(SERVER_URL + `/api/user/${userName}`)
-          // .get(`http://localhost:8888/user/${userName}`)
-          .then(res => {
-            // 자유랭크가 같이와서 솔로만 넣게 처리했습니다.
-            // 무조건 0번이 솔로라서 0번 기준으로 처리. 만약 없으면 그냥 널 값처리.
-              if (res.data[0].queueType === "RANKED_SOLO_5x5") {
-                commit('setMultiUserDatas', res.data[0])
-              }
-              else {
-                commit('setMultiUserDatas', { tier: "unranked", rank: ""})
+    getMultiUserDatas( { commit }, userName ) {
+      axios
+        .get(SERVER_URL + `/api/profile/${userName}`)
+        .then(res => {
+          commit('setMultiUserDatas', res.data)
+        
+        })
 
-              }
-            }
-          )
-          .catch(err => {
-            console.log(err)
-          })
-      }
+        .catch(err => {
+          console.log(err)
+        })
     },
-    // 승현, RadarChartData
-    async getRadarChartDatas( { commit }, userNames ) {
-      console.log(1)
-      for ( let userName of userNames) {
-        await axios
-          .get(SERVER_URL + `/api/summonervalue/${userName}`)
-          .then(res => {
-            commit('setProfileRadarChartOption', res.data)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-        }
+    // 승현, multiSearchRadarChartData
+    getMultiSearchRadarChartDatas( { commit }, userName ) {
+      console.log(userName)
+      axios
+      .get(SERVER_URL + `/api/summonervalue/${userName}`)
+      .then(res => {
+          // console.log(res.data)
+          commit('setMultiSearchRadarChartOption', res.data)
+          console.log(55)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // 승현, renewalUserData

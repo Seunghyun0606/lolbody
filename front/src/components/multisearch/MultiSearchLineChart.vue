@@ -1,5 +1,5 @@
 <template>
-  <LineChart type="bar" height="100" :options="chartOptions" :series="series" />
+  <LineChart height="70%" :options="chartOptions" :series="series" />
 </template>
 
 <script>
@@ -16,6 +16,7 @@ export default {
   },
   data() {
       return {
+        // height: "200",
         series: [
           {
             name: 'Lane',
@@ -29,7 +30,7 @@ export default {
             toolbar: {
               show: false,
             // 위에 툴바 없애기
-          },              
+            },
           },
           plotOptions: {
               bar: {
@@ -60,7 +61,7 @@ export default {
               formatter: function (val) {
                   return val + "%"
                   }
-                }
+              }
             }
         },
       }

@@ -1,21 +1,21 @@
 <template>
 
-  <apexchart class='move-apexchart' type="radar" width="235" :options="profileRadarChartOption.options" :series="profileRadarChartOption.series"></apexchart>
+  <MultiRadarChart class='move-apexchart' width="235" :options="multiSearchRadarChartOption.options" :series="multiSearchRadarChartOption.series"></MultiRadarChart>
 
 </template>
 
 <script>
-import apexchart from 'vue-apexcharts'
+import MultiRadarChart from 'vue-apexcharts'
 import { mapState } from 'vuex'
 
 export default {
   name: 'MultiSearchRadarChart',
   components: {
-    apexchart
+    MultiRadarChart
   },
   computed: {
     ...mapState([
-      'profileRadarChartOption',
+      'multiSearchRadarChartOption',
     ])
   },
   // data() {

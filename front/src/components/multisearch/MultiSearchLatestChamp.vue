@@ -43,7 +43,10 @@ export default {
       ]),
       laneImage () {
         var lane = this.recentGame.lane
-        return require(`@/assets/images/position/${lane}.png`)
+        if ( lane !== "NONE" ) {
+          return require(`@/assets/images/position/${lane}.png`)
+        }
+        return require(`@/assets/images/error.png`)
       },
     },
 

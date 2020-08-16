@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: {
     // 승현
     isIndex: false,
+    isMultiSearchLoading: false,
     multiSearchDatas: [],
     multiUserDatas: [],
     multiSearchRadarData: [],
@@ -99,11 +100,14 @@ export default new Vuex.Store({
     // 승현
     multiSearchRadarData(state) {
       return state.multiSearchRadarData
-    }
+    },
 
   },
   mutations: {
     // 승현
+    toggleMultiSearchLoading(state, toggle) {
+      state.isMultiSearchLoading = toggle
+    },
     setInitMultiSearchData(state) {
       state.multiSearchDatas = []
       state.multiUserDatas = []
@@ -275,17 +279,14 @@ export default new Vuex.Store({
     },
     // 승현, multiSearchRadarChartData
     getMultiSearchRadarDatas( { commit }, userName ) {
-      // console.log(userNames)
       return axios
       .get(SERVER_URL + `/api/summonervalue/${userName}`)
       .then(res => {
-          // console.log(res.data)
           commit('setMultiSearchRadarData', res.data)
-          // console.log(55)
         })
         .catch((err) => {
           console.log(err)
-        })        
+        })
     },
 
     // 승현, renewalUserData

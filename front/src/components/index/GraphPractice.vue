@@ -17,14 +17,14 @@ export default {
       indexGraphSeries: {
         idx: 0,
         pre: [
-          [60, 50, 45],
-          [45, 70, 80],
-          [80, 45, 60],
+          [10, 50, 45],
+          [65, 30, 80],
+          [10, 25, 30],
         ],
         post: [
-          [50, 90, 70],
-          [40, 60, 50],
-          [80, 75, 40],
+          [50, 90, 10],
+          [40, 30, 10],
+          [40, 75, 60],
         ]
       },
       options: {
@@ -48,11 +48,11 @@ export default {
         }
       },
       series: [{
-        name: '초반',
+        name: 'MID',
         data: [30, 60, 50]
       },
       {
-        name: '후반',
+        name: 'BOTTOM',
         data: [50, 40, 60]
       }]
     }
@@ -81,9 +81,9 @@ export default {
     }
   },
   created() {
-    // setInterval(() => {
-    //   this.changeIndexGraphSeries();
-    // }, 3000)
+    setInterval(() => {
+      this.changeIndexGraphSeries();
+    }, 1500)
   },
   mounted() {
   }

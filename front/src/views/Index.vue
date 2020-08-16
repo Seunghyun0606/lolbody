@@ -1,11 +1,19 @@
 <template>
   <v-container class="index">
-    <v-row class="index-row" justify="center" align="center">
-      <IndexLogo />
-      <IndexSearchBar />
-      <IndexIntro />
+    <v-row style="width: 900px;" class="justify-center ma-auto">
+      <v-col>
+        <IndexLogo />
+
+      </v-col>
 
     </v-row>
+    <v-row class="justify-center">
+      <v-col>
+        <IndexSearchBar />
+
+      </v-col>
+    </v-row>
+    <IndexIntro />
   </v-container>
 </template>
 
@@ -129,7 +137,14 @@ export default {
   // },
 </script>
 
-<style>
+<style scoped>
+
+.row {
+  padding: 0;
+}
+.col {
+  padding: 0;
+}
 
 .index > .index-row {
   width: 1000px;

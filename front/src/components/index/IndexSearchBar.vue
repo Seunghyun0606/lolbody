@@ -1,5 +1,5 @@
 <template>
-  <v-card style="width: 690px">
+  <v-card style="width: 690px; margin: auto">
     <v-toolbar
       color="primary"
       dark

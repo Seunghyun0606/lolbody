@@ -33,7 +33,7 @@
               {{ multiUserDatas[index].tier }} {{ multiUserDatas[index].rank }}
             </div>
             <div>
-              {{ Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
+              {{ multiSearchData.totalGame === 0 ? 0 : Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
             </div>
           </div>
 

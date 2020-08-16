@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-flex v-for="(matchData, idx) in matchDatas" :key="idx + '_matchData'">
-            <v-card class="ma-1 mb-2 vertical-align-center" :class="{ bg_win : matchData[matchData.myTeam].win, bg_fail : !matchData[matchData.myTeam].win, bg_gray : matchData.noGame}" outlined>
+            <v-card class="mx-1 mb-2 vertical-align-center" :class="{ bg_win : matchData[matchData.myTeam].win, bg_fail : !matchData[matchData.myTeam].win, bg_gray : matchData.noGame}" outlined>
                 <table height="100px">
                     <tr>
                         <td class="text-center" width="80px">

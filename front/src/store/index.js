@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import axios from 'axios'
+import queues from "@/assets/data/queues.json";
 
 Vue.use(Vuex)
 
@@ -93,15 +94,101 @@ export default new Vuex.Store({
     nowProfileDatas:{},
   },
   getters: {
-    // 형래
-    profileDatas(state){
-      return state.profileDatas;
-    },
+    
     // 승현
     multiSearchRadarData(state) {
       return state.multiSearchRadarData
     },
 
+    // 형래
+    getProfileTotalWinRateChart(state){
+        let win = 0;
+        let lose = 0;
+        for(let matchData of state.matchDatas){
+            if(matchData.noGame)
+                continue;
+            if(matchData[matchData.myTeam].win)
+                win++;
+            else
+                lose++;
+        }
+        return {'win': win, 'lose': lose, 'total': win+lose};
+    },
+    getProfileEachWinRateChart(state){
+        let arr = [];
+        let result = {};
+        for(let matchData of state.matchDatas){
+            if(matchData.noGame)
+                continue;
+            result[queues[matchData.queue].shortName]= {
+                name : queues[matchData.queue].shortName,
+                win : 0,
+                lose : 0,
+                total: 0
+            };
+        }
+        for(let matchData of state.matchDatas){
+            if(matchData.noGame)
+                continue;
+            if(matchData[matchData.myTeam].win)
+                result[queues[matchData.queue].shortName].win++;
+            else
+                result[queues[matchData.queue].shortName].lose++;
+            result[queues[matchData.queue].shortName].total++;
+        }
+        for(let idx in result){
+            arr.push(result[idx]);
+        }
+        arr.sort(function(a, b){
+            return b.total - a.total;
+        })
+        let ans = {data : [], labels: []};
+
+        for(let a in arr){
+            ans.data.push(Math.round(arr[a].win/arr[a].total*10000)/100);
+            ans.labels.push(arr[a].name);
+        }
+        return ans;
+    },
+    getProfileChampRate(state){
+        let arr = [];
+        let result = {};
+        for(let matchData of state.matchDatas){
+            if(matchData.noGame)
+                continue;
+            result[matchData[matchData.myTeam].teammate[matchData.myIndex].champ]= {
+                name : matchData[matchData.myTeam].teammate[matchData.myIndex].champ,
+                win : 0,
+                lose : 0,
+                total: 0,
+                triger: true
+            };
+        }
+        for(let matchData of state.matchDatas){
+            if(matchData.noGame)
+                continue;
+            if(matchData[matchData.myTeam].win)
+                result[matchData[matchData.myTeam].teammate[matchData.myIndex].champ].win++;
+            else
+                result[matchData[matchData.myTeam].teammate[matchData.myIndex].champ].lose++;
+            result[matchData[matchData.myTeam].teammate[matchData.myIndex].champ].total++;
+        }
+        
+        let ans = [];
+        for(let idx in result){
+            arr.push(result[idx]);
+        }
+        arr.sort(function(a, b){
+            return b.total - a.total;
+        })
+        for(let idx = 0; idx < arr.length; idx++){
+            ans.push(arr[idx]);
+            if(idx == 2)
+                break;
+        }
+        console.log(ans)
+        return ans;
+    }
   },
   mutations: {
     // 승현

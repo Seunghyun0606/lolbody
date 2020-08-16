@@ -6,9 +6,10 @@
 	<table width="1010px">
 		<tr>
 			<!-- 여기서부터 좌측 공간 -->
-			<td style="vertical-align: top" width="34%">
-				<v-card class="ma-1 mb-2 bg_card" :class="[profileDatas.tier]" outlined height="150px" :loading="triger.isLoading">
-					<img :src="imageload('tier_banner/'+profileDatas.tier+'.png')" class="profilebanner" width="135px">
+			<td style="vertical-align: top" width="332px">
+				<v-card class="ma-1 bg_card" :class="[profileDatas.tier]" outlined height="160px" :loading="triger.isLoading">
+					<img :src="imageload('tier_banner/'+profileDatas.tier+'.png')" class="profilebanner" width="135px" v-if="profileDatas.tier != null">
+                    <img :src="imageload('tier_banner/UNRANKED.png')" class="profilebanner" width="135px" v-else>
 					<!-- 유저프로필 -->
 					<v-row class="mt-6">
 						<v-col cols="4">
@@ -19,7 +20,7 @@
 								<span class="level fs-10">{{profileDatas.summonerLevel}}</span>
 							</div>
 						</v-col>
-						<v-col cols="6">
+						<v-col cols="8">
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
 								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalUserData(profileDatas.summonerName)" outlined>전적 갱신</v-btn>
@@ -36,13 +37,13 @@
 				</v-card>
 				
 				<!-- 랭크, 일반 등 -->
-				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" width="333px" algin="center">
+				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" width="332px" algin="center">
 					<ul class="options">
-						<li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
-						<li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
-                        <li><a v-bind:class="{option_action: triger.howlingAbyssActive}" @click="changeHowlingAbyss">칼바람</a></li>
+						<li><a :class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
+						<li><a :class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
+                        <li><a :class="{option_action: triger.howlingAbyssActive}" @click="changeHowlingAbyss">칼바람</a></li>
 					</ul>
-                    <RadarChart/>
+                    <!--<RadarChart/>-->
 				</v-card>
 
 				<!-- 듀오 전적이나 최근 자주한 챔피언? -->
@@ -67,7 +68,7 @@
 				<!-- RadarChart -->
 				<!-- 수정본, 전체 게임 승률 -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 bg_card float-left" width="200px" height="160px" outlined>
+					<v-card class="mx-1 mt-1 bg_card float-left" width="200px" height="160px" outlined>
 						<!-- <div class="ml-7">
 							<RadarChart/>
 						</div> -->
@@ -78,7 +79,7 @@
 				<!-- 롤비티아이 부분 -->
 				<!-- 수정본, 각 게임 모드별 승률 -->
 				<div class="d-inline-block">
-					<v-card class="ma-1 bg_card float-left" width="240px" height="160px" outlined>
+					<v-card class="mx-1 mt-1 bg_card float-left" width="240px" height="160px" outlined>
 						<!-- <div class="d-inline">
 							<span>유저 성향</span>
 						</div> -->
@@ -89,7 +90,7 @@
 
 				<!-- 수정본, 챔피언 승률 639px-->
 				<div class="d-inline-block">
-					<v-card class="ma-1 bg_card float-right" width="199px" height="160px" outlined>
+					<v-card class="mx-1 mt-1 bg_card float-right" width="199px" height="160px" outlined>
 						<ProfileChampRate/>
 					</v-card>
 				</div>
@@ -380,7 +381,7 @@ export default {
 }
 .options li {
 	float: left;
-    width: 109px;
+    width: 110px;
 }
 .options li a {
 	height: 40px;

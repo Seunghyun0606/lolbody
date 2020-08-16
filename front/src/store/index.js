@@ -13,41 +13,7 @@ export default new Vuex.Store({
     multiSearchDatas: [],
     multiUserDatas: [],
     isIndex: '',
-    multiSearchRadarData: {
-        options: {
-          chart: {
-            type: "radar",
-            toolbar: {
-              show: false,
-            },
-          },
-          legend: {
-            show: false,
-          },
-          xaxis: {
-            categories: ['공격력', '안정성', '영향력']
-          },
-          yaxis: {
-            show: false,
-            tickAmount: 5,
-            min: 0,
-            max: 100,
-          },
-          markers: {
-            size: 3
-          }
-        },
-      series: [
-        {
-          name: '초반',
-          data: [40, 40, 40]
-        },
-        {
-          name: '후반',
-          data: [90, 80, 80]
-        }
-      ]
-    },
+    multiSearchRadarData: [],
     profileLineChartOption: {
         series: [
             {
@@ -125,11 +91,12 @@ export default new Vuex.Store({
     matchDatas: [],
     nowProfileDatas:{},
   },
-  // 형래
   getters: {
+    // 형래
     profileDatas(state){
       return state.profileDatas;
     },
+    // 승현
     multiSearchRadarData(state) {
       return state.multiSearchRadarData
     }
@@ -155,23 +122,61 @@ export default new Vuex.Store({
       state.multiUserDatas = [ ...state.multiUserDatas, userDatas ]
     },
     setMultiSearchRadarData(state, Datas) {
-      state.multiSearchRadarData.series[0].name = Datas.lane1.lane
-      state.multiSearchRadarData.series[1].name = Datas.lane2.lane
+      var Options = {
+        options: {
+          chart: {
+            type: "radar",
+            toolbar: {
+              show: false,
+            },
+          },
+          legend: {
+            show: false,
+          },
+          xaxis: {
+            categories: ['공격력', '안정성', '영향력']
+          },
+          yaxis: {
+            show: false,
+            tickAmount: 5,
+            min: 0,
+            max: 100,
+          },
+          markers: {
+            size: 3
+          }
+        },
+      series: [
+        {
+          name: '초반',
+          data: [40, 40, 40]
+        },
+        {
+          name: '후반',
+          data: [90, 80, 80]
+        }
+      ]
+      }
 
-      state.multiSearchRadarData.series[0].data = []
-      state.multiSearchRadarData.series[1].data = []
+      Options.series[0].name = Datas.lane1.lane
+      Options.series[1].name = Datas.lane2.lane
+
+      Options.series[0].data = []
+      Options.series[1].data = []
       for ( var obj in Datas.lane1 ) {
         if (obj === "lane") {
           continue
         }
-        state.multiSearchRadarData.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
+        Options.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
       }
       for ( var obj2 in Datas.lane2 ) {
         if (obj2 === "lane" ) {
           continue
         }
-        state.multiSearchRadarData.series[1].data.push((Datas.lane2[obj2]*100).toFixed(0))
+        Options.series[1].data.push((Datas.lane2[obj2]*100).toFixed(0))
       }
+
+      state.multiSearchRadarData.push(Options)
     },
     
 

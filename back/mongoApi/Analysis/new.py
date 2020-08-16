@@ -40,13 +40,13 @@ badges_450 = [
     'damageSelfMitigatedPerMin',          # 감소시킨 피해량(방어막?)
     "damageDealtToTurretsPerMin",         # 타워에 준 피해량
     'timeCCingOthersPerMin',              # cc기에 맞은 총 시간
-    'neutralMinionsKilledPerMin',         # 중립몹 킬수
     'totalTimeCrowdControlDealtPerMin',   # cc기를 맞춘 총 시간
-    'visionWardsBoughtInGamePerMin',      # 핑와 구매 개수
     ]
 
 badges_420 = [
+    'neutralMinionsKilledPerMin',         # 중립몹 킬수
     'neutralMinionsKilledEnemyJunglePerMin', # 상대 정글몹 킬수
+    'visionWardsBoughtInGamePerMin',      # 핑와 구매 개수
     'wardsPlacedPerMin',                  # 와드 설치수
     'wardsKilledPerMin',                  # 와드 파괴수
 ]
@@ -57,7 +57,6 @@ def change_to_p_value(z):
 
 def z_value(d, mean, std):
     return (d - mean) / std
-
 
 
 # mongodb에 match_id를 받아서 라인구분, match_grade 저장
@@ -75,11 +74,12 @@ def update_match_data(profile_id, left, right, tier):
 
 # def calculate_match_data(tup):
 #     match_id, tier = tup
+    tmp_collection = db_root.tmp
+    del_list = ['altarsCaptured', 'altarsNeutralized', 'champLevel', 'combatPlayerScore', 'doubleKills', 'firstBloodAssist', 'firstBloodKill', 'firstInhibitorAssist', 'firstInhibitorKill', 'firstTowerAssist', 'firstTowerKill', 'goldSpent', 'goldEarned', 'inhibitorKills', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'killingSprees', 'largestCriticalStrike', 'largestKillingSpree', 'largestMultiKill', 'longestTimeSpentLiving', 'magicDamageDealt', 'magicDamageDealtToChampions', 'magicalDamageTaken', 'neutralMinionsKilledTeamJungle', 'nodeCapture', 'nodeCaptureAssist', 'nodeNeutralize', 'nodeNeutralizeAssist', 'objectivePlayerScore', 'participantId', 'pentaKills', 'perk0', 'perk0Var1', 'perk0Var2', 'perk0Var3', 'perk1', 'perk1Var1', 'perk1Var2', 'perk1Var3', 'perk2', 'perk2Var1', 'perk2Var2', 'perk2Var3', 'perk3', 'perk3Var1', 'perk3Var2', 'perk3Var3', 'perk4', 'perk4Var1', 'perk4Var2', 'perk4Var3', 'perk5', 'perk5Var1', 'perk5Var2', 'perk5Var3', 'perkPrimaryStyle', 'perkSubStyle', 'physicalDamageDealt', 'physicalDamageDealtToChampions', 'physicalDamageTaken', 'playerScore0', 'playerScore1', 'playerScore2', 'playerScore3', 'playerScore4', 'playerScore5', 'playerScore6', 'playerScore7', 'playerScore8', 'playerScore9', 'quadraKills', 'sightWardsBoughtInGame', 'teamObjective', 'totalDamageDealt', 'totalPlayerScore', 'totalScoreRank', 'tripleKills', 'trueDamageDealt', 'trueDamageDealtToChampions', 'trueDamageTaken', 'turretKills', 'unrealKills', 'win']
     for match_id in match_id_list:
-    # print(match_id, end=' ')
-    # print(os.getpid())
-        tmp_collection = db_root.tmp
+        print(match_id)
         match_data = tmp_collection.find_one({'_id': match_id})
+        # DB에 데이터가 없는 경우임
         if match_data is None: continue
 
         # 다시하기는 넘어감
@@ -92,9 +92,7 @@ def update_match_data(profile_id, left, right, tier):
         # 플레이 시간
         queue = 450 if int(match_data.get('queueId')) == 450 else 420
         stats = get_stats(queue)
-        # print(list(stats))
-        # print(stats[['position', 'tier','visionScorePerMinMean', 'wardsPlacedPerMinMean', 'wardsKilledPerMinMean']])
-        # print(stats[['position', 'tier','totalDamageDealtToChampionsPerMinMean', 'totalDamageDealtToChampionsPerMinStd']])
+        cols = save_stats_list + badges_420 + badges_450 if queue == 420 else save_stats_list + badges_450
         duration = match_data.get('gameDuration') / 60
 
         # team kill, death, assist
@@ -116,6 +114,18 @@ def update_match_data(profile_id, left, right, tier):
             team[participants_data[p].get('teamId')]['kills'] += participants_data[p].get('stats').get('kills')
             team[participants_data[p].get('teamId')]['deaths'] += participants_data[p].get('stats').get('deaths')
             team[participants_data[p].get('teamId')]['assists'] += participants_data[p].get('stats').get('assists')
+
+
+        participants_df = pd.DataFrame([data.get('stats') for data in participants_data])
+        participants_df.drop(del_list, axis=1, inplace=True)
+        if queue == 450:
+            participants_df.drop(['wardsKilled', 'wardsPlaced', 'neutralMinionsKilledEnemyJungle'], axis=1, inplace=True)
+        print(list(participants_df))
+
+        for stats in list(participants_df):
+            if stats in ['kills', 'assists', 'deaths', 'totalUnitsHealed']: continue
+            participants_df[stats] /= duration
+        print(participants_df)
 
         for participant in participants_data:
             player_data = participant.get('stats')
@@ -165,7 +175,7 @@ def update_match_data(profile_id, left, right, tier):
             if queue == 420:
                 data.update(badges_420_data)
                 data.update(badges_450_data)
-                cols = save_stats_list + badges_420 + badges_450
+                # cols = save_stats_list + badges_420 + badges_450
                 for position in ['TOP', 'JUNGLE', 'MID', 'BOTTOM', 'SUPPORT']:
                     if position == 'JUNGLE' and participant.get('spell1Id') != 11 and participant.get('spell2Id') != 11: continue
                     tier_lane_stats = stats[(stats['position'] == position) & (stats['tier'] == tier)].reset_index(drop=True)
@@ -212,7 +222,7 @@ def update_match_data(profile_id, left, right, tier):
                 player_p_value = tmp_player_p_value
             else:
                 data.update.update(badges_450_data)
-                cols = save_stats_list + badges_450
+                # cols = save_stats_list + badges_450
                 tier_lane_stats = stats[(stats['tier'] == tier)].reset_index(drop=True)
                 tmp_position = 'None'
                 tmp_player_p_value = dict()
@@ -272,8 +282,8 @@ def update_match_data(profile_id, left, right, tier):
             # print(participant['matchGrade'])
             ######################################################################333
             # print(participants_data)
-            tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
-        tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
+        #     tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
+        # tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
         # print(participants_data)
         # print(match_id)
 

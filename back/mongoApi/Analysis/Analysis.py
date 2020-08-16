@@ -50,9 +50,9 @@ save_stats_list_450 = [
         'visionWardsBoughtInGame',      # 핑와 구매 개수
         # 'wardsPlaced',                  # 와드 설치수
         # 'wardsKilled',                  # 와드 파괴수
-      'killsRatio',                   # 킬관여율
-      'deathsRatio',                  # 데스관여울
-      'killAssist',
+        'killsRatio',                   # 킬관여율
+        'deathsRatio',                  # 데스관여울
+        'killAssist',
     ]
 
 save_stats_list_420 = save_stats_list_450 + [

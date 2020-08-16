@@ -354,6 +354,8 @@ def get_match_data(match_id, tier, queue):
         # 플레이어 stats 삽입
         save_stats_list = get_save_stats_list(queue)
         for stats in get_save_stats_list(queue):
+            # if stats == 'totalDamageDealtToChampions':
+            #     print(match_participants[idx].get('stats')[stats] / (playtime/60))
             if stats == 'totalHeal':
                 if match_participants[idx].get('stats').get('totalUnitsHealed') <= 1:
                     player_in_game_stats.append(0)
@@ -448,7 +450,6 @@ def auto_mode():
             csvfile = csv.writer(file)
             save_stats_list = get_save_stats_list(queue)
             columns = ['account_id', 'summoner_name', 'tier', 'match_id', 'queue', 'team', 'position', 'playtime', 'spell1', 'spell2'] + save_stats_list + ['killsRatio', 'deathsRatio'] + cors_list
-            # columns = ['account_id', 'summoner_name', 'tier', 'match_id', 'team', 'position', 'playtime', 'spell1', 'spell2'] + save_stats_list + ['killsRatio', 'deathsRatio'] + cors_list
             csvfile.writerow(columns)
             print(len(queue_df))
             for idx, match_id in enumerate(queue_df['match']):
@@ -463,8 +464,6 @@ def auto_mode():
                 if not idx % 20:
                     API.key_chage()
     return
-    
-    # player_in_game_data_list tier별로 csv파일로 저장
 
 
 if __name__ == '__main__':

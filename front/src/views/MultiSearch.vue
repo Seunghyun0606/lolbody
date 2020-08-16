@@ -16,7 +16,7 @@
 
 
       <!-- 반복되어야할 그리드 (5인 멀티서치 정보) -->
-      <div class="grid grid2 align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index">
+      <div class="grid grid2 align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index" @click="userProfile(multiSearchData.summonerName)">
         <div class="grid-body align-items-center">
 
           <!-- 랭크 -->
@@ -49,7 +49,7 @@
           </div>
         </div>
         <!-- 레이더차트 컴포넌트 -->
-        <div>
+        <div class="disabled">
           <MultiSearchRadarChart :index="index"/>
         </div>
 
@@ -81,6 +81,12 @@
 
     </div>
   </v-row>
+  <v-row class="justify-center">
+    <v-col>
+      <MultiLoading :loading="isMultiSearchLoading" :color="color" :size="size"></MultiLoading>
+
+    </v-col>
+  </v-row>
 </v-container>
 </template>
 
@@ -92,6 +98,8 @@ import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
 import MultiSearchBedge from "@/components/multisearch/MultiSearchBedge"
 import MultiSearchBar from "@/components/multisearch/MultiSearchBar"
+import MultiLoading from '@/components/multisearch/MultiLoading.vue'
+
 
 // import { mapActions } from "vuex"
 import { mapState } from "vuex"
@@ -106,20 +114,29 @@ export default {
     MultiSearchRadarChart,
     MultiSearchBedge,
     MultiSearchBar,
+    MultiLoading,
   },
   data() {
     return {
       multiHeader: [ "소환사 정보", "레이더 차트", "포지션 통계", "최근 전적", "최근 챔피언", "모스트 챔피언" ],
+      size: "50px",
+      color: "grey",
     }
   },
   computed: {
     ...mapState([
       "multiSearchDatas",
       "multiUserDatas",
+      "isMultiSearchLoading",
     ]),
     ...mapGetters([
     ]),
     
+  },
+  methods: {
+    userProfile(userName) {
+      this.$router.push('/Profile/'+userName)
+    }
   },
   created() {
     this.$store.commit('toggleNavSearch', false)
@@ -149,9 +166,6 @@ export default {
 .align-items-center {
   align-items: center;
 }
-/* 
-.multi {
-} */
 
 .grid {
   display: grid;
@@ -165,6 +179,11 @@ export default {
 
 .grid2 {
   grid-template-rows: 90px;
+}
+
+.grid2:not(.disabled):hover {
+  cursor: pointer;
+  background-color: #f0f0f0;
 }
 
 .grid > .grid-header {

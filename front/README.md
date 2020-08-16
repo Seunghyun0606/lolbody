@@ -12,6 +12,7 @@
 - material-design-icons-iconfont
   - yarn add material-design-icons-iconfont -D
 - vuewordcloud ( MIT license )
+- vue-spinner ( MIT license )
 
 ## Project setup
 ```

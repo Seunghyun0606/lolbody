@@ -52,9 +52,10 @@ export default {
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로
       // console.log(0, this.inputSummonerID) 
       let tmpSearchSummernerIDs = this.inputSummonerID.replace(/(\n|\r\n)/g, ',').split(',')
-      if ( tmpSearchSummernerIDs.length === 2 ) {
-        tmpSearchSummernerIDs.pop()
-      }
+      // console.log(tmpSearchSummernerIDs)
+      // if ( tmpSearchSummernerIDs.length === 2 ) {
+      //   tmpSearchSummernerIDs.pop()
+      // }
       // console.log(1, tmpSearchSummernerIDs)
       // // 따옴표로 구분된 아이디 Array
       // searchSummernerID = this.inputSummonerID.split('\n')

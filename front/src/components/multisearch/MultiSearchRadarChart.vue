@@ -1,7 +1,7 @@
 <template>
 
   <!-- <MultiRadarChart class='move-apexchart' type="radar" width="235" :options="options" :series="series"></MultiRadarChart> -->
-  <apexchart class="move-apexchart" type="radar" width="235" :options="multiSearchRadarData.options" :series="multiSearchRadarData.series"></apexchart>
+  <apexchart class="move-apexchart" type="radar" width="235" :options="multiSearchRadarData[index].options" :series="multiSearchRadarData[index].series"></apexchart>
 
 </template>
 

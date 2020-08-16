@@ -33,14 +33,14 @@
               {{ multiUserDatas[index].tier }} {{ multiUserDatas[index].rank }}
             </div>
             <div>
-              {{ Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
+              {{ multiSearchData.totalGame === 0 ? 0 : Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
             </div>
           </div>
 
           <!-- 가장 많이가는 라인 -->
           <div class="grid-body-bot-left">
-            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.mainLane}.png`)" alt="mainLane">
-            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.subLane}.png`)" alt="subLane">
+            <img class="lane-width" :src="multiSearchData.mainLane !== 'NONE' ? require(`@/assets/images/position/${multiSearchData.mainLane}.png`) : require(`@/assets/images/error.png`)" alt="mainLane">
+            <img class="lane-width" :src="multiSearchData.subLane !== 'NONE' ? require(`@/assets/images/position/${multiSearchData.subLane}.png`) : require(`@/assets/images/error.png`)" alt="subLane">
           </div>
 
           <!-- 배지 칩으로 넣어야함 // 현재 더미데이터, 나중에는 서버에서 받아와서 for문 돌려야함 -->
@@ -98,32 +98,31 @@ import { mapState } from "vuex"
 import { mapGetters } from  "vuex"
 
 export default {
-    name: "MultiSearch",
-    components: {
-      MultiSearchLineChart,
-      MultiSearchLatestChamp,
-      MultiSearchMostChamp,
-      MultiSearchRadarChart,
-      MultiSearchBedge,
-      MultiSearchBar,
-    },
-    data() {
-      return {
-        multiHeader: [ "소환사 정보", "레이더 차트", "포지션 통계", "최근 전적", "최근 챔피언", "모스트 챔피언" ],
-      }
-    },
-    computed: {
-      ...mapState([
-        "multiSearchDatas",
-        "multiUserDatas",
-        "multiSearchRadarDatas",
-      ]),
-      ...mapGetters([
-      ]),
-      
-    },
+  name: "MultiSearch",
+  components: {
+    MultiSearchLineChart,
+    MultiSearchLatestChamp,
+    MultiSearchMostChamp,
+    MultiSearchRadarChart,
+    MultiSearchBedge,
+    MultiSearchBar,
+  },
+  data() {
+    return {
+      multiHeader: [ "소환사 정보", "레이더 차트", "포지션 통계", "최근 전적", "최근 챔피언", "모스트 챔피언" ],
+    }
+  },
+  computed: {
+    ...mapState([
+      "multiSearchDatas",
+      "multiUserDatas",
+    ]),
+    ...mapGetters([
+    ]),
+    
+  },
 
-  }
+}
     
 </script>
 

@@ -143,7 +143,7 @@ export default {
 		ProfileEachWinRateChart,
 		ProfileChampRate,
 
-		ProfileLineChart,
+		// ProfileLineChart,
 		// RadarChart:() => ({
     //         component: import("@/components/profile/ProfileRadarChart"),
     //         loading: Loading,

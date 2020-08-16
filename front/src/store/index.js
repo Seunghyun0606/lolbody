@@ -163,9 +163,8 @@ export default new Vuex.Store({
       for ( var obj in Datas.lane1 ) {
         if (obj === "lane") {
           continue
-            state.multiSearchRadarData.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
-        // console.log(this.multiSearchRadarData.lane1[obj])
         }
+        state.multiSearchRadarData.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
       }
       for ( var obj2 in Datas.lane2 ) {
         if (obj2 === "lane" ) {
@@ -192,22 +191,6 @@ export default new Vuex.Store({
 
     },
 
-
-    setProfileLineChartOption(state, matchDatas) {
-      state.profileLineChartOption.series[0].data = []
-      state.profileLineChartOption.chartOptions.xaxis.categories = []
-
-      for ( let matchData of matchDatas ) {
-          if ( matchData.myTeam === 'blueTeam' ) {
-              state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.blueTeam.teammate[matchData.myIndex].kda*100)/100)
-          }
-          else {
-              state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.redTeam.teammate[matchData.myIndex].kda*100)/100)
-          }
-          state.profileLineChartOption.chartOptions.xaxis.categories.unshift(calcDate(matchData.timestamp))
-      }
-      // console.log(state.profileLineChartOption)
-    },
 
     // NavSearch toggle 용도
     toggleNavSearch(state, toggle) {

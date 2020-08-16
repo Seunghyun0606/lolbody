@@ -49,7 +49,7 @@ export default {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로
       let tmpSearchSummernerIDs = this.inputSummonerID.replace(/(\n|\r\n)/g, ',').split(',')
-      console.log(tmpSearchSummernerIDs)
+      // console.log(tmpSearchSummernerIDs)
       // // 따옴표로 구분된 아이디 Array
       // searchSummernerID = this.inputSummonerID.split('\n')
 

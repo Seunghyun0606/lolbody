@@ -1,6 +1,6 @@
 <template>
     <div>
-    <apexchart class='move-apexchart' type="radar" width="350" :options="chartOptions" :series="series.series" v-if="this.profileRadarChartOption.series[0].name != null"></apexchart>
+    <apexchart class='move-apexchart' type="radar" width="500" :options="chartOptions" :series="series.series" v-if="this.profileRadarChartOption.series[0].name != null"></apexchart>
     <div v-else> 전적이 없습니다. </div>
     </div>
 </template>
@@ -67,7 +67,7 @@ export default {
 
 .move-apexchart {
   position: relative;
-  left: -70px;
+  left: -90px;
 }
 
 </style>

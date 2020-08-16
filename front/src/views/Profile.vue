@@ -3,44 +3,46 @@
 	<v-row align="center" justify="center">
 	<v-app id="sandbox">
 	<v-main>
-	<table width="1000px" v-if="profileDatas != '' && matchDatas != ''">
+	<table width="1010px">
 		<tr>
 			<!-- 여기서부터 좌측 공간 -->
 			<td style="vertical-align: top" width="34%">
-				<v-card class="ma-1 mb-2 bg_card"  outlined height="150px" :loading="triger.isLoading">
-					
+				<v-card class="ma-1 mb-2 bg_card" :class="[profileDatas.tier]" outlined height="150px" :loading="triger.isLoading">
+					<img :src="imageload('tier_banner/'+profileDatas.tier+'.png')" class="profilebanner" width="135px">
 					<!-- 유저프로필 -->
-					<v-row>
-						<v-col cols="3">
-							<div class="avatar mt-3 ml-3 text-center">
+					<v-row class="mt-6">
+						<v-col cols="4">
+                            <div class="avatar mt-1 ml-3 text-center">
 								<v-avatar size="70">
 									<v-img :src="imageload('profileicon/'+profileDatas.profileIconId+'.png')" alt="icon" />
 								</v-avatar>
 								<span class="level fs-10">{{profileDatas.summonerLevel}}</span>
 							</div>
 						</v-col>
-						<v-col cols="8">
+						<v-col cols="6">
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
-								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalUserData(profileDatas.summonerName)">전적 갱신</v-btn>
-								<span class="leastUpdate fs-10">최근 업데이트: {{ updateTime }}</span>
+								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalUserData(profileDatas.summonerName)" outlined>전적 갱신</v-btn>
+								<span class="fs-10 d-block">최근 업데이트: {{ updateTime }}</span>
 							</div>
 						</v-col>
-					</v-row>
-
-					<!-- 배지 컴포넌트가 들어가야함. -->
-					<v-row>
-						<ProfileBedge class="ml-2"/>
+                        <!--<v-col cols="1">
+                            <v-avatar size="45" class="profiletier">
+                                <v-img :src="imageload('tier/'+profileDatas.tier+'.png')" />
+                            </v-avatar>
+                            <img :src="imageload('tier/'+nowProfileDatas.src+'.png')" class="mt-4 d-block mx-auto" height= "40px" />
+                        </v-col>-->
 					</v-row>
 				</v-card>
 				
 				<!-- 랭크, 일반 등 -->
-				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" algin="center">
+				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" width="333px" algin="center">
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
 						<li><a v-bind:class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
+                        <li><a v-bind:class="{option_action: triger.howlingAbyssActive}" @click="changeHowlingAbyss">칼바람</a></li>
 					</ul>
-                    <ProfileGameData/>
+                    <RadarChart/>
 				</v-card>
 
 				<!-- 듀오 전적이나 최근 자주한 챔피언? -->
@@ -52,19 +54,15 @@
 			</td>
 			<!-- 여기서부터 우측 공간 -->
 			<td style="vertical-align: top">
-				<v-card class="text-center ma-1 mb-2 bg_card" outlined>
+				<!--<v-card class="text-center ma-1 mb-2 bg_card" outlined>
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">KDA</a></li>
 						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
 					</ul>
-
-					<!-- LineChart -->
 					<div class="px-5">
-
 						<ProfileLineChart/>
-
 					</div>
-				</v-card>
+				</v-card>-->
 
 				<!-- RadarChart -->
 				<!-- 수정본, 전체 게임 승률 -->
@@ -89,23 +87,23 @@
 				</div>
 
 
-				<!-- 수정본, 챔피언 승률 634px-->
+				<!-- 수정본, 챔피언 승률 639px-->
 				<div class="d-inline-block">
-					<v-card class="ma-1 bg_card float-right" width="194px" height="160px" outlined>
+					<v-card class="ma-1 bg_card float-right" width="199px" height="160px" outlined>
 						<ProfileChampRate/>
 					</v-card>
 				</div>
 
-				<!-- 게임 기록 부분 -->
-				<ProfileGameHistory/>
-                <v-btn class="mx-1 mb-2" width="649px" height="50px" @click="getMatchDatas(++numOfMatch)" outlined>
-                    더보기
-                </v-btn>
+                <v-container class="gamehistory">
+                    <ProfileGameHistory/>
+                    <v-btn class="mx-1 mb-2" width="649px" height="50px" @click="getMatchDatas(++numOfMatch)" outlined>
+                        더보기
+                    </v-btn>
+                </v-container>
 			</td>
 		</tr>
 	</table>
-    <v-card v-if="triger.isLoading" :loading="triger.isLoading" class="text-center" width="1000px" height="50px">Loading</v-card>
-    <p v-if="profileDatas == '' || matchDatas == ''">등록되지 않은 소환사입니다.</p>
+    
 	</v-main>
 	</v-app>
 	</v-row>
@@ -113,10 +111,12 @@
 </template>
 
 <script>
-import ProfileLineChart from '@/components/profile/ProfileLineChart';
+//import ProfileLineChart from '@/components/profile/ProfileLineChart';
 //import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
 //import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
-import ProfileBedge from "@/components/profile/ProfileBedge";
+
+//import ProfileBedge from "@/components/profile/ProfileBedge";
+
 import Loading from "@/components/profile/Loading";
 import LoadError from "@/components/profile/LoadError";
 //import ProfileGameData from "@/components/profile/ProfileGameData";
@@ -143,7 +143,7 @@ export default {
 		ProfileEachWinRateChart,
 		ProfileChampRate,
 
-		ProfileLineChart,
+		// ProfileLineChart,
 		// RadarChart:() => ({
     //         component: import("@/components/profile/ProfileRadarChart"),
     //         loading: Loading,
@@ -158,14 +158,14 @@ export default {
             delay: 0,
             timeout: 3000
         }),
-        ProfileBedge,
-        ProfileGameData:() => ({
-            component: import("@/components/profile/ProfileGameData"),
-            loading: Loading,
-            error: LoadError,
-            delay: 0,
-            timeout: 3000
-        }),
+        //ProfileBedge,
+        //ProfileGameData:() => ({
+        //    component: import("@/components/profile/ProfileGameData"),
+        //    loading: Loading,
+        //    error: LoadError,
+        //    delay: 0,
+        //    timeout: 3000
+        //}),
 	},
 	data(){
         return {
@@ -174,6 +174,7 @@ export default {
                 LPActive: true,
                 nomalGameActive : false,
                 rankGameActive : true,
+                howlingAbyssActive : false,
                 isLoading : true
             },
             //now:{},
@@ -246,7 +247,7 @@ export default {
                 userName: this.profileDatas.summonerName, 
                 num : n
             });
-            console.log(this.matchDatas);
+            this.$store.commit('setProfileLineChartOption', this.matchDatas);
 		},
 		
 		// radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
@@ -268,6 +269,7 @@ export default {
 		changeNomarlGame(){
 			this.triger.nomalGameActive = true;
             this.triger.rankGameActive = false;
+            this.triger.howlingAbyssActive = false;
             this.$store.commit('setNowProfileDatas', this.profileDatas.blindRecord);
 			//this.nowProfileDatas = this.profileDatas.blindRecord;
 			this.nowProfileDatas.src = 'unranked';
@@ -276,11 +278,17 @@ export default {
 		changeRankGame(){
 			this.triger.nomalGameActive = false;
             this.triger.rankGameActive = true;
+            this.triger.howlingAbyssActive = false;
             this.$store.commit('setNowProfileDatas', this.profileDatas.rankedRecord);
 			//this.nowProfileDatas = this.profileDatas.rankedRecord;
 			this.nowProfileDatas.src = this.profileDatas.tier;
 			this.nowProfileDatas.rank = this.profileDatas.rank;
-		},
+        },
+        changeHowlingAbyss(){
+            this.triger.nomalGameActive = false;
+            this.triger.rankGameActive = false;
+            this.triger.howlingAbyssActive = true;
+        },
 		changeLP(){
 			this.triger.LPActive = true;
 			this.triger.totalPointActive = false;
@@ -312,20 +320,36 @@ export default {
 	padding : 0px !important;
 	margin : 0px !important;
 }
+.gamehistory{
+    overflow-y: scroll;
+    height: 660px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.gamehistory::-webkit-scrollbar {
+    display: none;
+}
 .v-avatar {
 	border : rgb(200, 170, 110) 1px solid;
 }
 .avatar{
 	height: 84px;
 }
+.profilebanner{
+    position: absolute;
+    left: -6px;
+    top: 15px;
+}
 .level {
+    display: inline-block;
+    width: 30px;
 	border : gold 1px solid;
 	border-radius: 50px;
-	padding: 2px 5px 2px 5px !important;
+	padding: 0 !important;
 	color:gold;
 	font-weight: bold;
-	position: relative;
-	top: -15px;
+	position: relative !important;
+	top: -15px !important;
 	background-color: rgb(26, 25, 25);
 }
 .refresh-btn {
@@ -353,7 +377,7 @@ export default {
 }
 .options li {
 	float: left;
-	width: 100px;
+    width: 109px;
 }
 .options li a {
 	height: 40px;
@@ -373,4 +397,31 @@ export default {
 	box-shadow: 2px 2px 2px rgb(161, 161, 161) !important;
 }
 
+.IRON {
+    border :rgb(42, 39, 40) solid 1px;
+}
+.BRONZE {
+    border :rgb(205, 175, 140) solid 1px;
+}
+.SILVER {
+    border :rgb(172, 190, 196) solid 1px;
+}
+.GOLD {
+    border :rgb(237, 197, 106) solid 1px;
+}
+.PLATINUM {
+    border :rgb(150, 201, 200) solid 1px;
+}
+.DIAMOND {
+    border :rgb(224, 138, 249) solid 1px;
+}
+.MASTER {
+    border :rgb(84, 41, 112) solid 1px;
+}
+.GRANDMASTER {
+    border :rgb(255, 49, 49) solid 1px;
+}
+.CHALLENGER {
+    border :rgb(24, 136, 255) solid 1px;
+}
 </style> 

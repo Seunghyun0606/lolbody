@@ -44,6 +44,15 @@ export default {
                         showDuplicates: false,
                         style: {
                             fontSize: '10px',
+                        },
+                        formatter: function(value) {
+                            if(value == undefined)
+                                return null;
+                            const timestamp =  new Date(parseInt(value.substring(0, 13)));
+                            const month = new Date(timestamp).getMonth() + 1 + '월 '
+                            const day = new Date(timestamp).getDate() + '일 '
+                            // let hour = new Date(timestamp).getHours() + '시'
+                            return month + day // + hour
                         }
                     },
                     tickAmount: 3,
@@ -54,6 +63,36 @@ export default {
                     title: {
                         text: this.profileLineChartOption.series[0].name
                     },
+                    tickAmount: 5,
+                    max: 10,
+                    forceNiceScale: true,
+                    labels: {
+                        show : true,
+                        formatter: (value) => { 
+                            if(value >= 10 )
+                                return '10+';
+                            else
+                                return value;
+                        },
+                    },
+                },
+                tooltip:{
+                    custom: function({series, seriesIndex, dataPointIndex, w}) {
+                        console.log(series)
+                        console.log(w.globals.labels[dataPointIndex])
+                        return '<div class="arrow_box">' +
+                        '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
+                        '</div>'
+                    }
+                    //x: {
+                    //    formatter: (value, {series, seriesIndex, dataPointIndex}) => { 
+                    //        console.log(series)
+                    //        console.log(seriesIndex)
+                    //        console.log(dataPointIndex)
+                    //        console.log(value)
+                    //        return value
+                    //    },
+                    //},
                 }
             };
         },

@@ -7,12 +7,6 @@ Vue.use(Vuex)
 
 const SERVER_URL = 'https://lolbody.gq'
 
-function calcDate(timestamp) {
-    let month = new Date(timestamp).getMonth() + 1 + '월 '
-    let day = new Date(timestamp).getDate() + '일 '
-    // let hour = new Date(timestamp).getHours() + '시'
-    return month + day // + hour
-}
 export default new Vuex.Store({
   state: {
     // 승현
@@ -104,9 +98,9 @@ export default new Vuex.Store({
                 title: {
                     text: 'KDA'
                 },
-            // tickAmount: 5,
-            // min: 0,
-            // max: 10
+                // tickAmount: 5,
+                // min: 0,
+                // max: 10
             }
         },
     },
@@ -169,9 +163,9 @@ export default new Vuex.Store({
       for ( var obj in Datas.lane1 ) {
         if (obj === "lane") {
           continue
-        }
-        state.multiSearchRadarData.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
+            state.multiSearchRadarData.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
         // console.log(this.multiSearchRadarData.lane1[obj])
+        }
       }
       for ( var obj2 in Datas.lane2 ) {
         if (obj2 === "lane" ) {
@@ -179,7 +173,22 @@ export default new Vuex.Store({
         }
         state.multiSearchRadarData.series[1].data.push((Datas.lane2[obj2]*100).toFixed(0))
       }
+    },
+    
 
+
+    setProfileLineChartOption(state, matchDatas) {
+        state.profileLineChartOption.series[0].data = [];
+        state.profileLineChartOption.chartOptions.xaxis.categories = [];
+        for ( let matchData of matchDatas ) {
+            if(matchData.noGame)
+                continue;
+            if(matchData[matchData.myTeam].teammate[matchData.myIndex].kda == 'Infinity' || matchData[matchData.myTeam].teammate[matchData.myIndex].kda >= 10)
+                state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: 10});
+            else
+                state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100});
+            state.profileLineChartOption.chartOptions.xaxis.categories.unshift(matchData.timestamp + matchData[matchData.myTeam].teammate[matchData.myIndex].champ)
+        }
 
     },
 
@@ -233,6 +242,9 @@ export default new Vuex.Store({
         state.matchDatas = [];
     },
     setMatchDatas(state, matchDatas){
+        for(let idx = 0; idx < matchDatas.length; idx++)
+            matchDatas[idx].display = false;
+        
         state.matchDatas = state.matchDatas.concat(matchDatas);
     },
     setNowProfileDatas(state, data){
@@ -309,14 +321,11 @@ export default new Vuex.Store({
         // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
         .then(res => {
             commit('setMatchDatas', res.data)
-            // 라인차트 데이터
-            commit('setProfileLineChartOption', res.data)
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);
             }
             console.log(error)
-            commit('setProfileLineChartOption', '')
         });
     },
     getProfileRadarChartDatas( { commit }, userNames ) {

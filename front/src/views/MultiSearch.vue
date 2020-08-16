@@ -121,6 +121,9 @@ export default {
     ]),
     
   },
+  created() {
+    this.$store.commit('toggleNavSearch', false)
+  }
 
 }
     

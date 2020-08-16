@@ -12,7 +12,7 @@ export default new Vuex.Store({
     // 승현
     multiSearchDatas: [],
     multiUserDatas: [],
-    isIndex: '',
+    isIndex: false,
     multiSearchRadarData: [],
     profileLineChartOption: {
         series: [

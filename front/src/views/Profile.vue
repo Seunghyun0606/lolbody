@@ -311,7 +311,10 @@ export default {
                 return 0;
             }
         }
-	}
+	},
+	created() {
+    this.$store.commit('toggleNavSearch', false)
+  }
 }
 </script>
 

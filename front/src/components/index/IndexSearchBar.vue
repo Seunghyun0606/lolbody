@@ -99,26 +99,24 @@ export default {
       // this.searchSummernerIDs = tmpSearchSummernerIDs
 
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
+
       // 1개면 유저프로필. 1개이상이면 멀티서치.
       if (tmpSearchSummernerIDs.length > 1) {
-        this.getMultiSearchDatas(tmpSearchSummernerIDs)
+        this.getData(tmpSearchSummernerIDs)
         this.$router.push('MultiSearch')
       }
       else {
-        // console.log(3, tmpSearchSummernerIDs)
         this.$router.push('/Profile/'+tmpSearchSummernerIDs);
 
       }
-      // console.log(1)
-      // console.log(this.searchSummernerIDs)
-      // console.log(tmpSearchSummernerIDs)
+
     },
-    getMultiSearchDatas(tmpSearchSummernerIDs) {
-      this.$store.dispatch('getMultiSearchDatas', tmpSearchSummernerIDs)
-      this.getUserDatas(tmpSearchSummernerIDs)
-    },
-    getUserDatas(tmpSearchSummernerIDs) {
-      this.$store.dispatch('getUserDatas', tmpSearchSummernerIDs)
+    async getData(tmpSearchSummernerIDs) {
+      for ( var ID of tmpSearchSummernerIDs ) {
+        await this.$store.dispatch('getMultiSearchRadarDatas', ID)
+        await this.$store.dispatch('getMultiUserDatas', ID)
+        await this.$store.dispatch('getMultiSearchDatas', ID)
+      }
     },
     onPaste (e) {
         var clipboardData, pastedData;
@@ -193,6 +191,12 @@ export default {
   font-size: 40px;
   color: white;
 }
+
+
+input:focus {
+  outline:none;
+}
+
 
 
 </style>

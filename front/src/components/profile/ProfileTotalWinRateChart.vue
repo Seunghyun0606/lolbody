@@ -6,7 +6,6 @@
 
 <script>
 import DonutChart from 'vue-apexcharts'
-
 // https://apexcharts.com/docs/chart-types/pie-donut/ 참고하세요
 
 export default {
@@ -14,16 +13,17 @@ export default {
   components: {
     DonutChart,
   },
-  data() {
-    return {
-      series: [5, 5],
-      chartOptions: {
-
-        colors: ['#1A73E8', '#B32824'], // 호버했을때 데이터 레이블 색깔
-        chart: {
-          offsetY: 10,
-          type: 'donut',
-        },
+  computed: {
+      series() {
+          return [this.$store.getters.getProfileTotalWinRateChart.win, this.$store.getters.getProfileTotalWinRateChart.lose]
+      },
+      chartOptions(){
+        return {
+            colors: ['#1A73E8', '#B32824'], // 호버했을때 데이터 레이블 색깔
+                chart: {
+                    offsetY: 10,
+                    type: 'donut',
+                },
         dataLabels: {
           enabled: false
         },
@@ -34,7 +34,6 @@ export default {
           show: false,
         },
         labels: ["승리", "패배"],
-
         plotOptions: {
           pie: {
             donut: {
@@ -70,15 +69,11 @@ export default {
                   fontFamily: 'Helvetica, Arial, sans-serif',
 
                   color: 'black',
-                  formatter: function(val) {
-                    let nums = val.config.series
-                    let result = 0
-                    for ( let i in nums ) {
-                      result += nums[i]
-
+                  formatter: function (w) {
+                        return w.globals.seriesTotals.reduce((a, b) => {
+                        return a + b
+                        }, 0)
                     }
-                    return result // " total 게임 나타낼 때"
-                  }
                 }
               },
             }
@@ -95,8 +90,8 @@ export default {
             // }
           }
         }]
-      },
-    }
+      } //return
+    }//chartoption
   },
 }
 </script>

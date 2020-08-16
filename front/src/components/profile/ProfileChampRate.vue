@@ -4,14 +4,14 @@
       <v-col class="align-self-center mt-3">
 
         <!-- row에서 for 문 돌려서 3개 챔피언 뽑으시고, 챔피언 고유값이나 for문의 index값으로 hover 이벤트를 구분해주세요 아래 3개는 디자인 예시입니다. -->
-        <v-row class="justify-space-around" v-for="val in [0, 1, 2]" :key="val">
-          <v-col cols=3 @mouseenter="mouseOn(val)" @mouseleave="mouseOn(val)">
-            <img style="position: absolute; z-index: 5" :class="[{ dis: init[val] }, 'icon', 'small', 'd-flex']" :src="require(`@/assets/images/error.png`)" alt="temporarily">
-            <ProfileChampWinRateChart/>
+        <v-row class="justify-space-around" v-for="(val, idx) in champs" :key="val.name + idx">
+          <v-col cols=3 @mouseenter="mouseOn(idx)" @mouseleave="mouseOn(idx)">
+            <img :src="imageload('champion/'+val.name+'.png')" style="position: absolute; z-index: 5" :class="[{ dis: init[idx] }, 'icon', 'small', 'd-flex']" alt="temporarily">
+            <ProfileChampWinRateChart :win="val.win" :lose="val.lose"/>
           </v-col>
           <v-col cols=4 class="mt-2">
             <div>
-              1승 1패
+              {{ val.win }}승 {{ val.lose }}패
             </div>  
           </v-col>
         </v-row>
@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      init: [false, false, false],
+        init: [false, false, false],
       init1: false,
       mouseOver: {
         display: "none !important;",
@@ -59,6 +59,11 @@ export default {
 
       
     }
+  },
+  computed:{
+      champs(){
+          return this.$store.getters.getProfileChampRate;
+      }
   },
   // computed: {
   //   init2() {
@@ -75,14 +80,21 @@ export default {
   // },
   methods: {
     mouseOn(val) {
-      console.log(val)
+    //  console.log(val)
 
-      console.log(this.init[val])
+    //  console.log(this.init[val])
       this.init[val] = !this.init[val]
-      console.log(this.init[val])
+    //  console.log(this.init[val])
 
       this.init1 = !this.init1
 
+    },
+    imageload(URL){
+        try{
+            return require('@/assets/images/'+ URL);
+        }catch{
+            return require('@/assets/images/error.png');
+        }
     },
   },
 

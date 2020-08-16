@@ -12,15 +12,15 @@ export default {
   components: {
     DonutChart,
   },
-  data() {
-    return {
-      series: [30, 50, 50, 100],
-
-      chartOptions: {
+  computed: {
+      series(){
+          return this.$store.getters.getProfileEachWinRateChart.data
+      },
+      chartOptions() {
+          return {
         tooltip: {
           enabled: true,  // 호버시 툴팁입니다.
           theme: "dark",
-          
         },
         // colors: ['#000'], // 여기에 컬러 넣으세요
         chart: {
@@ -31,7 +31,7 @@ export default {
           offsetX: -15,
           offsetY: 9,
         },
-        labels: ['솔랭', '자랭', '일반', '기타'],
+        labels: this.$store.getters.getProfileEachWinRateChart.labels,
 
         plotOptions: {
           radialBar: {
@@ -48,11 +48,10 @@ export default {
               show: false,
             }
           }
-        },
-      },
-    }
+        }
+      }
+    }//chartoption
   }
-
 }
 </script>
 

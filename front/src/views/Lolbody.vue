@@ -245,6 +245,9 @@ export default {
   },
   computed: {
     ...mapState(['profileDatas'])
+  },
+  created() {
+    this.$store.commit('toggleNavSearch', false)
   }
 
 }

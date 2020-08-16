@@ -1,34 +1,37 @@
 <template>
-  <v-card style="width: 690px; margin: auto">
-    <v-toolbar
-      color="primary"
-      dark
-      flat
-    >
-      <v-text-field
-        id="paste"
-        append-icon=""
-        class="mx-2"
-        flat
-        hide-details
-        label="Summoner ID"
-        prepend-inner-icon="search"
-        solo-inverted
-        v-model="inputSummonerID"
-        @paste="onPaste"
-        @keyup.enter="onClickSearchButton"
-      ></v-text-field>
-      
-      <v-btn 
-      small 
-      color="primary lighten-2"
-      @click="onClickSearchButton"
-      >
-      Search
-      </v-btn>
 
-    </v-toolbar>
-  </v-card>
+  <v-container class="multi-search-container">
+    <v-row class="multi-search-row">
+      <v-col style="padding: 6px;">
+        <input type="text"
+          tabindex="1" 
+          class="multi-search-col2"
+          v-model="inputSummonerID"
+          @paste="onPaste"
+          placeholder="Summoner ID"
+          id="paste"
+          @keyup.enter="onClickSearchButton"        
+        >
+
+        <!-- <textarea
+          tabindex="1"
+          class="multi-search-col2"
+          v-model="inputSummonerID"
+          @paste="onPaste"
+          placeholder="Summoner ID"
+          id="paste"
+          @keyup.enter="onClickSearchButton"
+
+
+        ></textarea> -->
+      </v-col>
+
+      <v-col cols=1 class="multi-search-col3" @keyup.enter='onClickSearchButton' @click="onClickSearchButton" tabindex="2" >
+        <v-icon class="icon-place">search</v-icon>
+      </v-col>
+    </v-row>
+  </v-container>
+
 </template>
 
 <script>
@@ -61,6 +64,11 @@ export default {
       // // 따옴표로 구분된 아이디 Array
       // searchSummernerID = this.inputSummonerID.split('\n')
 
+      // 인덱스에서 엔터 거르는로직 input으로 만들면 필요없음
+      // if ( tmpSearchSummernerIDs.length === 2 ) {
+      //   tmpSearchSummernerIDs.pop()
+      // }
+
       // 특수문자 정규표현식
       const regExp = /[{}[\]/?.,;:|)*~`!^-_+<>@#$%&\\=('"]/gi;
 
@@ -91,26 +99,24 @@ export default {
       // this.searchSummernerIDs = tmpSearchSummernerIDs
 
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
+
       // 1개면 유저프로필. 1개이상이면 멀티서치.
       if (tmpSearchSummernerIDs.length > 1) {
-        this.getMultiSearchDatas(tmpSearchSummernerIDs)
+        this.getData(tmpSearchSummernerIDs)
         this.$router.push('MultiSearch')
       }
       else {
-        // console.log(3, tmpSearchSummernerIDs)
         this.$router.push('/Profile/'+tmpSearchSummernerIDs);
 
       }
-      // console.log(1)
-      // console.log(this.searchSummernerIDs)
-      // console.log(tmpSearchSummernerIDs)
+
     },
-    getMultiSearchDatas(tmpSearchSummernerIDs) {
-      this.$store.dispatch('getMultiSearchDatas', tmpSearchSummernerIDs)
-      this.getUserDatas(tmpSearchSummernerIDs)
-    },
-    getUserDatas(tmpSearchSummernerIDs) {
-      this.$store.dispatch('getUserDatas', tmpSearchSummernerIDs)
+    async getData(tmpSearchSummernerIDs) {
+      for ( var ID of tmpSearchSummernerIDs ) {
+        await this.$store.dispatch('getMultiSearchRadarDatas', ID)
+        await this.$store.dispatch('getMultiUserDatas', ID)
+        await this.$store.dispatch('getMultiSearchDatas', ID)
+      }
     },
     onPaste (e) {
         var clipboardData, pastedData;
@@ -140,6 +146,57 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+
+.multi-search-container {
+  border: 2px solid blue;
+  /* margin-bottom: 25px; */
+  padding: 0px;
+  width: 690px;
+  margin: auto
+}
+
+.multi-search-row {
+  height: 45px;
+
+  margin: 0;
+}
+
+.multi-search-col2 {
+  height: 35px;
+  width: 100%;
+  resize: none;
+  padding: 5px;
+}
+.multi-search-col3 {
+  background: rgb(6, 6, 248);
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  transition: 0.3s;
+
+}
+
+.multi-search-col3:hover {
+  background:rgb(142, 162, 248);
+  cursor: pointer;
+
+}
+
+.icon-place {
+  position: relative;
+  top: 12%;
+  left: 20%;
+  font-size: 40px;
+  color: white;
+}
+
+
+input:focus {
+  outline:none;
+}
+
+
 
 </style>

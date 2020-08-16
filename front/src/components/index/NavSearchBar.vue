@@ -2,26 +2,24 @@
 <div>
   <v-container class="pa-0 mr-16 pr-16">
     <v-row align="center">
-      <v-col>
-        <v-text-field
-          id="paste"
-          class="nav-search-size"
-          flat
-          hide-details
-          dense
-          label="Search ID"
-          outlined
+      <v-col class="nav-search-border pl-3">
+        <input type="text"
+          style="color:white;"
+          tabindex="1" 
           v-model="inputSummonerID"
           @paste="onPaste"
-          @keyup.enter="onClickSearchButton"
-        ></v-text-field>
+          placeholder="Summoner ID"
+          id="paste"
+          @keyup.enter="onClickSearchButton"        
+        >
 
       </v-col>
       <v-col cols=2>
-        <v-btn 
+        <v-btn
           small 
           color="primary lighten-1"
           @click="onClickSearchButton"
+          @keyup.enter="onClickSearchButton"
           >
           Search
         </v-btn>
@@ -81,11 +79,24 @@ export default {
         // console.log(ID + '공백제거')
       })
 
-      this.searchSummernerIDs = tmpSearchSummernerIDs
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
-      // console.log(1)
-      // console.log(this.searchSummernerIDs)
-      this.$router.push('/Profile/'+this.searchSummernerIDs);
+      // 1개면 유저프로필. 1개이상이면 멀티서치.
+      if (tmpSearchSummernerIDs.length > 1) {
+        this.getData(tmpSearchSummernerIDs)
+        this.$router.push('MultiSearch')
+      }
+      else {
+        this.$router.push('/Profile/'+tmpSearchSummernerIDs);
+
+      }
+
+    },
+    async getData(tmpSearchSummernerIDs) {
+      for ( var ID of tmpSearchSummernerIDs ) {
+        await this.$store.dispatch('getMultiSearchRadarDatas', ID)
+        await this.$store.dispatch('getMultiUserDatas', ID)
+        await this.$store.dispatch('getMultiSearchDatas', ID)
+      }
     },
     onPaste (e) {
         var clipboardData, pastedData;
@@ -113,5 +124,20 @@ export default {
 </script>
 
 <style scoped>
+
+.nav-search-border {
+  border: 0.5px solid white;
+  border-radius: 5px;
+  padding: 6px;
+}
+
+input::placeholder {
+  color: white;
+}
+
+input:focus {
+  outline:none;
+}
+
 
 </style>

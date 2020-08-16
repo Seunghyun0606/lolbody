@@ -1,5 +1,5 @@
 <template>
-  <LineChart type="bar" height="100" :options="chartOptions" :series="series" />
+  <LineChart height="70%" :options="chartOptions" :series="series" />
 </template>
 
 <script>
@@ -29,7 +29,7 @@ export default {
             toolbar: {
               show: false,
             // 위에 툴바 없애기
-          },              
+            },
           },
           plotOptions: {
               bar: {
@@ -60,7 +60,7 @@ export default {
               formatter: function (val) {
                   return val + "%"
                   }
-                }
+              }
             }
         },
       }
@@ -88,22 +88,6 @@ export default {
     this.changeLaneData()
   }
 
-  // methods: {
-  //   makeXaxis() {
-  //     var test = document.getElementsByTagName("tspan")
-  //     var test1 = document.getElementsByTagName("tspan")[0]
-  //     var testImg = document.createElement('img')
-  //     testImg.src = require(`@/assets/images/tier/GOLD.png`)
-  //     test1.appendChild(testImg)
-  //     console.log(testImg.src)
-  //     console.log(test)
-  //     console.log(test1)
-  //     // this.chartOptions.xaxis.categories = ['top', 'jg', 'a', 'b', 'c']
-  //   },
-  // },
-  // created () {
-  //   this.makeXaxis()
-  // }
 }
 
 </script> 

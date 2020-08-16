@@ -17,12 +17,11 @@
 
       <!-- 반복되어야할 그리드 (5인 멀티서치 정보) -->
       <div class="grid grid2 align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index">
-
         <div class="grid-body align-items-center">
 
           <!-- 랭크 -->
           <div class="grid-body-center-left">
-            <img :src="require(`@/assets/images/tier/${userDatas[index].tier}.png`)" alt="tier">
+            <img :src="multiUserDatas[index].tier !== null ? require(`@/assets/images/tier/${multiUserDatas[index].tier}.png`) : require(`@/assets/images/tier/unranked.png`)" alt="tier">
           </div>
 
           <!-- 유저네임, 티어, 승패-->
@@ -31,7 +30,7 @@
               {{ multiSearchData.summonerName }}
             </div>
             <div>
-              {{ userDatas[index].tier }} {{ userDatas[index].rank }}
+              {{ multiUserDatas[index].tier }} {{ multiUserDatas[index].rank }}
             </div>
             <div>
               {{ Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
@@ -51,11 +50,11 @@
         </div>
         <!-- 레이더차트 컴포넌트 -->
         <div>
-          <MultiSearchRadarChart/>
+          <MultiSearchRadarChart :index="index"/>
         </div>
 
         <!-- 라인 차트 컴포넌트-->
-        <div>
+        <div style="width: 176px">
           <MultiSearchLineChart :multiSearchData="multiSearchData"/>
         </div>
 
@@ -116,7 +115,8 @@ export default {
     computed: {
       ...mapState([
         "multiSearchDatas",
-        "userDatas",
+        "multiUserDatas",
+        "multiSearchRadarDatas",
       ]),
       ...mapGetters([
       ]),

@@ -88,13 +88,22 @@ export default {
       // this.searchSummernerIDs = tmpSearchSummernerIDs
 
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
+
       // 1개면 유저프로필. 1개이상이면 멀티서치.
       // this.getMultiSearchDatas(tmpSearchSummernerIDs)
-      this.$store.dispatch('getMultiSearchDatas', tmpSearchSummernerIDs)
-      this.$store.dispatch('getUserDatas', tmpSearchSummernerIDs)
-      this.$store.dispatch('getRadarChartDatas', tmpSearchSummernerIDs)
+      // console.log(tmpSearchSummernerIDs)
+      this.getData(tmpSearchSummernerIDs)
 
     },
+    async getData(tmpSearchSummernerIDs) {
+      for ( var ID of tmpSearchSummernerIDs ) {
+        await this.$store.dispatch('getMultiSearchRadarDatas', ID)
+        await this.$store.dispatch('getMultiUserDatas', ID)
+        await this.$store.dispatch('getMultiSearchDatas', ID)
+      }
+      
+    },
+
     onPaste (e) {
       var clipboardData, pastedData;
 
@@ -134,7 +143,7 @@ export default {
 }
 
 .multi-search-row {
-  height: 150px;
+  height: 100px;
   width: 1000px;
   max-width: 1000px;
   margin: 0;
@@ -146,7 +155,7 @@ export default {
   font-weight: 700;
 }
 .multi-search-col2 {
-  height: 130px;
+  height: 80px;
   width: 100%;
   resize: none;
   padding: 5px;
@@ -168,7 +177,7 @@ export default {
 
 .icon-place {
   position: relative;
-  top: 38%;
+  top: 32%;
   left: 30%;
   font-size: 40px;
   color: white;

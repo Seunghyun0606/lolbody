@@ -11,8 +11,43 @@ export default new Vuex.Store({
   state: {
     // 승현
     multiSearchDatas: [],
-    userDatas: [],
+    multiUserDatas: [],
     isIndex: '',
+    multiSearchRadarData: {
+        options: {
+          chart: {
+            type: "radar",
+            toolbar: {
+              show: false,
+            },
+          },
+          legend: {
+            show: false,
+          },
+          xaxis: {
+            categories: ['공격력', '안정성', '영향력']
+          },
+          yaxis: {
+            show: false,
+            tickAmount: 5,
+            min: 0,
+            max: 100,
+          },
+          markers: {
+            size: 3
+          }
+        },
+      series: [
+        {
+          name: '초반',
+          data: [40, 40, 40]
+        },
+        {
+          name: '후반',
+          data: [90, 80, 80]
+        }
+      ]
+    },
     profileLineChartOption: {
         series: [
             {
@@ -69,6 +104,8 @@ export default new Vuex.Store({
             }
         },
     },
+
+
     profileRadarChartOption: {
         series: [{
             name: 'Lane1',
@@ -92,7 +129,11 @@ export default new Vuex.Store({
   getters: {
     profileDatas(state){
       return state.profileDatas;
+    },
+    multiSearchRadarData(state) {
+      return state.multiSearchRadarData
     }
+
   },
   mutations: {
     // 승현
@@ -111,8 +152,31 @@ export default new Vuex.Store({
     setMultiUserDatas(state, userDatas) {
       // userData는 array로 오기 때문에 sperad시킴
       // 20.07.30 userData가 자유랭크 데이터도 넘기기때문에 스프레드 시키면안됨. 단일 오브젝트만 넣습니다.
-      state.userDatas = [ ...state.userDatas, userDatas ]
+      state.multiUserDatas = [ ...state.multiUserDatas, userDatas ]
     },
+    setMultiSearchRadarData(state, Datas) {
+      state.multiSearchRadarData.series[0].name = Datas.lane1.lane
+      state.multiSearchRadarData.series[1].name = Datas.lane2.lane
+
+      state.multiSearchRadarData.series[0].data = []
+      state.multiSearchRadarData.series[1].data = []
+      for ( var obj in Datas.lane1 ) {
+        if (obj === "lane") {
+          continue
+            state.multiSearchRadarData.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
+        // console.log(this.multiSearchRadarData.lane1[obj])
+        }
+      }
+      for ( var obj2 in Datas.lane2 ) {
+        if (obj2 === "lane" ) {
+          continue
+        }
+        state.multiSearchRadarData.series[1].data.push((Datas.lane2[obj2]*100).toFixed(0))
+      }
+    },
+    
+
+
     setProfileLineChartOption(state, matchDatas) {
         state.profileLineChartOption.series[0].data = [];
         state.profileLineChartOption.chartOptions.xaxis.categories = [];
@@ -125,36 +189,24 @@ export default new Vuex.Store({
                 state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100});
             state.profileLineChartOption.chartOptions.xaxis.categories.unshift(matchData.timestamp + matchData[matchData.myTeam].teammate[matchData.myIndex].champ)
         }
-        // console.log(state.profileLineChartOption)
+
     },
-    // 나중에 리팩토링하자
-    setProfileRadarChartOption(state, Datas) {
-      if ( state.profileDatas.rankedRecord.mostLine === undefined) {
-        state.profileRadarChartOption.series[0].name = 'Unknown'
-        
-      }
-      else {
-        state.profileRadarChartOption.series[0].name = state.profileDatas.rankedRecord.mostLine
 
-      }
-      if ( state.profileDatas.rankedRecord.secondLine === undefined) {
 
-        state.profileRadarChartOption.series[1].name = 'Unknown'
-      }
-      else {
-        state.profileRadarChartOption.series[1].name = state.profileDatas.rankedRecord.secondLine
+    setProfileLineChartOption(state, matchDatas) {
+      state.profileLineChartOption.series[0].data = []
+      state.profileLineChartOption.chartOptions.xaxis.categories = []
 
+      for ( let matchData of matchDatas ) {
+          if ( matchData.myTeam === 'blueTeam' ) {
+              state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.blueTeam.teammate[matchData.myIndex].kda*100)/100)
+          }
+          else {
+              state.profileLineChartOption.series[0].data.unshift(Math.round(matchData.redTeam.teammate[matchData.myIndex].kda*100)/100)
+          }
+          state.profileLineChartOption.chartOptions.xaxis.categories.unshift(calcDate(matchData.timestamp))
       }
-      state.profileRadarChartOption.series[0].data = []
-      state.profileRadarChartOption.series[1].data = []
-      for ( let index1 in Datas.lane1) {
-        state.profileRadarChartOption.series[0].data.push(Math.round((Datas.lane1[index1]*100)*10)/10)
-
-      }
-      for ( let index2 in Datas.lane2) {
-        state.profileRadarChartOption.series[1].data.push(Math.round((Datas.lane2[index2]*100)*10)/10)
-
-      }
+      // console.log(state.profileLineChartOption)
     },
 
     // NavSearch toggle 용도
@@ -181,6 +233,7 @@ export default new Vuex.Store({
     // 호철
     changeSearchSummonerIDs(state, arr) {
       state.searchSummonerIDs = arr
+      // console.log(arr)
     },
 
     // 형래
@@ -198,57 +251,44 @@ export default new Vuex.Store({
         state.nowProfileDatas = data;
     }
   },
+
+  
   actions: {
     // 승현, multisearch
-    async getMultiSearchDatas( { commit }, userNames ) {
-      for ( var userName of userNames ) {
-        await axios
-          .get(SERVER_URL + `/api/multisearch/${userName}`)
-          // .get(`http://localhost:8888/api/multisearch/${userName}`)
-          .then(res => {
-            commit('setMultiSearchDatas', res.data)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
-
+    getMultiSearchDatas( { commit }, userName ) {
+      return axios
+        .get(SERVER_URL + `/api/multisearch/${userName}`)
+        .then(res => {
+          commit('setMultiSearchDatas', res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    async getUserDatas( { commit }, userNames ) {
-      for ( var userName of userNames ) {
-        await axios
-          .get(SERVER_URL + `/api/user/${userName}`)
-          // .get(`http://localhost:8888/user/${userName}`)
-          .then(res => {
-            // 자유랭크가 같이와서 솔로만 넣게 처리했습니다.
-            // 무조건 0번이 솔로라서 0번 기준으로 처리. 만약 없으면 그냥 널 값처리.
-              if (res.data[0].queueType === "RANKED_SOLO_5x5") {
-                commit('setMultiUserDatas', res.data[0])
-              }
-              else {
-                commit('setMultiUserDatas', { tier: "unranked", rank: ""})
+    getMultiUserDatas( { commit }, userName ) {
+      return axios
+        .get(SERVER_URL + `/api/profile/${userName}`)
+        .then(res => {
+          commit('setMultiUserDatas', res.data)
+        })
 
-              }
-            }
-          )
-          .catch(err => {
-            console.log(err)
-          })
-      }
+        .catch(err => {
+          console.log(err)
+        })
     },
-    // 승현, RadarChartData
-    async getRadarChartDatas( { commit }, userNames ) {
-      console.log(1)
-      for ( let userName of userNames) {
-        await axios
-          .get(SERVER_URL + `/api/summonervalue/${userName}`)
-          .then(res => {
-            commit('setProfileRadarChartOption', res.data)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-        }
+    // 승현, multiSearchRadarChartData
+    getMultiSearchRadarDatas( { commit }, userName ) {
+      // console.log(userNames)
+      return axios
+      .get(SERVER_URL + `/api/summonervalue/${userName}`)
+      .then(res => {
+          // console.log(res.data)
+          commit('setMultiSearchRadarData', res.data)
+          // console.log(55)
+        })
+        .catch((err) => {
+          console.log(err)
+        })        
     },
 
     // 승현, renewalUserData

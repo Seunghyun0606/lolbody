@@ -1,101 +1,60 @@
 <template>
 
-  <apexchart class='move-apexchart' type="radar" width="235" :options="profileRadarChartOption.options" :series="profileRadarChartOption.series"></apexchart>
+  <!-- <MultiRadarChart class='move-apexchart' type="radar" width="235" :options="options" :series="series"></MultiRadarChart> -->
+  <apexchart class="move-apexchart" type="radar" width="235" :options="multiSearchRadarData.options" :series="multiSearchRadarData.series"></apexchart>
 
 </template>
 
 <script>
 import apexchart from 'vue-apexcharts'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'MultiSearchRadarChart',
-  components: {
-    apexchart
+  props: {
+    index: Number
   },
+  components: {
+    apexchart,
+  },
+  // watch: {
+  //   multiSearchRadarData: {
+  //     deep: true,
+  //     handler() {
+  //       this.changeSeries()
+  //     }
+      
+  //   }
+  // },
   computed: {
-    ...mapState([
-      'profileRadarChartOption',
+    ...mapGetters([
+      "multiSearchRadarData"
     ])
   },
-  // data() {
-  //   return {
-  //     test: [1, 2, 3],
-  //     indexGraphSeries: {
-  //       idx: 0,
-  //       pre: [
-  //         [60, 50, 45],
-  //         [45, 70, 80],
-  //         [80, 45, 60],
-  //       ],
-  //       post: [
-  //         [50, 90, 70],
-  //         [40, 60, 50],
-  //         [80, 75, 40],
-  //       ]
-  //     },
-  //     options: {
-  //       chart: {
-  //         id: 'vuechart-example',
-  //         toolbar: {
-  //           show: false,
-  //         },
-  //       },
-  //       legend: {
-  //         show: false,
-  //       },
-  //       xaxis: {
-  //         categories: ['공격력', '안정성', '영향력']
-  //       },
-  //       yaxis: {
-  //         show: false,
-  //         tickAmount: 5,
-  //         min: 0,
-  //         max: 100,
-  //       },
-  //       markers: {
-  //         size: 3
-  //       }
-  //     },
-  //     series: [{
-  //       name: '초반',
-  //       data: [10, 60, 90]
-  //     },
-  //     {
-  //       name: '후반',
-  //       data: [50, 40, 60]
-  //     }]
-  //   }
-  // },
+  
   // methods: {
-  //   changeIndexGraphSeries() {
-  //     if (this.indexGraphSeries.idx >= 2) {
-  //       this.indexGraphSeries.idx = 0
-  //     } else {
-  //       this.indexGraphSeries.idx += 1
+  //   changeSeries() {
+  //     console.log(2, this.multiSearchRadarData)
+  //     this.series[0].name = this.multiSearchRadarDatas[this.index].lane1.lane
+  //     this.series[1].name = this.multiSearchRadarDatas[this.index].lane2.lane
+  //     // console.log(3, this.series)
+  //     this.series[0].data = []
+  //     this.series[1].data = []
+  //     for ( var obj in this.multiSearchRadarDatas[this.index].lane1 ) {
+  //       if (obj === "lane") {
+  //         continue
+  //       }
+  //       this.series[0].data.push((this.multiSearchRadarDatas[this.index].lane1[obj]*100).toFixed(0))
+  //       // console.log(this.multiSearchRadarData.lane1[obj])
   //     }
-  //     this.series = [{
-  //       data: this.indexGraphSeries.pre[this.indexGraphSeries.idx]
-  //       },
-  //       {
-  //         data: this.indexGraphSeries.post[this.indexGraphSeries.idx]
-  //     }]
+  //     for ( var obj2 in this.multiSearchRadarDatas[this.index].lane2 ) {
+  //       if (obj2 === "lane" ) {
+  //         continue
+  //       }
+  //       this.series[1].data.push((this.multiSearchRadarDatas[this.index].lane2[obj2]*100).toFixed(0))
+  //     }
   //   }
   // },
-  // computed: {
-  //   onlyGraph() {
-  //     return document.querySelectorAll('g > g')[3]
-  //   },
-  //   onlyGraph2() {
-  //     return document.getElementsByClassName('apexcharts-radar-series')[0]
-  //   }
-  // },
-  // created() {
-    // setInterval(() => {
-    //   this.changeIndexGraphSeries();
-    // }, 3000)
-  // },
-
 }
 </script>
 

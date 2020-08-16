@@ -1,6 +1,6 @@
 <template>
 
-  <apexchart class="move-apexchart" type="radar" width="350" :options="options" :series="series"></apexchart>
+  <apexchart class="move-apexchart" width="350" :options="options" :series="series"></apexchart>
 
 </template>
 
@@ -16,7 +16,7 @@ export default {
     return {
       options: {
         chart: {
-          id: 'vuechart-example',
+          type: "radar",
           toolbar: {
             show: false,
           },

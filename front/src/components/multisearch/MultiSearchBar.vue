@@ -48,6 +48,13 @@ export default {
 
     },
     parseInputSummonerID() {
+      // 테스트 문자
+      // 재료페인님이 로비에 참가하셨습니다.
+      // 봉골골님이 로비에 참가하셨습니다.
+      // 부루의마블님이 로비에 참가하셨습니다.
+
+
+
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로
       // console.log(0, this.inputSummonerID) 
@@ -65,7 +72,6 @@ export default {
 
       // 복붙시 딸려오는 문자
       const trashInput = /님이 로비에 참가하셨습니다/
-
       // 아이디 Array에 대해
       tmpSearchSummernerIDs.forEach((ID, idx) => {
       // 특수문자 제거

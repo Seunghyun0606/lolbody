@@ -16,7 +16,6 @@
       </v-col>
       <v-col cols=2>
         <v-btn
-          tabindex="2"
           small 
           color="primary lighten-1"
           @click="onClickSearchButton"

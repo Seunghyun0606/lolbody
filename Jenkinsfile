@@ -15,9 +15,16 @@ pipeline {
         stage('Build') {
             steps {
                 dir('front'){
-                    sh 'yarn install'
-                    sh 'yarn build'
-                    sh 'sudo docker cp dist nginx-deploy:/usr/share/nginx/'
+                    script{
+                        try {
+                            sh 'yarn install'
+                            sh 'yarn build'
+                            sh 'sudo docker cp dist nginx-deploy:/usr/share/nginx/'
+
+                        }catch(e) {
+                            mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Front 빌드 실패: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${e}"
+                        }
+                    }
                 }
                 dir('back/mongoApi'){
                     script{
@@ -27,7 +34,7 @@ pipeline {
                             sh 'docker stop spring-distribute'
                             sh 'docker rm spring-distribute'
                         }catch(e){
-                            mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "빌드 실패: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${e}"
+                            mattermostSend color: '#439FE0', icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Back 빌드 실패: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${e}"
 
                         }
                     }

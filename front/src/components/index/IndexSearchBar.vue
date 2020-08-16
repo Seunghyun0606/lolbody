@@ -53,8 +53,6 @@ export default {
       this.parseInputSummonerID()
       // console.log('axios요청', this.searchSummernerIDs)
 
-      // nav search bar 없애는 로직
-      this.$store.commit('toggleNavSearch', false)
     },
     parseInputSummonerID() {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
@@ -103,7 +101,7 @@ export default {
       // 1개면 유저프로필. 1개이상이면 멀티서치.
       if (tmpSearchSummernerIDs.length > 1) {
         this.getData(tmpSearchSummernerIDs)
-        this.$router.push('MultiSearch')
+        this.$router.push('/MultiSearch/')
       }
       else {
         this.$router.push('/Profile/'+tmpSearchSummernerIDs);
@@ -112,6 +110,7 @@ export default {
 
     },
     async getData(tmpSearchSummernerIDs) {
+      await this.$store.dispatch('initMultiSearchData')
       for ( var ID of tmpSearchSummernerIDs ) {
         await this.$store.dispatch('getMultiSearchRadarDatas', ID)
         await this.$store.dispatch('getMultiUserDatas', ID)

@@ -49,7 +49,7 @@ export default {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로
       let tmpSearchSummernerIDs = this.inputSummonerID.replace(/(\n|\r\n)/g, ',').split(',')
-
+      console.log(tmpSearchSummernerIDs)
       // // 따옴표로 구분된 아이디 Array
       // searchSummernerID = this.inputSummonerID.split('\n')
 
@@ -57,7 +57,7 @@ export default {
       const regExp = /[{}[\]/?.,;:|)*~`!^-_+<>@#$%&\\=('"]/gi;
 
       // 복붙시 딸려오는 문자
-      const trashInput = /님이 방에 참가했습니다/
+      const trashInput = /님이 로비에 참가하셨습니다/
 
       // 아이디 Array에 대해
       tmpSearchSummernerIDs.forEach((ID, idx) => {
@@ -83,7 +83,7 @@ export default {
       // 1개면 유저프로필. 1개이상이면 멀티서치.
       if (tmpSearchSummernerIDs.length > 1) {
         this.getData(tmpSearchSummernerIDs)
-        this.$router.push('MultiSearch')
+        this.$router.push('/MultiSearch/')
       }
       else {
         this.$router.push('/Profile/'+tmpSearchSummernerIDs);
@@ -92,6 +92,7 @@ export default {
 
     },
     async getData(tmpSearchSummernerIDs) {
+      await this.$store.dispatch('initMultiSearchData')
       for ( var ID of tmpSearchSummernerIDs ) {
         await this.$store.dispatch('getMultiSearchRadarDatas', ID)
         await this.$store.dispatch('getMultiUserDatas', ID)

@@ -10,9 +10,9 @@ const SERVER_URL = 'https://lolbody.gq'
 export default new Vuex.Store({
   state: {
     // 승현
+    isIndex: false,
     multiSearchDatas: [],
     multiUserDatas: [],
-    isIndex: false,
     multiSearchRadarData: [],
     profileLineChartOption: {
         series: [
@@ -104,6 +104,11 @@ export default new Vuex.Store({
   },
   mutations: {
     // 승현
+    setInitMultiSearchData(state) {
+      state.multiSearchDatas = []
+      state.multiUserDatas = []
+      state.multiSearchRadarData = []
+    },
     setMultiSearchDatas(state, multiSearchDatas) {
       // 계속해서 집어넣게 만듬.
       var recentGameWin = 0
@@ -242,6 +247,10 @@ export default new Vuex.Store({
 
   
   actions: {
+    // 승현, multiSearch 데이터 init
+    initMultiSearchData( { commit } ) {
+      commit('setInitMultiSearchData')
+    },
     // 승현, multisearch
     getMultiSearchDatas( { commit }, userName ) {
       return axios

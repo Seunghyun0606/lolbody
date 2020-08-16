@@ -123,6 +123,7 @@ export default {
   },
   created() {
     this.$store.commit('toggleNavSearch', false)
+    this.$store.dispatch('initMultiSearchData')
   }
 
 }

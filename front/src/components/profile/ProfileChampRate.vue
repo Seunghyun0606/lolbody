@@ -75,11 +75,11 @@ export default {
   // },
   methods: {
     mouseOn(val) {
-      console.log(val)
+      // console.log(val)
 
-      console.log(this.init[val])
+      // console.log(this.init[val])
       this.init[val] = !this.init[val]
-      console.log(this.init[val])
+      // console.log(this.init[val])
 
       this.init1 = !this.init1
 

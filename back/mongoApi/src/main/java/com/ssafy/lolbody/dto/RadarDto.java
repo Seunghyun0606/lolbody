@@ -1,38 +1,28 @@
 package com.ssafy.lolbody.dto;
 
 public class RadarDto {
-	private double aggressiveness;
-	private double stability;
-	private double influence;
+	private int games;
+	private RadarReferenceDto radarReference;
 
-	public double getAggressiveness() {
-		return aggressiveness;
+	public int getGames() {
+		return games;
 	}
 
-	public void setAggressiveness(double aggressiveness) {
-		this.aggressiveness = aggressiveness;
+	public void setGames(int games) {
+		this.games = games;
 	}
 
-	public double getStability() {
-		return stability;
+	public RadarReferenceDto getRadarReference() {
+		return radarReference;
 	}
 
-	public void setStability(double stability) {
-		this.stability = stability;
-	}
-
-	public double getInfluence() {
-		return influence;
-	}
-
-	public void setInfluence(double influence) {
-		this.influence = influence;
+	public void setRadarReference(RadarReferenceDto radarReference) {
+		this.radarReference = radarReference;
 	}
 
 	@Override
 	public String toString() {
-		return "SummonerValueDto [aggressiveness=" + aggressiveness + ", stability=" + stability + ", influence="
-				+ influence + "]";
+		return "RadarDto [games=" + games + ", radarReference=" + radarReference + "]";
 	}
 
 }

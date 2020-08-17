@@ -19,7 +19,7 @@ public class ParticipantDto {
 	private String line;
 	private double matchGrade;
 	private AnalysisDto analysis;
-	private RadarDto radar;
+	private RadarReferenceDto radar;
 
 	public int getParticipantId() {
 		return participantId;
@@ -149,11 +149,11 @@ public class ParticipantDto {
 		this.analysis = analysis;
 	}
 
-	public RadarDto getRadar() {
+	public RadarReferenceDto getRadar() {
 		return radar;
 	}
 
-	public void setRadar(RadarDto radar) {
+	public void setRadar(RadarReferenceDto radar) {
 		this.radar = radar;
 	}
 

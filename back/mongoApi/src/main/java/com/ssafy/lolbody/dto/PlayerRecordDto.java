@@ -26,7 +26,7 @@ public class PlayerRecordDto {
 	private String line;
 	private double matchGrade;
 	private AnalysisDto analysis;
-	private RadarDto radar;
+	private RadarReferenceDto radar;
 
 	public String getName() {
 		return name;
@@ -228,11 +228,11 @@ public class PlayerRecordDto {
 		this.analysis = analysis;
 	}
 
-	public RadarDto getRadar() {
+	public RadarReferenceDto getRadar() {
 		return radar;
 	}
 
-	public void setRadar(RadarDto radar) {
+	public void setRadar(RadarReferenceDto radar) {
 		this.radar = radar;
 	}
 

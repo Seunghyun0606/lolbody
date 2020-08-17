@@ -1,6 +1,6 @@
 <template>
 <div id="chart">
-    <apexchart type="bar" width="200px" height="430px" :options="chartOptions" :series="series"></apexchart>
+    <apexchart type="bar" width="300px" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
@@ -41,6 +41,7 @@ export default {
                         dataLabels: {
                             position: 'top',
                         },
+                        barHeight: '100%'
                     }
                 },
                 dataLabels: {
@@ -53,7 +54,7 @@ export default {
                 },
                 stroke: {
                     show: true,
-                    width: 0,
+                    width: 1,
                     colors: ['#fff']
                 },
                 xaxis: {

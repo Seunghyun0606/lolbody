@@ -1,6 +1,6 @@
 <template>
     <v-app style="background-color: #fafafa;">
-        <v-app-bar app color="primary" dense dark flat>
+        <v-app-bar app color="#33A39E" dense dark flat>
             <v-tabs align-with-title>
             <v-tab router-link to="/">Main</v-tab>
             <!-- <v-tab router-link to="/Profile">Profile</v-tab> -->

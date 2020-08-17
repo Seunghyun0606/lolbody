@@ -7,5 +7,5 @@ import pandas as pd
 now = '20.08'
 queue = 420
 stastics = './csv/' + now + '/stastics/'
-df = pd.read_csv('/csv/%s/stastics/stastics_%s.csv' % (now, queue))
+df = pd.read_csv('./csv/%s/stastics/stastics_%s.csv' % (now, queue))
 print(df[['tier', 'position', 'totalDamageDealtToChampionsPerMinMean']])

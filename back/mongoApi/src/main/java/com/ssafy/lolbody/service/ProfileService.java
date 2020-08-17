@@ -144,7 +144,7 @@ public class ProfileService {
 			if (isNew) {
 				try {
 					System.out.println(summonerDto.getId() + " " + left + " " + right + " " + tier);
-					Api.runAnalysis("\\Analysis\\SetDataBase.py",
+					Api.runAnalysis("./Analysis/SetDataBase.py",
 							summonerDto.getId() + " " + left + " " + right + " " + tier);
 				} catch (Exception e) {
 					for (int i = s; i >= 0; i--) {

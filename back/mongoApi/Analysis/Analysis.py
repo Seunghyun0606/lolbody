@@ -10,8 +10,8 @@ now = time.localtime()
 now = "%02d.%02d" % (int(str(now.tm_year)[2:]), now.tm_mon)
 now = '20.08'
 
-source = './csv/' + now + '/source/'
-stastics = './csv/' + now + '/stastics/'
+source = '/csv/' + now + '/source/'
+stastics = '/csv/' + now + '/stastics/'
 
 pd.set_option('display.max_row', 500)
 pd.set_option('display.max_columns', 100)

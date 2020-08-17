@@ -30,7 +30,7 @@ export default {
                 },
                 title: {
                     formatter: (seriesName, { series, seriesIndex}) => {
-                        return seriesName + '<br>' + series[seriesIndex] + '%(' + this.eachdata.win[seriesIndex]+'승'+this.eachdata.lose[seriesIndex]+'패)'
+                        return seriesName + '<br>' + series[seriesIndex] + '% (' + this.eachdata.win[seriesIndex]+'승'+this.eachdata.lose[seriesIndex]+'패)'
                     },
                 },
             },

@@ -325,6 +325,7 @@ export default {
 	margin : 0px !important;
 }
 .gamehistory{
+    overflow-x: hidden;
     overflow-y: scroll;
     height: 660px;
     scrollbar-width: none;

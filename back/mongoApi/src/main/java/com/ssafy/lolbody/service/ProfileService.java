@@ -3,20 +3,24 @@ package com.ssafy.lolbody.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.lolbody.api.Api;
+import com.ssafy.lolbody.dto.BadgeDto;
 import com.ssafy.lolbody.dto.LeagueEntryDto;
 import com.ssafy.lolbody.dto.MatchDto;
 import com.ssafy.lolbody.dto.MatchRecordDto;
 import com.ssafy.lolbody.dto.PlayerRecordDto;
 import com.ssafy.lolbody.dto.RankDto;
 import com.ssafy.lolbody.dto.MatchReferenceDto;
+import com.ssafy.lolbody.dto.MatchResultDto;
 import com.ssafy.lolbody.dto.MatchlistDto;
 import com.ssafy.lolbody.dto.ParticipantDto;
 import com.ssafy.lolbody.dto.ParticipantIdentityDto;
@@ -86,7 +90,9 @@ public class ProfileService {
 		matchlistService.findBySummonerId(summoner);
 	}
 
-	public List<MatchRecordDto> getMatchRecord(String name, String num) throws Exception {
+	public MatchResultDto getMatchResult(String name, String num) throws Exception {
+		MatchResultDto matchResult = new MatchResultDto();
+		Set<BadgeDto> badgeSet = new HashSet<>();
 		List<MatchRecordDto> matchRecords = new ArrayList<>();
 		SummonerDto summonerDto = summonerService.findOnly(name);
 		MatchlistDto matchlistDto = matchlistService.findOnly(summonerDto);
@@ -222,6 +228,7 @@ public class ProfileService {
 						tmp.setMatchGrade(p.getMatchGrade());
 						tmp.setAnalysis(p.getAnalysis());
 						tmp.setRadar(p.getRadar());
+						tmp.setBadges(p.getBadges());
 						if (j < 5)
 							blueTeammate.add(tmp);
 						else
@@ -253,11 +260,29 @@ public class ProfileService {
 						break;
 					}
 				}
+
+				if (matchRecordDto.getMyTeam().equals("blueTeam")) {
+					List<BadgeDto> badges = matchRecordDto.getBlueTeam().getTeammate().get(matchRecordDto.getMyIndex())
+							.getBadges();
+					for (BadgeDto badge : badges) {
+						badgeSet.add(badge);
+					}
+				} else {
+					List<BadgeDto> badges = matchRecordDto.getRedTeam().getTeammate().get(matchRecordDto.getMyIndex())
+							.getBadges();
+					for (BadgeDto badge : badges) {
+						badgeSet.add(badge);
+					}
+				}
+
 				matchRecords.add(matchRecordDto);
 			}
 		}
+		matchResult.setMatchRecordList(matchRecords);
+		matchResult.setBadgeSet(badgeSet);
+
 		System.out.println("----------return----------");
-		return matchRecords;
+		return matchResult;
 	}
 
 }

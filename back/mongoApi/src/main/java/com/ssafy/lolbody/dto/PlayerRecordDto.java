@@ -1,5 +1,7 @@
 package com.ssafy.lolbody.dto;
 
+import java.util.List;
+
 public class PlayerRecordDto {
 	private String name;
 	private String champ;
@@ -27,6 +29,7 @@ public class PlayerRecordDto {
 	private double matchGrade;
 	private AnalysisDto analysis;
 	private RadarReferenceDto radar;
+	private List<BadgeDto> badges;
 
 	public String getName() {
 		return name;
@@ -236,6 +239,14 @@ public class PlayerRecordDto {
 		this.radar = radar;
 	}
 
+	public List<BadgeDto> getBadges() {
+		return badges;
+	}
+
+	public void setBadges(List<BadgeDto> badges) {
+		this.badges = badges;
+	}
+
 	@Override
 	public String toString() {
 		return "PlayerRecordDto [name=" + name + ", champ=" + champ + ", kills=" + kills + ", deaths=" + deaths
@@ -243,7 +254,8 @@ public class PlayerRecordDto {
 				+ ", item0=" + item0 + ", item1=" + item1 + ", item2=" + item2 + ", item3=" + item3 + ", item4=" + item4
 				+ ", item5=" + item5 + ", item6=" + item6 + ", perk=" + perk + ", perkStyle=" + perkStyle + ", level="
 				+ level + ", gold=" + gold + ", cs=" + cs + ", csPerMin=" + csPerMin + ", line=" + line
-				+ ", matchGrade=" + matchGrade + ", analysis=" + analysis + ", radar=" + radar + "]";
+				+ ", matchGrade=" + matchGrade + ", analysis=" + analysis + ", radar=" + radar + ", badges=" + badges
+				+ "]";
 	}
 
 }

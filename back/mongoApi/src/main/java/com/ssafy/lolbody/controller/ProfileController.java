@@ -1,7 +1,5 @@
 package com.ssafy.lolbody.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.lolbody.api.Api;
-import com.ssafy.lolbody.dto.MatchRecordDto;
+import com.ssafy.lolbody.dto.MatchResultDto;
 import com.ssafy.lolbody.dto.UserCardReferenceDto;
 import com.ssafy.lolbody.service.ProfileService;
 
@@ -44,7 +42,7 @@ public class ProfileController {
 		}
 		return new ResponseEntity<>(userCard, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "소환사 이름으로 유저 프로필을 갱신합니다.")
 	@PutMapping("/api/profile/{name}")
 	public ResponseEntity<UserCardReferenceDto> updateUserCard(@PathVariable String name) {
@@ -66,10 +64,10 @@ public class ProfileController {
 
 	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (num: 1부터 시작, 10개씩)")
 	@GetMapping("/api/profile/{name}/{num}")
-	public ResponseEntity<List<MatchRecordDto>> getMatchInfo(@PathVariable String name, @PathVariable String num) {
-		List<MatchRecordDto> matchRecords = new ArrayList<>();
+	public ResponseEntity<MatchResultDto> getMatchInfo(@PathVariable String name, @PathVariable String num) {
+		MatchResultDto matchResult = new MatchResultDto();
 		try {
-			matchRecords = profileService.getMatchRecord(name.replaceAll(" ", ""), num);
+			matchResult = profileService.getMatchResult(name.replaceAll(" ", ""), num);
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
@@ -79,7 +77,7 @@ public class ProfileController {
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(matchRecords, HttpStatus.OK);
+		return new ResponseEntity<>(matchResult, HttpStatus.OK);
 	}
-	
+
 }

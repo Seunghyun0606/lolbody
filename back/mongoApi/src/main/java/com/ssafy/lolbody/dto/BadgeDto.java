@@ -1,28 +1,39 @@
 package com.ssafy.lolbody.dto;
 
 public class BadgeDto {
-	private String badge;
-	private int color;
+	private String name;
+	private int tier;
 
-	public String getBadge() {
-		return badge;
+	public String getName() {
+		return name;
 	}
 
-	public void setBadge(String badge) {
-		this.badge = badge;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public int getColor() {
-		return color;
+	public int getTier() {
+		return tier;
 	}
 
-	public void setColor(int color) {
-		this.color = color;
+	public void setTier(int tier) {
+		this.tier = tier;
+	}
+
+	@Override
+	public int hashCode() {
+		return (name + tier).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		BadgeDto o = (BadgeDto) obj;
+		return (this.name.equals(o.name) && this.tier == o.tier);
 	}
 
 	@Override
 	public String toString() {
-		return "BadgeDto [badge=" + badge + ", color=" + color + "]";
+		return "BadgeDto [name=" + name + ", tier=" + tier + "]";
 	}
 
 }

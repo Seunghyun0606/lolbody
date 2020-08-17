@@ -19,6 +19,7 @@ public class ParticipantDto {
 	private String line;
 	private double matchGrade;
 	private AnalysisDto analysis;
+	private RadarDto radar;
 
 	public int getParticipantId() {
 		return participantId;
@@ -148,13 +149,21 @@ public class ParticipantDto {
 		this.analysis = analysis;
 	}
 
+	public RadarDto getRadar() {
+		return radar;
+	}
+
+	public void setRadar(RadarDto radar) {
+		this.radar = radar;
+	}
+
 	@Override
 	public String toString() {
 		return "ParticipantDto [participantId=" + participantId + ", championId=" + championId + ", runes=" + runes
 				+ ", stats=" + stats + ", teamId=" + teamId + ", timeline=" + timeline + ", spell1Id=" + spell1Id
 				+ ", spell2Id=" + spell2Id + ", highestAchievedSeasonTier=" + highestAchievedSeasonTier + ", masteries="
 				+ masteries + ", name=" + name + ", x=" + x + ", y=" + y + ", line=" + line + ", matchGrade="
-				+ matchGrade + ", analysis=" + analysis + "]";
+				+ matchGrade + ", analysis=" + analysis + ", radar=" + radar + "]";
 	}
 
 }

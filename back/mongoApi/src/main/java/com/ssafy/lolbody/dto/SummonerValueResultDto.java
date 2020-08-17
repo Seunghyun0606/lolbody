@@ -3,19 +3,19 @@ package com.ssafy.lolbody.dto;
 import java.util.List;
 
 public class SummonerValueResultDto {
-	private SummonerValueDto lane1;
-	private SummonerValueDto lane2;
+	private RadarDto lane1;
+	private RadarDto lane2;
 	private List<String> badges;
-	public SummonerValueDto getLane1() {
+	public RadarDto getLane1() {
 		return lane1;
 	}
-	public void setLane1(SummonerValueDto lane1) {
+	public void setLane1(RadarDto lane1) {
 		this.lane1 = lane1;
 	}
-	public SummonerValueDto getLane2() {
+	public RadarDto getLane2() {
 		return lane2;
 	}
-	public void setLane2(SummonerValueDto lane2) {
+	public void setLane2(RadarDto lane2) {
 		this.lane2 = lane2;
 	}
 	public List<String> getBadges() {

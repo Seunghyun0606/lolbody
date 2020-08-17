@@ -26,6 +26,7 @@ public class PlayerRecordDto {
 	private String line;
 	private double matchGrade;
 	private AnalysisDto analysis;
+	private RadarDto radar;
 
 	public String getName() {
 		return name;
@@ -227,6 +228,14 @@ public class PlayerRecordDto {
 		this.analysis = analysis;
 	}
 
+	public RadarDto getRadar() {
+		return radar;
+	}
+
+	public void setRadar(RadarDto radar) {
+		this.radar = radar;
+	}
+
 	@Override
 	public String toString() {
 		return "PlayerRecordDto [name=" + name + ", champ=" + champ + ", kills=" + kills + ", deaths=" + deaths
@@ -234,7 +243,7 @@ public class PlayerRecordDto {
 				+ ", item0=" + item0 + ", item1=" + item1 + ", item2=" + item2 + ", item3=" + item3 + ", item4=" + item4
 				+ ", item5=" + item5 + ", item6=" + item6 + ", perk=" + perk + ", perkStyle=" + perkStyle + ", level="
 				+ level + ", gold=" + gold + ", cs=" + cs + ", csPerMin=" + csPerMin + ", line=" + line
-				+ ", matchGrade=" + matchGrade + ", analysis=" + analysis + "]";
+				+ ", matchGrade=" + matchGrade + ", analysis=" + analysis + ", radar=" + radar + "]";
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.ssafy.lolbody.dto;
 
-public class SummonerValueDto {
+public class RadarDto {
 	private double aggressiveness;
 	private double stability;
 	private double influence;

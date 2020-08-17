@@ -100,7 +100,7 @@ public class ProfileService {
 		map.put("MID", 2);
 		map.put("BOTTOM", 3);
 		map.put("SUPPORT", 4);
-		map.put("NONE", 5);
+		map.put("None", 5);
 
 		List<LeagueEntryDto> leagueEntryList = leagueEntryService.findOnly(summonerDto.getId());
 		String tier = "IRON";
@@ -218,9 +218,10 @@ public class ProfileService {
 						tmp.setGold(p.getStats().getGoldEarned());
 						tmp.setCs(p.getStats().getNeutralMinionsKilled() + p.getStats().getTotalMinionsKilled());
 						tmp.setCsPerMin(60.0 * tmp.getCs() / match.getGameDuration());
-						tmp.setLine(p.getLine() == null ? "NONE" : p.getLine());
+						tmp.setLine(p.getLine() == null ? "None" : p.getLine());
 						tmp.setMatchGrade(p.getMatchGrade());
 						tmp.setAnalysis(p.getAnalysis());
+						tmp.setRadar(p.getRadar());
 						if (j < 5)
 							blueTeammate.add(tmp);
 						else

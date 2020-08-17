@@ -102,9 +102,11 @@ export default {
 }
 .bg_fail {
     background-color: #ffe1e1 !important;
+    border :#bea8a8 solid 1px !important;
 }
 .bg_win {
     background-color: #d1e5ff !important;
+    border :#a3b2c7 solid 1px !important;
 }
 .bg_black{
     background-color: black;

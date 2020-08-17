@@ -7,17 +7,16 @@
 		<tr>
 			<!-- 여기서부터 좌측 공간 -->
 			<td style="vertical-align: top" width="332px">
-				<v-card class="ma-1 bg_card" :class="[profileDatas.tier]" outlined height="160px" :loading="triger.isLoading">
-					<img :src="imageload('tier_banner/'+profileDatas.tier+'.png')" class="profilebanner" width="135px" v-if="profileDatas.tier != null">
-                    <img :src="imageload('tier_banner/UNRANKED.png')" class="profilebanner" width="135px" v-else>
+				<v-card class="ma-1 bg_card" :class="[profileDatas.soloRank.tier]" outlined height="160px" :loading="triger.isLoading">
+					<img :src="imageload('tier_banner/'+profileDatas.soloRank.tier+'.png')" class="profilebanner" width="135px">
 					<!-- 유저프로필 -->
 					<v-row class="mt-6">
 						<v-col cols="4">
                             <div class="avatar mt-1 ml-3 text-center">
 								<v-avatar size="70">
-									<v-img :src="imageload('profileicon/'+profileDatas.profileIconId+'.png')" alt="icon" />
+									<v-img :src="triger.overprofile ? imageload('profileicon/'+profileDatas.profileIconId+'.png') : imageload('tier/'+profileDatas.soloRank.tier+'.png')" @mouseenter="triger.overprofile = false" @mouseleave="triger.overprofile = true" alt="icon" />
 								</v-avatar>
-								<span class="level fs-10">{{profileDatas.summonerLevel}}</span>
+								<span class="level fs-10">{{triger.overprofile ? profileDatas.summonerLevel : profileDatas.soloRank.rank}}</span>
 							</div>
 						</v-col>
 						<v-col cols="8">
@@ -45,7 +44,7 @@
 						<li><a :class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
                         <li><a :class="{option_action: triger.howlingAbyssActive}" @click="changeHowlingAbyss">칼바람</a></li>
 					</ul>
-                    <!--<RadarChart/>-->
+                    <RadarChart :idx="radaridx"/>
 				</v-card>
 
 				<v-card class="ma-1 mb-2 bg_card"  outlined height="347px" algin="center">
@@ -129,7 +128,7 @@ import ProfileChampRate from "@/components/profile/ProfileChampRate"
 
 
 //import { mapActions } from "vuex"
-import { mapState } from "vuex"
+//import { mapState } from "vuex"
 //import { mapGetters } from    "vuex"
 
 export default {
@@ -146,13 +145,13 @@ export default {
 		ProfileChampRate,
 
 		// ProfileLineChart,
-		// RadarChart:() => ({
-    //         component: import("@/components/profile/ProfileRadarChart"),
-    //         loading: Loading,
-    //         error: LoadError,
-    //         delay: 0,
-    //         timeout: 3000
-    //     }),
+        RadarChart:() => ({
+            component: import("@/components/profile/ProfileRadarChart"),
+            loading: Loading,
+            error: LoadError,
+            delay: 0,
+            timeout: 3000
+        }),
 		ProfileGameHistory:() => ({
             component: import("@/components/profile/ProfileGameHistory"),
             loading: Loading,
@@ -177,9 +176,11 @@ export default {
                 nomalGameActive : false,
                 rankGameActive : true,
                 howlingAbyssActive : false,
-                isLoading : true
+                isLoading : true,
+                overprofile : true,
             },
             //now:{},
+            radaridx: 0,
             numOfMatch: 1
         }
     },
@@ -188,11 +189,16 @@ export default {
 		this.getProfileDatas(userName);
 	},
 	computed: {
-		...mapState([
-            'profileDatas',
-            'nowProfileDatas',
-            'matchDatas'
-		]),
+		//...mapState([
+        //    'profileDatas',
+        //    'matchDatas'
+        //]),
+        profileDatas(){
+            return this.$store.state.profileDatas
+        },
+        matchDatas(){
+            return this.$store.state.matchDatas
+        },
 		updateTime() {
 			let time = this.profileDatas.timestamp
 			// console.log(time)
@@ -235,13 +241,8 @@ export default {
             //this.now = this.profileDatas.rankedRecord;
             if(this.profileDatas == '')
                 return;
-			if(this.profileDatas.tier == null){
-				this.changeNomarlGame();
-			}else {
-                this.changeRankGame();
-			}
 			this.getMatchDatas(1);
-            this.getRadarChartDatas(userName);
+            //this.getRadarChartDatas(userName);
 			this.triger.isLoading = false;
 		},
 		async getMatchDatas(n){
@@ -272,24 +273,25 @@ export default {
 			this.triger.nomalGameActive = true;
             this.triger.rankGameActive = false;
             this.triger.howlingAbyssActive = false;
-            this.$store.commit('setNowProfileDatas', this.profileDatas.blindRecord);
 			//this.nowProfileDatas = this.profileDatas.blindRecord;
-			this.nowProfileDatas.src = 'unranked';
-			this.nowProfileDatas.rank = 'unranked';
+			//this.nowProfileDatas.src = 'unranked';
+            //this.nowProfileDatas.rank = 'unranked';
+            this.radaridx = 1;
 		},
 		changeRankGame(){
 			this.triger.nomalGameActive = false;
             this.triger.rankGameActive = true;
             this.triger.howlingAbyssActive = false;
-            this.$store.commit('setNowProfileDatas', this.profileDatas.rankedRecord);
 			//this.nowProfileDatas = this.profileDatas.rankedRecord;
-			this.nowProfileDatas.src = this.profileDatas.tier;
-			this.nowProfileDatas.rank = this.profileDatas.rank;
+			//this.nowProfileDatas.src = this.profileDatas.soloRank.tier;
+            //this.nowProfileDatas.rank = this.profileDatas.rank;
+            this.radaridx = 0;
         },
         changeHowlingAbyss(){
             this.triger.nomalGameActive = false;
             this.triger.rankGameActive = false;
             this.triger.howlingAbyssActive = true;
+            this.radaridx = 2;
         },
 		changeLP(){
 			this.triger.LPActive = true;

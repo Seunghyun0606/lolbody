@@ -87,7 +87,7 @@ def calculate_match_data(tup):
     if match_data.get('gameDuration') <= 300: return
 
     # 이미 매치데이터 갱신 했으면 넘어감
-    # if match_data.get('flag'): continue
+    if match_data.get('flag'): return
 
     # 공통데이터
     # 플레이 시간
@@ -209,7 +209,7 @@ def calculate_match_data(tup):
                 std = col + 'Std'
                 p_value = change_to_p_value(z_value(data[col], total_stats[mean][0], total_stats[std][0]))
                 if col == 'deathsRatio':
-                    p_value = -p_value
+                    p_value = 1 - p_value
                 tmp_player_p_value[col] = p_value
                 # 여기는 뱃지 붙이는 곳
                 if p_value >= 0.9:
@@ -230,7 +230,7 @@ def calculate_match_data(tup):
                 std = col + 'Std'
                 p_value = change_to_p_value(z_value(data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0]))
                 if col == 'deathsRatio':
-                    p_value = -p_value
+                    p_value = 1 - p_value
                 tmp_player_p_value[col] = p_value
                 # 여기는 뱃지 붙이는 곳
                 if p_value >= 0.9:

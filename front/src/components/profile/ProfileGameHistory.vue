@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-flex v-for="(matchData, idx) in matchDatas" :key="idx + '_matchData'">
-            <v-card class="mx-1 mb-2 vertical-align-center" :class="{ bg_win : matchData[matchData.myTeam].win, bg_fail : !matchData[matchData.myTeam].win, bg_gray : matchData.noGame}" outlined>
+            <v-card class="mx-1 mb-2 vertical-align-center overflow-hidden" :class="{ bg_win : matchData[matchData.myTeam].win, bg_fail : !matchData[matchData.myTeam].win, bg_gray : matchData.noGame}" outlined>
                 <table height="100px">
                     <tr>
                         <td class="text-center" width="80px">
@@ -153,15 +153,17 @@
                         </td>
                     </tr>
                 </table>
-                    <v-row v-if="matchData.display">
-                        <v-col cols="6">
-                            <barchart/>
-                        </v-col>
+                <v-row v-if="matchData.display" style="background-color: #fff;" width="650px">
+                    <v-col cols="6">
+                        <barchart :team="matchData.blueTeam.teammate"/>
+                        <img :src="imageload('champion/' + p.champ + '.png')" :class="['player-icon', 'blueplayer'+idx]" v-for="(p, idx) in matchData.blueTeam.teammate" :key="idx + '_player'"/>
+                    </v-col>
 
-                        <v-col cols="6">
-                            <barchart/>
-                        </v-col>
-                    </v-row>
+                    <v-col cols="6">
+                        <barchart :team="matchData.redTeam.teammate"/>
+                        <img :src="imageload('champion/' + p.champ + '.png')" :class="['player-icon', 'redplayer'+idx]" v-for="(p, idx) in matchData.redTeam.teammate" :key="idx + '_player'"/>
+                    </v-col>
+                </v-row>
             </v-card>
         </v-flex>
     </v-container>
@@ -248,6 +250,52 @@ export default {
 </script>
 
 <style>
+.blueplayer0{
+    top: 154px;
+    left: 12px;
+}
+.blueplayer1{
+    top: 184px;
+    left: 12px;
+}
+.blueplayer2{
+    top: 214px;
+    left: 12px;
+}
+.blueplayer3{
+    top: 244px;
+    left: 12px;
+}
+.blueplayer4{
+    top: 274px;
+    left: 12px;
+}
+.redplayer0{
+    top: 154px;
+    left: 348px;
+}
+.redplayer1{
+    top: 184px;
+    left: 348px;
+}
+.redplayer2{
+    top: 214px;
+    left: 348px;
+}
+.redplayer3{
+    top: 244px;
+    left: 348px;
+}
+.redplayer4{
+    top: 274px;
+    left: 348px;
+}
+.player-icon {
+    position: absolute;
+    border-radius: 70%;
+    height: 25px;
+    border : rgb(200, 170, 110) 1px solid;
+}
 .empty{
     height: 22px;
     opacity: 0.1;

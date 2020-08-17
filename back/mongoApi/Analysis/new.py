@@ -221,7 +221,7 @@ def update_match_data(profile_id, left, right, tier):
                     tmp_player_p_value[col] = change_to_p_value(z_value(data[col], total_stats[mean][0], total_stats[std][0]))
                 player_p_value = tmp_player_p_value
             else:
-                data.update.update(badges_450_data)
+                data.update(badges_450_data)
                 # cols = save_stats_list + badges_450
                 tier_lane_stats = stats[(stats['tier'] == tier)].reset_index(drop=True)
                 tmp_position = 'None'
@@ -247,12 +247,12 @@ def update_match_data(profile_id, left, right, tier):
                             total += (1 - player_p_value.get(k))
                         else:
                             total += player_p_value.get(k)
-                            participant['matchGrade'] = total / 8
-                            participant['radar'] = {
-                                'aggressiveness': (player_p_value.get('killAssistPerMin') + player_p_value.get('totalDamageDealtToChampionsPerMin') + player_p_value.get('totalDamageTakenPerMin')) / 3,
-                                'stability': (player_p_value.get('visionScorePerMin') + ((player_p_value.get('wardsKilledPerMin') + player_p_value.get('wardsPlacedPerMin')) / 2) + (1 - player_p_value.get('deathsRatio'))) / 3,
-                                'influence': (player_p_value.get('visionScorePerMin') + player_p_value.get('killsRatio') + player_p_value.get('damageDealtToObjectivesPerMin')) / 3,
-                            }
+                    participant['matchGrade'] = total / 8
+                    participant['radar'] = {
+                        'aggressiveness': (player_p_value.get('killAssistPerMin') + player_p_value.get('totalDamageDealtToChampionsPerMin') + player_p_value.get('totalDamageTakenPerMin')) / 3,
+                        'stability': (player_p_value.get('visionScorePerMin') + ((player_p_value.get('wardsKilledPerMin') + player_p_value.get('wardsPlacedPerMin')) / 2) + (1 - player_p_value.get('deathsRatio'))) / 3,
+                        'influence': (player_p_value.get('visionScorePerMin') + player_p_value.get('killsRatio') + player_p_value.get('damageDealtToObjectivesPerMin')) / 3,
+                    }
                 else:
                     for k in save_stats_list:
                         if k == 'deathsRatio' or k == 'totalDamageTakenPerMin':

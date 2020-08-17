@@ -39,15 +39,12 @@ save_stats_list_450 = [
         'damageSelfMitigated',          # 감소시킨 피해량(방어막?)
         "damageDealtToObjectives",       # 오브젝트에게 준 피해량
         "damageDealtToTurrets",         # 타워에 준 피해량
-        'visionScore',                  # 시야점수
         'timeCCingOthers',              # cc기에 맞은 총 시간
         'totalDamageTaken',             # 받은 피해량
         'goldEarned',                   # 총 골드
         'totalMinionsKilled',           # cs
-        'neutralMinionsKilled',         # 중립몹 킬수
         # 'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
         'totalTimeCrowdControlDealt',   # cc기를 맞춘 총 시간
-        'visionWardsBoughtInGame',      # 핑와 구매 개수
         # 'wardsPlaced',                  # 와드 설치수
         # 'wardsKilled',                  # 와드 파괴수
         'killsRatio',                   # 킬관여율
@@ -56,7 +53,10 @@ save_stats_list_450 = [
     ]
 
 save_stats_list_420 = save_stats_list_450 + [
+        'visionScore',                  # 시야점수
+        'neutralMinionsKilled',         # 중립몹 킬수
         'neutralMinionsKilledEnemyJungle', # 상대 정글몹 킬수
+        'visionWardsBoughtInGame',      # 핑와 구매 개수
         'wardsPlaced',                  # 와드 설치수
         'wardsKilled',                  # 와드 파괴수
     ]

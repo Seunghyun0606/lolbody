@@ -21,7 +21,6 @@ save_stats_list = [
         # "unrealKills": 0,
         'totalDamageDealtToChampionsPerMin',  # 챔피언에게 입힌 피해량
         # "totalUnitsHealed"              # 회복시켜준 유저수
-        'visionScorePerMin',                  # 시야점수
         'totalDamageTakenPerMin',             # 받은 피해량
         "damageDealtToObjectivesPerMin",       # 오브젝트에게 준 피해량
         # 'goldEarned',                   # 총 골드
@@ -33,23 +32,24 @@ save_stats_list = [
 spells = [1, 11, 12, 13, 14, 21, 3, 30, 31, 32, 39, 4, 6, 7]
 
 badges_450 = [
-    'killsPerMin',                        # kill
-    'deathsPerMin',                       # deaths
-    'assistsPerMin',                      # assists
-    'totalHealPerMin',                    # 총 회복량
-    'damageSelfMitigatedPerMin',          # 감소시킨 피해량(방어막?)
-    "damageDealtToTurretsPerMin",         # 타워에 준 피해량
-    'timeCCingOthersPerMin',              # cc기에 맞은 총 시간
-    'neutralMinionsKilledPerMin',         # 중립몹 킬수
-    'totalTimeCrowdControlDealtPerMin',   # cc기를 맞춘 총 시간
-    'visionWardsBoughtInGamePerMin',      # 핑와 구매 개수
-    ]
+        'killsPerMin',                        # kill
+        'deathsPerMin',                       # deaths
+        'assistsPerMin',                      # assists
+        'totalHealPerMin',                    # 총 회복량
+        'damageSelfMitigatedPerMin',          # 감소시킨 피해량(방어막?)
+        "damageDealtToTurretsPerMin",         # 타워에 준 피해량
+        'timeCCingOthersPerMin',              # cc기에 맞은 총 시간
+        'totalTimeCrowdControlDealtPerMin',   # cc기를 맞춘 총 시간
+        ]
 
 badges_420 = [
-    'neutralMinionsKilledEnemyJunglePerMin', # 상대 정글몹 킬수
-    'wardsPlacedPerMin',                  # 와드 설치수
-    'wardsKilledPerMin',                  # 와드 파괴수
-]
+        'visionScorePerMin',                  # 시야점수
+        'visionWardsBoughtInGamePerMin',      # 핑와 구매 개수
+        'neutralMinionsKilledPerMin',         # 중립몹 킬수
+        'neutralMinionsKilledEnemyJunglePerMin', # 상대 정글몹 킬수
+        'wardsPlacedPerMin',                  # 와드 설치수
+        'wardsKilledPerMin',                  # 와드 파괴수
+    ]
 
 def change_to_p_value(z):
     return norm.cdf(z)
@@ -76,7 +76,7 @@ def update_match_data(profile_id, left, right, tier):
 # def calculate_match_data(tup):
 #     match_id, tier = tup
     for match_id in match_id_list:
-    # print(match_id, end=' ')
+        print(match_id)
     # print(os.getpid())
         tmp_collection = db_root.tmp
         match_data = tmp_collection.find_one({'_id': match_id})
@@ -211,7 +211,7 @@ def update_match_data(profile_id, left, right, tier):
                     tmp_player_p_value[col] = change_to_p_value(z_value(data[col], total_stats[mean][0], total_stats[std][0]))
                 player_p_value = tmp_player_p_value
             else:
-                data.update.update(badges_450_data)
+                data.update(badges_450_data)
                 cols = save_stats_list + badges_450
                 tier_lane_stats = stats[(stats['tier'] == tier)].reset_index(drop=True)
                 tmp_position = 'None'

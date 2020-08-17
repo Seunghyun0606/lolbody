@@ -21,7 +21,6 @@ save_stats_list = [
         # "unrealKills": 0,
         'totalDamageDealtToChampionsPerMin',  # 챔피언에게 입힌 피해량
         # "totalUnitsHealed"              # 회복시켜준 유저수
-        'visionScorePerMin',                  # 시야점수
         'totalDamageTakenPerMin',             # 받은 피해량
         "damageDealtToObjectivesPerMin",       # 오브젝트에게 준 피해량
         # 'goldEarned',                   # 총 골드
@@ -33,23 +32,24 @@ save_stats_list = [
 spells = [1, 11, 12, 13, 14, 21, 3, 30, 31, 32, 39, 4, 6, 7]
 
 badges_450 = [
-    'killsPerMin',                        # kill
-    'deathsPerMin',                       # deaths
-    'assistsPerMin',                      # assists
-    'totalHealPerMin',                    # 총 회복량
-    'damageSelfMitigatedPerMin',          # 감소시킨 피해량(방어막?)
-    "damageDealtToTurretsPerMin",         # 타워에 준 피해량
-    'timeCCingOthersPerMin',              # cc기에 맞은 총 시간
-    'totalTimeCrowdControlDealtPerMin',   # cc기를 맞춘 총 시간
+        'killsPerMin',                        # kill
+        'deathsPerMin',                       # deaths
+        'assistsPerMin',                      # assists
+        'totalHealPerMin',                    # 총 회복량
+        'damageSelfMitigatedPerMin',          # 감소시킨 피해량(방어막?)
+        "damageDealtToTurretsPerMin",         # 타워에 준 피해량
+        'timeCCingOthersPerMin',              # cc기에 맞은 총 시간
+        'totalTimeCrowdControlDealtPerMin',   # cc기를 맞춘 총 시간
     ]
 
 badges_420 = [
-    'neutralMinionsKilledPerMin',         # 중립몹 킬수
-    'neutralMinionsKilledEnemyJunglePerMin', # 상대 정글몹 킬수
-    'visionWardsBoughtInGamePerMin',      # 핑와 구매 개수
-    'wardsPlacedPerMin',                  # 와드 설치수
-    'wardsKilledPerMin',                  # 와드 파괴수
-]
+        'visionScorePerMin',                  # 시야점수
+        'neutralMinionsKilledPerMin',         # 중립몹 킬수
+        'neutralMinionsKilledEnemyJunglePerMin', # 상대 정글몹 킬수
+        'visionWardsBoughtInGamePerMin',      # 핑와 구매 개수
+        'wardsPlacedPerMin',                  # 와드 설치수
+        'wardsKilledPerMin',                  # 와드 파괴수
+    ]
 
 def change_to_p_value(z):
     return norm.cdf(z)

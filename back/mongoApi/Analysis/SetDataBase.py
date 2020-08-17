@@ -63,7 +63,7 @@ def z_value(d, mean, std):
 # mongodb에 match_id를 받아서 라인구분, match_grade 저장
 db_root = connection.test
 def get_stats(queue):
-    return pd.read_csv('./csv/%s/stastics/stastics_%s.csv' % (now, queue))
+    return pd.read_csv('./Analysis/csv/%s/stastics/stastics_%s.csv' % (now, queue))
 
 def update_match_data(profile_id, left, right, tier):
     match_list = list(filter(lambda i: i.get('timestamp') >= 1578596400000 and i.get('queue') != 2000 and i.get('queue') != 2010 and i.get('queue') != 2020, db_root.matchlists.find_one({'_id': profile_id}).get('matches')))[left:right]
@@ -161,7 +161,7 @@ def update_match_data(profile_id, left, right, tier):
             min_distance = float('inf')
             tmp_position = ''
             player_p_value = dict()
-            badges_data = dict()
+            badges_data = []
             if queue == 420:
                 data.update(badges_420_data)
                 data.update(badges_450_data)
@@ -183,8 +183,6 @@ def update_match_data(profile_id, left, right, tier):
                         # 라인별로 데이터 분석 x
                         # tmp_player_p_value[col] = change_to_p_value(z_value(data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0]))
                         player_z_value = z_value(data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0])
-                        if col == 'deathsRatio':
-                            player_z_value = 1 - player_z_value
                         if col == 'totalMinionsKilledPerMin':
                             player_z_value *= 1.5
                         tmp_distance += player_z_value**2
@@ -208,7 +206,17 @@ def update_match_data(profile_id, left, right, tier):
                 for col in cols:
                     mean = col + 'Mean'
                     std = col + 'Std'
-                    tmp_player_p_value[col] = change_to_p_value(z_value(data[col], total_stats[mean][0], total_stats[std][0]))
+                    p_value = change_to_p_value(z_value(data[col], total_stats[mean][0], total_stats[std][0]))
+                    if col == 'deathsRatio':
+                        p_value = -p_value
+                    tmp_player_p_value[col] = p_value
+                    # 여기는 뱃지 붙이는 곳
+                    if p_value >= 0.9:
+                        badges_data.append({'name': col, 'p_value': p_value, 'tier': 0})
+                    elif p_value >= 0.8:
+                        badges_data.append({'name': col, 'p_value': p_value, 'tier': 1})
+                    elif p_value >= 0.7:
+                        badges_data.append({'name': col, 'p_value': p_value, 'tier': 2})
                 player_p_value = tmp_player_p_value
             else:
                 data.update(badges_450_data)
@@ -219,11 +227,22 @@ def update_match_data(profile_id, left, right, tier):
                 for col in cols:
                     mean = col + 'Mean'
                     std = col + 'Std'
-                    tmp_player_p_value[col] = change_to_p_value(z_value(data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0]))
+                    p_value = change_to_p_value(z_value(data[col], total_stats[mean][0], total_stats[std][0]))
+                    if col == 'deathsRatio':
+                        p_value = -p_value
+                    tmp_player_p_value[col] = p_value
+                    # 여기는 뱃지 붙이는 곳
+                    if p_value >= 0.9:
+                        badges_data.append({'name': col, 'p_value': p_value, 'tier': 0})
+                    elif p_value >= 0.8:
+                        badges_data.append({'name': col, 'p_value': p_value, 'tier': 1})
+                    elif p_value >= 0.7:
+                        badges_data.append({'name': col, 'p_value': p_value, 'tier': 2})
                 player_p_value = tmp_player_p_value
 
             participant['line'] = tmp_position
             participant['analysis'] = player_p_value
+            participant['badges'] = badges_data
             #####################################################################33
 
             # 판별된 라인 기준으로 matchGrade 계산

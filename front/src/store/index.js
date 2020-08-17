@@ -142,11 +142,16 @@ export default new Vuex.Store({
         arr.sort(function(a, b){
             return b.total - a.total;
         })
-        let ans = {data : [], labels: []};
-
+        let ans = {data : [], labels: [], win: [], lose: []};
+        let count = 0;
         for(let a in arr){
+            ans.lose.push(arr[a].lose);
+            ans.win.push(arr[a].win);
             ans.data.push(Math.round(arr[a].win/arr[a].total*10000)/100);
             ans.labels.push(arr[a].name);
+            count++;
+            if(count == 4)
+                break;
         }
         return ans;
     },

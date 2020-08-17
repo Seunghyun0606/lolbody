@@ -330,9 +330,24 @@ export default {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+
+/* width */
 .gamehistory::-webkit-scrollbar {
-    display: none;
+  width: 4px;
 }
+/* Track */
+.gamehistory::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+/* Handle */
+.gamehistory::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+/* Handle on hover */
+.gamehistory::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
 .v-avatar {
 	border : rgb(200, 170, 110) 1px solid;
 }

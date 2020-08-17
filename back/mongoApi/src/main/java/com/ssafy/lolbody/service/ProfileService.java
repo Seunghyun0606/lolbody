@@ -264,8 +264,10 @@ public class ProfileService {
 				if (matchRecordDto.getMyTeam().equals("blueTeam")) {
 					List<BadgeDto> badges = matchRecordDto.getBlueTeam().getTeammate().get(matchRecordDto.getMyIndex())
 							.getBadges();
-					for (BadgeDto badge : badges) {
-						badgeSet.add(badge);
+					if (badges != null) {
+						for (BadgeDto badge : badges) {
+							badgeSet.add(badge);
+						}
 					}
 				} else {
 					List<BadgeDto> badges = matchRecordDto.getRedTeam().getTeammate().get(matchRecordDto.getMyIndex())

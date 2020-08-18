@@ -51,7 +51,7 @@
             </v-row>
             <v-row>
               이쯤에 배지.
-              <!-- <MultiSearchBedge :index="index"/> -->
+              <!-- <MultiSearchBadge :index="index"/> -->
             </v-row>
           </v-col>
         </v-row>
@@ -227,7 +227,7 @@ import LolbodyBarChart from '@/components/lolbody/LolbodyBarChart'
 import LolbodyColumnChart from '@/components/lolbody/LolbodyColumnChart'
 import LolbodyRadarChart from '@/components/lolbody/LolbodyRadarChart'
 import LolbodyWordCloud from '@/components/lolbody/LolbodyWordCloud'
-// import MultiSearchBedge from '@/components/multisearch/MultiSearchBedge'
+// import MultiSearchBadge from '@/components/multisearch/MultiSearchBadge'
 
 export default {
   name: 'Lolbody',
@@ -236,7 +236,7 @@ export default {
     LolbodyColumnChart,
     LolbodyRadarChart,
     LolbodyWordCloud,
-    // MultiSearchBedge,
+    // MultiSearchBadge,
   },
   data() {
     return {

@@ -17,7 +17,7 @@
       <v-col cols=2>
         <v-btn
           small 
-          color="primary lighten-1"
+          color="#30BA8C lighten-1"
           @click="onClickSearchButton"
           @keyup.enter="onClickSearchButton"
           >

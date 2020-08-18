@@ -1,16 +1,16 @@
 <template>  
-    <span class="test-bedge">{{ bedge[index] }}</span>
+    <span class="test-badge">{{ badge[index] }}</span>
 </template>
 
 <script>
 export default {
-  name: "MultiSearchBedge",
+  name: "MultiSearchBadge",
   props: {
     index: Number,
   },
   data() {
     return {
-      bedge: [
+      badge: [
         "SSAFY",
         "화이팅",
         "롤바디",
@@ -26,7 +26,7 @@ export default {
 <style>
 
 
-.test-bedge {
+.test-badge {
   margin-right: 5px;
   padding: 2px 5px 2px;
   border: 1px solid #e5f4ff;

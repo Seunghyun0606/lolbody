@@ -112,7 +112,15 @@ export default new Vuex.Store({
         }
     },
     matchDatas: [],
-    badgeSet: [],
+    badgeMap: {},
+    ProfileRadarChart: [
+        {aggressiveness : [], influence: [], stability: []},
+        {aggressiveness : [], influence: [], stability: []},
+        {aggressiveness : [], influence: [], stability: []}
+    ],
+    ProfileTotalWinRateChart: {'win': 0, 'lose': 0, 'total': 0},
+    ProfileEachWinRateChart: {},
+
   },
   getters: {
     
@@ -122,44 +130,11 @@ export default new Vuex.Store({
     },
 
     // 형래
+    getBadgeMap(state){
+        return state.badgeMap;
+    },
     getProfileRadarChart(state){
-        let tmp = [
-            {aggressiveness : [], influence: [], stability: []},
-            {aggressiveness : [], influence: [], stability: []},
-            {aggressiveness : [], influence: [], stability: []}
-        ];
-        for(let matchData of state.matchDatas){
-            if(matchData.noGame)
-                continue;
-            switch(queues[matchData.queue].shortName){
-                case '솔랭':
-                case '자유 랭크 게임':
-                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness != null)
-                        tmp[0].aggressiveness.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness);
-                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability != null)
-                        tmp[0].stability.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability);
-                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence != null)
-                        tmp[0].influence.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence);
-                    break;
-                case '일반':
-                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness != null)
-                        tmp[1].aggressiveness.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness);
-                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability != null)
-                        tmp[1].stability.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability);
-                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence != null)
-                        tmp[1].influence.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence);
-                    break;
-                case '무작위 총력전':
-                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness != null)
-                        tmp[2].aggressiveness.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness);
-                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability != null)
-                        tmp[2].stability.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability);
-                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence != null)
-                        tmp[2].influence.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence);
-                    break;
-            }
-            
-        }
+        let tmp = state.ProfileRadarChart;
         let result = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
         for(let idx in tmp){
             for(let t in tmp[idx].aggressiveness)
@@ -368,7 +343,6 @@ export default new Vuex.Store({
                 state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100});
             state.profileLineChartOption.chartOptions.xaxis.categories.unshift(matchData.timestamp + matchData[matchData.myTeam].teammate[matchData.myIndex].champ)
         }
-
     },
 
 
@@ -379,17 +353,17 @@ export default new Vuex.Store({
 
     // Radar Chart Data
     setRadarChartDatas(state, datas) {
-		state.profileRadarChartOption.series[0].name = datas.lane1["lane"];
-		state.profileRadarChartOption.series[1].name = datas.lane2["lane"];
-		state.profileRadarChartOption.series[0].data = [];
-		state.profileRadarChartOption.series[1].data = [];
-		state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["aggressiveness"]*100)*10)/10);
-		state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["stability"]*100)*10)/10);
-		state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["influence"]*100)*10)/10);
+        state.profileRadarChartOption.series[0].name = datas.lane1["lane"];
+        state.profileRadarChartOption.series[1].name = datas.lane2["lane"];
+        state.profileRadarChartOption.series[0].data = [];
+        state.profileRadarChartOption.series[1].data = [];
+        state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["aggressiveness"]*100)*10)/10);
+        state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["stability"]*100)*10)/10);
+        state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["influence"]*100)*10)/10);
 
-		state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["aggressiveness"]*100)*10)/10);
-		state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["stability"]*100)*10)/10);
-		state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["influence"]*100)*10)/10);
+        state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["aggressiveness"]*100)*10)/10);
+        state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["stability"]*100)*10)/10);
+        state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["influence"]*100)*10)/10);
     },
 
 
@@ -403,18 +377,79 @@ export default new Vuex.Store({
     setProfileDatas(state, profileDatas){
         state.profileDatas = profileDatas;
         state.matchDatas = [];
+        state.badgeMap = {};
+        state.ProfileRadarChart = [
+            {aggressiveness : [], influence: [], stability: []},
+            {aggressiveness : [], influence: [], stability: []},
+            {aggressiveness : [], influence: [], stability: []}
+        ];
+        state.ProfileTotalWinRateChart = {'win': 0, 'lose': 0, 'total': 0};
     },
     setMatchDatas(state, datas){
         let matchDatas = datas.matchRecordList;
+        if(matchDatas == null)
+            return;
         for(let idx = 0; idx < matchDatas.length; idx++)
             matchDatas[idx].display = false;
         
         state.matchDatas = state.matchDatas.concat(matchDatas);
-        state.badgeSet = state.badgeSet.concat(datas.badgeSet);
-    }
+        for(let badge in datas.badgeMap){
+            if(state.badgeMap[badge] == null)
+                state.badgeMap[badge] = datas.badgeMap[badge];
+            else
+                state.badgeMap[badge].cnt += datas.badgeMap[badge].cnt;
+        }
+    },
+    setProfileRadarChart(state, matchDatas){
+        if(matchDatas == null)
+            return;
+        for(let matchData of matchDatas){
+            if(matchData.noGame)
+                continue;
+            switch(queues[matchData.queue].shortName){
+                case '솔랭':
+                case '자유 랭크 게임':
+                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness != null)
+                        state.ProfileRadarChart[0].aggressiveness.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness);
+                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability != null)
+                        state.ProfileRadarChart[0].stability.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability);
+                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence != null)
+                        state.ProfileRadarChart[0].influence.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence);
+                    break;
+                case '일반':
+                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness != null)
+                        state.ProfileRadarChart[1].aggressiveness.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness);
+                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability != null)
+                        state.ProfileRadarChart[1].stability.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability);
+                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence != null)
+                        state.ProfileRadarChart[1].influence.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence);
+                    break;
+                case '무작위 총력전':
+                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness != null)
+                        state.ProfileRadarChart[2].aggressiveness.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.aggressiveness);
+                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability != null)
+                        state.ProfileRadarChart[2].stability.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.stability);
+                    if(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence != null)
+                        state.ProfileRadarChart[2].influence.push(matchData[matchData.myTeam].teammate[matchData.myIndex].radar.influence);
+                    break;
+            }
+        }
+    },
+    setProfileTotalWinRateChart(state, matchDatas){
+        if(matchDatas == null)
+            return;
+        for(let matchData of matchDatas){
+            if(matchData.noGame)
+                continue;
+            if(matchData[matchData.myTeam].win)
+                state.ProfileTotalWinRateChart.win++;
+            else
+                state.ProfileTotalWinRateChart.lose++;
+            state.ProfileTotalWinRateChart.total++;
+        }
+    },
   },
 
-  
   actions: {
     // 승현, multiSearch 데이터 init
     initMultiSearchData( { commit } ) {
@@ -484,6 +519,8 @@ export default new Vuex.Store({
         // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
         .then(res => {
             commit('setMatchDatas', res.data)
+            commit('setProfileRadarChart', res.data.matchRecordList)
+            commit('setProfileTotalWinRateChart', res.data.matchRecordList)
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);

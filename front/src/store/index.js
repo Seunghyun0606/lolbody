@@ -376,14 +376,7 @@ export default new Vuex.Store({
     // 형래
     setProfileDatas(state, profileDatas){
         state.profileDatas = profileDatas;
-        state.matchDatas = [];
-        state.badgeMap = {};
-        state.ProfileRadarChart = [
-            {aggressiveness : [], influence: [], stability: []},
-            {aggressiveness : [], influence: [], stability: []},
-            {aggressiveness : [], influence: [], stability: []}
-        ];
-        state.ProfileTotalWinRateChart = {'win': 0, 'lose': 0, 'total': 0};
+        
     },
     setMatchDatas(state, datas){
         let matchDatas = datas.matchRecordList;
@@ -514,10 +507,20 @@ export default new Vuex.Store({
             commit('setProfileDatas', '')
         });
     },
-    getMatchDatas( { commit }, {userName, num}){
+    getMatchDatas( { commit, state }, {userName, num}){
         return axios.get(SERVER_URL + `/api/profile/${userName}/${num}`)
         // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
         .then(res => {
+            if(num == 1){
+                state.matchDatas = [];
+                state.badgeMap = {};
+                state.ProfileRadarChart = [
+                    {aggressiveness : [], influence: [], stability: []},
+                    {aggressiveness : [], influence: [], stability: []},
+                    {aggressiveness : [], influence: [], stability: []}
+                ];
+                state.ProfileTotalWinRateChart = {'win': 0, 'lose': 0, 'total': 0};
+            }
             commit('setMatchDatas', res.data)
             commit('setProfileRadarChart', res.data.matchRecordList)
             commit('setProfileTotalWinRateChart', res.data.matchRecordList)

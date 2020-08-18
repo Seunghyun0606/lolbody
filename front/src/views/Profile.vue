@@ -48,7 +48,8 @@
 				</v-card>
 
 				<v-card class="ma-1 mb-2 bg_card scroll" outlined height="347px" algin="center">
-					<ProfileBadge v-for="(badge, idx) in badgeMap" :key="idx+'_badge'" :badge="badge"/>
+					<!-- <ProfileBadge v-for="(badge, idx) in badgeMap" :key="idx+'_badge'" :badge="badge"/> -->
+					<ProfileBadge />
 				</v-card>
 			</td>
 			<!-- 여기서부터 우측 공간 -->
@@ -94,7 +95,7 @@
 
                 <div class="scroll gamehistory" >
                     <ProfileGameHistory/>
-                    <v-btn class="mx-1 mb-2" color="#2B353D" width="649px" height="50px" @click="getMatchDatas(++numOfMatch)" outlined>
+                    <v-btn class="mx-1 mb-2" color="#2B353D" width="649px" height="50px" @click="getMatchDatas(profileDatas.summonerName, ++numOfMatch)" outlined>
                         더보기
                     </v-btn>
                 </div>
@@ -190,6 +191,8 @@ export default {
 	mounted(){
 		const userName = this.$route.params.userName;
 		this.getProfileDatas(userName);
+		this.getMatchDatas(userName, 1);
+		this.triger.isLoading = false;
 	},
 	computed: {
 		badgeMap(){
@@ -230,16 +233,16 @@ export default {
             //this.now = this.profileDatas.rankedRecord;
             if(this.profileDatas == '')
                 return;
-			this.getMatchDatas(1);
+			// this.getMatchDatas(1);
             //this.getRadarChartDatas(userName);
-			this.triger.isLoading = false;
+			// this.triger.isLoading = false;
 		},
-		async getMatchDatas(n){
+		async getMatchDatas(userName, n){
             await this.$store.dispatch('getMatchDatas', {
-                userName: this.profileDatas.summonerName, 
+                'userName': userName, 
                 num : n
 			});
-            this.$store.commit('setProfileLineChartOption', this.matchDatas);
+            //this.$store.commit('setProfileLineChartOption', this.matchDatas);
 		},
 		
 		// radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
@@ -249,7 +252,7 @@ export default {
 		// 전적갱신 전적 리스트 미구현상태
 		async renewalUserData(userName) {
             await this.$store.dispatch('renewalUserData', userName);
-            this.getMatchDatas(1);
+            this.getMatchDatas(userName, 1);
 		},
 
 		getRankData(){

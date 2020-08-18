@@ -96,8 +96,8 @@ def update_match_data(profile_id, left, right, tier):
     match_id_list = [i.get('gameId') for i in match_list if i.get('queue') == 420 or i.get('queue') == 430 or i.get('queue') == 440 or i.get('queue') == 450]
 
     for match_id in match_id_list:
-        tmp_collection = db_root.matches
-        match_data = tmp_collection.find_one({'_id': match_id})
+        matches_collection = db_root.matches
+        match_data = matches_collection.find_one({'_id': match_id})
 
         if match_data is None: continue
         # 다시하기는 넘어감

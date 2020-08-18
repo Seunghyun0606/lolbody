@@ -1,9 +1,9 @@
 <template>
-  <a id="kakao-link-btn" @click="onClickTwitterButton">
-  <img
-    src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
-  />
-</a>
+  <a id="twitter-link-btn" @click="onClickTwitterButton">
+    <img
+      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+    />
+  </a>
 </template>
 
 <script>

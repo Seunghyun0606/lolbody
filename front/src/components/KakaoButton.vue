@@ -1,9 +1,9 @@
 <template>
   <a id="kakao-link-btn" @click="onClickKakaoButton">
-  <img
-    src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
-  />
-</a>
+    <img
+      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+    />
+  </a>
 </template>
 
 <script>

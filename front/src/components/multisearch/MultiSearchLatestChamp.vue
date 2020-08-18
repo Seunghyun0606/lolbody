@@ -9,11 +9,11 @@
     <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="card-champ-img">
 
     <div class="spell">
-      <img class="card-sub card-sub-left" :src="require(`@/assets/images/spell/${recentGame.spell1Id}.png`)" alt="spell-left">
-      <img class="card-sub card-sub-right" :src="require(`@/assets/images/spell/${recentGame.spell2Id}.png`)" alt="spell-right">
+      <img class="card-sub card-sub-left" :src="require(`@/assets/images/spell/${recentGame.spell1}.png`)" alt="spell-left">
+      <img class="card-sub card-sub-right" :src="require(`@/assets/images/spell/${recentGame.spell2}.png`)" alt="spell-right">
     </div>
     <div class="champ-card-text">
-      {{ recentGame.kda.kills }} / <span>{{ recentGame.kda.deaths }}</span> / {{ recentGame.kda.assists }}
+      {{ recentGame.kills }} / <span>{{ recentGame.deaths }}</span> / {{ recentGame.assists }}
     </div>
   </div>
 
@@ -42,8 +42,8 @@ export default {
 
       ]),
       laneImage () {
-        var lane = this.recentGame.lane
-        if ( lane !== "NONE" ) {
+        var lane = this.recentGame.gameLane
+        if ( lane !== "None" ) {
           return require(`@/assets/images/position/${lane}.png`)
         }
         return require(`@/assets/images/error.png`)
@@ -85,7 +85,7 @@ export default {
 
 .champ-card-text {
   padding-top: 5px;
-  font-size: 9px;
+  font-size: 50%;
   font-weight: 900;
 }
 

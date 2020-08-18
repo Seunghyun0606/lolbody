@@ -25,7 +25,7 @@ export default {
       objectType: 'feed',
       content: {
         // 여기 두 줄이 카톡에서 보임
-        title: this.username + '님 LoLBody 분석결과',
+        title: this.username + '님의 LoLBody 분석결과',
         description: this.badges.toString().replace(/,/gi, ' '),
         imageUrl:
           'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',

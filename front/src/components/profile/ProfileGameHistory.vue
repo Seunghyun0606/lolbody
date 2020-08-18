@@ -156,12 +156,18 @@
                 <v-row v-if="matchData.display" style="background-color: #fff;" width="650px">
                     <v-col cols="6">
                         <barchart :team="matchData.blueTeam.teammate"/>
-                        <img :src="imageload('champion/' + p.champ + '.png')" :class="['player-icon', 'blueplayer'+idx]" v-for="(p, idx) in matchData.blueTeam.teammate" :key="idx + '_player'"/>
+                        <div class="tooltip" :class="['blueplayer'+idx]" v-for="(p, idx) in matchData.blueTeam.teammate" :key="idx + '_blue_player'">
+                            <img :src="imageload('champion/' + p.champ + '.png')" class="player-icon" />
+                            <span class="tooltiptext">{{p.name}}</span>
+                        </div>
                     </v-col>
 
                     <v-col cols="6">
                         <barchart :team="matchData.redTeam.teammate"/>
-                        <img :src="imageload('champion/' + p.champ + '.png')" :class="['player-icon', 'redplayer'+idx]" v-for="(p, idx) in matchData.redTeam.teammate" :key="idx + '_player'"/>
+                        <div class="tooltip" :class="['redplayer'+idx]" v-for="(p, idx) in matchData.redTeam.teammate" :key="idx + '_red_player'">
+                            <img :src="imageload('champion/' + p.champ + '.png')" class="player-icon" />
+                            <span class="tooltiptext">{{p.name}}</span>
+                        </div>
                     </v-col>
                 </v-row>
             </v-card>
@@ -250,43 +256,79 @@ export default {
 </script>
 
 <style>
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #272727;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 105%;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 .blueplayer0{
+    position: absolute;
     top: 154px;
     left: 12px;
 }
 .blueplayer1{
+    position: absolute;
     top: 184px;
     left: 12px;
 }
 .blueplayer2{
+    position: absolute;
     top: 214px;
     left: 12px;
 }
 .blueplayer3{
+    position: absolute;
     top: 244px;
     left: 12px;
 }
 .blueplayer4{
+    position: absolute;
     top: 274px;
     left: 12px;
 }
 .redplayer0{
+    position: absolute;
     top: 154px;
     left: 348px;
 }
 .redplayer1{
+    position: absolute;
     top: 184px;
     left: 348px;
 }
 .redplayer2{
+    position: absolute;
     top: 214px;
     left: 348px;
 }
 .redplayer3{
+    position: absolute;
     top: 244px;
     left: 348px;
 }
 .redplayer4{
+    position: absolute;
     top: 274px;
     left: 348px;
 }

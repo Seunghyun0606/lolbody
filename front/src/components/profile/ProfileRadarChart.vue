@@ -16,7 +16,15 @@ export default {
     props: ['idx'],
     computed: {
         datas(){
-            return this.$store.getters.getProfileRadarChart[this.idx];
+            let tmp = this.$store.getters.getProfileRadarChart[this.idx];
+            let result = [0, 0, 0];
+            if(!isNaN(tmp[0]))
+                result[0] = tmp[0];
+            if(!isNaN(tmp[1]))
+                result[1] = tmp[1];
+            if(!isNaN(tmp[2]))
+                result[2] = tmp[2];
+            return result;
         },
         check(){
             if(this.datas.lenght == 0 || this.datas == null || isNaN(this.datas[0]) || isNaN(this.datas[1]) || isNaN(this.datas[2]))
@@ -41,9 +49,6 @@ export default {
                     tickAmount: 5,
                     min: 0,
                     max: 1,
-                },
-                legend: {
-                    position: 'top',
                 },
                 markers: {
                     size: 3

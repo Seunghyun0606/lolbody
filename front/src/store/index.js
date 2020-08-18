@@ -113,6 +113,7 @@ export default new Vuex.Store({
     },
     matchDatas: [],
     badgeMap: {},
+    badgeSet: [],
     ProfileRadarChart: [
         {aggressiveness : [], influence: [], stability: []},
         {aggressiveness : [], influence: [], stability: []},
@@ -120,7 +121,7 @@ export default new Vuex.Store({
     ],
     ProfileTotalWinRateChart: {'win': 0, 'lose': 0, 'total': 0},
     ProfileEachWinRateChart: {},
-
+    error: 0
   },
   getters: {
     
@@ -130,8 +131,13 @@ export default new Vuex.Store({
     },
 
     // 형래
-    getBadgeMap(state){
-        return state.badgeMap;
+    getBadgeSet(state){
+        state.badgeSet.sort(function(a, b){
+            if ( a.description < b.description ) return -1; 
+            else if ( a.description == b.description ) return 0; 
+            else return 1; 
+        });
+        return state.badgeSet;
     },
     getProfileRadarChart(state){
         let tmp = state.ProfileRadarChart;
@@ -386,11 +392,14 @@ export default new Vuex.Store({
             matchDatas[idx].display = false;
         
         state.matchDatas = state.matchDatas.concat(matchDatas);
+
+        state.badgeSet = [];
         for(let badge in datas.badgeMap){
             if(state.badgeMap[badge] == null)
                 state.badgeMap[badge] = datas.badgeMap[badge];
             else
                 state.badgeMap[badge].cnt += datas.badgeMap[badge].cnt;
+            state.badgeSet.push(state.badgeMap[badge]);
         }
     },
     setProfileRadarChart(state, matchDatas){
@@ -441,6 +450,9 @@ export default new Vuex.Store({
             state.ProfileTotalWinRateChart.total++;
         }
     },
+    setError(state, err){
+        state.error = err;
+    }
   },
 
   actions: {
@@ -499,10 +511,12 @@ export default new Vuex.Store({
         return axios.get(SERVER_URL + `/api/profile/${userName}`)
         // return axios.get(`http://localhost:8888/profile/${userName}`)
         .then(res => {
+            commit('setError', 0)
             commit('setProfileDatas', res.data)
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);
+                commit('setError', error.response.status)
             }
             commit('setProfileDatas', '')
         });
@@ -511,6 +525,7 @@ export default new Vuex.Store({
         return axios.get(SERVER_URL + `/api/profile/${userName}/${num}`)
         // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
         .then(res => {
+            commit('setError', 0)
             if(num == 1){
                 state.matchDatas = [];
                 state.badgeMap = {};
@@ -527,6 +542,7 @@ export default new Vuex.Store({
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);
+                commit('setError', error.response.status)
             }
             console.log(error)
         });
@@ -539,6 +555,7 @@ export default new Vuex.Store({
 		.catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);
+                commit('setError', error.response.status)
             }
             commit('setRadarChartDatas', '')
 		})

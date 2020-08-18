@@ -3,7 +3,8 @@
 	<v-row align="center" justify="center">
 	<v-app id="sandbox">
 	<v-main>
-	<table width="1010px" height="835px">
+	<LoadError :error="error"  v-if="error != 0"/>
+	<table width="1010px" height="835px" v-else>
 		<tr>
 			<!-- 여기서부터 좌측 공간 -->
 			<td style="vertical-align: top" width="332px">
@@ -38,7 +39,7 @@
 				</v-card>
 				
 				<!-- 랭크, 일반 등 -->
-				<v-card class="ma-1 mb-2 bg_card" outlined height="300px" width="332px" algin="center">
+				<v-card class="ma-1 mb-2 bg_card" :loading="triger.MatchDataLoading" outlined height="300px" width="332px" algin="center">
 					<ul class="options">
 						<li><a :class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
 						<li><a :class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
@@ -47,7 +48,7 @@
                     <RadarChart :idx="radaridx"/>
 				</v-card>
 
-				<v-card class="ma-1 mb-2 bg_card scroll" outlined height="347px" algin="center">
+				<v-card class="ma-1 mb-2 bg_card scroll" :loading="triger.MatchDataLoading" outlined height="347px" algin="center">
 					<!-- <ProfileBadge v-for="(badge, idx) in badgeMap" :key="idx+'_badge'" :badge="badge"/> -->
 					<ProfileBadge />
 				</v-card>
@@ -67,7 +68,7 @@
 				<!-- RadarChart -->
 				<!-- 수정본, 전체 게임 승률 -->
 				<div class="d-inline-block">
-					<v-card class="mx-1 mt-1 bg_card float-left" width="200px" height="160px" outlined>
+					<v-card class="mx-1 mt-1 bg_card float-left" :loading="triger.MatchDataLoading" width="200px" height="160px" outlined>
 						<!-- <div class="ml-7">
 							<RadarChart/>
 						</div> -->
@@ -78,7 +79,7 @@
 				<!-- 롤비티아이 부분 -->
 				<!-- 수정본, 각 게임 모드별 승률 -->
 				<div class="d-inline-block">
-					<v-card class="mx-1 mt-1 bg_card float-left" width="240px" height="160px" outlined>
+					<v-card class="mx-1 mt-1 bg_card float-left" :loading="triger.MatchDataLoading" width="240px" height="160px" outlined>
 						<!-- <div class="d-inline">
 							<span>유저 성향</span>
 						</div> -->
@@ -88,14 +89,15 @@
 
 				<!-- 수정본, 챔피언 승률 639px-->
 				<div class="d-inline-block">
-					<v-card class="mx-1 mt-1 bg_card float-right" width="199px" height="160px" outlined>
+					<v-card class="mx-1 mt-1 bg_card float-right" :loading="triger.MatchDataLoading" width="199px" height="160px" outlined>
 						<ProfileChampRate/>
 					</v-card>
 				</div>
 
                 <div class="scroll gamehistory" >
+					<!-- <MultiLoading :loading="triger.MatchDataLoading" :color="'grey'" :size="'50px'"></MultiLoading> -->
                     <ProfileGameHistory/>
-                    <v-btn class="mx-1 mb-2" color="#2B353D" width="649px" height="50px" @click="getMatchDatas(profileDatas.summonerName, ++numOfMatch)" outlined>
+                    <v-btn class="mx-1 mb-2" :loading="triger.MatchDataLoading || triger.moreLoading" color="#2B353D" width="649px" height="50px" @click="getMatchDatas(profileDatas.summonerName, ++numOfMatch)" outlined>
                         더보기
                     </v-btn>
                 </div>
@@ -124,7 +126,7 @@ import ProfileTotalWinRateChart from "@/components/profile/ProfileTotalWinRateCh
 import ProfileEachWinRateChart from "@/components/profile/ProfileEachWinRateChart"
 import ProfileChampRate from "@/components/profile/ProfileChampRate"
 
-
+// import MultiLoading from '@/components/multisearch/MultiLoading.vue'
 //import { mapActions } from "vuex"
 //import { mapState } from "vuex"
 //import { mapGetters } from    "vuex"
@@ -141,8 +143,10 @@ export default {
 		ProfileTotalWinRateChart,
 		ProfileEachWinRateChart,
 		ProfileChampRate,
+		// MultiLoading,
 
 		// ProfileLineChart,
+		LoadError,
         RadarChart:() => ({
             component: import("@/components/profile/ProfileRadarChart"),
             loading: Loading,
@@ -180,8 +184,11 @@ export default {
                 nomalGameActive : false,
                 rankGameActive : true,
                 howlingAbyssActive : false,
-                isLoading : true,
-                overprofile : true,
+				overprofile : true,
+				
+				isLoading : true,
+				MatchDataLoading : true,
+				moreLoading : true
             },
             //now:{},
             radaridx: 0,
@@ -195,6 +202,9 @@ export default {
 		this.triger.isLoading = false;
 	},
 	computed: {
+		error(){
+			return this.$store.state.error
+		},
 		badgeMap(){
 			return this.$store.getters.getBadgeMap
 		},
@@ -205,26 +215,29 @@ export default {
             return this.$store.state.matchDatas
 		},
 		updateTime() {
-			let now = new Date();
-			let gametime = new Date(this.profileDatas.timestamp);
-			let result = "";
-			let diff = Math.abs(now.getTime() - gametime.getTime());
-			console.log(diff)
-			if(Math.floor(diff/(1000*3600*24)) > 0){
-					result = (gametime.getMonth()+1) + "/" + gametime.getDate();
-			}else{
-				let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
-				if ( diff1 === 0 ) {
-					result = '방금 전';
+			let time = this.profileDatas.timestamp
+			let calcDate = function(time) {
+				let now = new Date();
+				let gametime = new Date(time);
+				let result = "";
+				let diff = now.getTime() - gametime.getTime();
+				if(Math.floor(diff/(1000*3600*24)) > 0){
+						result = (gametime.getMonth()+1) + "/" + gametime.getDate();
+				}else{
+                    let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
+                    if ( diff1 === 0 ) {
+                        result = '방금 전';
+                    }
+                    else if ( diff1 === 1 ) {
+                        result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
+                    }
+                    else {
+                        result = '약 ' + diff1 +"시간 전";
+                    }
 				}
-				else if ( diff1 === 1 ) {
-					result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
-				}
-				else {
-					result = '약 ' + diff1 +"시간 전";
-				}
+				return result;
 			}
-			return result;
+			return calcDate(time)
 		},
 	},
 	methods:{
@@ -235,13 +248,16 @@ export default {
                 return;
 			// this.getMatchDatas(1);
             //this.getRadarChartDatas(userName);
-			// this.triger.isLoading = false;
+			this.triger.isLoading = false;
 		},
 		async getMatchDatas(userName, n){
+			this.triger.moreLoading = true;
             await this.$store.dispatch('getMatchDatas', {
                 'userName': userName, 
                 num : n
 			});
+			this.triger.moreLoading = false;
+			this.triger.MatchDataLoading = false;
             //this.$store.commit('setProfileLineChartOption', this.matchDatas);
 		},
 		
@@ -405,18 +421,18 @@ export default {
 .options li a {
 	height: 40px;
 	display: block;
-	color: black;
+	color: rgba(255, 255, 255, 0.6);
 	text-align: center;
 	padding: 9px 0 0 0 !important;
 	text-decoration: none;
-	background-color: #c4c4c4;
+	background-color: #272727;
 	box-shadow: 2px 2px 2px rgb(161, 161, 161) inset;
 }
 .options li a:hover:not(.option_action) {
 	background-color: rgb(160, 160, 161);
 }
 .option_action {
-	background-color: #fafafa !important;
+	background-color: #33A39E !important;
 	box-shadow: 2px 2px 2px rgb(161, 161, 161) !important;
 }
 

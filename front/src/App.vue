@@ -75,7 +75,13 @@ export default {
     font-size: 0.688em !important;
 }
 .fs-10{
-	font-size: 0.625em;
+	font-size: 0.625em !important;
+}
+.fs-9{
+	font-size: 0.563em !important;
+}
+.fs-8{
+	font-size: 0.5em !important;
 }
 
 .fc_blue{
@@ -96,9 +102,11 @@ export default {
 }
 .bg_fail {
     background-color: #ffe1e1 !important;
+    border :#bea8a8 solid 1px !important;
 }
 .bg_win {
     background-color: #d1e5ff !important;
+    border :#a3b2c7 solid 1px !important;
 }
 .bg_black{
     background-color: black;

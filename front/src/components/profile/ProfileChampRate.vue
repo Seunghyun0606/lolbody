@@ -108,7 +108,6 @@ export default {
   display: none !important;
 }
 
-
 .container {
   margin: 0;
   padding: 0;
@@ -128,7 +127,7 @@ export default {
 .icon {
   border-radius: 70%;
   height: 5em;
-  border: 0.5px solid white;
+  border : rgb(200, 170, 110) 1px solid;
 }
 
 .big {

@@ -87,7 +87,7 @@ def z_value(d, mean, std):
 # mongodb에 match_id를 받아서 라인구분, match_grade 저장
 db_root = connection.test
 def get_stats(queue):
-    return pd.read_csv('/Analysis/csv/%s/stastics/stastics_%s.csv' % (now, queue))
+    return pd.read_csv('/csv/20.08/stastics/stastics_%s.csv' % (now, queue))
     # return pd.read_csv('./csv/%s/stastics/stastics_%s.csv' % (now, queue))
 
 def update_match_data(profile_id, left, right, tier):

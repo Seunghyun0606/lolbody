@@ -98,7 +98,6 @@ export default {
 
       // 1개면 유저프로필. 1개이상이면 멀티서치.
       // this.getMultiSearchDatas(tmpSearchSummernerIDs)
-      // console.log(tmpSearchSummernerIDs)
 
       this.getData(tmpSearchSummernerIDs)
 
@@ -109,10 +108,11 @@ export default {
       
       // await this.$store.dispatch('getMultiSearchRadarDatas', ID)
       // await this.$store.dispatch('getMultiUserDatas', ID)
-    
-      await this.$store.dispatch('getMultiSearchDatas', tmpSearchSummernerIDs)
+
+      for ( var ID of tmpSearchSummernerIDs ) {
+        await this.$store.dispatch('getMultiSearchDatas', ID)
+      }
       await this.$store.commit('toggleMultiSearchLoading', false)
-      
     },
 
     onPaste (e) {

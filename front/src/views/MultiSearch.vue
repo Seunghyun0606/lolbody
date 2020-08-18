@@ -40,8 +40,8 @@
 
           <!-- 가장 많이가는 라인 -->
           <div class="grid-body-bot-left">
-            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.mostLane[0]}.png`)" alt="mainLane">
-            <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.mostLane[1]}.png`)" alt="subLane">
+            <img class="lane-width" :src="multiSearchData.mostLane[0] ? require(`@/assets/images/position/${multiSearchData.mostLane[0]}.png`) : require(`@/assets/images/error.png`)" alt="mainLane">
+            <img class="lane-width" :src="multiSearchData.mostLane[0] ? require(`@/assets/images/position/${multiSearchData.mostLane[1]}.png`) : require(`@/assets/images/error.png`)" alt="subLane">
           </div>
 
           <!-- 배지 칩으로 넣어야함 // 현재 더미데이터, 나중에는 서버에서 받아와서 for문 돌려야함 -->

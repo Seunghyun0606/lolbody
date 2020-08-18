@@ -288,7 +288,6 @@ export default new Vuex.Store({
       // for문이도는 속도는 응답속도보다 현저히 빠르기 때문에 비동기를 고민안해도 될듯하다.
       // 받아야할 object key를 정리한다
       // 404 요청일 경우  에러페이지를 만든다.
-
       var multiData = {
         userCard: {},
         mostLane: [],
@@ -336,6 +335,9 @@ export default new Vuex.Store({
         averageMatchGrade: 0,
         totalWin: 0,
         totalWinRate: 0,
+        badges: {},
+        contWins: 0,
+        contFails: 0,
       }
 
 
@@ -404,11 +406,25 @@ export default new Vuex.Store({
           selectMostChamp[mT.champ]++
         }
         
+        var flagWin = true
+        var flagFail = true
         // total game 토탈 win + latestgame 승패 결정
         if ( match[match.myTeam].win ) {
           latestGame.win = true
           multiData.totalWin++
+
+          flagFail = false
+          if ( flagWin ) {
+            multiData.contWins++
+          }
         }
+        else {
+          flagWin = false
+          if ( flagFail ) {
+            multiData.contFails++            
+          }
+        }
+
 
         multiData.latestGames.push(latestGame)
       
@@ -429,7 +445,6 @@ export default new Vuex.Store({
 
 
       // radar chart series data 넣어주기
-
       var radarValue = []
       
       for ( var x in radarData ) {
@@ -439,9 +454,6 @@ export default new Vuex.Store({
       state.multiSearchDatas.push(multiData)
       
       multiData.radarChart.series[0].data = radarValue
-
-
-
 
 
       // var recentGameWin = 0
@@ -583,17 +595,15 @@ export default new Vuex.Store({
       commit('setInitMultiSearchData')
     },
     // 승현, multisearch
-    getMultiSearchDatas( { commit }, userNames ) {
-      for ( var userName of userNames ) { 
-        axios
-          .get(SERVER_URL + `/api/multisearch/${userName}`)
-          .then(res => {
-            commit('setMultiSearchDatas', res.data)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
+    getMultiSearchDatas( { commit }, userName ) {
+      return axios
+        .get(SERVER_URL + `/api/multisearch/${userName}`)
+        .then(res => {
+          commit('setMultiSearchDatas', res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     // getMultiUserDatas( { commit }, userName ) {
     //   return axios

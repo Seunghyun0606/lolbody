@@ -94,9 +94,11 @@ export default {
     async getData(tmpSearchSummernerIDs) {
       await this.$store.dispatch('initMultiSearchData')
       await this.$store.commit('toggleMultiSearchLoading', true)
+      
+      // await this.$store.dispatch('getMultiSearchRadarDatas', ID)
+      // await this.$store.dispatch('getMultiUserDatas', ID)
+
       for ( var ID of tmpSearchSummernerIDs ) {
-        await this.$store.dispatch('getMultiSearchRadarDatas', ID)
-        await this.$store.dispatch('getMultiUserDatas', ID)
         await this.$store.dispatch('getMultiSearchDatas', ID)
       }
       await this.$store.commit('toggleMultiSearchLoading', false)

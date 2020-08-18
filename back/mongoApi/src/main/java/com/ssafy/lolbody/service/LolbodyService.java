@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ssafy.lolbody.dto.LolbodyDto;
 import com.ssafy.lolbody.dto.LolbodyResultDto;
@@ -11,6 +12,7 @@ import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.repository.LolbodyRepository;
 import com.ssafy.lolbody.repository.StasticsRepository;
 
+@Service
 public class LolbodyService {
 	@Autowired
 	private LolbodyRepository lolbodyRepository;

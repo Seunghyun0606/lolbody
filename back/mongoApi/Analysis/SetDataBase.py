@@ -88,7 +88,7 @@ def z_value(d, mean, std):
 db_root = connection.test
 def get_stats(queue):
     now = '20.08'
-    return pd.read_csv('/csv/20.08/stastics/stastics_%s.csv' % (now, queue))
+    return pd.read_csv('/csv/%s/stastics/stastics_%s.csv' % (now, queue))
     # return pd.read_csv('./csv/%s/stastics/stastics_%s.csv' % (now, queue))
 
 def update_match_data(profile_id, left, right, tier):

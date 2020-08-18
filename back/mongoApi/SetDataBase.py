@@ -175,7 +175,7 @@ def update_match_data(profile_id, left, right, tier):
             min_distance = float('inf')
             tmp_position = ''
             player_p_value = dict()
-            badges_data = []
+            badges_data = dict()
             if queue == 420:
                 data.update(badges_420_data)
                 data.update(badges_450_data)
@@ -226,11 +226,11 @@ def update_match_data(profile_id, left, right, tier):
                     tmp_player_p_value[col] = p_value
                     # 여기는 뱃지 붙이는 곳
                     if p_value >= 0.9:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 0})
+                        badges_data[badge_names[col]] = {'stats': col, 'p_value': p_value, 'tier': 0}
                     elif p_value >= 0.8:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 1})
+                        badges_data[badge_names[col]] = {'stats': col, 'p_value': p_value, 'tier': 1}
                     elif p_value >= 0.7:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 2})
+                        badges_data[badge_names[col]] = {'stats': col, 'p_value': p_value, 'tier': 2}
                 player_p_value = tmp_player_p_value
             else:
                 data.update(badges_450_data)
@@ -247,11 +247,12 @@ def update_match_data(profile_id, left, right, tier):
                     tmp_player_p_value[col] = p_value
                     # 여기는 뱃지 붙이는 곳
                     if p_value >= 0.9:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 0})
+                        badges_data[badge_names[col]] = {'stats': col, 'p_value': p_value, 'tier': 0}
                     elif p_value >= 0.8:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 1})
+                        badges_data[badge_names[col]] = {'stats': col, 'p_value': p_value, 'tier': 1}
                     elif p_value >= 0.7:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 2})
+                        badges_data[badge_names[col]] = {'stats': col, 'p_value': p_value, 'tier': 2}
+                        # badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 2})
                 player_p_value = tmp_player_p_value
 
             participant['line'] = tmp_position

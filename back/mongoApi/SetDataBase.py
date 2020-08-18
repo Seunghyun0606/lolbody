@@ -2,7 +2,7 @@ import pymongo, sys, time, os
 s = time.time()
 import pandas as pd
 from scipy.stats import norm
-from multiprocessing import Pool
+# from multiprocessing import Pool
 s2 = time.time()
 
 connection = pymongo.MongoClient('mongodb://lolbody:fhfqkelchlrhdi3%232%401!@13.125.220.135:27017/test?authSource=test&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false')
@@ -35,7 +35,7 @@ badges_450 = [
         'killsPerMin',                        # kill
         'deathsPerMin',                       # deaths
         'assistsPerMin',                      # assists
-        'totalHealPerMin',                    # 총 회복량
+        # 'totalHealPerMin',                    # 총 회복량
         'damageSelfMitigatedPerMin',          # 감소시킨 피해량(방어막?)
         "damageDealtToTurretsPerMin",         # 타워에 준 피해량
         'timeCCingOthersPerMin',              # cc기에 맞은 총 시간
@@ -57,22 +57,22 @@ badge_names = {
     "damageDealtToObjectivesPerMin": '몬스터헌터',       # 오브젝트에게 준 피해량
     'totalMinionsKilledPerMin': '농부',           # cs
     'killsRatio': '오지라퍼',                   # 킬관여율
-    'deathsRatio': '',                  # 데스관여울
+    'deathsRatio': '많이죽음',                  # 데스관여울
     'killAssistPerMin': '쌈닭',
     'killsPerMin': '학살자',                        # kill
     'deathsPerMin': '불사신',                       # deaths
-    'assistsPerMin': '수발놈',                      # assists
-    'totalHealPerMin': '어머니',                    # 총 회복량
-    'damageSelfMitigatedPerMin': '',          # 감소시킨 피해량(방어막?)
+    'assistsPerMin': '수발러',                      # assists
+    # 'totalHealPerMin': '어머니',                    # 총 회복량
+    'damageSelfMitigatedPerMin': '방어막',          # 감소시킨 피해량(방어막?)
     "damageDealtToTurretsPerMin": '철거반',         # 타워에 준 피해량
-    'timeCCingOthersPerMin': '',              # cc기에 맞은 총 시간
-    'totalTimeCrowdControlDealtPerMin': '',   # cc기를 맞춘 총 시간
+    'timeCCingOthersPerMin': 'CC잘맞음',              # cc기에 맞은 총 시간
+    'totalTimeCrowdControlDealtPerMin': 'CC잘맞춤',   # cc기를 맞춘 총 시간
     'visionScorePerMin': '옵저버',                  # 시야점수
-    'visionWardsBoughtInGamePerMin': '',      # 핑와 구매 개수
-    'neutralMinionsKilledPerMin': '',         # 중립몹 킬수
-    'neutralMinionsKilledEnemyJunglePerMin': '', # 상대 정글몹 킬수
-    'wardsPlacedPerMin': '',                  # 와드 설치수
-    'wardsKilledPerMin': '',     
+    'visionWardsBoughtInGamePerMin': '취미:비싼꽃꽂이',      # 핑와 구매 개수
+    'neutralMinionsKilledPerMin': '정글몹학살',         # 중립몹 킬수
+    'neutralMinionsKilledEnemyJunglePerMin': '대도둑', # 상대 정글몹 킬수
+    'wardsPlacedPerMin': '취미:꽃꽂이',                  # 와드 설치수
+    'wardsKilledPerMin': '와드잘뽑음',     
 }
 
 def change_to_p_value(z):
@@ -93,17 +93,9 @@ def get_stats(queue):
 
 def update_match_data(profile_id, left, right, tier):
     match_list = list(filter(lambda i: i.get('timestamp') >= 1578596400000 and i.get('queue') != 2000 and i.get('queue') != 2010 and i.get('queue') != 2020, db_root.matchlists.find_one({'_id': profile_id}).get('matches')))[left:right]
-    # match_id_list = [(i.get('gameId'), tier) for i in match_list if i.get('queue') == 420 or i.get('queue') == 430 or i.get('queue') == 440 or i.get('queue') == 450]
     match_id_list = [i.get('gameId') for i in match_list if i.get('queue') == 420 or i.get('queue') == 430 or i.get('queue') == 440 or i.get('queue') == 450]
-    # print(match_id_list)
-    # with Pool(processes=4) as pool:
-    #     pool.map(calculate_match_data, match_id_list)
 
-# def calculate_match_data(tup):
-#     match_id, tier = tup
     for match_id in match_id_list:
-    # print(match_id)
-# print(os.getpid())
         tmp_collection = db_root.tmp
         match_data = tmp_collection.find_one({'_id': match_id})
 
@@ -111,15 +103,12 @@ def update_match_data(profile_id, left, right, tier):
         # 다시하기는 넘어감
         if match_data.get('gameDuration') <= 300: continue
         # 이미 매치데이터 갱신 했으면 넘어감
-        # if match_data.get('flag'): continue
+        if match_data.get('flag'): continue
 
         # 공통데이터
         # 플레이 시간
         queue = 450 if int(match_data.get('queueId')) == 450 else 420
         stats = get_stats(queue)
-        # print(list(stats))
-        # print(stats[['position', 'tier','visionScorePerMinMean', 'wardsPlacedPerMinMean', 'wardsKilledPerMinMean']])
-        # print(stats[['position', 'tier','totalDamageDealtToChampionsPerMinMean', 'totalDamageDealtToChampionsPerMinStd']])
         duration = match_data.get('gameDuration') / 60
 
         # team kill, death, assist
@@ -163,8 +152,8 @@ def update_match_data(profile_id, left, right, tier):
                 'killsPerMin': player_data.get('kills') / duration,                        # kill
                 'deathsPerMin': player_data.get('deaths') / duration,                       # deaths
                 'assistsPerMin': player_data.get('assists') / duration,                      # assists
-                'totalHealPerMin': player_data.get('totalHeal') / duration\
-                    if player_data.get('totalUnitsHealed') > 1 else 0,                    # 총 회복량
+                # 'totalHealPerMin': player_data.get('totalHeal') / duration\
+                #     if player_data.get('totalUnitsHealed') > 1 else 0,                    # 총 회복량
                 'damageSelfMitigatedPerMin': player_data.get('damageSelfMitigated') / duration,          # 감소시킨 피해량(방어막?)
                 "damageDealtToTurretsPerMin": player_data.get('damageDealtToTurrets') / duration,         # 타워에 준 피해량
                 'timeCCingOthersPerMin': player_data.get('timeCCingOthers') / duration,              # cc기에 맞은 총 시간
@@ -232,18 +221,16 @@ def update_match_data(profile_id, left, right, tier):
                     mean = col + 'Mean'
                     std = col + 'Std'
                     p_value = change_to_p_value(z_value(data[col], total_stats[mean][0], total_stats[std][0]))
-                    # if match_id == 4566855348:
-                    #     print(p_value)
                     if col == 'deathsRatio' or col == 'timeCCingOthersPerMin' or col == 'deathsPerMin':
                         p_value = 1 - p_value
                     tmp_player_p_value[col] = p_value
                     # 여기는 뱃지 붙이는 곳
                     if p_value >= 0.9:
-                        badges_data.append({'name': badge_names[col], 'p_value': p_value, 'tier': 0})
+                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 0})
                     elif p_value >= 0.8:
-                        badges_data.append({'name': badge_names[col], 'p_value': p_value, 'tier': 1})
+                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 1})
                     elif p_value >= 0.7:
-                        badges_data.append({'name': badge_names[col], 'p_value': p_value, 'tier': 2})
+                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 2})
                 player_p_value = tmp_player_p_value
             else:
                 data.update(badges_450_data)
@@ -260,11 +247,11 @@ def update_match_data(profile_id, left, right, tier):
                     tmp_player_p_value[col] = p_value
                     # 여기는 뱃지 붙이는 곳
                     if p_value >= 0.9:
-                        badges_data.append({'name': badge_names[col], 'p_value': p_value, 'tier': 0})
+                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 0})
                     elif p_value >= 0.8:
-                        badges_data.append({'name': badge_names[col], 'p_value': p_value, 'tier': 1})
+                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 1})
                     elif p_value >= 0.7:
-                        badges_data.append({'name': badge_names[col], 'p_value': p_value, 'tier': 2})
+                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 2})
                 player_p_value = tmp_player_p_value
 
             participant['line'] = tmp_position
@@ -301,9 +288,6 @@ def update_match_data(profile_id, left, right, tier):
                         'stability': (player_p_value.get('visionScorePerMin') + player_p_value.get('totalMinionsKilledPerMin') + player_p_value.get('deathsRatio')) / 3,
                         'influence': (player_p_value.get('visionScorePerMin') + player_p_value.get('killsRatio') + player_p_value.get('damageDealtToObjectivesPerMin')) / 3,
                     }
-                # for k, v in participant['radar'].items():
-                #     if match_id == 4566855348:
-                #         print(k, v)
             else:
                 for k in save_stats_list:
                     if k == 'deathsRatio' or k == 'totalDamageTakenPerMin':
@@ -318,16 +302,10 @@ def update_match_data(profile_id, left, right, tier):
                     'stability': (player_p_value.get('damageDealtToTurretsPerMin') + player_p_value.get('totalMinionsKilledPerMin') + player_p_value.get('deathsRatio')) / 3,
                     'influence': (player_p_value.get('damageDealtToTurretsPerMin') + player_p_value.get('killsRatio') + player_p_value.get('damageDealtToObjectivesPerMin')) / 3,
                 }
-                # for k, v in participant['radar'].items():
-                #     if match_id == 4566855348:
-                #         print(k, v)
-            # print(participant['matchGrade'])
             ######################################################################333
-            # print(participants_data)
             tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
         tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
-        # print(participants_data)
-        # print(match_id)
+        print(match_id)
 
 if __name__ == '__main__':
     update_match_data(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4])

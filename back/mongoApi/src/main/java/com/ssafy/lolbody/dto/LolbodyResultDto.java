@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "lolbodies")
-public class LolbodyListDto {
+public class LolbodyResultDto {
 	@Id
 	private String summonerId;
 	private List<LolbodyDto> lolbodyList;
@@ -29,7 +29,7 @@ public class LolbodyListDto {
 
 	@Override
 	public String toString() {
-		return "LolbodyListDto [summonerId=" + summonerId + ", lolbodyList=" + lolbodyList + "]";
+		return "LolbodyResultDto [summonerId=" + summonerId + ", lolbodyList=" + lolbodyList + "]";
 	}
 
 }

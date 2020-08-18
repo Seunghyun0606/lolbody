@@ -4,6 +4,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.ssafy.lolbody.dto.StasticsDto;
 
-public interface StasticsRepository extends MongoRepository<StasticsDto, Long> {
-	public StasticsDto findByQueueId(long queueId);
+public interface StasticsRepository extends MongoRepository<StasticsDto, Integer> {
+	public StasticsDto findByQueueId(int queueId);
 }

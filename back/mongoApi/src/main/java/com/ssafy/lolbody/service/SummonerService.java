@@ -20,10 +20,6 @@ public class SummonerService {
 	@Autowired
 	private SummonerRepository summonerRepository;
 
-	public void insert(SummonerDto summonerDto) {
-		summonerRepository.findById(summonerDto.getId()).orElseGet(() -> summonerRepository.save(summonerDto));
-	}
-
 	public List<SummonerDto> findAll() {
 		return summonerRepository.findAll();
 	}
@@ -37,14 +33,14 @@ public class SummonerService {
 		SummonerDto summonerDto = new Gson().fromJson(json, SummonerDto.class);
 		JSONObject object = new JSONObject(json);
 		summonerDto.setSubName(object.getString("name").toLowerCase().replaceAll(" ", ""));
-		insert(summonerDto);
+		summonerRepository.save(summonerDto);
 		return summonerDto;
 	}
 
 	public SummonerDto findOnly(String name) throws Exception {
 		SummonerDto summonerDto = summonerRepository.findBySubName(name.toLowerCase());
 		if (summonerDto == null) {
-			return findBySubName(name);
+			return findBySubName(name.toLowerCase());
 		}
 		return summonerDto;
 	}

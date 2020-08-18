@@ -12,7 +12,7 @@ export default {
       LineChart,
   },
   props: {
-    multiSearchData: Object,
+    lineChart: Object,
   },
   data() {
       return {
@@ -67,19 +67,19 @@ export default {
   },
   methods: {
     changeLaneData() {
-      for (var i of this.multiSearchData.positionRates) {
-        if ( i.lane === 'TOP') {
-          this.series[0].data[0] = i.rate
-        } else if ( i.lane === 'JUNGLE') {
-          this.series[0].data[1] = i.rate
-        } else if ( i.lane === 'MID') {
-          this.series[0].data[2] = i.rate
+      for (var i in this.lineChart) {
+        if ( i === 'TOP') {
+          this.series[0].data[0] = this.lineChart[i] * 10
+        } else if ( i === 'JUNGLE') {
+          this.series[0].data[1] = this.lineChart[i] * 10
+        } else if ( i === 'MID') {
+          this.series[0].data[2] = this.lineChart[i] * 10
 
-        } else if ( i.lane === 'BOTTOM' | i.lane === 'BOT') {
-          this.series[0].data[3] = i.rate
+        } else if ( i === 'BOTTOM' | i === 'BOT') {
+          this.series[0].data[3] = this.lineChart[i] * 10
 
         } else {
-          this.series[0].data[4] = i.rate
+          this.series[0].data[4] = this.lineChart[i] * 10
         }
       } 
     },

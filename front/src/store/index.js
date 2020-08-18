@@ -14,8 +14,10 @@ export default new Vuex.Store({
     isIndex: false,
     isMultiSearchLoading: false,
     multiSearchDatas: [],
-    multiUserDatas: [],
-    multiSearchRadarData: [],
+    // multiUserDatas: [],
+    // multiSearchRadarData: [],
+
+
     profileLineChartOption: {
         series: [
             {
@@ -117,9 +119,9 @@ export default new Vuex.Store({
   getters: {
     
     // 승현
-    multiSearchRadarData(state) {
-      return state.multiSearchRadarData
-    },
+    // multiSearchRadarData(state) {
+    //   return state.multiSearchRadarData
+    // },
 
     // 형래
     getProfileRadarChart(state){
@@ -276,83 +278,244 @@ export default new Vuex.Store({
     },
     setInitMultiSearchData(state) {
       state.multiSearchDatas = []
-      state.multiUserDatas = []
-      state.multiSearchRadarData = []
+      // state.multiUserDatas = []
+      // state.multiSearchRadarData = []
     },
-    setMultiSearchDatas(state, multiSearchDatas) {
+    setMultiSearchDatas(state, multiSearchData) {
       // 계속해서 집어넣게 만듬.
-      var recentGameWin = 0
-      var recentGameTotal = multiSearchDatas.recentMatchResults.length
-      for (var i of multiSearchDatas.recentMatchResults) {
-        if (i) {
-          recentGameWin++
-        }
-      }
-      multiSearchDatas.recentMatchResults = { wins: recentGameWin, fails: recentGameTotal - recentGameWin, rate: Math.round((recentGameWin/recentGameTotal)*100)}
-      state.multiSearchDatas.push(multiSearchDatas)
-    },
-    setMultiUserDatas(state, userDatas) {
-      // userData는 array로 오기 때문에 sperad시킴
-      // 20.07.30 userData가 자유랭크 데이터도 넘기기때문에 스프레드 시키면안됨. 단일 오브젝트만 넣습니다.
-      state.multiUserDatas = [ ...state.multiUserDatas, userDatas ]
-    },
-    setMultiSearchRadarData(state, Datas) {
-      var Options = {
-        options: {
-          chart: {
-            type: "radar",
-            toolbar: {
+
+      // 초기 오브젝트를 만든다. 여기에 값을 넣는 for문을돌린다,
+      // for문이도는 속도는 응답속도보다 현저히 빠르기 때문에 비동기를 고민안해도 될듯하다.
+      // 받아야할 object key를 정리한다
+      // 404 요청일 경우  에러페이지를 만든다.
+
+      var multiData = {
+        userCard: {},
+        mostLane: [],
+        radarChart: {
+          options: {
+            chart: {
+              type: "radar",
+              toolbar: {
+                show: false,
+              },
+            },
+            legend: {
               show: false,
             },
+            xaxis: {
+              categories: ['공격력', '안정성', '영향력']
+            },
+            yaxis: {
+              show: false,
+              tickAmount: 5,
+              min: 0,
+              max: 100,
+            },
+            markers: {
+              size: 3
+            }
           },
-          legend: {
-            show: false,
-          },
-          xaxis: {
-            categories: ['공격력', '안정성', '영향력']
-          },
-          yaxis: {
-            show: false,
-            tickAmount: 5,
-            min: 0,
-            max: 100,
-          },
-          markers: {
-            size: 3
-          }
+          series: [
+            {
+              data: [40, 40, 40]
+            },
+          ]
         },
-      series: [
-        {
-          name: '초반',
-          data: [40, 40, 40]
+        lineChart: {
+          TOP: 0,
+          JUNGLE: 0,
+          MID: 0,
+          BOT: 0,
+          BOTTOM: 0,
+          SUP: 0,
+          SUPPORT: 0,
         },
-        {
-          name: '후반',
-          data: [90, 80, 80]
-        }
-      ]
+        mostChamp: [],
+        latestGames: [],
+        averageMatchGrade: 0,
+        totalWin: 0,
+        totalWinRate: 0,
       }
 
-      Options.series[0].name = Datas.lane1.lane
-      Options.series[1].name = Datas.lane2.lane
 
-      Options.series[0].data = []
-      Options.series[1].data = []
-      for ( var obj in Datas.lane1 ) {
-        if (obj === "lane") {
-          continue
-        }
-        Options.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
+      multiData.userCard = multiSearchData.userCard
+        
+      var totalMatchGrade = 0
+      var selectMostChamp = {}
+      var selectMostLane = {}
+      // 공격성, 안정성, 영향력
+      var radarData = {
+        aggressiveness: 0,
+        stability: 0,
+        influence: 0
       }
-      for ( var obj2 in Datas.lane2 ) {
-        if (obj2 === "lane" ) {
-          continue
+      for ( var match of multiSearchData.matchResult.matchRecordList ) {
+
+        var mT = match[match.myTeam].teammate[match.myIndex]
+        var latestGame = {
+          gameLane: "",
+          champName: "",
+          spell1: "",
+          spell2: "",
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          win: false, 
         }
-        Options.series[1].data.push((Datas.lane2[obj2]*100).toFixed(0))
+
+        // radar chart 값
+        for ( var tempRadar in mT.radar) {
+          radarData[tempRadar] += mT.radar[tempRadar]
+        }
+
+
+
+        // line 차트를 위한 라인 + latest 게임을 위한 자리
+        latestGame.gameLane = mT.line
+        latestGame.spell1 = mT.spell1
+        latestGame.spell2 = mT.spell2
+        latestGame.kills = mT.kills
+        latestGame.deaths = mT.deaths
+        latestGame.assists = mT.assists
+        latestGame.champName = mT.champ
+
+        // 나중에 kda평균대신에 쓸꺼임.
+        totalMatchGrade += mT.matchGrade
+
+        // lineChart rate 구하기위함.
+        if ( mT.line !== 'None' ) {
+          multiData.lineChart[mT.line]++
+        }
+
+        // mostLine을 구하기 위함. 나중에 None은 제외시켜야함.
+        if ( selectMostLane[mT.line] === undefined ) {
+          selectMostLane[mT.line] = 1
+        }
+        else {
+          selectMostLane[mT.line]++
+        }
+
+        // mostChamp 고르기 위함, 나중에 제일 높은 값 골라내자.
+        if ( selectMostChamp[mT.champ] === undefined ) {
+          selectMostChamp[mT.champ] = 1
+        }
+        else {
+          selectMostChamp[mT.champ]++
+        }
+        
+        // total game 토탈 win + latestgame 승패 결정
+        if ( match[match.myTeam].win ) {
+          latestGame.win = true
+          multiData.totalWin++
+        }
+
+        multiData.latestGames.push(latestGame)
+      
       }
 
-      state.multiSearchRadarData.push(Options)
+      multiData.latestGames = multiData.latestGames.slice(0,5)
+
+      multiData.averageMatchGrade = ( totalMatchGrade ).toFixed(1)
+      multiData.totalWinRate = ( multiData.totalWin / 10 ) * 100
+      
+      // most 챔프 정렬해서 3개만 뽑아서 넣음
+      multiData.mostChamp = Object.keys(selectMostChamp).sort(function(a, b) { return selectMostChamp[a] - selectMostChamp[b] }).slice(0, 3)
+      
+      // most lane 큰 순서대로 정렬해서 3개 뽑을건데 만약 None이 있으면 없애야함 
+      multiData.mostLane = Object.keys(selectMostLane).sort(function(a, b) { return selectMostLane[a] - selectMostLane[b] }).slice(0, 3).filter(function(n) {
+        return n !== "None"
+      }).slice(0, 2)
+
+
+      // radar chart series data 넣어주기
+
+      var radarValue = []
+      
+      for ( var x in radarData ) {
+        radarValue.push((radarData[x]*10).toFixed(0))
+      }
+      
+      state.multiSearchDatas.push(multiData)
+      
+      multiData.radarChart.series[0].data = radarValue
+
+
+
+
+
+      // var recentGameWin = 0
+      // var recentGameTotal = multiSearchDatas.recentMatchResults.length
+      // for (var i of multiSearchDatas.recentMatchResults) {
+      //   if (i) {
+      //     recentGameWin++
+      //   }
+      // }
+      // multiSearchDatas.recentMatchResults = { wins: recentGameWin, fails: recentGameTotal - recentGameWin, rate: Math.round((recentGameWin/recentGameTotal)*100)}
+      // state.multiSearchDatas.push(multiSearchDatas)
     },
+    // setMultiUserDatas(state, userDatas) {
+    //   // userData는 array로 오기 때문에 sperad시킴
+    //   // 20.07.30 userData가 자유랭크 데이터도 넘기기때문에 스프레드 시키면안됨. 단일 오브젝트만 넣습니다.
+    //   state.multiUserDatas = [ ...state.multiUserDatas, userDatas ]
+    // },
+    // setMultiSearchRadarData(state, Datas) {
+    //   var Options = {
+      //   options: {
+      //     chart: {
+      //       type: "radar",
+      //       toolbar: {
+      //         show: false,
+      //       },
+      //     },
+      //     legend: {
+      //       show: false,
+      //     },
+      //     xaxis: {
+      //       categories: ['공격력', '안정성', '영향력']
+      //     },
+      //     yaxis: {
+      //       show: false,
+      //       tickAmount: 5,
+      //       min: 0,
+      //       max: 100,
+      //     },
+      //     markers: {
+      //       size: 3
+      //     }
+      //   },
+      // series: [
+      //   {
+      //     name: '초반',
+      //     data: [40, 40, 40]
+      //   },
+      //   {
+      //     name: '후반',
+      //     data: [90, 80, 80]
+      //   }
+      // ]
+      // }
+
+    //   Options.series[0].name = Datas.lane1.lane
+    //   Options.series[1].name = Datas.lane2.lane
+
+    //   Options.series[0].data = []
+    //   Options.series[1].data = []
+    //   for ( var obj in Datas.lane1 ) {
+    //     if (obj === "lane") {
+    //       continue
+    //     }
+    //     Options.series[0].data.push((Datas.lane1[obj]*100).toFixed(0))
+    //   }
+    //   for ( var obj2 in Datas.lane2 ) {
+    //     if (obj2 === "lane" ) {
+    //       continue
+    //     }
+    //     Options.series[1].data.push((Datas.lane2[obj2]*100).toFixed(0))
+    //   }
+
+    //   state.multiSearchRadarData.push(Options)
+    // },
     
 
 
@@ -414,45 +577,46 @@ export default new Vuex.Store({
     }
   },
 
-  
   actions: {
     // 승현, multiSearch 데이터 init
     initMultiSearchData( { commit } ) {
       commit('setInitMultiSearchData')
     },
     // 승현, multisearch
-    getMultiSearchDatas( { commit }, userName ) {
-      return axios
-        .get(SERVER_URL + `/api/multisearch/${userName}`)
-        .then(res => {
-          commit('setMultiSearchDatas', res.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    getMultiSearchDatas( { commit }, userNames ) {
+      for ( var userName of userNames ) { 
+        axios
+          .get(SERVER_URL + `/api/multisearch/${userName}`)
+          .then(res => {
+            commit('setMultiSearchDatas', res.data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
     },
-    getMultiUserDatas( { commit }, userName ) {
-      return axios
-        .get(SERVER_URL + `/api/profile/${userName}`)
-        .then(res => {
-          commit('setMultiUserDatas', res.data)
-        })
+    // getMultiUserDatas( { commit }, userName ) {
+    //   return axios
+    //     .get(SERVER_URL + `/api/profile/${userName}`)
+    //     .then(res => {
+    //       commit('setMultiUserDatas', res.data)
+    //     })
 
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    // 승현, multiSearchRadarChartData
-    getMultiSearchRadarDatas( { commit }, userName ) {
-      return axios
-      .get(SERVER_URL + `/api/summonervalue/${userName}`)
-      .then(res => {
-          commit('setMultiSearchRadarData', res.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
+    //     .catch(err => {
+    //       console.log(err)
+    //     })
+    // },
+    // // 승현, multiSearchRadarChartData
+    // getMultiSearchRadarDatas( { commit }, userName ) {
+    //   return axios
+    //   .get(SERVER_URL + `/api/summonervalue/${userName}`)
+    //   .then(res => {
+    //       commit('setMultiSearchRadarData', res.data)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
 
     // 승현, renewalUserData
 

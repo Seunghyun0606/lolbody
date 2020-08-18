@@ -57,7 +57,7 @@ badge_names = {
     "damageDealtToObjectivesPerMin": '몬스터헌터',       # 오브젝트에게 준 피해량
     'totalMinionsKilledPerMin': '농부',           # cs
     'killsRatio': '오지라퍼',                   # 킬관여율
-    'deathsRatio': '많이죽음',                  # 데스관여울
+    'deathsRatio': '민폐甲',                  # 데스관여울
     'killAssistPerMin': '쌈닭',
     'killsPerMin': '학살자',                        # kill
     'deathsPerMin': '불사신',                       # deaths
@@ -65,14 +65,14 @@ badge_names = {
     # 'totalHealPerMin': '어머니',                    # 총 회복량
     'damageSelfMitigatedPerMin': '방어막',          # 감소시킨 피해량(방어막?)
     "damageDealtToTurretsPerMin": '철거반',         # 타워에 준 피해량
-    'timeCCingOthersPerMin': 'CC잘맞음',              # cc기에 맞은 총 시간
-    'totalTimeCrowdControlDealtPerMin': 'CC잘맞춤',   # cc기를 맞춘 총 시간
+    'timeCCingOthersPerMin': '명타겟',              # cc기에 맞은 총 시간
+    'totalTimeCrowdControlDealtPerMin': '명사수',   # cc기를 맞춘 총 시간
     'visionScorePerMin': '옵저버',                  # 시야점수
     'visionWardsBoughtInGamePerMin': '취미:비싼꽃꽂이',      # 핑와 구매 개수
-    'neutralMinionsKilledPerMin': '정글몹학살',         # 중립몹 킬수
+    'neutralMinionsKilledPerMin': '사냥꾼',         # 중립몹 킬수
     'neutralMinionsKilledEnemyJunglePerMin': '대도둑', # 상대 정글몹 킬수
     'wardsPlacedPerMin': '취미:꽃꽂이',                  # 와드 설치수
-    'wardsKilledPerMin': '와드잘뽑음',     
+    'wardsKilledPerMin': '나무꾼',     
 }
 
 def change_to_p_value(z):

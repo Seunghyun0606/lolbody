@@ -48,10 +48,9 @@ export default {
                         formatter: function(value) {
                             if(value == undefined)
                                 return null;
-                            const timestamp =  new Date(parseInt(value.substring(0, 13)));
+                            const timestamp =  new Date(parseInt(value));
                             const month = new Date(timestamp).getMonth() + 1 + '월 '
                             const day = new Date(timestamp).getDate() + '일 '
-                            // let hour = new Date(timestamp).getHours() + '시'
                             return month + day // + hour
                         }
                     },
@@ -77,13 +76,11 @@ export default {
                     },
                 },
                 tooltip:{
-                    custom: function({series, seriesIndex, dataPointIndex, w}) {
-                        console.log(series)
-                        console.log(w.globals.labels[dataPointIndex])
-                        return '<div class="arrow_box">' +
-                        '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
-                        '</div>'
-                    }
+                    //custom: function({series, seriesIndex, dataPointIndex, w}) {
+                    //    return '<div class="arrow_box">' +
+                    //    '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
+                    //    '</div>'
+                    //}
                     //x: {
                     //    formatter: (value, {series, seriesIndex, dataPointIndex}) => { 
                     //        console.log(series)

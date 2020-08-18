@@ -3,7 +3,7 @@
 	<v-row align="center" justify="center">
 	<v-app id="sandbox">
 	<v-main>
-	<LoadError :error="error"  v-if="error != 0"/>
+	<LoadError :error="error"  v-if="error != 0" />
 	<table width="1010px" height="835px" v-else>
 		<tr>
 			<!-- 여기서부터 좌측 공간 -->
@@ -55,7 +55,7 @@
 			</td>
 			<!-- 여기서부터 우측 공간 -->
 			<td style="vertical-align: top">
-				<!-- <v-card class="text-center ma-1 mb-2 bg_card" outlined>
+				<v-card class="text-center ma-1 mb-2 bg_card" outlined>
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">KDA</a></li>
 						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
@@ -63,7 +63,7 @@
 					<div class="px-5">
 						<ProfileLineChart/>
 					</div>
-				</v-card> -->
+				</v-card>
 
 				<!-- RadarChart -->
 				<!-- 수정본, 전체 게임 승률 -->
@@ -97,9 +97,10 @@
                 <div class="scroll gamehistory" >
 					<!-- <MultiLoading :loading="triger.MatchDataLoading" :color="'grey'" :size="'50px'"></MultiLoading> -->
                     <ProfileGameHistory/>
-                    <v-btn class="mx-1 mb-2" :loading="triger.MatchDataLoading || triger.moreLoading" color="#2B353D" width="649px" height="50px" @click="getMatchDatas(profileDatas.summonerName, ++numOfMatch)" outlined>
+                    <v-btn class="mx-1 mb-2" :loading="triger.MatchDataLoading || triger.moreLoading" color="#2B353D" width="653px" height="50px" @click="getMatchDatas(profileDatas.summonerName, ++numOfMatch)" v-if="loadAllMatchDatas" outlined>
                         더보기
                     </v-btn>
+                    <div class="mx-1 mb-2 py-3 black_border text-center" widht="651px"  v-else><p>이번 시즌의 모든 전적을 불러왔습니다.</p></div>
                 </div>
 			</td>
 		</tr>
@@ -112,7 +113,7 @@
 </template>
 
 <script>
-//import ProfileLineChart from '@/components/profile/ProfileLineChart';
+import ProfileLineChart from '@/components/profile/ProfileLineChart';
 //import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
 //import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
 
@@ -145,7 +146,7 @@ export default {
 		ProfileChampRate,
 		// MultiLoading,
 
-		// ProfileLineChart,
+		ProfileLineChart,
 		LoadError,
         RadarChart:() => ({
             component: import("@/components/profile/ProfileRadarChart"),
@@ -199,9 +200,11 @@ export default {
 		const userName = this.$route.params.userName;
 		this.getProfileDatas(userName);
 		this.getMatchDatas(userName, 1);
-		this.triger.isLoading = false;
 	},
 	computed: {
+        loadAllMatchDatas(){
+            return this.$store.state.loadAllMatchDatas
+        },
 		error(){
 			return this.$store.state.error
 		},
@@ -209,7 +212,7 @@ export default {
 			return this.$store.getters.getBadgeMap
 		},
         profileDatas(){
-            return this.$store.state.profileDatas
+            return this.$store.getters.getProfileDatas
         },
         matchDatas(){
             return this.$store.state.matchDatas
@@ -221,22 +224,19 @@ export default {
 				let gametime = new Date(time);
 				let result = "";
 				let diff = now.getTime() - gametime.getTime();
-				if(Math.floor(diff/(1000*3600*24)) > 0){
-						result = (gametime.getMonth()+1) + "/" + gametime.getDate();
-				}else{
-                    let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
-                    if ( diff1 === 0 ) {
-                        result = '방금 전';
-                    }
-                    else if ( diff1 === 1 ) {
-                        result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
-                    }
-                    else {
-                        result = '약 ' + diff1 +"시간 전";
-                    }
-				}
-				return result;
-			}
+				if(Math.floor(diff/(1000*60*60*24)) > 0){
+                    result = (gametime.getMonth()+1) + "/" + gametime.getDate();
+                }
+                else{
+                    if(Math.floor(diff/(1000*60)) < 1 ) 
+                        result = '방금전';
+                    else if(Math.floor(diff/(1000*60)) < 60)
+                        result = Math.floor(diff/(1000*60)) + '분 전';
+                    else
+                        result = Math.floor(diff/(1000*60*60)) +"시간 전";
+                }
+                return result;
+            }
 			return calcDate(time)
 		},
 	},
@@ -436,6 +436,10 @@ export default {
 	box-shadow: 2px 2px 2px rgb(161, 161, 161) !important;
 }
 
+.black_border{
+    border-radius: 3px;
+    border :#2B353D solid 1px;
+}
 .IRON {
     border :rgb(42, 39, 40) solid 1px;
 }

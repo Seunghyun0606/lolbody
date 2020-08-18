@@ -112,6 +112,7 @@ export default new Vuex.Store({
         }
     },
     matchDatas: [],
+    loadAllMatchDatas: false,
     badgeMap: {},
     badgeSet: [],
     ProfileRadarChart: [
@@ -124,13 +125,15 @@ export default new Vuex.Store({
     error: 0
   },
   getters: {
-    
     // 승현
     multiSearchRadarData(state) {
       return state.multiSearchRadarData
     },
 
     // 형래
+    getProfileDatas(state){
+        return state.profileDatas;
+    },
     getBadgeSet(state){
         state.badgeSet.sort(function(a, b){
             if ( a.description < b.description ) return -1; 
@@ -335,42 +338,25 @@ export default new Vuex.Store({
       state.multiSearchRadarData.push(Options)
     },
     
-
-
-    setProfileLineChartOption(state, matchDatas) {
-        state.profileLineChartOption.series[0].data = [];
-        state.profileLineChartOption.chartOptions.xaxis.categories = [];
-        for ( let matchData of matchDatas ) {
-            if(matchData.noGame)
-                continue;
-            if(matchData[matchData.myTeam].teammate[matchData.myIndex].kda == 'Infinity' || matchData[matchData.myTeam].teammate[matchData.myIndex].kda >= 10)
-                state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: 10});
-            else
-                state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100});
-            state.profileLineChartOption.chartOptions.xaxis.categories.unshift(matchData.timestamp + matchData[matchData.myTeam].teammate[matchData.myIndex].champ)
-        }
-    },
-
-
     // NavSearch toggle 용도
     toggleNavSearch(state, toggle) {
       state.isIndex = toggle
     },
 
-    // Radar Chart Data
-    setRadarChartDatas(state, datas) {
-        state.profileRadarChartOption.series[0].name = datas.lane1["lane"];
-        state.profileRadarChartOption.series[1].name = datas.lane2["lane"];
-        state.profileRadarChartOption.series[0].data = [];
-        state.profileRadarChartOption.series[1].data = [];
-        state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["aggressiveness"]*100)*10)/10);
-        state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["stability"]*100)*10)/10);
-        state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["influence"]*100)*10)/10);
+    //// Radar Chart Data
+    //setRadarChartDatas(state, datas) {
+    //    state.profileRadarChartOption.series[0].name = datas.lane1["lane"];
+    //    state.profileRadarChartOption.series[1].name = datas.lane2["lane"];
+    //    state.profileRadarChartOption.series[0].data = [];
+    //    state.profileRadarChartOption.series[1].data = [];
+    //    state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["aggressiveness"]*100)*10)/10);
+    //    state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["stability"]*100)*10)/10);
+    //    state.profileRadarChartOption.series[0].data.push(Math.round((datas.lane1["influence"]*100)*10)/10);
 
-        state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["aggressiveness"]*100)*10)/10);
-        state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["stability"]*100)*10)/10);
-        state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["influence"]*100)*10)/10);
-    },
+    //    state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["aggressiveness"]*100)*10)/10);
+    //    state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["stability"]*100)*10)/10);
+    //    state.profileRadarChartOption.series[1].data.push(Math.round((datas.lane2["influence"]*100)*10)/10);
+    //},
 
 
     // 호철
@@ -382,7 +368,6 @@ export default new Vuex.Store({
     // 형래
     setProfileDatas(state, profileDatas){
         state.profileDatas = profileDatas;
-        
     },
     setMatchDatas(state, datas){
         let matchDatas = datas.matchRecordList;
@@ -450,8 +435,22 @@ export default new Vuex.Store({
             state.ProfileTotalWinRateChart.total++;
         }
     },
+    setProfileLineChartOption(state, matchDatas) {
+        for ( let matchData of matchDatas ) {
+            if(matchData.noGame)
+                continue;
+            if(matchData[matchData.myTeam].teammate[matchData.myIndex].kda == 'Infinity' || matchData[matchData.myTeam].teammate[matchData.myIndex].kda >= 10)
+                state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: 10});
+            else
+                state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100});
+            state.profileLineChartOption.chartOptions.xaxis.categories.unshift(matchData.timestamp)
+        }
+    },
     setError(state, err){
         state.error = err;
+    },
+    setLoadAllMatchDatas(state, bool){
+        state.loadAllMatchDatas = bool;
     }
   },
 
@@ -495,9 +494,8 @@ export default new Vuex.Store({
     },
 
     // 승현, renewalUserData
-
     renewalUserData( { commit }, userName ) {
-      return axios.put(SERVER_URL + `/api/profile/${userName}`)
+        return axios.put(SERVER_URL + `/api/profile/${userName}`)
         .then(res => {
           commit('setProfileDatas', res.data)
         })
@@ -507,38 +505,97 @@ export default new Vuex.Store({
     },
 
     // 형래, profile
-    getProfileDatas( { commit }, userName){
+    getProfileDatas( { commit, state }, userName){
+        state.profileDatas= {
+            timestamp: null,
+            summonerName: null,
+            profileIconId: null,
+            summonerLevel: null,
+            soloRank: {
+              tier: "UNRANKED",
+              rank: null,
+              leaguePoints: 0,
+              wins: 0,
+              losses: 0,
+              winRate: 0
+            },
+            freeRank: {
+              tier: "UNRANKED",
+              rank: null,
+              leaguePoints: 0,
+              wins: 0,
+              losses: 0,
+              winRate: 0
+            }
+        };
+        commit('setLoadAllMatchDatas', true)
         return axios.get(SERVER_URL + `/api/profile/${userName}`)
         // return axios.get(`http://localhost:8888/profile/${userName}`)
         .then(res => {
             commit('setError', 0)
             commit('setProfileDatas', res.data)
+            //commit('setProfileLineChartOption', res.data)
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);
                 commit('setError', error.response.status)
             }
-            commit('setProfileDatas', '')
+            commit('setProfileDatas', {
+                timestamp: null,
+                summonerName: null,
+                profileIconId: null,
+                summonerLevel: null,
+                soloRank: {
+                  tier: "UNRANKED",
+                  rank: null,
+                  leaguePoints: 0,
+                  wins: 0,
+                  losses: 0,
+                  winRate: 0
+                },
+                freeRank: {
+                  tier: "UNRANKED",
+                  rank: null,
+                  leaguePoints: 0,
+                  wins: 0,
+                  losses: 0,
+                  winRate: 0
+                }
+            })
         });
     },
     getMatchDatas( { commit, state }, {userName, num}){
+        if(num == 1){
+            state.matchDatas = [];
+            state.badgeMap = {};
+            state.ProfileRadarChart = [
+                {aggressiveness : [], influence: [], stability: []},
+                {aggressiveness : [], influence: [], stability: []},
+                {aggressiveness : [], influence: [], stability: []}
+            ];
+            state.ProfileTotalWinRateChart = {'win': 0, 'lose': 0, 'total': 0};
+            state.profileLineChartOption.series[0].data = [];
+            state.profileLineChartOption.chartOptions.xaxis.categories = [];
+        }
         return axios.get(SERVER_URL + `/api/profile/${userName}/${num}`)
         // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
         .then(res => {
-            commit('setError', 0)
-            if(num == 1){
-                state.matchDatas = [];
-                state.badgeMap = {};
-                state.ProfileRadarChart = [
-                    {aggressiveness : [], influence: [], stability: []},
-                    {aggressiveness : [], influence: [], stability: []},
-                    {aggressiveness : [], influence: [], stability: []}
-                ];
-                state.ProfileTotalWinRateChart = {'win': 0, 'lose': 0, 'total': 0};
+            if(res.data.matchRecordList == null){
+                commit('setLoadAllMatchDatas', false)
+            }else if(res.data.matchRecordList.length%10 != 0){
+                commit('setLoadAllMatchDatas', false)
+                commit('setError', 0)
+                commit('setMatchDatas', res.data)
+                commit('setProfileRadarChart', res.data.matchRecordList)
+                commit('setProfileLineChartOption', res.data.matchRecordList)
+                commit('setProfileTotalWinRateChart', res.data.matchRecordList)
+            }else{
+                commit('setError', 0)
+                commit('setMatchDatas', res.data)
+                commit('setProfileRadarChart', res.data.matchRecordList)
+                commit('setProfileLineChartOption', res.data.matchRecordList)
+                commit('setProfileTotalWinRateChart', res.data.matchRecordList)
             }
-            commit('setMatchDatas', res.data)
-            commit('setProfileRadarChart', res.data.matchRecordList)
-            commit('setProfileTotalWinRateChart', res.data.matchRecordList)
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);

@@ -120,7 +120,7 @@
                             </table>
                         </td>
 
-                        <td width="160px">
+                        <td width="161px">
                             <div class="fs-0 ml-2">
                                 <div class="summonerNametd"><img :src="imageload('champion/' + matchData.blueTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
                                 <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.blueTeam.teammate[0].name)">{{matchData.blueTeam.teammate[0].name}}</a></div>
@@ -224,11 +224,24 @@ export default {
             let gametime = new Date(time);
             let result = "";
             let diff = now.getTime() - gametime.getTime();
-            if(Math.floor(diff/(1000*3600*24)) > 0){
+            //if(Math.floor(diff/(1000*3600*24)) > 0){
+            //    result = (gametime.getMonth()+1) + "/" + gametime.getDate();
+            //}else{
+            //    if ( Math.floor(diff%(1000*3600*24)/(1000*3600)) <= 1 ) 
+            //        result = Math.floor(diff/(1000*60*24)) + '분 전'
+            //    else
+            //        result = Math.floor(diff%(1000*3600*24)/(1000*3600)) +"시간 전";
+            //}
+            //return result;
+            if(Math.floor(diff/(1000*60*60*24)) > 0){
                 result = (gametime.getMonth()+1) + "/" + gametime.getDate();
             }else{
-                diff = Math.floor(diff%(1000*3600*24)/(1000*3600));
-                result = diff +"시간 전";
+                if(Math.floor(diff/(1000*60)) < 1 ) 
+                    result = '방금전';
+                else if(Math.floor(diff/(1000*60)) < 60)
+                    result = Math.floor(diff/(1000*60)) + '분 전';
+                else
+                    result = Math.floor(diff/(1000*60*60)) +"시간 전";
             }
             return result;
         },

@@ -25,7 +25,7 @@ import com.ssafy.lolbody.dto.ParticipantIdentityDto;
 import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.dto.TeamRecordDto;
 import com.ssafy.lolbody.dto.UserCardReferenceDto;
-import com.ssafy.lolbody.preset.MongoDBPreset;
+import com.ssafy.lolbody.preset.ChampkeyRepository;
 import com.ssafy.lolbody.preset.PerkRepository;
 import com.ssafy.lolbody.preset.PerkStyleRepository;
 import com.ssafy.lolbody.repository.MatchRecordRepository;
@@ -42,7 +42,7 @@ public class ProfileService {
 	@Autowired
 	private MatchService matchService;
 	@Autowired
-	private MongoDBPreset preset;
+	private ChampkeyRepository preset;
 	@Autowired
 	private SpellRepository spellRepository;
 	@Autowired

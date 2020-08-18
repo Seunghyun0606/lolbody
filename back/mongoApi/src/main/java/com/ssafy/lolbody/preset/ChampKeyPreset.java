@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import com.ssafy.lolbody.api.Api;
 
 @Component
-public class PreSet implements CommandLineRunner{
+public class ChampKeyPreset implements CommandLineRunner{
 	@Autowired
-	MongoDBPreset preset;
+	ChampkeyRepository preset;
 
 	@Override
 	public void run(String... args) throws Exception {

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+import javax.naming.NameNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +46,12 @@ public class SummonerController {
 			leagueEntryList = leagueEntryService.findBySummonerId(summonerDto.getId());
 		} catch (TimeoutException e) {
 			e.printStackTrace();
-			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
+			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
@@ -66,6 +72,10 @@ public class SummonerController {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");

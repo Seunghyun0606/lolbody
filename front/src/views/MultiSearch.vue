@@ -97,7 +97,7 @@ import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart"
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
-import MultiSearchBedge from "@/components/multisearch/MultiSearchBedge"
+import MultiSearchBadge from "@/components/multisearch/MultiSearchBadge"
 import MultiSearchBar from "@/components/multisearch/MultiSearchBar"
 import MultiLoading from '@/components/multisearch/MultiLoading.vue'
 
@@ -113,7 +113,7 @@ export default {
     MultiSearchLatestChamp,
     MultiSearchMostChamp,
     MultiSearchRadarChart,
-    MultiSearchBedge,
+    MultiSearchBadge,
     MultiSearchBar,
     MultiLoading,
   },

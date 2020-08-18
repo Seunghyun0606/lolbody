@@ -149,7 +149,7 @@
                             </div>
                         </td>
                         <td>
-                            <v-btn class="infobtn" @click="matchData.display = !matchData.display" outlined>v</v-btn>
+                            <v-btn class="infobtn" color="#2B353D" @click="matchData.display = !matchData.display" outlined>∨</v-btn>
                         </td>
                     </tr>
                 </table>

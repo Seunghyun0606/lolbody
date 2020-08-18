@@ -49,19 +49,20 @@ export default {
                 plotOptions: {
                     bar: {
                         horizontal: true,
+                        columnWidth: '70%',
+                        barHeight: '80%',
                         dataLabels: {
                             position: 'top',
-                        },
-                        columnWidth: '70%',
-                        barHeight: '80%'
+                        }
                     }
                 },
                 dataLabels: {
                     enabled: true,
-                    offsetX: -6,
+                    offsetX: 20,
+                    offsetY: 1,
                     style: {
-                        fontSize: '12px',
-                        colors: ['#fff']
+                        fontSize: '9px',
+                        colors: ['#000']
                     }
                 },
                 stroke: {
@@ -72,6 +73,7 @@ export default {
                 xaxis: {
                     type: 'category',
                     categories: [0, 0, 0, 0, 0],
+                    
                 },
                 //yaxis:{
                 //    labels: {
@@ -82,6 +84,11 @@ export default {
                 //},
                 legend:{
                     show: true
+                },
+                tooltip: {
+                    x: {
+                        show: false,
+                    },
                 }
             }
         }

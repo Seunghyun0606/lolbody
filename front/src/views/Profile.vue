@@ -16,18 +16,18 @@
 								<v-avatar size="70">
 									<v-img :src="triger.overprofile ? imageload('profileicon/'+profileDatas.profileIconId+'.png') : imageload('tier/'+profileDatas.soloRank.tier+'.png')" @mouseenter="triger.overprofile = false" @mouseleave="triger.overprofile = true" alt="icon" />
 								</v-avatar>
-								<span class="level fs-10">{{triger.overprofile ? profileDatas.summonerLevel : profileDatas.soloRank.rank}}</span>
+								<span class="level fs-10">{{triger.overprofile ? profileDatas.summonerLevel : (profileDatas.soloRank.rank ? profileDatas.soloRank.rank : "U/R")}}</span>
 							</div>
 						</v-col>
 						<v-col cols="8">
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
-								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="info" @click="renewalUserData(profileDatas.summonerName)" outlined>전적 갱신</v-btn>
+								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="#30BA8C" @click="renewalUserData(profileDatas.summonerName)" outlined>전적 갱신</v-btn>
 								<span class="fs-10 d-block">최근 업데이트: {{ updateTime }}</span>
 							</div>
 						</v-col>
 
-                        <v-btn class="px-1 fs-9 lolbody-btn" color="info" outlined>LoL Body</v-btn>
+                        <v-btn class="px-1 fs-9 lolbody-btn" color="#30BA8C" outlined>LoL Body</v-btn>
                         <!--<v-col cols="1">
                             <v-avatar size="45" class="profiletier">
                                 <v-img :src="imageload('tier/'+profileDatas.tier+'.png')" />
@@ -38,7 +38,7 @@
 				</v-card>
 				
 				<!-- 랭크, 일반 등 -->
-				<v-card class="ma-1 mb-2 bg_card"  outlined height="300px" width="332px" algin="center">
+				<v-card class="ma-1 mb-2 bg_card" outlined height="300px" width="332px" algin="center">
 					<ul class="options">
 						<li><a :class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
 						<li><a :class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
@@ -47,15 +47,14 @@
                     <RadarChart :idx="radaridx"/>
 				</v-card>
 
-				<v-card class="ma-1 mb-2 bg_card"  outlined height="347px" algin="center">
-					<div>
-						<ProfileBedge/>
-					</div>
+				<v-card class="ma-1 mb-2 bg_card scroll" outlined height="347px" algin="center">
+					<!-- <ProfileBadge v-for="(badge, idx) in badgeMap" :key="idx+'_badge'" :badge="badge"/> -->
+					<ProfileBadge />
 				</v-card>
 			</td>
 			<!-- 여기서부터 우측 공간 -->
 			<td style="vertical-align: top">
-				<!--<v-card class="text-center ma-1 mb-2 bg_card" outlined>
+				<!-- <v-card class="text-center ma-1 mb-2 bg_card" outlined>
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">KDA</a></li>
 						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
@@ -63,7 +62,7 @@
 					<div class="px-5">
 						<ProfileLineChart/>
 					</div>
-				</v-card>-->
+				</v-card> -->
 
 				<!-- RadarChart -->
 				<!-- 수정본, 전체 게임 승률 -->
@@ -87,7 +86,6 @@
 					</v-card>
 				</div>
 
-
 				<!-- 수정본, 챔피언 승률 639px-->
 				<div class="d-inline-block">
 					<v-card class="mx-1 mt-1 bg_card float-right" width="199px" height="160px" outlined>
@@ -95,12 +93,12 @@
 					</v-card>
 				</div>
 
-                <v-container class="gamehistory" height="660px">
+                <div class="scroll gamehistory" >
                     <ProfileGameHistory/>
-                    <v-btn class="mx-1 mb-2" width="649px" height="50px" @click="getMatchDatas(++numOfMatch)" outlined>
+                    <v-btn class="mx-1 mb-2" color="#2B353D" width="649px" height="50px" @click="getMatchDatas(profileDatas.summonerName, ++numOfMatch)" outlined>
                         더보기
                     </v-btn>
-                </v-container>
+                </div>
 			</td>
 		</tr>
 	</table>
@@ -116,7 +114,7 @@
 //import ProfileRadarChart from "@/components/profile/ProfileRadarChart"
 //import ProfileGameHistory from '@/components/profile/ProfileGameHistory';
 
-import ProfileBedge from "@/components/profile/ProfileBedge";
+//import ProfileBadge from "@/components/profile/ProfileBadge";
 
 import Loading from "@/components/profile/Loading";
 import LoadError from "@/components/profile/LoadError";
@@ -159,7 +157,13 @@ export default {
             delay: 0,
             timeout: 3000
         }),
-        ProfileBedge,
+        ProfileBadge:() => ({
+			component: import("@/components/profile/ProfileBadge"),
+            loading: Loading,
+            error: LoadError,
+            delay: 0,
+            timeout: 3000
+		}),
         //ProfileGameData:() => ({
         //    component: import("@/components/profile/ProfileGameData"),
         //    loading: Loading,
@@ -187,53 +191,41 @@ export default {
 	mounted(){
 		const userName = this.$route.params.userName;
 		this.getProfileDatas(userName);
+		this.getMatchDatas(userName, 1);
+		this.triger.isLoading = false;
 	},
 	computed: {
-		//...mapState([
-        //    'profileDatas',
-        //    'matchDatas'
-        //]),
+		badgeMap(){
+			return this.$store.getters.getBadgeMap
+		},
         profileDatas(){
             return this.$store.state.profileDatas
         },
         matchDatas(){
             return this.$store.state.matchDatas
-        },
-		updateTime() {
-			let time = this.profileDatas.timestamp
-			// console.log(time)
-			let calcDate = function(time) {
-				let now = new Date();
-				let gametime = new Date(time);
-				let result = "";
-				let diff = now.getTime() - gametime.getTime();
-				if(Math.floor(diff/(1000*3600*24)) > 0){
-						result = (gametime.getMonth()+1) + "/" + gametime.getDate();
-				}else{
-                    let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
-                    if ( diff1 === 0 ) {
-                        result = '방금 전';
-                    }
-                    else if ( diff1 === 1 ) {
-                        result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
-                    }
-                    else {
-                        result = '약 ' + diff1 +"시간 전";
-                    }
-				}
-				// console.log(result)
-				return result;
-			}
-			// let changeTime = function(time){
-			// 	return Math.floor(time/60)+ "분 " + (time - Math.floor(time/60)*60) +"초"
-			// }
-			// console.log(calcDate(time))
-
-			return calcDate(time)
 		},
-		//     ...mapGetters([
-		//             'profileDatas'
-        //     ]),
+		updateTime() {
+			let now = new Date();
+			let gametime = new Date(this.profileDatas.timestamp);
+			let result = "";
+			let diff = Math.abs(now.getTime() - gametime.getTime());
+			console.log(diff)
+			if(Math.floor(diff/(1000*3600*24)) > 0){
+					result = (gametime.getMonth()+1) + "/" + gametime.getDate();
+			}else{
+				let diff1 = Math.floor(diff%(1000*3600*24)/(1000*3600));
+				if ( diff1 === 0 ) {
+					result = '방금 전';
+				}
+				else if ( diff1 === 1 ) {
+					result = '약 ' + Math.floor(diff/(1000*60*24)) + '분 전'
+				}
+				else {
+					result = '약 ' + diff1 +"시간 전";
+				}
+			}
+			return result;
+		},
 	},
 	methods:{
 		async getProfileDatas(userName){
@@ -241,16 +233,16 @@ export default {
             //this.now = this.profileDatas.rankedRecord;
             if(this.profileDatas == '')
                 return;
-			this.getMatchDatas(1);
+			// this.getMatchDatas(1);
             //this.getRadarChartDatas(userName);
-			this.triger.isLoading = false;
+			// this.triger.isLoading = false;
 		},
-		async getMatchDatas(n){
+		async getMatchDatas(userName, n){
             await this.$store.dispatch('getMatchDatas', {
-                userName: this.profileDatas.summonerName, 
+                'userName': userName, 
                 num : n
-            });
-            this.$store.commit('setProfileLineChartOption', this.matchDatas);
+			});
+            //this.$store.commit('setProfileLineChartOption', this.matchDatas);
 		},
 		
 		// radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
@@ -260,7 +252,7 @@ export default {
 		// 전적갱신 전적 리스트 미구현상태
 		async renewalUserData(userName) {
             await this.$store.dispatch('renewalUserData', userName);
-            this.getMatchDatas(1);
+            this.getMatchDatas(userName, 1);
 		},
 
 		getRankData(){
@@ -328,28 +320,30 @@ export default {
 	margin : 0px !important;
 }
 .gamehistory{
+	height: 660px;
+}
+.scroll {
     overflow-x: hidden;
     overflow-y: scroll;
-    height: 660px;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
 /* width */
-.gamehistory::-webkit-scrollbar {
+.scroll::-webkit-scrollbar {
   width: 4px;
 }
 /* Track */
-.gamehistory::-webkit-scrollbar-track {
+.scroll::-webkit-scrollbar-track {
   background: #f1f1f1; 
 }
 /* Handle */
-.gamehistory::-webkit-scrollbar-thumb {
+.scroll::-webkit-scrollbar-thumb {
   background: #888; 
 }
 /* Handle on hover */
-.gamehistory::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .v-avatar {

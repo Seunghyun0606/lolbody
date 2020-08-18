@@ -2,6 +2,8 @@ package com.ssafy.lolbody.controller;
 
 import java.util.concurrent.TimeoutException;
 
+import javax.naming.NameNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,10 @@ public class ProfileController {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
@@ -54,6 +60,10 @@ public class ProfileController {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
@@ -72,12 +82,22 @@ public class ProfileController {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(matchResult, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "아무 이유없이 404를 리턴해줍니다.")
+	@GetMapping("/api/profile/404")
+	public ResponseEntity<MatchResultDto> errorTest() {
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 }

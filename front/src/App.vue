@@ -130,6 +130,8 @@ export default {
 }
 
 
+
+
 [tooltip]:hover {
 	position: relative;
   cursor: pointer;

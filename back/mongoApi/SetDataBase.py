@@ -96,8 +96,8 @@ def update_match_data(profile_id, left, right, tier):
     match_id_list = [i.get('gameId') for i in match_list if i.get('queue') == 420 or i.get('queue') == 430 or i.get('queue') == 440 or i.get('queue') == 450]
 
     for match_id in match_id_list:
-        tmp_collection = db_root.tmp
-        match_data = tmp_collection.find_one({'_id': match_id})
+        matches_collection = db_root.matches
+        match_data = matches_collection.find_one({'_id': match_id})
 
         if match_data is None: continue
         # 다시하기는 넘어감
@@ -303,8 +303,8 @@ def update_match_data(profile_id, left, right, tier):
                     'influence': (player_p_value.get('damageDealtToTurretsPerMin') + player_p_value.get('killsRatio') + player_p_value.get('damageDealtToObjectivesPerMin')) / 3,
                 }
             ######################################################################333
-            tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
-        tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
+            matches_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
+        matches_collection.update({'_id': match_id}, { '$set': {'flag': True}})
         print(match_id)
 
 if __name__ == '__main__':

@@ -15,7 +15,7 @@ export default {
   },
   computed: {
       series() {
-          return [this.$store.getters.getProfileTotalWinRateChart.win, this.$store.getters.getProfileTotalWinRateChart.lose]
+          return [this.$store.state.ProfileTotalWinRateChart.win, this.$store.state.ProfileTotalWinRateChart.lose]
       },
       chartOptions(){
         return {

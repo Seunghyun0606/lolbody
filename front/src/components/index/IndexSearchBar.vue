@@ -154,7 +154,7 @@ export default {
 
 
 .multi-search-container {
-  border: 2px solid blue;
+  border: 2px solid #33A39E;
   /* margin-bottom: 25px; */
   padding: 0px;
   width: 690px;
@@ -174,7 +174,7 @@ export default {
   padding: 5px;
 }
 .multi-search-col3 {
-  background: rgb(6, 6, 248);
+  background: #33A39E;
   padding: 0px;
   height: 100%;
   width: 100%;

@@ -38,23 +38,10 @@ public class LeagueEntryService {
 		return list;
 	}
 
-	public List<LeagueEntryDto> findOnly(String summonerId) throws TimeoutException {
+	public List<LeagueEntryDto> findOnly(String summonerId) throws Exception {
 		LeagueEntryListDto leagueEntryList = leagueEntryRepository.findBySummonerId(summonerId);
 		if (leagueEntryList == null) {
-			leagueEntryList = new LeagueEntryListDto();
-			String str = Api.get("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner", summonerId);
-			if (str.equals("Timeout"))
-				throw new TimeoutException("요청이 너무 많습니다.");
-			JSONArray arr = new JSONArray(str);
-			List<LeagueEntryDto> list = new ArrayList<>();
-			for (int i = 0; i < arr.length(); i++) {
-				String json = arr.getJSONObject(i).toString();
-				LeagueEntryDto leagueEntry = new Gson().fromJson(json, LeagueEntryDto.class);
-				list.add(leagueEntry);
-			}
-			leagueEntryList.setSummonerId(summonerId);
-			leagueEntryList.setLeagueEntryList(list);
-			leagueEntryRepository.save(leagueEntryList);
+			return findBySummonerId(summonerId);
 		}
 		return leagueEntryList.getLeagueEntryList();
 	}

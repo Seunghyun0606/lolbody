@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "MultiSearchBedge",
+  name: "MultiSearchBadge",
   props: {
     badges: Object,
   },

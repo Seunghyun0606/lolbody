@@ -24,11 +24,13 @@ import com.ssafy.lolbody.dto.ParticipantDto;
 import com.ssafy.lolbody.dto.ParticipantIdentityDto;
 import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.dto.TeamRecordDto;
+import com.ssafy.lolbody.dto.UserCardDto;
 import com.ssafy.lolbody.dto.UserCardReferenceDto;
-import com.ssafy.lolbody.preset.MongoDBPreset;
+import com.ssafy.lolbody.preset.ChampkeyRepository;
 import com.ssafy.lolbody.preset.PerkRepository;
 import com.ssafy.lolbody.preset.PerkStyleRepository;
 import com.ssafy.lolbody.repository.MatchRecordRepository;
+import com.ssafy.lolbody.repository.UserCardRepository;
 import com.ssafy.lolbody.preset.SpellRepository;
 
 @Service
@@ -42,7 +44,7 @@ public class ProfileService {
 	@Autowired
 	private MatchService matchService;
 	@Autowired
-	private MongoDBPreset preset;
+	private ChampkeyRepository preset;
 	@Autowired
 	private SpellRepository spellRepository;
 	@Autowired
@@ -51,19 +53,45 @@ public class ProfileService {
 	private PerkStyleRepository perkStyleRepository;
 	@Autowired
 	private MatchRecordRepository matchRecordRepository;
+	@Autowired
+	private UserCardRepository userCardRepository;
 
 	public UserCardReferenceDto getUserCard(String name) throws Exception {
-		UserCardReferenceDto userCard = new UserCardReferenceDto();
 		SummonerDto summoner = summonerService.findOnly(name);
-		List<LeagueEntryDto> leagueEntryList = leagueEntryService.findOnly(summoner.getId());
-		userCard.setTimestamp(System.currentTimeMillis());
-		userCard.setSummonerName(summoner.getName());
-		userCard.setProfileIconId(summoner.getProfileIconId());
-		userCard.setSummonerLevel(summoner.getSummonerLevel());
-		userCard.setSoloRank(new RankDto());
-		userCard.getSoloRank().setTier("UNRANKED");
-		userCard.setFreeRank(new RankDto());
-		userCard.getFreeRank().setTier("UNRANKED");
+		UserCardDto userCard = userCardRepository.findBySummonerId(summoner.getId());
+		if (userCard == null) {
+			updateProfile(name);
+			userCard = userCardRepository.findBySummonerId(summoner.getId());
+		}
+		List<UserCardReferenceDto> userCardList = userCard.getUserCardList();
+		UserCardReferenceDto userCardReference = userCardList.get(userCardList.size() - 1);
+		
+		return userCardReference;
+	}
+
+	public void updateProfile(String name) throws Exception {
+		SummonerDto summoner = summonerService.findBySubName(name.toLowerCase());
+		List<LeagueEntryDto> leagueEntryList = leagueEntryService.findBySummonerId(summoner.getId());
+		matchlistService.findBySummonerId(summoner);
+
+		UserCardDto userCard = userCardRepository.findBySummonerId(summoner.getId());
+		List<UserCardReferenceDto> userCardList = new ArrayList<>();
+		if (userCard == null) {
+			userCard = new UserCardDto();
+			userCard.setSummonerId(summoner.getId());
+		} else {
+			userCardList = userCard.getUserCardList();
+		}
+		
+		UserCardReferenceDto userCardReference = new UserCardReferenceDto();
+		userCardReference.setTimestamp(System.currentTimeMillis());
+		userCardReference.setSummonerName(summoner.getName());
+		userCardReference.setProfileIconId(summoner.getProfileIconId());
+		userCardReference.setSummonerLevel(summoner.getSummonerLevel());
+		userCardReference.setSoloRank(new RankDto());
+		userCardReference.getSoloRank().setTier("UNRANKED");
+		userCardReference.setFreeRank(new RankDto());
+		userCardReference.getFreeRank().setTier("UNRANKED");
 		for (LeagueEntryDto leagueEntry : leagueEntryList) {
 			RankDto rank = new RankDto();
 			rank.setTier(leagueEntry.getTier());
@@ -74,18 +102,14 @@ public class ProfileService {
 			rank.setWinRate(100.0 * leagueEntry.getWins() / (leagueEntry.getWins() + leagueEntry.getLosses()));
 
 			if (leagueEntry.getQueueType().equals("RANKED_SOLO_5x5"))
-				userCard.setSoloRank(rank);
+				userCardReference.setSoloRank(rank);
 			else if (leagueEntry.getQueueType().equals("RANKED_FLEX_SR"))
-				userCard.setFreeRank(rank);
+				userCardReference.setFreeRank(rank);
 		}
+		userCardList.add(userCardReference);
+		userCard.setUserCardList(userCardList);
 
-		return userCard;
-	}
-
-	public void updateProfile(String name) throws Exception {
-		SummonerDto summoner = summonerService.findBySubName(name.toLowerCase());
-		leagueEntryService.findBySummonerId(summoner.getId());
-		matchlistService.findBySummonerId(summoner);
+		userCardRepository.save(userCard);
 	}
 
 	public MatchResultDto getMatchResult(String name, String num) throws Exception {
@@ -275,6 +299,7 @@ public class ProfileService {
 						} else {
 							badge.setCnt(1);
 						}
+						badge.setDescription(key);
 						badgeMap.put(key, badge);
 					}
 				}

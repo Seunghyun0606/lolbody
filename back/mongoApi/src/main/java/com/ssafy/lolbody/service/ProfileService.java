@@ -82,6 +82,7 @@ public class ProfileService {
 		} else {
 			userCardList = userCard.getUserCardList();
 		}
+		
 		UserCardReferenceDto userCardReference = new UserCardReferenceDto();
 		userCardReference.setTimestamp(System.currentTimeMillis());
 		userCardReference.setSummonerName(summoner.getName());

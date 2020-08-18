@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.lolbody.dto.LolbodyDto;
 import com.ssafy.lolbody.dto.LolbodyResultDto;
+import com.ssafy.lolbody.dto.MatchRecordDto;
+import com.ssafy.lolbody.dto.MatchResultDto;
 import com.ssafy.lolbody.dto.SummonerDto;
 import com.ssafy.lolbody.repository.LolbodyRepository;
 import com.ssafy.lolbody.repository.StasticsRepository;
@@ -48,6 +50,18 @@ public class LolbodyService {
 		} else {
 			lolbodyList = lolbodyResult.getLolbodyList();
 		}
+
+		LolbodyDto lolbody = new LolbodyDto();
+		lolbody.setTimestamp(System.currentTimeMillis());
+		lolbody.setUserCardReference(profileService.getUserCard(name));
+
+		for (int i = 1; i < 11; i++) {
+			MatchResultDto matchResult = profileService.getMatchResult(name, i + "");
+			if (matchResult == null)
+				break;
+			List<MatchRecordDto> matchRecordList = matchResult.getMatchRecordList();
+		}
+
 	}
 
 }

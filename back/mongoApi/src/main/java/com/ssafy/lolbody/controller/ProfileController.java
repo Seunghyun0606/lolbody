@@ -40,7 +40,7 @@ public class ProfileController {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
@@ -63,7 +63,7 @@ public class ProfileController {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
@@ -85,7 +85,7 @@ public class ProfileController {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");

@@ -1,7 +1,8 @@
 <template>
-  <span :tooltip="tooltip_content" class="basic-bedge">
-    뱃지
-  </span>
+    <div class="ma-1 pa-1 bedge d-inline-block" :tooltip="tooltip_content">
+        <span class="sharp"># </span>
+        <span class="bedge-content">뱃지</span>
+    </div>
 </template>
 
 <script>
@@ -18,14 +19,20 @@ export default {
 </script>
 
 <style>
+.sharp{
+    color: #8C8C8C;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+    -moz-text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+    -webkit-text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+.bedge-content{
+    color: black;
+}
 
-.basic-bedge {
-  border-radius: 8px;
-  padding: 4px;
-  color: white;
-  background-color: rgb(112, 213, 253);
-  width: 60px;
-  text-align: center;
+.bedge {
+    border-radius: 4px;
+    background-color: rgb(112, 213, 253);
+    text-align: center;
 }
 
 .basic-bedge:hover {

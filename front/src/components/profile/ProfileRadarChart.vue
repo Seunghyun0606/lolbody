@@ -1,25 +1,29 @@
 <template>
     <div>
-    <apexchart class='move-apexchart' type="radar" width="500" :options="chartOptions" :series="series.series" v-if="this.profileRadarChartOption.series[0].name != null"></apexchart>
-    <div v-else> 전적이 없습니다. </div>
+        <apexchart class='move-apexchart' type="radar" width="500px" :options="chartOptions" :series="series" v-if="check"></apexchart>
+        <p class="text-center mt-5" v-else>전적이 없습니다</p>
     </div>
 </template>
 
 <script>
 import apexchart from 'vue-apexcharts'
-import { mapState } from 'vuex'
 
 export default {
     name: 'ProfileRadarChart',
     components: {
         apexchart
-
     },
+    props: ['idx'],
     computed: {
-        ...mapState([
-            'profileRadarChartOption',
-        ]),
-        
+        datas(){
+            return this.$store.getters.getProfileRadarChart[this.idx];
+        },
+        check(){
+            console.log(this.datas)
+            if(this.datas.lenght == 0 || this.datas == null || isNaN(this.datas[0]))
+                return false;
+            return true;
+        },
         chartOptions() {
             return {
                 chart: {
@@ -37,7 +41,7 @@ export default {
                     show: false,
                     tickAmount: 5,
                     min: 0,
-                    max: 100,
+                    max: 1,
                 },
                 legend: {
                     position: 'top',
@@ -48,16 +52,7 @@ export default {
             };
         },
         series(){
-            return {
-                series: [{
-                    name: this.profileRadarChartOption.series[0].name,
-                    data: this.profileRadarChartOption.series[0].data
-                },
-                {
-                    name: this.profileRadarChartOption.series[1].name,
-                    data: this.profileRadarChartOption.series[1].data
-                }],
-            };
+            return [{name: 'me', data: this.datas}];
         }
     }
 }

@@ -10,7 +10,8 @@
           @paste="onPaste"
           placeholder="Summoner ID"
           id="paste"
-          @keyup.enter="onClickSearchButton"        
+          @keyup.enter="onClickSearchButton"
+          autocomplete="off"     
         >
 
         <!-- <textarea

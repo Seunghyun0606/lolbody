@@ -303,8 +303,8 @@ def update_match_data(profile_id, left, right, tier):
                     'influence': (player_p_value.get('damageDealtToTurretsPerMin') + player_p_value.get('killsRatio') + player_p_value.get('damageDealtToObjectivesPerMin')) / 3,
                 }
             ######################################################################333
-            tmp_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
-        tmp_collection.update({'_id': match_id}, { '$set': {'flag': True}})
+            matches_collection.update({'_id': match_id}, { '$set': {'participants': participants_data}})
+        matches_collection.update({'_id': match_id}, { '$set': {'flag': True}})
         print(match_id)
 
 if __name__ == '__main__':

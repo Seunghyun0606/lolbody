@@ -1,25 +1,27 @@
 <template>
-    <div class="d-inline-block mr-2">
+  <div>
+    <div class="d-inline-block mr-2" v-for="(badge, idx) in badgeMap" :key="idx+'_badge'">
       <div class="ma-1 pa-1 badge d-inline-block" :class="['num'+badge.tier]">
           <span class="sharp"># </span>
           <span class="badge-content">{{badge.name}}</span>
       </div>
       <span class="multi fs-11">X{{badge.cnt}}</span>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'Profilebadge',
-  props: ['badge'],
-  // computed:{
-  //     badgeMap(){
-  //         return this.$store.getters.getBadgeMap
-  //     },
-  //     // tooltip_content(){
-  //     //     return this.badge.description;
-  //     // } 
-  // }
+  //props: ['badge'],
+  computed:{
+      badgeMap(){
+          return this.$store.getters.getBadgeMap
+      },
+      // tooltip_content(){
+      //     return this.badge.description;
+      // } 
+  }
 
 }
 

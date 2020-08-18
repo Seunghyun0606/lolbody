@@ -19,8 +19,7 @@ export default {
             return this.$store.getters.getProfileRadarChart[this.idx];
         },
         check(){
-            console.log(this.datas)
-            if(this.datas.lenght == 0 || this.datas == null || isNaN(this.datas[0]))
+            if(this.datas.lenght == 0 || this.datas == null || isNaN(this.datas[0]) || isNaN(this.datas[1]) || isNaN(this.datas[2]))
                 return false;
             return true;
         },
@@ -48,11 +47,20 @@ export default {
                 },
                 markers: {
                     size: 3
+                },
+                tooltip: {
+                    y: {
+                        title: {
+                            formatter: function() {
+                                return ''
+                            }
+                        }
+                    },
                 }
             };
         },
         series(){
-            return [{name: 'me', data: this.datas}];
+            return [{ data: this.datas}];
         }
     }
 }

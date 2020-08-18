@@ -45,7 +45,7 @@
 
           <!-- 배지 칩으로 넣어야함 // 현재 더미데이터, 나중에는 서버에서 받아와서 for문 돌려야함 -->
           <div class="grid-body-bot-right">
-            <MultiSearchBedge :index="index"/>
+            <MultiSearchBadge :index="index"/>
           </div>
         </div>
         <!-- 레이더차트 컴포넌트 -->
@@ -96,7 +96,7 @@ import MultiSearchLineChart from "@/components/multisearch/MultiSearchLineChart"
 import MultiSearchLatestChamp from "@/components/multisearch/MultiSearchLatestChamp"
 import MultiSearchMostChamp from "@/components/multisearch/MultiSearchMostChamp"
 import MultiSearchRadarChart from "@/components/multisearch/MultiSearchRadarChart"
-import MultiSearchBedge from "@/components/multisearch/MultiSearchBedge"
+import MultiSearchBadge from "@/components/multisearch/MultiSearchBadge"
 import MultiSearchBar from "@/components/multisearch/MultiSearchBar"
 import MultiLoading from '@/components/multisearch/MultiLoading.vue'
 
@@ -112,7 +112,7 @@ export default {
     MultiSearchLatestChamp,
     MultiSearchMostChamp,
     MultiSearchRadarChart,
-    MultiSearchBedge,
+    MultiSearchBadge,
     MultiSearchBar,
     MultiLoading,
   },

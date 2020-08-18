@@ -3,6 +3,7 @@ package com.ssafy.lolbody.dto;
 public class BadgeDto {
 	private String name;
 	private int tier;
+	private int cnt;
 
 	public String getName() {
 		return name;
@@ -20,20 +21,17 @@ public class BadgeDto {
 		this.tier = tier;
 	}
 
-	@Override
-	public int hashCode() {
-		return (name + tier).hashCode();
+	public int getCnt() {
+		return cnt;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		BadgeDto o = (BadgeDto) obj;
-		return (this.name.equals(o.name) && this.tier == o.tier);
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
 	}
 
 	@Override
 	public String toString() {
-		return "BadgeDto [name=" + name + ", tier=" + tier + "]";
+		return "BadgeDto [name=" + name + ", tier=" + tier + ", cnt=" + cnt + "]";
 	}
 
 }

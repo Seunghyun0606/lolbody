@@ -1,18 +1,18 @@
 package com.ssafy.lolbody.dto;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class MatchResultDto {
-	private Set<BadgeDto> badgeSet;
+	private Map<String, BadgeDto> badgeMap;
 	private List<MatchRecordDto> matchRecordList;
 
-	public Set<BadgeDto> getBadgeSet() {
-		return badgeSet;
+	public Map<String, BadgeDto> getBadgeMap() {
+		return badgeMap;
 	}
 
-	public void setBadgeSet(Set<BadgeDto> badgeSet) {
-		this.badgeSet = badgeSet;
+	public void setBadgeMap(Map<String, BadgeDto> badgeMap) {
+		this.badgeMap = badgeMap;
 	}
 
 	public List<MatchRecordDto> getMatchRecordList() {
@@ -25,7 +25,7 @@ public class MatchResultDto {
 
 	@Override
 	public String toString() {
-		return "MatchResultDto [badgeSet=" + badgeSet + ", matchRecordList=" + matchRecordList + "]";
+		return "MatchResultDto [badgeMap=" + badgeMap + ", matchRecordList=" + matchRecordList + "]";
 	}
 
 }

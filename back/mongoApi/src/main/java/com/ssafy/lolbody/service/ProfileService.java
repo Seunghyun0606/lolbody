@@ -3,10 +3,8 @@ package com.ssafy.lolbody.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +90,7 @@ public class ProfileService {
 
 	public MatchResultDto getMatchResult(String name, String num) throws Exception {
 		MatchResultDto matchResult = new MatchResultDto();
-		Set<BadgeDto> badgeSet = new HashSet<>();
+		Map<String, BadgeDto> badgeMap = new HashMap<>();
 		List<MatchRecordDto> matchRecords = new ArrayList<>();
 		SummonerDto summonerDto = summonerService.findOnly(name);
 		MatchlistDto matchlistDto = matchlistService.findOnly(summonerDto);
@@ -144,8 +142,7 @@ public class ProfileService {
 			if (isNew) {
 				try {
 					System.out.println(summonerDto.getId() + " " + left + " " + right + " " + tier);
-					Api.runAnalysis("SetDataBase.py",
-							summonerDto.getId() + " " + left + " " + right + " " + tier);
+					Api.runAnalysis("SetDataBase.py", summonerDto.getId() + " " + left + " " + right + " " + tier);
 				} catch (Exception e) {
 					for (int i = s; i >= 0; i--) {
 						matchService.deleteByGameId(matchReferences.get(i).getGameId());
@@ -172,7 +169,7 @@ public class ProfileService {
 
 					TeamRecordDto blueTeam = new TeamRecordDto();
 					TeamRecordDto redTeam = new TeamRecordDto();
-					
+
 					blueTeam.setTeam(100);
 					blueTeam.setWin(match.getTeams().get(0).getWin().equals("Win") ? true : false);
 					redTeam.setTeam(200);
@@ -264,21 +261,21 @@ public class ProfileService {
 					}
 				}
 
+				List<BadgeDto> badges;
 				if (matchRecordDto.getMyTeam().equals("blueTeam")) {
-					List<BadgeDto> badges = matchRecordDto.getBlueTeam().getTeammate().get(matchRecordDto.getMyIndex())
-							.getBadges();
-					if (badges != null) {
-						for (BadgeDto badge : badges) {
-							badgeSet.add(badge);
-						}
-					}
+					badges = matchRecordDto.getBlueTeam().getTeammate().get(matchRecordDto.getMyIndex()).getBadges();
 				} else {
-					List<BadgeDto> badges = matchRecordDto.getRedTeam().getTeammate().get(matchRecordDto.getMyIndex())
-							.getBadges();
-					if (badges != null) {
-						for (BadgeDto badge : badges) {
-							badgeSet.add(badge);
+					badges = matchRecordDto.getRedTeam().getTeammate().get(matchRecordDto.getMyIndex()).getBadges();
+				}
+				if (badges != null) {
+					for (BadgeDto badge : badges) {
+						String key = badge.getName() + " " + badge.getTier() + "단계";
+						if (badgeMap.containsKey(key)) {
+							badge.setCnt(badgeMap.get(key).getCnt() + 1);
+						} else {
+							badge.setCnt(1);
 						}
+						badgeMap.put(key, badge);
 					}
 				}
 
@@ -286,7 +283,7 @@ public class ProfileService {
 			}
 		}
 		matchResult.setMatchRecordList(matchRecords);
-		matchResult.setBadgeSet(badgeSet);
+		matchResult.setBadgeMap(badgeMap);
 
 		System.out.println("----------return----------");
 		return matchResult;

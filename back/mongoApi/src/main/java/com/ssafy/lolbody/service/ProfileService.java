@@ -269,7 +269,7 @@ public class ProfileService {
 				}
 				if (badges != null) {
 					for (BadgeDto badge : badges) {
-						String key = badge.getName() + " " + badge.getTier() + "단계";
+						String key = badge.getName() + " 상위" + (badge.getTier() + 1) * 10 + "%";
 						if (badgeMap.containsKey(key)) {
 							badge.setCnt(badgeMap.get(key).getCnt() + 1);
 						} else {

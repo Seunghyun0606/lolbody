@@ -275,6 +275,7 @@ public class ProfileService {
 						} else {
 							badge.setCnt(1);
 						}
+						badge.setDescription(key);
 						badgeMap.put(key, badge);
 					}
 				}

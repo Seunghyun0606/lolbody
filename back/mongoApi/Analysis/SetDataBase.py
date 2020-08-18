@@ -57,17 +57,17 @@ badge_names = {
     "damageDealtToObjectivesPerMin": '몬스터헌터',       # 오브젝트에게 준 피해량
     'totalMinionsKilledPerMin': '농부',           # cs
     'killsRatio': '오지라퍼',                   # 킬관여율
-    'deathsRatio': '불사신',                  # 데스관여울
+    'deathsRatio': '',                  # 데스관여울
     'killAssistPerMin': '쌈닭',
-    'killsPerMin': '',                        # kill
-    'deathsPerMin': '',                       # deaths
+    'killsPerMin': '학살자',                        # kill
+    'deathsPerMin': '불사신',                       # deaths
     'assistsPerMin': '수발놈',                      # assists
     'totalHealPerMin': '어머니',                    # 총 회복량
     'damageSelfMitigatedPerMin': '',          # 감소시킨 피해량(방어막?)
-    "damageDealtToTurretsPerMin": '',         # 타워에 준 피해량
+    "damageDealtToTurretsPerMin": '철거반',         # 타워에 준 피해량
     'timeCCingOthersPerMin': '',              # cc기에 맞은 총 시간
     'totalTimeCrowdControlDealtPerMin': '',   # cc기를 맞춘 총 시간
-    'visionScorePerMin': '',                  # 시야점수
+    'visionScorePerMin': '옵저버',                  # 시야점수
     'visionWardsBoughtInGamePerMin': '',      # 핑와 구매 개수
     'neutralMinionsKilledPerMin': '',         # 중립몹 킬수
     'neutralMinionsKilledEnemyJunglePerMin': '', # 상대 정글몹 킬수
@@ -87,6 +87,7 @@ def z_value(d, mean, std):
 # mongodb에 match_id를 받아서 라인구분, match_grade 저장
 db_root = connection.test
 def get_stats(queue):
+    now = '20.08'
     return pd.read_csv('/csv/20.08/stastics/stastics_%s.csv' % (now, queue))
     # return pd.read_csv('./csv/%s/stastics/stastics_%s.csv' % (now, queue))
 
@@ -233,7 +234,7 @@ def update_match_data(profile_id, left, right, tier):
                     p_value = change_to_p_value(z_value(data[col], total_stats[mean][0], total_stats[std][0]))
                     # if match_id == 4566855348:
                     #     print(p_value)
-                    if col == 'deathsRatio' or col == 'timeCCingOthersPerMin':
+                    if col == 'deathsRatio' or col == 'timeCCingOthersPerMin' or col == 'deathsPerMin':
                         p_value = 1 - p_value
                     tmp_player_p_value[col] = p_value
                     # 여기는 뱃지 붙이는 곳
@@ -254,7 +255,7 @@ def update_match_data(profile_id, left, right, tier):
                     mean = col + 'Mean'
                     std = col + 'Std'
                     p_value = change_to_p_value(z_value(data[col], tier_lane_stats[mean][0], tier_lane_stats[std][0]))
-                    if col == 'deathsRatio' or col == 'timeCCingOthersPerMin':
+                    if col == 'deathsRatio' or col == 'timeCCingOthersPerMin' or col == 'deathsPerMin':
                         p_value = 1 - p_value
                     tmp_player_p_value[col] = p_value
                     # 여기는 뱃지 붙이는 곳

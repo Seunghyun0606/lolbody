@@ -40,7 +40,7 @@ public class MultiSearchController {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");

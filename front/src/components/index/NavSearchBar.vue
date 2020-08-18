@@ -1,8 +1,8 @@
 <template>
 <div>
-  <v-container class="pa-0 mr-16 pr-16">
-    <v-row align="center">
-      <v-col class="nav-search-border pl-3">
+  <v-container class="pa-0 mr-10 pr-16">
+    <v-row align="center" class="nav-search-border">
+      <v-col class="pa-2 pb-5 pl-2">
         <input type="text"
           style="color:white;"
           tabindex="1" 
@@ -14,16 +14,8 @@
         >
 
       </v-col>
-      <v-col cols=2>
-        <v-btn
-          small 
-          color="#30BA8C lighten-1"
-          @click="onClickSearchButton"
-          @keyup.enter="onClickSearchButton"
-          >
-          Search
-        </v-btn>
-
+      <v-col cols=2 @click="onClickSearchButton" class="nav-serach-btn pa-2 pb-5">
+        <v-icon class="icon-place">search</v-icon>
       </v-col>
 
     </v-row>
@@ -89,6 +81,7 @@ export default {
         this.$router.push('/Profile/'+tmpSearchSummernerIDs);
 
       }
+      this.inputSummonerID = ""
 
     },
     async getData(tmpSearchSummernerIDs) {
@@ -131,10 +124,15 @@ export default {
 
 <style scoped>
 
+.nav-serach-btn:hover {
+  cursor: pointer;
+}
+
 .nav-search-border {
   border: 0.5px solid white;
   border-radius: 5px;
-  padding: 6px;
+  height: 38px;
+  /* padding: 6px; */
 }
 
 input::placeholder {

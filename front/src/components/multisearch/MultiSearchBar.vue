@@ -172,7 +172,7 @@ export default {
   padding: 5px;
 }
 .multi-search-col3 {
-  background: #fd9797;
+  background: rgb(48, 186, 140);
   padding: 0px;
   height: 100%;
   width: 100%;
@@ -181,7 +181,7 @@ export default {
 }
 
 .multi-search-col3:hover {
-  background: #fbb5b5;
+  background: rgba(48, 186, 140, 0.8);
   cursor: pointer;
 
 }

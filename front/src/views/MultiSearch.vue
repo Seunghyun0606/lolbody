@@ -46,7 +46,7 @@
 
           <!-- 배지 칩으로 넣어야함 // 현재 더미데이터, 나중에는 서버에서 받아와서 for문 돌려야함 -->
           <div class="grid-body-bot-right">
-            <MultiSearchBedge :index="index"/>
+            <MultiSearchBedge :badges="multiSearchData.badges"/>
           </div>
         </div>
         <!-- 레이더차트 컴포넌트 -->

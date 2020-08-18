@@ -335,9 +335,10 @@ export default new Vuex.Store({
         averageMatchGrade: 0,
         totalWin: 0,
         totalWinRate: 0,
-        badges: {},
-        contWins: 0,
-        contFails: 0,
+        badges: {
+          contWins: 0,
+          contFails: 0,
+        },
       }
 
 
@@ -352,6 +353,12 @@ export default new Vuex.Store({
         stability: 0,
         influence: 0
       }
+
+
+      // 연승, 연패 뱃지를 위한 플래그
+      var flagWin = true
+      var flagFail = true
+
       for ( var match of multiSearchData.matchResult.matchRecordList ) {
 
         var mT = match[match.myTeam].teammate[match.myIndex]
@@ -406,8 +413,6 @@ export default new Vuex.Store({
           selectMostChamp[mT.champ]++
         }
         
-        var flagWin = true
-        var flagFail = true
         // total game 토탈 win + latestgame 승패 결정
         if ( match[match.myTeam].win ) {
           latestGame.win = true
@@ -415,13 +420,13 @@ export default new Vuex.Store({
 
           flagFail = false
           if ( flagWin ) {
-            multiData.contWins++
+            multiData.badges.contWins++
           }
         }
         else {
           flagWin = false
           if ( flagFail ) {
-            multiData.contFails++            
+            multiData.badges.contFails++            
           }
         }
 

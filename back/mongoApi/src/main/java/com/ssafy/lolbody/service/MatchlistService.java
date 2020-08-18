@@ -29,7 +29,7 @@ public class MatchlistService {
 		matchlistRepository.save(matchlistDto);
 	}
 
-	public MatchlistDto findBySummonerId(SummonerDto summonerDto) throws TimeoutException {
+	public MatchlistDto findBySummonerId(SummonerDto summonerDto) throws Exception {
 		MatchlistDto matchlistDto = matchlistRepository.findBySummonerId(summonerDto.getId());
 
 		JSONArray jsonArr = new JSONArray(
@@ -216,8 +216,12 @@ public class MatchlistService {
 		return lane;
 	}
 
-	public MatchlistDto findOnly(SummonerDto summonerDto) {
-		return matchlistRepository.findBySummonerId(summonerDto.getId());
+	public MatchlistDto findOnly(SummonerDto summonerDto) throws Exception {
+		MatchlistDto matchlistDto = matchlistRepository.findBySummonerId(summonerDto.getId());
+		if (matchlistDto == null) {
+			return findBySummonerId(summonerDto);
+		}
+		return matchlistDto;
 	}
 
 }

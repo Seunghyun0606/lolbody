@@ -46,7 +46,7 @@
 
           <!-- 배지 칩으로 넣어야함 // 현재 더미데이터, 나중에는 서버에서 받아와서 for문 돌려야함 -->
           <div class="grid-body-bot-right">
-            <MultiSearchBedge :badges="multiSearchData.badges"/>
+            <MultiSearchBadge :badges="multiSearchData.badges"/>
           </div>
         </div>
         <!-- 레이더차트 컴포넌트 -->
@@ -172,7 +172,7 @@ export default {
   display: grid;
   grid-template-columns: 20% 15% 17.5% 6% 29% 12.5%;
 
-  border: 1px solid #f76707;
+  border-bottom: 1px solid rgb(48, 186, 140);
 
   text-align: center;
 
@@ -188,12 +188,12 @@ export default {
 }
 
 .grid > .grid-header {
-  background-color: #ffd8a8;
+  background-color: rgb(48, 186, 140);
   height: 100%;
 
   font-size: 12px;
 
-  color: #d9480f;
+  color: white;
 }
 
 

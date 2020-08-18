@@ -24,8 +24,6 @@
 </template>
 
 <script>
-Kakao.init('7b7a42d9cf2509fe7d9c7db809ef3807')
-console.log(Kakao.isInitialized())
 import NavSearchBar from '@/components/index/NavSearchBar.vue'
 import { mapState } from 'vuex'
 

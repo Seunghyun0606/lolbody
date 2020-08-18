@@ -1,15 +1,15 @@
 package com.ssafy.lolbody.dto;
 
 public class RadarDto {
-	private int games;
+	private long timestamp;
 	private RadarReferenceDto radarReference;
 
-	public int getGames() {
-		return games;
+	public long getTimestamp() {
+		return timestamp;
 	}
 
-	public void setGames(int games) {
-		this.games = games;
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	public RadarReferenceDto getRadarReference() {
@@ -22,7 +22,7 @@ public class RadarDto {
 
 	@Override
 	public String toString() {
-		return "RadarDto [games=" + games + ", radarReference=" + radarReference + "]";
+		return "RadarDto [timestamp=" + timestamp + ", radarReference=" + radarReference + "]";
 	}
 
 }

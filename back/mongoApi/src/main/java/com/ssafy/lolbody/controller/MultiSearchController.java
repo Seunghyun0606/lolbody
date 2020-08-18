@@ -2,6 +2,8 @@ package com.ssafy.lolbody.controller;
 
 import java.util.concurrent.TimeoutException;
 
+import javax.naming.NameNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,10 @@ public class MultiSearchController {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");

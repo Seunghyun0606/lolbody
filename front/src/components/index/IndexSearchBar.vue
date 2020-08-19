@@ -6,7 +6,8 @@
         <input type="text"
           tabindex="1" 
           class="multi-search-col2"
-          v-model="inputSummonerID"
+          v-on:input="typing"
+          v-bind:value="inputSummonerID"
           @paste="onPaste"
           placeholder="Summoner ID"
           id="paste"
@@ -14,7 +15,7 @@
           autocomplete="off"
           @focus="onFocusInput"
           @blur="offFocusInput"
-          @keydown="onPressKey"
+          @keyup="onPressKey"
         >
 
         <!-- <textarea
@@ -136,6 +137,10 @@ export default {
     }
   },
   methods: {
+    typing(e) {
+      this.inputSummonerID = e.target.value
+    },
+
     onClickSearchButton() {
       this.parseInputSummonerID()
     },
@@ -246,9 +251,16 @@ export default {
     },
 
     onPressKey() {
-      axios.get(SEVER_URL + '/api/auto/' + this.inputSummonerID)
-        .then(res => console.log(res.data))
-        .catch(err => console.log(err))
+      if (this.inputSummonerID.length !== 0) {
+        axios.get(SEVER_URL + '/api/auto/' + this.inputSummonerID)
+          .then(res => {
+            let tmp = []
+            res.data.forEach(e => tmp.push(e.name))
+            this.autoComplete = tmp
+            })
+          .catch(err => console.log(err))
+
+      }
     }
   },
 }

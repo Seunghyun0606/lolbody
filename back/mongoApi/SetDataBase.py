@@ -253,7 +253,8 @@ def update_match_data(profile_id, left, right, tier):
                     elif p_value >= 0.7:
                         badges_data.append({'name': badge_names[col][0], 'stats': col, 'p_value': p_value, 'tier': 2, 'comment': badge_names[col][1] + ' 상위 30%'})
                 player_p_value = tmp_player_p_value
-
+            
+            participant['source'] = data
             participant['line'] = tmp_position
             participant['analysis'] = player_p_value
             participant['badges'] = badges_data

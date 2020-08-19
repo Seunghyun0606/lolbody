@@ -1,23 +1,19 @@
 <template>
   <div>
-    <apexchart height="150" type="line" :options="chartOptions" :series="series.series"></apexchart>
+    <apexchart height="150" type="line" :options="chartOptions" :series="series"></apexchart>
   </div>
 </template>
 
 <script>
 import apexchart from 'vue-apexcharts'
-import { mapState } from 'vuex'
-
 
 export default {
     name: 'ProfileLineChart',
     components: {
         apexchart
     },
+    props: ['category', 'yaxis', 'series'],
     computed: {
-        ...mapState([
-            'profileLineChartOption',
-        ]),
         chartOptions() {
             return {
                 chart: {
@@ -48,63 +44,53 @@ export default {
                         formatter: function(value) {
                             if(value == undefined)
                                 return null;
-                            const timestamp =  new Date(parseInt(value.substring(0, 13)));
+                            const timestamp =  new Date(parseInt(value));
                             const month = new Date(timestamp).getMonth() + 1 + '월 '
                             const day = new Date(timestamp).getDate() + '일 '
-                            // let hour = new Date(timestamp).getHours() + '시'
                             return month + day // + hour
                         }
                     },
                     tickAmount: 3,
-                    categories: this.profileLineChartOption.chartOptions.xaxis.categories,
+                    categories: this.category,
                     type: 'category',
-                },
-                yaxis: {
-                    title: {
-                        text: this.profileLineChartOption.series[0].name
-                    },
-                    tickAmount: 5,
-                    max: 10,
-                    forceNiceScale: true,
-                    labels: {
-                        show : true,
-                        formatter: (value) => { 
-                            if(value >= 10 )
-                                return '10+';
-                            else
-                                return value;
-                        },
-                    },
-                },
-                tooltip:{
-                    custom: function({series, seriesIndex, dataPointIndex, w}) {
-                        console.log(series)
-                        console.log(w.globals.labels[dataPointIndex])
-                        return '<div class="arrow_box">' +
-                        '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
-                        '</div>'
+                    tooltip: {
+                        formatter: function(val, {w}) {
+                            return w.globals.categoryLabels[val-1]
+                        }
                     }
-                    //x: {
-                    //    formatter: (value, {series, seriesIndex, dataPointIndex}) => { 
-                    //        console.log(series)
-                    //        console.log(seriesIndex)
-                    //        console.log(dataPointIndex)
-                    //        console.log(value)
-                    //        return value
-                    //    },
-                    //},
+                },
+                yaxis: this.yaxis,
+                tooltip:{
+                    //custom: function({series, seriesIndex, dataPointIndex, w}) {
+                    //    return '<div class="arrow_box">' +
+                    //    '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
+                    //    '</div>'
+                    //}
+                    x: {
+                        formatter: (value, {w}) => {
+                            return '<img src="'+this.imageload('champion/' + w.globals.seriesNames[0][value-1]+'.png')+'" class="v-avatar" width="40px" >'
+                        }
+                    },
+                    y:{
+                        title: {
+                            formatter: () => {
+                                return this.yaxis.title.text
+                            },
+                        },
+                    }
                 }
             };
         },
-        series() {
-            return {
-                series: [{
-                    name: this.profileLineChartOption.series[0].name,
-                    data: this.profileLineChartOption.series[0].data
-                }],
-            };
-        },
     },
+    methods:{
+        imageload(URL){
+            try{
+                return require('@/assets/images/'+ URL);
+            }catch{
+                return require('@/assets/images/error.png');
+            }
+        },
+    }
 }
 </script>
 

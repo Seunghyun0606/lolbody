@@ -11,7 +11,9 @@
           placeholder="Summoner ID"
           id="paste"
           @keyup.enter="onClickSearchButton"
-          autocomplete="off"     
+          autocomplete="off"
+          @focus="onFocusInput"
+          @blur="offFocusInput"
         >
 
         <!-- <textarea
@@ -31,6 +33,24 @@
         <v-icon class="icon-place">search</v-icon>
       </v-col>
     </v-row>
+    <v-row no-gutters v-show='this.historyIsVisible' >
+      <template v-for="n in this.searchHistory.length">
+        <v-col :key="n" class='col-4'>
+          <v-card
+            class="pa-2"
+            outlined
+            tile
+          >
+            {{ n }}
+          </v-card>
+        </v-col>
+        <v-responsive
+          v-if="n%3 === 0"
+          :key="`width-${n}`"
+          width="100%"
+        ></v-responsive>
+      </template>
+    </v-row>
   </v-container>
 
 </template>
@@ -44,7 +64,8 @@ export default {
   data() {
     return {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2
-      searchHistory: []
+      searchHistory: [],
+      historyIsVisible: false,
     }
   },
   computed: {
@@ -68,6 +89,13 @@ export default {
       this.parseInputSummonerID()
     },
 
+    onFocusInput() {
+      this.historyIsVisible = true
+    },
+
+    offFocusInput() {
+      this.historyIsVisible = false
+    },
     parseInputSummonerID() {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로

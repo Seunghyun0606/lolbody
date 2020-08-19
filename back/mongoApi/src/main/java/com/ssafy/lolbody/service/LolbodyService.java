@@ -69,10 +69,12 @@ public class LolbodyService {
 		Map<String, CountDto> lineMap = new HashMap<>();
 		RadarReferenceDto radar = new RadarReferenceDto();
 		AnalysisDto analysis = new AnalysisDto();
+		AnalysisDto source = new AnalysisDto();
 
 		int cnt = 0;
 		double[] radarArr = new double[3];
 		double[] analysisArr = new double[21];
+		double[] sourceArr = new double[21];
 
 		for (int i = 1; i < 11; i++) {
 			MatchResultDto matchResult = profileService.getMatchResult(name, i + "");
@@ -148,6 +150,27 @@ public class LolbodyService {
 				analysisArr[18] += playerRecord.getAnalysis().getNeutralMinionsKilledEnemyJunglePerMin();
 				analysisArr[19] += playerRecord.getAnalysis().getWardsPlacedPerMin();
 				analysisArr[20] += playerRecord.getAnalysis().getWardsKilledPerMin();
+				sourceArr[0] += playerRecord.getSource().getTotalDamageDealtToChampionsPerMin();
+				sourceArr[1] += playerRecord.getSource().getDamageDealtToObjectivesPerMin();
+				sourceArr[2] += playerRecord.getSource().getVisionScorePerMin();
+				sourceArr[3] += playerRecord.getSource().getTotalDamageTakenPerMin();
+				sourceArr[4] += playerRecord.getSource().getTotalMinionsKilledPerMin();
+				sourceArr[5] += playerRecord.getSource().getKillsRatio();
+				sourceArr[6] += playerRecord.getSource().getDeathsRatio();
+				sourceArr[7] += playerRecord.getSource().getKillAssistPerMin();
+				sourceArr[8] += playerRecord.getSource().getKillsPerMin();
+				sourceArr[9] += playerRecord.getSource().getDeathsPerMin();
+				sourceArr[10] += playerRecord.getSource().getAssistsPerMin();
+				sourceArr[11] += playerRecord.getSource().getTotalHealPerMin();
+				sourceArr[12] += playerRecord.getSource().getDamageSelfMitigatedPerMin();
+				sourceArr[13] += playerRecord.getSource().getDamageDealtToTurretsPerMin();
+				sourceArr[14] += playerRecord.getSource().getTimeCCingOthersPerMin();
+				sourceArr[15] += playerRecord.getSource().getNeutralMinionsKilledPerMin();
+				sourceArr[16] += playerRecord.getSource().getTotalTimeCrowdControlDealtPerMin();
+				sourceArr[17] += playerRecord.getSource().getVisionWardsBoughtInGamePerMin();
+				sourceArr[18] += playerRecord.getSource().getNeutralMinionsKilledEnemyJunglePerMin();
+				sourceArr[19] += playerRecord.getSource().getWardsPlacedPerMin();
+				sourceArr[20] += playerRecord.getSource().getWardsKilledPerMin();
 				cnt++;
 			}
 		}
@@ -182,6 +205,27 @@ public class LolbodyService {
 		analysis.setNeutralMinionsKilledEnemyJunglePerMin(analysisArr[18] / cnt);
 		analysis.setWardsPlacedPerMin(analysisArr[19] / cnt);
 		analysis.setWardsKilledPerMin(analysisArr[20] / cnt);
+		source.setTotalDamageDealtToChampionsPerMin(sourceArr[0] / cnt);
+		source.setDamageDealtToObjectivesPerMin(sourceArr[1] / cnt);
+		source.setVisionScorePerMin(sourceArr[2] / cnt);
+		source.setTotalDamageTakenPerMin(sourceArr[3] / cnt);
+		source.setTotalMinionsKilledPerMin(sourceArr[4] / cnt);
+		source.setKillsRatio(sourceArr[5] / cnt);
+		source.setDeathsRatio(sourceArr[6] / cnt);
+		source.setKillAssistPerMin(sourceArr[7] / cnt);
+		source.setKillsPerMin(sourceArr[8] / cnt);
+		source.setDeathsPerMin(sourceArr[9] / cnt);
+		source.setAssistsPerMin(sourceArr[10] / cnt);
+		source.setTotalHealPerMin(sourceArr[11] / cnt);
+		source.setDamageSelfMitigatedPerMin(sourceArr[12] / cnt);
+		source.setDamageDealtToTurretsPerMin(sourceArr[13] / cnt);
+		source.setTimeCCingOthersPerMin(sourceArr[14] / cnt);
+		source.setNeutralMinionsKilledPerMin(sourceArr[15] / cnt);
+		source.setTotalTimeCrowdControlDealtPerMin(sourceArr[16] / cnt);
+		source.setVisionWardsBoughtInGamePerMin(sourceArr[17] / cnt);
+		source.setNeutralMinionsKilledEnemyJunglePerMin(sourceArr[18] / cnt);
+		source.setWardsPlacedPerMin(sourceArr[19] / cnt);
+		source.setWardsKilledPerMin(sourceArr[20] / cnt);
 
 		lolbody.setRadarList(radarList);
 		lolbody.setChampList(champList);
@@ -189,6 +233,7 @@ public class LolbodyService {
 		lolbody.setStastics(stastics);
 		lolbody.setRadar(radar);
 		lolbody.setAnalysis(analysis);
+		lolbody.setSource(source);
 
 		lolbodyList.add(lolbody);
 		lolbodyResult.setLolbodyList(lolbodyList);

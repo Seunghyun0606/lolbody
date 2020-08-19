@@ -260,6 +260,7 @@ public class ProfileService {
 						tmp.setAnalysis(p.getAnalysis());
 						tmp.setRadar(p.getRadar());
 						tmp.setBadges(p.getBadges());
+						tmp.setSource(p.getSource());
 						if (j < 5)
 							blueTeammate.add(tmp);
 						else

@@ -21,6 +21,7 @@ public class ParticipantDto {
 	private AnalysisDto analysis;
 	private RadarReferenceDto radar;
 	private List<BadgeDto> badges;
+	private AnalysisDto source;
 
 	public int getParticipantId() {
 		return participantId;
@@ -166,13 +167,22 @@ public class ParticipantDto {
 		this.badges = badges;
 	}
 
+	public AnalysisDto getSource() {
+		return source;
+	}
+
+	public void setSource(AnalysisDto source) {
+		this.source = source;
+	}
+
 	@Override
 	public String toString() {
 		return "ParticipantDto [participantId=" + participantId + ", championId=" + championId + ", runes=" + runes
 				+ ", stats=" + stats + ", teamId=" + teamId + ", timeline=" + timeline + ", spell1Id=" + spell1Id
 				+ ", spell2Id=" + spell2Id + ", highestAchievedSeasonTier=" + highestAchievedSeasonTier + ", masteries="
 				+ masteries + ", name=" + name + ", x=" + x + ", y=" + y + ", line=" + line + ", matchGrade="
-				+ matchGrade + ", analysis=" + analysis + ", radar=" + radar + ", badges=" + badges + "]";
+				+ matchGrade + ", analysis=" + analysis + ", radar=" + radar + ", badges=" + badges + ", source="
+				+ source + "]";
 	}
 
 }

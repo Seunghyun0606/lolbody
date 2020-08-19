@@ -1,23 +1,19 @@
 <template>
   <div>
-    <apexchart height="150" type="line" :options="chartOptions" :series="series.series"></apexchart>
+    <apexchart height="150" type="line" :options="chartOptions" :series="series"></apexchart>
   </div>
 </template>
 
 <script>
 import apexchart from 'vue-apexcharts'
-import { mapState } from 'vuex'
-
 
 export default {
     name: 'ProfileLineChart',
     components: {
         apexchart
     },
+    props: ['category', 'yaxis', 'series'],
     computed: {
-        ...mapState([
-            'profileLineChartOption',
-        ]),
         chartOptions() {
             return {
                 chart: {
@@ -55,53 +51,46 @@ export default {
                         }
                     },
                     tickAmount: 3,
-                    categories: this.profileLineChartOption.chartOptions.xaxis.categories,
+                    categories: this.category,
                     type: 'category',
+                    tooltip: {
+                        formatter: function(val, {w}) {
+                            return w.globals.categoryLabels[val-1]
+                        }
+                    }
                 },
-                yaxis: {
-                    title: {
-                        text: this.profileLineChartOption.series[0].name
-                    },
-                    tickAmount: 5,
-                    max: 10,
-                    forceNiceScale: true,
-                    labels: {
-                        show : true,
-                        formatter: (value) => { 
-                            if(value >= 10 )
-                                return '10+';
-                            else
-                                return value;
-                        },
-                    },
-                },
+                yaxis: this.yaxis,
                 tooltip:{
                     //custom: function({series, seriesIndex, dataPointIndex, w}) {
                     //    return '<div class="arrow_box">' +
                     //    '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
                     //    '</div>'
                     //}
-                    //x: {
-                    //    formatter: (value, {series, seriesIndex, dataPointIndex}) => { 
-                    //        console.log(series)
-                    //        console.log(seriesIndex)
-                    //        console.log(dataPointIndex)
-                    //        console.log(value)
-                    //        return value
-                    //    },
-                    //},
+                    x: {
+                        formatter: (value, {w}) => {
+                            return '<img src="'+this.imageload('champion/' + w.globals.seriesNames[0][value-1]+'.png')+'" class="v-avatar" width="40px" >'
+                        }
+                    },
+                    y:{
+                        title: {
+                            formatter: () => {
+                                return this.yaxis.title.text
+                            },
+                        },
+                    }
                 }
             };
         },
-        series() {
-            return {
-                series: [{
-                    name: this.profileLineChartOption.series[0].name,
-                    data: this.profileLineChartOption.series[0].data
-                }],
-            };
-        },
     },
+    methods:{
+        imageload(URL){
+            try{
+                return require('@/assets/images/'+ URL);
+            }catch{
+                return require('@/assets/images/error.png');
+            }
+        },
+    }
 }
 </script>
 

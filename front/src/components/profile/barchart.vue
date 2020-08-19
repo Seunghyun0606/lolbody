@@ -73,7 +73,8 @@ export default {
                 xaxis: {
                     type: 'category',
                     categories: [0, 0, 0, 0, 0],
-                    
+                    tickAmount: 5,
+                    max: 1
                 },
                 //yaxis:{
                 //    labels: {

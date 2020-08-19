@@ -1,8 +1,8 @@
 <template>
 <div>
-  <v-container class="pa-0 mr-16 pr-16">
-    <v-row align="center">
-      <v-col class="nav-search-border pl-3">
+  <v-container class="pa-0 mr-10 pr-16">
+    <v-row align="center" class="nav-search-border">
+      <v-col class="pa-2 pb-5 pl-2">
         <input type="text"
           style="color:white;"
           tabindex="1" 
@@ -10,20 +10,13 @@
           @paste="onPaste"
           placeholder="Summoner ID"
           id="paste"
-          @keyup.enter="onClickSearchButton"        
+          @keyup.enter="onClickSearchButton"
+          autocomplete="off"
         >
 
       </v-col>
-      <v-col cols=2>
-        <v-btn
-          small 
-          color="#30BA8C lighten-1"
-          @click="onClickSearchButton"
-          @keyup.enter="onClickSearchButton"
-          >
-          Search
-        </v-btn>
-
+      <v-col cols=2 @click="onClickSearchButton" class="nav-serach-btn pa-2 pb-5">
+        <v-icon class="icon-place">search</v-icon>
       </v-col>
 
     </v-row>
@@ -38,7 +31,21 @@ export default {
   data() {
     return {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2
+      searchHistory: []
     }
+  },
+  mounted() {
+    // localStorage에서 가져오기만 함
+    this.$nextTick(function() {
+      if (window.localStorage.getItem('searchHistory') !== null && window.localStorage.getItem('searchHistory') !== '') {
+        // console.log('history 있음')
+        this.searchHistory =  JSON.parse(window.localStorage.getItem('searchHistory'))
+        // console.log(this.searchHistory)
+      } else {
+        // console.log('history 없음')
+        window.localStorage.setItem('searchHistory', '')
+      }
+    })
   },
   methods: {
     onClickSearchButton() {
@@ -89,14 +96,17 @@ export default {
         this.$router.push('/Profile/'+tmpSearchSummernerIDs);
 
       }
+      this.inputSummonerID = ""
 
     },
     async getData(tmpSearchSummernerIDs) {
       await this.$store.dispatch('initMultiSearchData')
       await this.$store.commit('toggleMultiSearchLoading', true)
+      
+      // await this.$store.dispatch('getMultiSearchRadarDatas', ID)
+      // await this.$store.dispatch('getMultiUserDatas', ID)
+
       for ( var ID of tmpSearchSummernerIDs ) {
-        await this.$store.dispatch('getMultiSearchRadarDatas', ID)
-        await this.$store.dispatch('getMultiUserDatas', ID)
         await this.$store.dispatch('getMultiSearchDatas', ID)
       }
       await this.$store.commit('toggleMultiSearchLoading', false)
@@ -129,10 +139,15 @@ export default {
 
 <style scoped>
 
+.nav-serach-btn:hover {
+  cursor: pointer;
+}
+
 .nav-search-border {
   border: 0.5px solid white;
   border-radius: 5px;
-  padding: 6px;
+  height: 38px;
+  /* padding: 6px; */
 }
 
 input::placeholder {

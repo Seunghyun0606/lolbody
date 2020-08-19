@@ -1,7 +1,7 @@
 <template>
 
   <!-- <MultiRadarChart class='move-apexchart' type="radar" width="235" :options="options" :series="series"></MultiRadarChart> -->
-  <apexchart class="move-apexchart" type="radar" width="235" :options="multiSearchRadarData[index].options" :series="multiSearchRadarData[index].series"></apexchart>
+  <apexchart class="move-apexchart" type="radar" width="235" :options="radarChart.options" :series="radarChart.series"></apexchart>
 
 </template>
 
@@ -12,7 +12,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'MultiSearchRadarChart',
   props: {
-    index: Number
+    radarChart: Object
   },
   components: {
     apexchart,

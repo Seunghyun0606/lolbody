@@ -1,8 +1,8 @@
 package com.ssafy.lolbody.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
+
+import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.lolbody.api.Api;
-import com.ssafy.lolbody.dto.MatchRecordDto;
-import com.ssafy.lolbody.dto.ProfileReferenceDto;
-import com.ssafy.lolbody.dto.SummonerValueResultDto;
+import com.ssafy.lolbody.dto.MatchResultDto;
+import com.ssafy.lolbody.dto.UserCardReferenceDto;
 import com.ssafy.lolbody.service.ProfileService;
-import com.ssafy.lolbody.service.SummonerValueService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -28,80 +26,78 @@ import io.swagger.annotations.ApiOperation;
 public class ProfileController {
 	@Autowired
 	private ProfileService profileService;
-	@Autowired
-	private SummonerValueService summonerValueService;
 
-	@ApiOperation(value = "소환사 이름으로 유저 프로필을 검색합니다.")
+	@ApiOperation(value = "소환사 이름으로 유저 카드를 리턴받습니다.")
 	@GetMapping("/api/profile/{name}")
-	public ResponseEntity<ProfileReferenceDto> getProfile(@PathVariable String name) {
-		ProfileReferenceDto profile = new ProfileReferenceDto();
+	public ResponseEntity<UserCardReferenceDto> getUserCard(@PathVariable String name) {
+		UserCardReferenceDto userCard = new UserCardReferenceDto();
 		try {
-			profile = profileService.getProfile(name.replaceAll(" ", ""));
+			userCard = profileService.getUserCard(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(profile, HttpStatus.OK);
+		return new ResponseEntity<>(userCard, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "소환사 이름으로 유저 프로필을 갱신합니다.")
 	@PutMapping("/api/profile/{name}")
-	public ResponseEntity<ProfileReferenceDto> getNewProfile(@PathVariable String name) {
-		ProfileReferenceDto profile = new ProfileReferenceDto();
+	public ResponseEntity<UserCardReferenceDto> updateUserCard(@PathVariable String name) {
+		UserCardReferenceDto userCard = new UserCardReferenceDto();
 		try {
 			profileService.updateProfile(name.replaceAll(" ", ""));
-			profile = profileService.getProfile(name.replaceAll(" ", ""));
+			userCard = profileService.getUserCard(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(profile, HttpStatus.OK);
+		return new ResponseEntity<>(userCard, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "소환사 이름으로 유저 매치 전적을 검색합니다. (num: 1부터 시작, 10개씩)")
 	@GetMapping("/api/profile/{name}/{num}")
-	public ResponseEntity<List<MatchRecordDto>> getMatchInfo(@PathVariable String name, @PathVariable String num) {
-		List<MatchRecordDto> matchRecords = new ArrayList<>();
+	public ResponseEntity<MatchResultDto> getMatchInfo(@PathVariable String name, @PathVariable String num) {
+		MatchResultDto matchResult = new MatchResultDto();
 		try {
-			matchRecords = profileService.getMatchRecord(name.replaceAll(" ", ""), num);
+			matchResult = profileService.getMatchResult(name.replaceAll(" ", ""), num);
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(matchRecords, HttpStatus.OK);
+		return new ResponseEntity<>(matchResult, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "소환사 이름으로 유저 성향을 검색합니다.")
-	@GetMapping("/api/summonervalue/{name}")
-	public ResponseEntity<SummonerValueResultDto> getSummonerValue(@PathVariable String name) {
-		SummonerValueResultDto summonerValueResultDto;
-		try {
-			summonerValueResultDto = summonerValueService.getSummonerValue(name);
-		} catch (TimeoutException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "유저 성향 검색 중 오류 발생");
-			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "유저 성향 검색 중 오류 발생");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(summonerValueResultDto, HttpStatus.OK);
+	@ApiOperation(value = "아무 이유없이 404를 리턴해줍니다.")
+	@GetMapping("/api/profile/404")
+	public ResponseEntity<MatchResultDto> errorTest() {
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 }

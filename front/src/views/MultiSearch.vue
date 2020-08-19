@@ -16,61 +16,62 @@
 
 
       <!-- 반복되어야할 그리드 (5인 멀티서치 정보) -->
-      <div class="grid grid2 align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index" @click="userProfile(multiSearchData.summonerName)">
+      <div class="grid grid2 align-items-center" v-for="(multiSearchData, index) in multiSearchDatas" :key="index" @click="userProfile(multiSearchData.userCard.summonerName)">
         <div class="grid-body align-items-center">
 
           <!-- 랭크 -->
           <div class="grid-body-center-left">
-            <img :src="multiUserDatas[index].tier !== null ? require(`@/assets/images/tier/${multiUserDatas[index].tier}.png`) : require(`@/assets/images/tier/unranked.png`)" alt="tier">
+            <img :src="multiSearchData.userCard.soloRank.tier !== 'UNRANKED' ? require(`@/assets/images/tier/${multiSearchData.userCard.soloRank.tier}.png`) : require(`@/assets/images/tier/unranked.png`)" alt="tier">
           </div>
 
           <!-- 유저네임, 티어, 승패-->
           <div class="grid-body-center-right">
             <div class="user-name">
-              {{ multiSearchData.summonerName }}
+              {{ multiSearchData.userCard.summonerName }}
             </div>
             <div>
-              {{ multiUserDatas[index].tier }} {{ multiUserDatas[index].rank }}
+              {{ multiSearchData.userCard.soloRank.tier }} {{ multiSearchData.userCard.soloRank.rank }}
             </div>
             <div>
-              {{ multiSearchData.totalGame === 0 ? 0 : Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패)
+              <!-- {{ multiSearchData.totalGame === 0 ? 0 : Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패) -->
+              {{ multiSearchData.userCard.soloRank.winRate === 0 ? 0 : Math.round(((multiSearchData.userCard.soloRank.winRate))) }}% ({{ multiSearchData.userCard.soloRank.wins }}승 {{ multiSearchData.userCard.soloRank.losses }}패)
             </div>
           </div>
 
           <!-- 가장 많이가는 라인 -->
           <div class="grid-body-bot-left">
-            <img class="lane-width" :src="multiSearchData.mainLane !== 'NONE' ? require(`@/assets/images/position/${multiSearchData.mainLane}.png`) : require(`@/assets/images/error.png`)" alt="mainLane">
-            <img class="lane-width" :src="multiSearchData.subLane !== 'NONE' ? require(`@/assets/images/position/${multiSearchData.subLane}.png`) : require(`@/assets/images/error.png`)" alt="subLane">
+            <img class="lane-width" :src="multiSearchData.mostLane[0] ? require(`@/assets/images/position/${multiSearchData.mostLane[0]}.png`) : require(`@/assets/images/error.png`)" alt="mainLane">
+            <img class="lane-width" :src="multiSearchData.mostLane[0] ? require(`@/assets/images/position/${multiSearchData.mostLane[1]}.png`) : require(`@/assets/images/error.png`)" alt="subLane">
           </div>
 
           <!-- 배지 칩으로 넣어야함 // 현재 더미데이터, 나중에는 서버에서 받아와서 for문 돌려야함 -->
           <div class="grid-body-bot-right">
-            <MultiSearchBadge :index="index"/>
+            <MultiSearchBadge :badges="multiSearchData.badges"/>
           </div>
         </div>
         <!-- 레이더차트 컴포넌트 -->
         <div class="disabled">
-          <MultiSearchRadarChart :index="index"/>
+          <MultiSearchRadarChart :radarChart="multiSearchData.radarChart" />
         </div>
 
         <!-- 라인 차트 컴포넌트-->
         <div style="width: 176px">
-          <MultiSearchLineChart :multiSearchData="multiSearchData"/>
+          <MultiSearchLineChart :lineChart="multiSearchData.lineChart"/>
         </div>
 
         <!-- 최근전적 -->
         <div style="font-size: 10px;">
-          {{ multiSearchData.recentMatchResults.wins }}승 {{ multiSearchData.recentMatchResults.fails }}패
+          {{ multiSearchData.totalWin }}승 {{ 10 - multiSearchData.totalWin }}패
           <br>
-          {{ multiSearchData.recentMatchResults.rate }}%
+          {{ multiSearchData.totalWinRate }}%
           <br>
-          {{ multiSearchData.recentMatchKda }}
+          {{ multiSearchData.averageMatchGrade }} <span style="color: green;">MG</span>
 
         </div>
         
         <!-- 최근 챔피언 컴포넌트화 시켜서 for문 돌리면됨. -->
         <div class="grid-champ align-items-center">
-          <MultiSearchLatestChamp v-for="(recentGame, index) in multiSearchData.recentGames" :recentGame="recentGame" :key="index"/>
+          <MultiSearchLatestChamp v-for="(recentGame, index) in multiSearchData.latestGames" :recentGame="recentGame" :key="index"/>
         </div>
 
         <!-- 모스트 챔피언 -->
@@ -126,7 +127,7 @@ export default {
   computed: {
     ...mapState([
       "multiSearchDatas",
-      "multiUserDatas",
+      // "multiUserDatas",
       "isMultiSearchLoading",
     ]),
     ...mapGetters([
@@ -171,7 +172,7 @@ export default {
   display: grid;
   grid-template-columns: 20% 15% 17.5% 6% 29% 12.5%;
 
-  border: 1px solid #f76707;
+  border-bottom: 1px solid rgb(48, 186, 140);
 
   text-align: center;
 
@@ -187,12 +188,12 @@ export default {
 }
 
 .grid > .grid-header {
-  background-color: #ffd8a8;
+  background-color: rgb(48, 186, 140);
   height: 100%;
 
   font-size: 12px;
 
-  color: #d9480f;
+  color: white;
 }
 
 

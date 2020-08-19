@@ -98,20 +98,21 @@ export default {
 
       // 1개면 유저프로필. 1개이상이면 멀티서치.
       // this.getMultiSearchDatas(tmpSearchSummernerIDs)
-      // console.log(tmpSearchSummernerIDs)
+
       this.getData(tmpSearchSummernerIDs)
 
     },
     async getData(tmpSearchSummernerIDs) {
       await this.$store.dispatch('initMultiSearchData')
       await this.$store.commit('toggleMultiSearchLoading', true)
+      
+      // await this.$store.dispatch('getMultiSearchRadarDatas', ID)
+      // await this.$store.dispatch('getMultiUserDatas', ID)
+
       for ( var ID of tmpSearchSummernerIDs ) {
-        await this.$store.dispatch('getMultiSearchRadarDatas', ID)
-        await this.$store.dispatch('getMultiUserDatas', ID)
         await this.$store.dispatch('getMultiSearchDatas', ID)
       }
       await this.$store.commit('toggleMultiSearchLoading', false)
-      
     },
 
     onPaste (e) {
@@ -171,7 +172,7 @@ export default {
   padding: 5px;
 }
 .multi-search-col3 {
-  background: #fd9797;
+  background: rgb(48, 186, 140);
   padding: 0px;
   height: 100%;
   width: 100%;
@@ -180,7 +181,7 @@ export default {
 }
 
 .multi-search-col3:hover {
-  background: #fbb5b5;
+  background: rgba(48, 186, 140, 0.8);
   cursor: pointer;
 
 }

@@ -39,7 +39,7 @@
 				</v-card>
 				
 				<!-- 랭크, 일반 등 -->
-				<v-card class="ma-1 mb-2 bg_card" :loading="triger.MatchDataLoading" outlined height="300px" width="332px" algin="center">
+				<v-card class="ma-1 mb-2 bg_card" :loading="triger.MatchDataLoading" outlined height="300px" width="333px" algin="center">
 					<ul class="options">
 						<li><a :class="{option_action: triger.rankGameActive}" @click="changeRankGame">랭크</a></li>
 						<li><a :class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
@@ -55,7 +55,7 @@
 			</td>
 			<!-- 여기서부터 우측 공간 -->
 			<td style="vertical-align: top">
-				<v-card class="text-center ma-1 mb-2 bg_card" outlined>
+				<v-card class="text-center ma-1 mb-2 bg_card" width="655px" outlined>
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.KDAActive}" @click="changeKDA">KDA</a></li>
 						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>

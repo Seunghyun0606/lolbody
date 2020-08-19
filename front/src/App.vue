@@ -129,34 +129,54 @@ export default {
 }
 
 [tooltip]:hover {
-  display: block;
-  cursor: pointer;
+    position: relative;
+    cursor: pointer;
 }
 
 [tooltip]:after {
     background-color: rgba(0, 0, 0, 0.8);
     word-wrap: break-word;
     opacity: 0;
-    position: fixed;
     padding: 10px;
     border-radius: 10px;
     color: #FFFFFF;
     font-size: 10px;
+    
+    content: attr(tooltip);
+    position: fixed;
     z-index: -1;
+    width: auto;
 }
 
 [tooltip]:hover:after {
-  
-    content: attr(eMY);
-    top: attr(eMY) !important;
-    left: attr(eMX) !important;
+    top: var(--MY) !important;
+    left: var(--MX) !important;
+
     opacity: 1;
-    z-index: 10;
+    z-index: 9999;
+    width: 100px;
+    transform: translateX(-50%) translateY(-50%) !important;
 }
 
+.hidden-has-tooltip:hover + .hidden-tooltip{
+    opacity: 1 !important;
+    z-index: 9999 !important;
+    transform: translateX(-50%) translateY(-130%);
+}
+.hidden-tooltip {
+    position: fixed;
+    top: var(--MY);
+    left: var(--MX);
+    color: #FFFFFF;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0);
+    opacity: 0;
+    z-index: -1;
+}
 /* [tooltip]:hover {
 	position: absolute;
-  cursor: pointer;
+    cursor: pointer;
 }
 
 [tooltip]:after {

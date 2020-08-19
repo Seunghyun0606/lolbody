@@ -9,11 +9,13 @@
             <span class="multi fs-11">X{{badge.cnt}}</span>
         </div>
     </div> -->
+    <!--:tooltip="badge.comment" :style="teStyle" -->
     <div class="d-inline-block mr-2" >
-        <div class="ma-1 pa-1 badge d-inline-block" :class="['num'+badge.tier]" :tooltip="badge.comment" :eMX="getMX" :eMY="getMY" @mouseover="mousepoint" >
+        <div class="ma-1 pa-1 badge d-inline-block hidden-has-tooltip" :class="['num'+badge.tier]" @mouseenter="mousepoint" >
             <span class="sharp"># </span>
             <span class="badge-content">{{badge.name}}</span>
         </div>
+        <span class="hidden-tooltip" :style="MXY">{{badge.comment}}</span>
         <span class="multi fs-11">X{{badge.cnt}}</span>
     </div>
 </template>
@@ -42,20 +44,21 @@ export default {
       // tooltip_content(){
       //     return this.badge.description;
       // } 
+        MXY(){
+            return {'--MY': this.getMY +"px", '--MX': this.getMX+"px" }
+        },
         getMX(){
             return parseInt(this.MX);
         },
         getMY(){
-            console.log('scroll ' + this.scrollY)
-            console.log(parseInt(this.MY) - this.scrollY)
             return parseInt(this.MY) - this.scrollY;
         }
   },
   methods:{
-      mousepoint(event){
-          this.MX = event.pageX;
-          this.MY = event.pageY;
-      },
+        mousepoint(event){
+            this.MX = event.pageX;
+            this.MY = event.pageY;
+        },
         onScroll(){
             this.scrollY = window.scrollY;
         }
@@ -65,7 +68,6 @@ export default {
 </script>
 
 <style>
-
 .sharp{
     color: #8C8C8C;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
@@ -92,6 +94,7 @@ export default {
 
 .badge:hover {
     opacity: 0.7;
+    cursor: pointer;
 }
 
 .num0{

@@ -135,7 +135,6 @@ def update_match_data(profile_id, left, right, tier):
             player_data = participant.get('stats')
             # 레이더 차트 그리기 위한 플레이어 데이터
             participant_data = {
-                'visionScorePerMin': player_data.get('visionScore') / duration,
                 'totalMinionsKilledPerMin': player_data.get('totalMinionsKilled') / duration,
                 'deathsRatio': player_data.get('deaths') / team.get(participant.get('teamId')).get('deaths')\
                     if team.get(participant.get('teamId')).get('deaths') != 0 else 0,
@@ -157,13 +156,14 @@ def update_match_data(profile_id, left, right, tier):
                 'damageSelfMitigatedPerMin': player_data.get('damageSelfMitigated') / duration,          # 감소시킨 피해량(방어막?)
                 "damageDealtToTurretsPerMin": player_data.get('damageDealtToTurrets') / duration,         # 타워에 준 피해량
                 'timeCCingOthersPerMin': player_data.get('timeCCingOthers') / duration,              # cc기에 맞은 총 시간
-                'neutralMinionsKilledPerMin': player_data.get('neutralMinionsKilled') / duration,         # 중립몹 킬수
                 'totalTimeCrowdControlDealtPerMin': player_data.get('totalTimeCrowdControlDealt') / duration,   # cc기를 맞춘 총 시간
-                'visionWardsBoughtInGamePerMin': player_data.get('visionWardsBoughtInGame') / duration,      # 핑와 구매 개수
             }
             if queue == 420:
                 badges_420_data = {
+                    'visionScorePerMin': player_data.get('visionScore') / duration,
+                    'neutralMinionsKilledPerMin': player_data.get('neutralMinionsKilled') / duration,         # 중립몹 킬수
                     'neutralMinionsKilledEnemyJunglePerMin': player_data.get('neutralMinionsKilledEnemyJungle') / duration, # 상대 정글몹 킬수
+                    'visionWardsBoughtInGamePerMin': player_data.get('visionWardsBoughtInGame') / duration,      # 핑와 구매 개수
                     'wardsPlacedPerMin': player_data.get('wardsPlaced') / duration,                  # 와드 설치수
                     'wardsKilledPerMin': player_data.get('wardsKilled') / duration,                  # 와드 파괴수
                 }

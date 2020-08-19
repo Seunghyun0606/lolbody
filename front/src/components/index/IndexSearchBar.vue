@@ -14,6 +14,7 @@
           autocomplete="off"
           @focus="onFocusInput"
           @blur="offFocusInput"
+          @keydown="onPressKey"
         >
 
         <!-- <textarea
@@ -57,12 +58,39 @@
         ></v-responsive>
       </template>
     </v-row>
+    <v-row no-gutters v-show='this.autoCompleteIsVisible' >
+      <template v-for="(h, n) in this.autoComplete">
+        <v-col :key="n" class='col-4' @mousedown="onClickHistoryButton(h)">
+          <v-card
+            class="pa-0"
+            outlined
+            tile
+          >
+            <v-btn 
+              text 
+              large 
+              color="primary"
+              >
+                {{ h }}
+              </v-btn>
+          </v-card>
+        </v-col>
+        <v-responsive
+          v-if="(n+1)%3 === 0"
+          :key="`width-${n}`"
+          width="100%"
+        ></v-responsive>
+      </template>
+    </v-row>
   </v-container>
 
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import axios from 'axios'
+
+const SEVER_URL = 'https://lolbody.gq'
 
 export default {
   name: "IndexSearchBar",
@@ -70,6 +98,7 @@ export default {
     return {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2
       focusInput: false,
+      autoComplete: []
     }
   },
   computed: {
@@ -79,6 +108,17 @@ export default {
         return false
       } else {
         if (this.inputSummonerID.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    autoCompleteIsVisible() {
+      if (this.focusInput === false) {
+        return false
+      } else {
+        if (this.inputSummonerID.length !== 0) {
           return true
         } else {
           return false
@@ -96,20 +136,10 @@ export default {
     }
   },
   methods: {
-    onClickHistoryButton(h) {
-      this.$router.push('/Profile/'+h);
-    },
     onClickSearchButton() {
       this.parseInputSummonerID()
     },
 
-    onFocusInput() {
-      this.focusInput = true
-    },
-
-    offFocusInput() {
-      this.focusInput = false
-    },
     parseInputSummonerID() {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로
@@ -202,6 +232,24 @@ export default {
         this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
         // console.log(3)
     },
+
+    onFocusInput() {
+      this.focusInput = true
+    },
+
+    offFocusInput() {
+      this.focusInput = false
+    },
+    
+    onClickHistoryButton(h) {
+      this.$router.push('/Profile/'+h);
+    },
+
+    onPressKey() {
+      axios.get(SEVER_URL + '/api/auto/' + this.inputSummonerID)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err))
+    }
   },
 }
 </script>

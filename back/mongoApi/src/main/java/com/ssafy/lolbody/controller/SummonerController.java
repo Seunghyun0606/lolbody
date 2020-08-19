@@ -77,8 +77,8 @@ public class SummonerController {
 		return new ResponseEntity<>(matchlistDto, HttpStatus.OK);
 	}
 
-	@GetMapping("/auto/{name}")
-	@ApiOperation(value = "사용자의 소환사 이름을 name 변수로 받아 맞는 소환사 이름을 모두 반환합니다.")
+	@GetMapping("/api/auto/{name}")
+	@ApiOperation(value = "name으로 시작하는 소환사 정보를 모두 반환합니다.")
 	public ResponseEntity<List<SummonerDto>> getSummoners(@PathVariable String name) {
 		return new ResponseEntity<>(summonerService.findByNameStartingWith(name), HttpStatus.OK);
 	}

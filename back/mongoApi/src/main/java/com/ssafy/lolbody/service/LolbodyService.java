@@ -93,6 +93,7 @@ public class LolbodyService {
 
 				RadarDto tmp = new RadarDto();
 				tmp.setTimestamp(matchRecord.getTimestamp());
+				tmp.setName(playerRecord.getChamp());
 				tmp.setRadarReference(playerRecord.getRadar());
 				radarList.add(tmp);
 

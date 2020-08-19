@@ -2,6 +2,7 @@ package com.ssafy.lolbody.dto;
 
 public class RadarDto {
 	private long timestamp;
+	private String name;
 	private RadarReferenceDto radarReference;
 
 	public long getTimestamp() {
@@ -10,6 +11,14 @@ public class RadarDto {
 
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public RadarReferenceDto getRadarReference() {
@@ -22,7 +31,7 @@ public class RadarDto {
 
 	@Override
 	public String toString() {
-		return "RadarDto [timestamp=" + timestamp + ", radarReference=" + radarReference + "]";
+		return "RadarDto [timestamp=" + timestamp + ", name=" + name + ", radarReference=" + radarReference + "]";
 	}
 
 }

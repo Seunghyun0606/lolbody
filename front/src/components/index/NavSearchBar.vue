@@ -1,24 +1,79 @@
 <template>
 <div>
   <v-container class="pa-0 mr-10 pr-16">
-    <v-row align="center" class="nav-search-border">
+    <v-row align="center" class="nav-search-border" max-width="238.4px">
       <v-col class="pa-2 pb-5 pl-2">
         <input type="text"
           style="color:white;"
           tabindex="1" 
-          v-model="inputSummonerID"
+          v-on:input="typing"
+          v-bind:value="inputSummonerID"
           @paste="onPaste"
           placeholder="Summoner ID"
           id="paste"
           @keyup.enter="onClickSearchButton"
           autocomplete="off"
+          @focus="onFocusInput"
+          @blur="offFocusInput"
+          @keyup="onPressKey"
         >
 
       </v-col>
       <v-col cols=2 @click="onClickSearchButton" class="nav-serach-btn pa-2 pb-5">
         <v-icon class="icon-place">search</v-icon>
       </v-col>
-
+      <v-row no-gutters v-show='this.historyIsVisible' >
+        <template v-for="(h, n) in this.searchHistory">
+          <v-col :key="n" class='col-12' @mousedown="onClickHistoryButton(h)">
+            <v-card
+              class="pa-0"
+              outlined
+              tile
+              max-width="238.4px"
+            >
+              <v-btn 
+                text 
+                large 
+                color="primary"
+                >
+                  {{ h }}
+                </v-btn>
+            </v-card>
+          </v-col>
+          <v-responsive
+            v-if="(n+1)%1 === 0"
+            :key="`width-${n}`"
+            width="100%"
+            max-width="238.4px"
+          ></v-responsive>
+        </template>
+      </v-row>
+      <v-row no-gutters v-show='this.autoCompleteIsVisible' >
+        <template v-for="(h, n) in this.autoComplete">
+          <v-col :key="n" class='col-12' @mousedown="onClickHistoryButton(h)">
+            <v-card
+              class="pa-0"
+              outlined
+              tile
+              max-width="238.4px"
+            >
+              <v-btn 
+                text 
+                large 
+                color="primary"
+                >
+                  {{ h }}
+                </v-btn>
+            </v-card>
+          </v-col>
+          <v-responsive
+            v-if="(n+1)%1 === 0"
+            :key="`width-${n}`"
+            width="100%"
+            max-width="238.4px"
+          ></v-responsive>
+        </template>
+      </v-row>
     </v-row>
   </v-container>
 
@@ -26,32 +81,61 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+const SEVER_URL = 'https://lolbody.gq'
+
 export default {
   name: "NavSearchBar",
   data() {
     return {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2
-      searchHistory: []
+      focusInput: false,
+      autoComplete: []
     }
   },
-  mounted() {
-    // localStorage에서 가져오기만 함
-    this.$nextTick(function() {
-      if (window.localStorage.getItem('searchHistory') !== null && window.localStorage.getItem('searchHistory') !== '') {
-        // console.log('history 있음')
-        this.searchHistory =  JSON.parse(window.localStorage.getItem('searchHistory'))
-        // console.log(this.searchHistory)
+  computed: {
+    historyIsVisible() {
+      if (this.focusInput === false) {
+        return false
       } else {
-        // console.log('history 없음')
+        if (this.inputSummonerID.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    autoCompleteIsVisible() {
+      if (this.focusInput === false) {
+        return false
+      } else {
+        if (this.inputSummonerID.length !== 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    searchHistory() {
+      let tmp = []
+      if (window.localStorage.getItem('searchHistory') !== null && window.localStorage.getItem('searchHistory') !== '') {
+        tmp = JSON.parse(window.localStorage.getItem('searchHistory'))
+      } else {
         window.localStorage.setItem('searchHistory', '')
       }
-    })
+      return tmp
+    }
   },
   methods: {
+    typing(e) {
+      this.inputSummonerID = e.target.value
+    },
+
     onClickSearchButton() {
       this.parseInputSummonerID()
-      // console.log('axios요청', this.searchSummernerIDs)
     },
+
     parseInputSummonerID() {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로
@@ -133,6 +217,31 @@ export default {
         // console.log(2)
         this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
     },
+
+    onFocusInput() {
+      this.focusInput = true
+    },
+
+    offFocusInput() {
+      this.focusInput = false
+    },
+    
+    onClickHistoryButton(h) {
+      this.$router.push('/Profile/'+h);
+    },
+
+    onPressKey() {
+      if (this.inputSummonerID.length !== 0) {
+        axios.get(SEVER_URL + '/api/auto/' + this.inputSummonerID)
+          .then(res => {
+            let tmp = []
+            res.data.forEach(e => tmp.push(e.name))
+            this.autoComplete = tmp
+            })
+          .catch(err => console.log(err))
+
+      }
+    }
   },
 }
 </script>

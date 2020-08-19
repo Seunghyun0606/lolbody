@@ -157,8 +157,7 @@ export default new Vuex.Store({
                 },
                 tickAmount: 5,
                 min: 0,
-                max: 1,
-                forceNiceScale: true,
+                max: 100,
             },
             series:{
                 name: [],
@@ -180,8 +179,8 @@ export default new Vuex.Store({
     },
     getBadgeSet(state){
         state.badgeSet.sort(function(a, b){
-            if ( a.description < b.description ) return -1; 
-            else if ( a.description == b.description ) return 0; 
+            if ( a.name < b.name ) return -1; 
+            else if ( a.name == b.name ) return 0; 
             else return 1; 
         });
         return state.badgeSet;
@@ -668,7 +667,7 @@ export default new Vuex.Store({
 
             state.linechartdata[0].series.name.unshift(matchData[matchData.myTeam].teammate[matchData.myIndex].champ);
             state.linechartdata[1].series.name.unshift(matchData[matchData.myTeam].teammate[matchData.myIndex].champ);
-            state.linechartdata[1].series.data.unshift({x: matchData.timestamp+'', y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].matchGrade*100)/100});
+            state.linechartdata[1].series.data.unshift({x: matchData.timestamp+'', y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].matchGrade*100)});
             state.linechartdata[0].category.unshift(matchData.timestamp)
             state.linechartdata[1].category.unshift(matchData.timestamp)
         }

@@ -49,8 +49,8 @@
 				</v-card>
 
 				<v-card class="ma-1 mb-2 bg_card scroll" :loading="triger.MatchDataLoading" outlined height="347px" algin="center">
-					<!-- <ProfileBadge v-for="(badge, idx) in badgeMap" :key="idx+'_badge'" :badge="badge"/> -->
-					<ProfileBadge />
+					<ProfileBadge v-for="(badge, idx) in badgeSet" :key="idx+'_badge'" :badge="badge" />
+					<!-- <ProfileBadge /> -->
 				</v-card>
 			</td>
 			<!-- 여기서부터 우측 공간 -->
@@ -206,6 +206,9 @@ export default {
         this.changeKDA();
 	},
 	computed: {
+        badgeSet(){
+            return this.$store.getters.getBadgeSet
+        },
         radarData(){
             let tmp = this.$store.getters.getProfileRadarChart;
             let r = [];
@@ -281,7 +284,6 @@ export default {
             let toggle = [true, true, true];
             let rad = this.radarData;
             for(let idx in this.radarData){
-                console.log(rad)
                 if((isNaN(rad[idx][0]) || rad[idx][0] == 0)&& (isNaN(rad[idx][1]) || rad[idx][0] == 0)&& (isNaN(rad[idx][2]) || rad[idx][0] == 0)){
                     toggle[idx] = false;
                 }
@@ -383,14 +385,15 @@ export default {
 	padding : 0px !important;
 	margin : 0px !important;
 }
+
 .gamehistory{
 	height: 660px;
 }
 .scroll {
-    overflow-x: hidden;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    overflow-x: hidden  !important;
+    overflow-y: scroll  !important;
+    scrollbar-width: none  !important;
+    -ms-overflow-style: none  !important;
 }
 
 /* width */

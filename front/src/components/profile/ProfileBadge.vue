@@ -1,33 +1,71 @@
 <template>
-  <div>
-    <div class="d-inline-block mr-2" v-for="(badge, idx) in badgeSet" :key="idx+'_badge'">
-      <div class="ma-1 pa-1 badge d-inline-block" :class="['num'+badge.tier]" :tooltip="badge.description">
-          <span class="sharp"># </span>
-          <span class="badge-content">{{badge.name}}</span>
-      </div>
-      <span class="multi fs-11">X{{badge.cnt}}</span>
+    <!-- <div>
+        <div class="d-inline-block mr-2" v-for="(badge, idx) in badgeSet" :key="idx+'_badge'">
+            <div class="ma-1 pa-1 badge d-inline-block" :class="['num'+badge.tier]" >
+                <span class="sharp"># </span>
+                <span class="badge-content">{{badge.name}}</span>
+                <span>{{badge.comment}}</span>
+            </div>
+            <span class="multi fs-11">X{{badge.cnt}}</span>
+        </div>
+    </div> -->
+    <div class="d-inline-block mr-2" >
+        <div class="ma-1 pa-1 badge d-inline-block" :class="['num'+badge.tier]" :tooltip="badge.comment" :eMX="getMX" :eMY="getMY" @mouseover="mousepoint" >
+            <span class="sharp"># </span>
+            <span class="badge-content">{{badge.name}}</span>
+        </div>
+        <span class="multi fs-11">X{{badge.cnt}}</span>
     </div>
-  </div>
 </template>
 
 <script>
 export default {
   name: 'Profilebadge',
-  //props: ['badge'],
+  props: ['badge'],
+  data(){
+      return {
+          MX: 0,
+          MY: 0,
+          scrollY : 0
+      }
+  },
+  created() {
+      window.addEventListener("scroll", this.onScroll)
+  },
+  destroyed(){
+      window.removeEventListener("scroll", this.onScroll)
+  },
   computed:{
-      badgeSet(){
-          return this.$store.getters.getBadgeSet
-      },
+    //   badgeSet(){
+    //       return this.$store.getters.getBadgeSet
+    //   },
       // tooltip_content(){
       //     return this.badge.description;
       // } 
+        getMX(){
+            return parseInt(this.MX);
+        },
+        getMY(){
+            console.log('scroll ' + this.scrollY)
+            console.log(parseInt(this.MY) - this.scrollY)
+            return parseInt(this.MY) - this.scrollY;
+        }
+  },
+  methods:{
+      mousepoint(event){
+          this.MX = event.pageX;
+          this.MY = event.pageY;
+      },
+        onScroll(){
+            this.scrollY = window.scrollY;
+        }
   }
-
 }
 
 </script>
 
 <style>
+
 .sharp{
     color: #8C8C8C;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
@@ -52,8 +90,8 @@ export default {
     text-align: center;
 }
 
-.basic-badge:hover {
-  background-color: rgb(155, 221, 247);
+.badge:hover {
+    opacity: 0.7;
 }
 
 .num0{

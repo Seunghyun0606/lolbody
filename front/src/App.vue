@@ -37,10 +37,9 @@ export default {
     return {
     }
   },
-
   computed: {
-    ...mapState(['isIndex',])
-  }
+      ...mapState(['isIndex',])
+  },
 }
 </script>
 
@@ -130,33 +129,74 @@ export default {
 }
 
 [tooltip]:hover {
-	position: relative;
+  display: block;
   cursor: pointer;
-
 }
 
 [tooltip]:after {
-  content: attr(tooltip);
-
-  transition: bottom .3s ease-in-out, opacity .3s ease-in-out;
-	background-color: rgba(0, 0, 0, 0.8);
-  word-wrap: break-word;
-  opacity: 0;
-	left: -9999px;
-
-  position: absolute;
-	bottom: 90%;
-  
-  padding: 10px;
-  border-radius: 10px;
-	color: #FFFFFF;
-	font-size: 10px;
-	z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.8);
+    word-wrap: break-word;
+    opacity: 0;
+    position: fixed;
+    padding: 10px;
+    border-radius: 10px;
+    color: #FFFFFF;
+    font-size: 10px;
+    z-index: -1;
 }
 
 [tooltip]:hover:after {
-  bottom: 110%;
-	left: 0;
-	opacity: 1;
+  
+    content: attr(eMY);
+    top: attr(eMY) !important;
+    left: attr(eMX) !important;
+    opacity: 1;
+    z-index: 10;
 }
+
+/* [tooltip]:hover {
+	position: absolute;
+  cursor: pointer;
+}
+
+[tooltip]:after {
+	-webkit-transition: bottom .3s ease-in-out, opacity .3s ease-in-out;
+	-moz-transition: bottom .3s ease-in-out, opacity .3s ease-in-out;
+	transition: bottom .3s ease-in-out, opacity .3s ease-in-out;
+
+	background-color: rgba(0, 0, 0, 0.8);
+
+  -webkit-box-shadow: 0px 0px 3px 1px rgba(50, 50, 50, 0.4);
+	-moz-box-shadow: 0px 0px 3px 1px rgba(50, 50, 50, 0.4);
+	box-shadow: 0px 0px 3px 1px rgba(50, 50, 50, 0.4);
+	
+  -webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	
+  color: #FFFFFF;
+	font-size: 12px;
+	margin-bottom: 10px;
+	padding: 7px 12px;
+	position: absolute;
+	width: auto;
+	min-width: 50px;
+	max-width: 300px;
+	word-wrap: break-word;
+
+	z-index: 9999;
+
+	opacity: 0;
+	left: -9999px;
+  top: 90%;
+	
+	content: attr(data-tooltip-text);
+}
+
+[tooltip]:hover:after {
+	top: 0%;
+	left: -30px;
+	opacity: 1;
+} */
+
 </style>

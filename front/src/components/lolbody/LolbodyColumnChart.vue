@@ -49,14 +49,14 @@ export default {
           colors: ['transparent']
         },
         xaxis: {
-          categories: ['7/7', '7/8', '7/9', '7/10', '8/1', '8/3', '8/4', '8/10', '8/11'],
+          categories: [],
           labels: {
             showDuplicates: false,
             style: {
                 fontSize: '10px',
             },
             formatter: function(value) {
-              if(value == undefined)
+              if (value == undefined)
                 return null;
               const timestamp =  new Date(parseInt(value));
               const month = new Date(timestamp).getMonth() + 1 + '월 '
@@ -141,8 +141,8 @@ export default {
         categories.push(data.timestamp)
       }
       this.series[0].data = agg.reverse()
-      this.series[1].data = stab.reverse()
-      this.series[2].data = infl.reverse()
+      this.series[1].data = infl.reverse()
+      this.series[2].data = stab.reverse()
       this.chartOptions.xaxis.categories = categories.reverse()
 
     }

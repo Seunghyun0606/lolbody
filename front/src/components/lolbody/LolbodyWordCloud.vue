@@ -2,7 +2,7 @@
 <div style="height: 100%; width: 100%; padding: 50px;">
   <VueWordCloud
     :words="words"
-    :color="([, weight]) => weight > 15 ? 'DeepPink' : weight > 5 ? 'RoyalBlue' : weight > 3 ? 'Red' : 'Black'"
+    :color="([, weight]) => weight > 10 ? 'DeepPink' : weight > 5 ? 'Green' : weight > 3 ? 'RoyalBlue' : weight > 1 ? 'Black' : 'Grey'"
     font-family="Anton"
     :spacing="spacing"
   />
@@ -30,7 +30,7 @@ export default {
   watch: {
     champList: {
       deep: true,
-      immediate: true,
+      // immediate: true,
       handler() {
         this.changeWords(this.champList)
 

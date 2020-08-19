@@ -12,27 +12,17 @@ export default {
   },
   data() {
     return {
-    }
-  },
-  props: {
-    getMyData: Object,
-    getOtherData: Array,
-  },
-  computed: {
-    series() { 
-      return [
-        {
-          name: '동 티어대비',
-          data: []
-        },
-        {
-          name: '나',
-          data: []
-        },
-      ]
-    },
-    chartOptions() {
-      return {
+      // series: [
+      //   {
+      //     name: '동 티어대비',
+      //     data: []
+      //   },
+      //   {
+      //     name: '나',
+      //     data: []
+      //   },
+      // ],
+      chartOptions: {
         chart: {
           type: 'bar',
           toolbar: {
@@ -48,11 +38,11 @@ export default {
           }
         },
         dataLabels: {
-          enabled: true,
-          offsetX: -6,
+          enabled: false,
+          offsetX: 17,
           style: {
-            fontSize: '12px',
-            colors: ['#fff']
+            fontSize: '7px',
+            colors: ['#000']
           }
         },
         stroke: {
@@ -61,10 +51,112 @@ export default {
           colors: ['#fff']
         },
         xaxis: {
-          categories: ['딜량', '회복량', '2003', 2004, 2005, 2006, 2007],
-        },
-      }
+          categories: [
+            'totalDamageDealtToChampionsPerMin',
+            'damageDealtToObjectivesPerMin',
+            'visionScorePerMin',
+            'totalDamageTakenPerMin',
+            'totalMinionsKilledPerMin',
+            'killsRatio',
+            'deathsRatio',
+            'killAssistPerMin',
+            'killsPerMin',
+            'deathsPerMin',
+            'assistsPerMin',
+            'totalHealPerMin',
+            'damageSelfMitigatedPerMin',
+            'damageDealtToTurretsPerMin',
+            'timeCCingOthersPerMin',
+            'neutralMinionsKilledPerMin',
+            'totalTimeCrowdControlDealtPerMin',
+            'visionWardsBoughtInGamePerMin',
+            'neutralMinionsKilledEnemyJunglePerMin',
+            'wardsPlacedPerMin',
+            'wardsKilledPerMin',
+          ],
+        }
+      },
     }
+  },
+  computed: {
+      series: {
+        get() {
+          return [
+              {
+                name: '동 티어대비',
+                data: []
+              },
+              {
+                name: '나',
+                data: []
+              },
+            ]
+        },
+        set(){
+          
+        }
+      },
+      // chartOptions() {
+      //   return {
+      //     chart: {
+      //       type: 'bar',
+      //       toolbar: {
+      //         show: false,
+      //       },
+      //     },
+      //     plotOptions: {
+      //       bar: {
+      //         horizontal: true,
+      //         dataLabels: {
+      //           position: 'top',
+      //         },
+      //       }
+      //     },
+      //     dataLabels: {
+      //       enabled: false,
+      //       offsetX: 17,
+      //       style: {
+      //         fontSize: '7px',
+      //         colors: ['#000']
+      //       }
+      //     },
+      //     stroke: {
+      //       show: true,
+      //       width: 1,
+      //       colors: ['#fff']
+      //     },
+      //     xaxis: {
+      //       categories: [
+      //         'totalDamageDealtToChampionsPerMin',
+      //         'damageDealtToObjectivesPerMin',
+      //         'visionScorePerMin',
+      //         'totalDamageTakenPerMin',
+      //         'totalMinionsKilledPerMin',
+      //         'killsRatio',
+      //         'deathsRatio',
+      //         'killAssistPerMin',
+      //         'killsPerMin',
+      //         'deathsPerMin',
+      //         'assistsPerMin',
+      //         'totalHealPerMin',
+      //         'damageSelfMitigatedPerMin',
+      //         'damageDealtToTurretsPerMin',
+      //         'timeCCingOthersPerMin',
+      //         'neutralMinionsKilledPerMin',
+      //         'totalTimeCrowdControlDealtPerMin',
+      //         'visionWardsBoughtInGamePerMin',
+      //         'neutralMinionsKilledEnemyJunglePerMin',
+      //         'wardsPlacedPerMin',
+      //         'wardsKilledPerMin',
+      //       ],
+      //     },
+      //   }
+      // },
+  },
+  props: {
+    getMyData: Object,
+    getOtherData: [Array, Object]
+    // barSeries: Array,
   },
   watch: {
     getMyData: {
@@ -79,7 +171,6 @@ export default {
       deep: true,
       immediate: true,
       handler() {
-        console.log(this.getOtherData)
 
         this.other(this.getOtherData[0])
       },
@@ -88,7 +179,6 @@ export default {
       deep: true,
       immediate: true,
       handler() {
-        console.log(this.series)
         this.check(this.series)
       }
     }

@@ -4,7 +4,8 @@
   <v-container class='card-border mb-10'>
 
     <!-- 1번줄 -->
-    <v-row class='justify-space-around' :style="{ backgroundImage: 'url(\'' + require('@/assets/cities/background/Ionia.png') + '\')', height: '15em', backgroundSize: '100vw'}">
+    <v-row class='justify-space-around' :style="{ backgroundImage: 'url(\'' + require(`@/assets/cities/background/${background}.png`) + '\')', height: '15em', backgroundSize: '100%' }">
+    <!-- <v-row :class='["justify-space-around", { backgroundImage: true } ]' > -->
       <!-- 랭크 -->
       <v-col cols="5" class="align-self-center card-border">
 
@@ -71,17 +72,35 @@
           <v-col>
             <v-row>
               <v-col cols='4' class="center align-self-center" >
-                <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+                <img class="icon big" :src="require(`@/assets/images/champion/${mostChamp.name}.png`)" alt="temporarily">
 
               </v-col>
               <v-col>
                 <v-row>
+                  <v-col>
+                    <v-row>
+                      <v-col style="color: white">
+                        {{ background }}의 {{ lolbti }} 소환사 {{ getLolbodyData.userCardReference.summonerName }}
 
-                  데마시아의 용맹한 전사
+                      </v-col>
+
+                    </v-row>
+                    <v-row>
+                      <v-col style="color: white">
+                        공격성: {{ Math.round(getLolbodyData.radar.aggressiveness*100) }}점
+                        
+                        영향력: {{ Math.round(getLolbodyData.radar.influence*100) }}점
+                        
+                        안정성: {{ Math.round(getLolbodyData.radar.stability*100) }}점
+                        <br>
+                        당신은 {{ background }}의 {{ lolbti }} {{ lolbtiChamp }} 이시군요. 
+
+                      </v-col>
+
+                    </v-row>
+                  </v-col>
                   <br>
-                  (데마시아 // 용맹한 // fighter 느낌)
-                  <br>
-                  당신은 데마시아의 용맹한 어쩌구저쩌구입니다. ~~ 하면서 text를 짜야함.
+                  
                 </v-row>
               </v-col>
 
@@ -177,9 +196,9 @@
             <div>
               공격성:  ????????????????????
             </div>
-            <d  iv>
+            <div>
               안정성:  ????????????????????
-            </d>
+            </div>
             <div>
               영향력:  ????????????????????
             </div>
@@ -267,6 +286,7 @@ import TwitterButton from '@/components/lolbody/TwitterButton'
 import FacebookButton from '@/components/lolbody/FacebookButton'
 
 import champion from '@/assets/data/champion.json'
+import lolbti from '@/assets/data/lolbti.json'
 
 import axios from 'axios'
 
@@ -284,13 +304,37 @@ export default {
   data() {
     return {
       tooltip_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-      getLolbodyData: {},
-      getOtherData: {},
+      getLolbodyData: {
+        userCardReference: {
+          "timestamp": 1597825234114,
+          "summonerName": "재료페인",
+          "profileIconId": 4086,
+          "summonerLevel": 201,
+          "soloRank": {
+            "tier": "PLATINUM",
+            "rank": "III",
+            "leaguePoints": 32,
+            "wins": 66,
+            "losses": 53,
+            "winRate": 55.46218487394958
+          },
+        }
+      },
+      getOtherData: [],
       mostChamp: "error",
       champTitle: "",
       champInfo: {},
       recommendChamps: [],
       champType: "",
+      background: "",
+      lolbti: "",
+      lolbtiChamp: "",
+      // backgroundImage: {
+      //   backgroundImage: 'url(\'' + require('@/assets/images/test.png') + '\')',
+      //   height: '15em',
+      //   backgroundSize: '100%',
+      //   opacity: '0.7',
+      // }
     }
   },
   computed: {
@@ -300,9 +344,29 @@ export default {
   watch: {
     getLolbodyData: {
       deep: true,
-      immediate: true,
+      // immediate: true,
       handler() {
         this.selectMostChamp()
+        this.selectLolbti()
+        this.selectLolbtiChamp()
+        if ( this.getLolbodyData.userCardReference.soloRank.tier === "DIAMOND" ) {
+          this.DiaData()
+        }
+        else if ( this.getLolbodyData.userCardReference.soloRank.tier === "PLATINUM" ) {
+          this.PlaData()
+        }
+        else if ( this.getLolbodyData.userCardReference.soloRank.tier === "GOLD" ) {
+          this.GoldData()
+        }
+        else if ( this.getLolbodyData.userCardReference.soloRank.tier === "SILVER" ) {
+          this.SilverData()
+        }
+        else if ( this.getLolbodyData.userCardReference.soloRank.tier === "BRONZE" ) {
+          this.BronzeData()
+        }
+        else {
+          this.IronData()
+        }
       }
     },
     mostChamp: {
@@ -313,6 +377,7 @@ export default {
         this.changeChampInfo()
         this.getRecommendChamps(this.mostChamp)
         this.changeChampType()
+        this.changeBackground()
 
       }
     }
@@ -323,32 +388,154 @@ export default {
         .get(`https://lolbody.gq` + `/api/lolbody/${this.$route.params.userName}`)
         .then(res => {
           this.getLolbodyData = res.data
-          this.getOtherData = res.data.stastics.stastics.total.total
         })
         .catch(err => {
           console.log(err)
         })
     },
-    totalData() {
-      this.getOtherData = this.getLolbodyData.stastics.stastics.total.total
-    },
+    // totalData() {
+    //   this.getOtherData = this.getLolbodyData.stastics.stastics.total.total
+    // },
     DiaData() {
-      this.getOtherData = this.getLolbodyData.stastics.stastics.diamond.total
+      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.diamond.total, "다이아"]
     },
     PlaData() {
-      this.getOtherData = this.getLolbodyData.stastics.stastics.platinum.total
+      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.platinum.total, "플레티넘"]
     },
     GoldData() {
-      this.getOtherData = this.getLolbodyData.stastics.stastics.gold.total
+      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.gold.total, "골드"]
     },
     SilverData() {
-      this.getOtherData = this.getLolbodyData.stastics.stastics.silver.total
+      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.silver.total, "실버"]
     },
     BronzeData() {
-      this.getOtherData = this.getLolbodyData.stastics.stastics.bronze.total
+      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.bronze.total, "브론즈"]
     },
     IronData() {
-      this.getOtherData = this.getLolbodyData.stastics.stastics.iron.total
+      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.iron.total, "아이언"]
+    },
+
+    selectLolbtiChamp() {
+      this.lolbtiChamp = champion.data[this.getLolbodyData.champList[0].name].tags[0]
+
+    },
+
+    selectLolbti() {
+      var radar = this.getLolbodyData.radar
+
+      var a = radar.aggressiveness
+      var s = radar.stability
+      var i = radar.influence
+
+      
+      if ( a < 0.34 ) {
+        if ( s < 0.34 ) {
+          if ( i < 0.34 ) {
+            this.lolbti = lolbti[0]
+          }
+          else if ( i < 0.67 ) {
+            this.lolbti = lolbti[1]
+          }
+          else {
+            this.lolbti = lolbti[2]
+          }
+        }
+        else if ( s < 0.67 ) {
+          if ( i < 0.34 ) {
+            this.lolbti = lolbti[3]
+          }
+          else if ( i < 0.67 ) {
+            this.lolbti = lolbti[4]
+          }
+          else {
+            this.lolbti = lolbti[5]
+          }
+        }
+        else {
+          if ( i < 0.34 ) {
+            this.lolbti = lolbti[6]
+          }
+          else if ( i < 0.67 ) {
+            this.lolbti = lolbti[7]
+          }
+          else {
+            this.lolbti = lolbti[8]
+          }
+        }
+      }
+      else if ( a < 0.67 ) {
+        if ( s < 0.34 ) {
+          if ( i < 0.34 ) {
+            this.lolbti = lolbti[9]
+          }
+          else if ( i < 0.67 ) {
+            this.lolbti = lolbti[10]
+          }
+          else {
+            this.lolbti = lolbti[11]
+          }
+        }
+        else if ( s < 0.67 ) {
+          if ( i < 0.34 ) {
+            this.lolbti = lolbti[12]
+          }
+          else if ( i < 0.67 ) {
+            this.lolbti = lolbti[13]
+          }
+          else {
+            this.lolbti = lolbti[14]
+          }
+        }
+        else {
+          if ( i < 0.34 ) {
+            this.lolbti = lolbti[15]
+          }
+          else if ( i < 0.67 ) {
+            this.lolbti = lolbti[16]
+          }
+          else {
+            this.lolbti = lolbti[17]
+          }
+        }
+      }
+      else {
+        if ( s < 0.34 ) {
+          if ( i < 0.34 ) {
+            this.lolbti = lolbti[18]
+          }
+          else if ( i < 0.67 ) {
+            this.lolbti = lolbti[19]
+          }
+          else {
+            this.lolbti = lolbti[20]
+          }
+        }
+        else if ( s < 0.67 ) {
+          if ( i < 0.34 ) {
+            this.lolbti = lolbti[21]
+          }
+          else if ( i < 0.67 ) {
+            this.lolbti = lolbti[22]
+          }
+          else {
+            this.lolbti = lolbti[23]
+          }
+        }
+        else {
+          if ( i < 0.34 ) {
+            this.lolbti = lolbti[24]
+          }
+          else if ( i < 0.67 ) {
+            this.lolbti = lolbti[25]
+          }
+          else {
+            this.lolbti = lolbti[26]
+          }
+        }
+
+      }
+
+
     },
 
     selectMostChamp() {
@@ -367,6 +554,14 @@ export default {
     changeChampType() {
       this.champType = champion.data[this.mostChamp.name].tags[0]
     },
+    changeBackground() {
+      this.background = champion.data[this.mostChamp.name].region
+      
+    },
+
+
+
+
     getRecommendChamps(mostChamp) {
       var champList = []
 
@@ -396,8 +591,8 @@ export default {
           }
         }
       } else {
-        for ( var recommendChamp in champion.data ) {
-          for ( var tempType of champion.data[recommendChamp].tags ) {
+        for ( recommendChamp in champion.data ) {
+          for ( tempType of champion.data[recommendChamp].tags ) {
             if ( tempType === champType ) {
               if ( champDiff-1 >= champion.data[recommendChamp].info.difficulty ) {
                 champList.push(champion.data[recommendChamp])
@@ -423,6 +618,14 @@ export default {
 </script>
 
 <style scoped>
+/* 
+.backgorundd-image {
+  backgroundmage: 'url(\'' + require('@/assets/images/test.png') + '\')';
+  height: '15em';
+  background-size: '100%';
+  opacity: '0.7'
+  
+} */
 
 .bar-rank {
   text-align: right;

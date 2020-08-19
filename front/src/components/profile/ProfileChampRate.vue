@@ -5,12 +5,16 @@
 
         <!-- row에서 for 문 돌려서 3개 챔피언 뽑으시고, 챔피언 고유값이나 for문의 index값으로 hover 이벤트를 구분해주세요 아래 3개는 디자인 예시입니다. -->
         <v-row class="justify-space-around" v-for="(val, idx) in champs" :key="val.name + idx">
+          <v-col cols=1>
+
+          </v-col>
           <v-col cols=3 @mouseenter="mouseOn(idx)" @mouseleave="mouseOn(idx)">
             <img :src="imageload('champion/'+val.name+'.png')" style="position: absolute; z-index: 2" :class="[{ dis: init[idx] }, 'icon', 'small', 'd-flex']" alt="temporarily">
             <ProfileChampWinRateChart :win="val.win" :lose="val.lose"/>
           </v-col>
-          <v-col cols=4 class="mt-2">
+          <v-col cols=6 class="ml-3 mt-2">
             <div>
+              <!-- 11승 20패 -->
               {{ val.win }}승 {{ val.lose }}패
             </div>  
           </v-col>

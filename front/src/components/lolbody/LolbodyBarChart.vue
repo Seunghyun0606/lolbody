@@ -12,17 +12,27 @@ export default {
   },
   data() {
     return {
-      series: [
-      {
-        name: '동 티어대비',
-        data: []
-      },
-      {
-        name: '나',
-        data: []
-      },
-      ],
-      chartOptions: {
+    }
+  },
+  props: {
+    getMyData: Object,
+    getOtherData: Array,
+  },
+  computed: {
+    series() { 
+      return [
+        {
+          name: '동 티어대비',
+          data: []
+        },
+        {
+          name: '나',
+          data: []
+        },
+      ]
+    },
+    chartOptions() {
+      return {
         chart: {
           type: 'bar',
           toolbar: {
@@ -53,12 +63,8 @@ export default {
         xaxis: {
           categories: ['딜량', '회복량', '2003', 2004, 2005, 2006, 2007],
         },
-      },
+      }
     }
-  },
-  props: {
-    getMyData: Object,
-    getOtherData: Object,
   },
   watch: {
     getMyData: {
@@ -73,11 +79,26 @@ export default {
       deep: true,
       immediate: true,
       handler() {
-        this.other(this.getOtherData)
+        console.log(this.getOtherData)
+
+        this.other(this.getOtherData[0])
       },
+    },
+    series: {
+      deep: true,
+      immediate: true,
+      handler() {
+        console.log(this.series)
+        this.check(this.series)
+      }
     }
   },
+
   methods: {
+    check(datas) {
+      this.series = datas
+
+    },
     init(datas) {
       var myList = []
       var columnName = []
@@ -93,8 +114,8 @@ export default {
     other(datas) {
       var compList = []
 
-      for ( var data in datas.mean ) {
-        compList.push(Math.round(datas.mean[data]*100))
+      for ( var data in datas ) {
+        compList.push(Math.round(datas[data]*100))
 
       }
       this.series[0].data = compList

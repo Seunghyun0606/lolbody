@@ -12,6 +12,8 @@
 
 <script>
 import VueWordCloud from 'vuewordcloud';
+import champion from '@/assets/data/champion.json';
+
 
 export default {
   name: 'LolbodyWordCloud',
@@ -37,10 +39,10 @@ export default {
   },
   methods: {
     changeWords(datas) {
-      for ( var data of datas ) {
+      for ( var tempData of datas ) {
         var champWord = []
-        champWord.push(data.name)
-        champWord.push(data.games)
+        champWord.push(champion.data[tempData.name].name)
+        champWord.push(tempData.games)
         this.words.push(champWord)
       }
     }

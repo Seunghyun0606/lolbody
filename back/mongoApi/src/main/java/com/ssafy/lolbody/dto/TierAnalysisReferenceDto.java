@@ -1,58 +1,58 @@
 package com.ssafy.lolbody.dto;
 
 public class TierAnalysisReferenceDto {
-	private StasticsTierDto IRON;
-	private StasticsTierDto BRONZE;
-	private StasticsTierDto SILVER;
-	private StasticsTierDto GOLD;
-	private StasticsTierDto PLATINUM;
-	private StasticsTierDto DIAMOND;
+	private TierAnalysisDto IRON;
+	private TierAnalysisDto BRONZE;
+	private TierAnalysisDto SILVER;
+	private TierAnalysisDto GOLD;
+	private TierAnalysisDto PLATINUM;
+	private TierAnalysisDto DIAMOND;
 
-	public StasticsTierDto getIRON() {
+	public TierAnalysisDto getIRON() {
 		return IRON;
 	}
 
-	public void setIRON(StasticsTierDto iRON) {
+	public void setIRON(TierAnalysisDto iRON) {
 		IRON = iRON;
 	}
 
-	public StasticsTierDto getBRONZE() {
+	public TierAnalysisDto getBRONZE() {
 		return BRONZE;
 	}
 
-	public void setBRONZE(StasticsTierDto bRONZE) {
+	public void setBRONZE(TierAnalysisDto bRONZE) {
 		BRONZE = bRONZE;
 	}
 
-	public StasticsTierDto getSILVER() {
+	public TierAnalysisDto getSILVER() {
 		return SILVER;
 	}
 
-	public void setSILVER(StasticsTierDto sILVER) {
+	public void setSILVER(TierAnalysisDto sILVER) {
 		SILVER = sILVER;
 	}
 
-	public StasticsTierDto getGOLD() {
+	public TierAnalysisDto getGOLD() {
 		return GOLD;
 	}
 
-	public void setGOLD(StasticsTierDto gOLD) {
+	public void setGOLD(TierAnalysisDto gOLD) {
 		GOLD = gOLD;
 	}
 
-	public StasticsTierDto getPLATINUM() {
+	public TierAnalysisDto getPLATINUM() {
 		return PLATINUM;
 	}
 
-	public void setPLATINUM(StasticsTierDto pLATINUM) {
+	public void setPLATINUM(TierAnalysisDto pLATINUM) {
 		PLATINUM = pLATINUM;
 	}
 
-	public StasticsTierDto getDIAMOND() {
+	public TierAnalysisDto getDIAMOND() {
 		return DIAMOND;
 	}
 
-	public void setDIAMOND(StasticsTierDto dIAMOND) {
+	public void setDIAMOND(TierAnalysisDto dIAMOND) {
 		DIAMOND = dIAMOND;
 	}
 
@@ -61,4 +61,5 @@ public class TierAnalysisReferenceDto {
 		return "TierAnalysisReferenceDto [IRON=" + IRON + ", BRONZE=" + BRONZE + ", SILVER=" + SILVER + ", GOLD=" + GOLD
 				+ ", PLATINUM=" + PLATINUM + ", DIAMOND=" + DIAMOND + "]";
 	}
+
 }

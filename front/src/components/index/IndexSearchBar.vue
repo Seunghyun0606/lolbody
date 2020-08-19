@@ -118,7 +118,7 @@ export default {
       if (this.focusInput === false) {
         return false
       } else {
-        if (this.inputSummonerID.length === 0) {
+        if (this.inputSummonerID.length === 0 && this.searchHistory.length !==0) {
           return true
         } else {
           return false

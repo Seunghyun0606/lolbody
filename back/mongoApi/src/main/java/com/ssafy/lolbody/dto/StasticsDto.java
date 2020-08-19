@@ -8,7 +8,7 @@ public class StasticsDto {
 	@Id
 	private int queueId;
 	private StasticsReferenceDto stastics;
-	private StasticsReferenceDto tierAnalysis;
+	private TierAnalysisReferenceDto tierAnalysis;
 
 	public int getQueueId() {
 		return queueId;
@@ -26,11 +26,11 @@ public class StasticsDto {
 		this.stastics = stastics;
 	}
 
-	public StasticsReferenceDto getTierAnalysis() {
+	public TierAnalysisReferenceDto getTierAnalysis() {
 		return tierAnalysis;
 	}
 
-	public void setTierAnalysis(StasticsReferenceDto tierAnalysis) {
+	public void setTierAnalysis(TierAnalysisReferenceDto tierAnalysis) {
 		this.tierAnalysis = tierAnalysis;
 	}
 

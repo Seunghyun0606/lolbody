@@ -14,17 +14,17 @@
           <v-col cols="3">
             <v-row>
               <v-col class="center">
-                <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+                <img class="icon big" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' ? require(`@/assets/images/tier/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
               </v-col>
               <!-- <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily"> -->
             </v-row>
             <!-- 많이가는 라인 -->
             <v-row>
               <v-col :tooltip="tooltip_content" class="center">
-                <img class="icon small" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+                <img class="icon small" :src="require(`@/assets/images/position/${getLolbodyData.lineList[0].name}.png`)" alt="temporarily">
               </v-col>
               <v-col :tooltip="tooltip_content" class="center">
-                <img class="icon small" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+                <img class="icon small" :src="require(`@/assets/images/position/${getLolbodyData.lineList[1].name}.png`)" alt="temporarily">
               </v-col>
               <!-- <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.mainLane}.png`)" alt="mainLane">
               <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.subLane}.png`)" alt="subLane"> -->
@@ -36,21 +36,29 @@
             <v-row>
               <v-col>
                 <v-row>
-                  유저 이름
-                  <!-- {{ multiSearchData.summonerName }} -->
+                  <!-- 유저 이름 -->
+                  {{ getLolbodyData.userCardReference.summonerName  }}
                 </v-row>
                 <v-row>
-                  계급
-                  <!-- {{ userDatas[index].tier }} {{ userDatas[index].rank }} -->
+                  <!-- 계급 -->
+                  {{ getLolbodyData.userCardReference.soloRank.tier }} {{ getLolbodyData.userCardReference.soloRank.rank }}
                 </v-row>
                 <v-row>
-                  승패
-                  <!-- {{ Math.round(((multiSearchData.wins*100)/multiSearchData.totalGame)) }}% ({{ multiSearchData.wins }}승 {{ multiSearchData.losses }}패) -->
+                  <!-- 승패 -->
+                  {{ Math.round(getLolbodyData.userCardReference.soloRank.winRate) }}% ({{ getLolbodyData.userCardReference.soloRank.wins }}승 {{ getLolbodyData.userCardReference.soloRank.losses }}패)
                 </v-row>
               </v-col>
             </v-row>
-            <v-row>
-              이쯤에 배지.
+            <v-row class="mt-2 justify-start mr-8">
+              <v-col cols=2 class="mr-1">
+                <KaKaoButton/>
+              </v-col>
+              <v-col cols=2>
+                <TwitterButton/>
+              </v-col>
+              <v-col cols=2>
+                <FacebookButton/>
+              </v-col>
               <!-- <MultiSearchBadge :index="index"/> -->
             </v-row>
           </v-col>
@@ -92,12 +100,12 @@
           <v-col>
             <!-- 라인 선택해서 볼수있게. -->
             <v-row>
-              <v-col class="border-box center">
-                숙련도 높은 챔피언 1
+              <v-col class="border-box center" @click="selectMostChamp()">
+                Most Champ
               </v-col>
               
-              <v-col class="border-box center">
-                숙련도 높은 챔피언 2
+              <v-col class="border-box center" @click="selectSecondChamp()">
+                Second Champ
               </v-col>
             </v-row>
 
@@ -107,11 +115,20 @@
                 <!-- 선택한 라인에서 높은 숙련도 챔피언 정보 -->
                 <v-row class="justify-space-around">
                   <v-col class="center" :tooltip="tooltip_content" cols="4">
-                    <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+                    <img class="icon big" :src="require(`@/assets/images/champion/${mostChamp.name}.png`)" alt="temporarily">
                   </v-col>
 
                   <v-col cols="7">
-                    이런 챔피언을 주로하시는군요
+                    <v-row>
+                      <v-col>
+                        <b> {{ champTitle }} {{ mostChamp.name }} </b>를(을) 주로 하시는군요. 
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        Difficulty: {{ champInfo.difficulty }}단계
+                      </v-col>
+                    </v-row>
                   </v-col>
                 </v-row>
 
@@ -121,20 +138,14 @@
                   <v-col cols="4">
                     <v-row class="justify-space-around">
                       <!-- 여기서 for문 돌릴 예정 -->
-                      <v-col :tooltip="tooltip_content" class="center">
-                        <img class="icon small" :src="require(`@/assets/images/error.png`)" alt="temporarily">
-                      </v-col>
-                      <v-col :tooltip="tooltip_content" class="center">
-                        <img class="icon small" :src="require(`@/assets/images/error.png`)" alt="temporarily">
-                      </v-col>
-                      <v-col :tooltip="tooltip_content" class="center">
-                        <img class="icon small" :src="require(`@/assets/images/error.png`)" alt="temporarily">
+                      <v-col :tooltip="tooltip_content" class="center" v-for="( recommendChamp, index ) in recommendChamps" :key="index">
+                        <img class="icon small" :src="require(`@/assets/images/champion/${recommendChamp.id}.png`)" alt="temporarily">
                       </v-col>
                     </v-row>
                   </v-col>
 
                   <v-col cols="7">
-                    이런 챔피언을 추천합니다.
+                    {{ champType }} type 을 주로하는 당신, 이런 챔프들은 어떤가요?
                   </v-col>
                 </v-row>
 
@@ -160,15 +171,15 @@
             구획 2개로 나눠서하면될듯
           </div> -->
           <v-col cols="7" style="position: relative;">
-            <LolbodyRadarChart />
+            <LolbodyRadarChart :radarData="getLolbodyData.radar" />
           </v-col>
           <v-col class="align-self-center">
             <div>
               공격성:  ????????????????????
             </div>
-            <div>
+            <d  iv>
               안정성:  ????????????????????
-            </div>
+            </d>
             <div>
               영향력:  ????????????????????
             </div>
@@ -181,11 +192,34 @@
     <!-- 3번줄 -->
     <v-row class='justify-space-around mb-5'>
       <v-col cols="5" class="card-border card-background">
+        <v-row class="justify-space-between">
+          <v-col class="bar-rank" @click="totalData()">
+            전체
+          </v-col>
+          <v-col class="bar-rank" @click="DiaData()">
+            다이아
+          </v-col>
+          <v-col class="bar-rank" @click="PlaData()">
+            플레
+          </v-col>
+          <v-col class="bar-rank" @click="GoldData()">
+            골드
+          </v-col>
+          <v-col class="bar-rank" @click="SilverData()">
+            실버
+          </v-col>
+          <v-col class="bar-rank"  @click="BronzeData()">
+            브론즈
+          </v-col>
+          <v-col class="bar-rank" @click="IronData()">
+            아이언
+          </v-col>
+        </v-row>
         <v-row style="height: 30em;">
           <v-col>
             <!-- 우측 막대 그래프 분석 데이터 산출물 이용. 전체랑 최근 20게임 평균 비교 col 하나 먹이고 row로 3~4개로 나눠서하면될듯 -->
             <!-- 동티어 동일챔프 기준? -->
-            <LolbodyBarChart/>
+            <LolbodyBarChart :getMyData="getLolbodyData.analysis" :getOtherData="getOtherData"/>
           </v-col>
         
         </v-row>
@@ -200,7 +234,7 @@
             레이더 차트의 변화 // 전체 // 현재 // 이전 막대그래프
           </div> -->
           <v-col>
-            <LolbodyColumnChart/>
+            <LolbodyColumnChart :radarData="getLolbodyData.radarList.slice(0, 10)"/>
           </v-col>
         </v-row>
 
@@ -209,7 +243,7 @@
           <!-- <div>
             워드 클라우드 형태로 뱃지 획득? 표현
           </div> -->
-          <LolbodyWordCloud/>
+          <LolbodyWordCloud :champList="getLolbodyData.champList"/>
 
         </v-row>
 
@@ -222,12 +256,19 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+// import { mapState, mapGetters } from 'vuex'
 import LolbodyBarChart from '@/components/lolbody/LolbodyBarChart'
 import LolbodyColumnChart from '@/components/lolbody/LolbodyColumnChart'
 import LolbodyRadarChart from '@/components/lolbody/LolbodyRadarChart'
 import LolbodyWordCloud from '@/components/lolbody/LolbodyWordCloud'
-// import MultiSearchBadge from '@/components/multisearch/MultiSearchBadge'
+
+import KaKaoButton from '@/components/lolbody/KakaoButton'
+import TwitterButton from '@/components/lolbody/TwitterButton'
+import FacebookButton from '@/components/lolbody/FacebookButton'
+
+import champion from '@/assets/data/champion.json'
+
+import axios from 'axios'
 
 export default {
   name: 'Lolbody',
@@ -236,24 +277,162 @@ export default {
     LolbodyColumnChart,
     LolbodyRadarChart,
     LolbodyWordCloud,
-    // MultiSearchBadge,
+    KaKaoButton,
+    TwitterButton,
+    FacebookButton,
   },
   data() {
     return {
-      tooltip_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      tooltip_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      getLolbodyData: {},
+      getOtherData: {},
+      mostChamp: "error",
+      champTitle: "",
+      champInfo: {},
+      recommendChamps: [],
+      champType: "",
     }
   },
   computed: {
-    ...mapState(['profileDatas'])
+    // ...mapState(['lolbodyData']),
+    // ...mapGetters(['getLolbodyData']),
+  },
+  watch: {
+    getLolbodyData: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.selectMostChamp()
+      }
+    },
+    mostChamp: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.changeChampTitle()
+        this.changeChampInfo()
+        this.getRecommendChamps(this.mostChamp)
+        this.changeChampType()
+
+      }
+    }
+  },
+  methods: {
+    fetchLolbodyData() {
+      axios
+        .get(`https://lolbody.gq` + `/api/lolbody/${this.$route.params.userName}`)
+        .then(res => {
+          this.getLolbodyData = res.data
+          this.getOtherData = res.data.stastics.stastics.total.total
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    totalData() {
+      this.getOtherData = this.getLolbodyData.stastics.stastics.total.total
+    },
+    DiaData() {
+      this.getOtherData = this.getLolbodyData.stastics.stastics.diamond.total
+    },
+    PlaData() {
+      this.getOtherData = this.getLolbodyData.stastics.stastics.platinum.total
+    },
+    GoldData() {
+      this.getOtherData = this.getLolbodyData.stastics.stastics.gold.total
+    },
+    SilverData() {
+      this.getOtherData = this.getLolbodyData.stastics.stastics.silver.total
+    },
+    BronzeData() {
+      this.getOtherData = this.getLolbodyData.stastics.stastics.bronze.total
+    },
+    IronData() {
+      this.getOtherData = this.getLolbodyData.stastics.stastics.iron.total
+    },
+
+    selectMostChamp() {
+      this.mostChamp = this.getLolbodyData.champList[0]
+    },
+    selectSecondChamp() {
+      this.mostChamp = this.getLolbodyData.champList[1]
+    },
+
+    changeChampTitle() {
+      this.champTitle = champion.data[this.mostChamp.name].title
+    },
+    changeChampInfo() {
+      this.champInfo = champion.data[this.mostChamp.name].info
+    },
+    changeChampType() {
+      this.champType = champion.data[this.mostChamp.name].tags[0]
+    },
+    getRecommendChamps(mostChamp) {
+      var champList = []
+
+      var winRate = mostChamp.games / mostChamp.wins
+      var champType = champion.data[mostChamp.name].tags[0]
+      var champDiff = champion.data[mostChamp.name].info.difficulty
+
+      // 승률에 따라 같은 타입이면서 어려움이 다른 챔피언을 고른다.
+      if ( winRate > 0.55 ) {
+        for ( var recommendChamp in champion.data ) {
+          for ( var tempType of champion.data[recommendChamp].tags ) {
+            if ( tempType === champType ) {
+              if (  champion.data[recommendChamp].info.difficulty >= champDiff+1 ) {
+                champList.push(champion.data[recommendChamp])
+              }
+            }
+          }
+        }
+      } else if ( 0.5 > winRate ) {
+        for ( recommendChamp in champion.data ) {
+          for ( tempType of champion.data[recommendChamp].tags ) {
+            if ( tempType === champType ) {
+              if ( champDiff+1 > champion.data[recommendChamp].info.difficulty && champion.data[recommendChamp].info.difficulty > champDiff-1 ) {
+                champList.push(champion.data[recommendChamp])
+              }
+            }
+          }
+        }
+      } else {
+        for ( var recommendChamp in champion.data ) {
+          for ( var tempType of champion.data[recommendChamp].tags ) {
+            if ( tempType === champType ) {
+              if ( champDiff-1 >= champion.data[recommendChamp].info.difficulty ) {
+                champList.push(champion.data[recommendChamp])
+              }
+            }
+          }
+        }
+      }
+      this.recommendChamps = champList.slice(0, 3)
+    },
+
+
+
   },
   created() {
     this.$store.commit('toggleNavSearch', false)
-  }
+    this.fetchLolbodyData()
+
+    // this.$store.dispatch('getLolbodyData', this.$route.params.userName)
+  },
 
 }
 </script>
 
 <style scoped>
+
+.bar-rank {
+  text-align: right;
+  font-size: 12px;
+}
+
+.bar-rank:hover {
+  cursor: pointer;
+  background: green;
+}
 
 .card-border {
   border: 1px solid #e6e6e6;
@@ -290,7 +469,7 @@ export default {
 .icon {
   border-radius: 70%;
   height: 5em;
-  border: 0.5px solid white;
+  /* border: 0.5px solid white; */
 }
 
 .big {
@@ -299,6 +478,7 @@ export default {
 
 .small {
   height: 2em;
+  border: 0.5px solid white;
 }
 
 .border-box {

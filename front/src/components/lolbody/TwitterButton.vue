@@ -1,7 +1,7 @@
 <template>
   <a id="twitter-link-btn" @click="onClickTwitterButton">
-    <img
-      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+    <img class="image"
+      :src="require('@/assets/twitter.png')"
     />
   </a>
 </template>
@@ -31,6 +31,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.image {
+  width: 40px;
+}
 
 </style>

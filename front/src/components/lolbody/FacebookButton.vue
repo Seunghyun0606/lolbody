@@ -1,7 +1,7 @@
 <template>
   <a id="facebook-link-btn" @click="onClickFacebookButton">
-    <img
-      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+    <img class="image"
+      :src="require('@/assets/facebook.png')"
     />
   </a>
 </template>
@@ -27,6 +27,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.image {
+  width: 50px;
+  /* height: 50px; */
+}
 
 </style>

@@ -15,15 +15,11 @@ export default {
       series: [
       {
         name: '동 티어대비',
-        data: [44, 55, 41, 64, 22, 43, 21]
+        data: []
       },
       {
-        name: '현재 기준',
-        data: [53, 32, 33, 52, 13, 44, 32]
-      },
-      {
-        name: '이전 기준',
-        data: [23, 42, 12, 44, 88, 34, 32]
+        name: '나',
+        data: []
       },
       ],
       chartOptions: {
@@ -59,6 +55,51 @@ export default {
         },
       },
     }
+  },
+  props: {
+    getMyData: Object,
+    getOtherData: Object,
+  },
+  watch: {
+    getMyData: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.init(this.getMyData)
+      }
+      
+    },
+    getOtherData: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.other(this.getOtherData)
+      },
+    }
+  },
+  methods: {
+    init(datas) {
+      var myList = []
+      var columnName = []
+
+      for ( var data in datas ) {
+        myList.push(Math.round(datas[data]*100))
+        columnName.push(data)
+
+      }
+      this.series[1].data = myList
+      this.chartOptions.xaxis.categories = columnName
+    },
+    other(datas) {
+      var compList = []
+
+      for ( var data in datas.mean ) {
+        compList.push(Math.round(datas.mean[data]*100))
+
+      }
+      this.series[0].data = compList
+    },
+
   },
   
 }

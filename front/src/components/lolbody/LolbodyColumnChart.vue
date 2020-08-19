@@ -6,6 +6,8 @@
 
 <script>
 import ColumnChart from 'vue-apexcharts'
+// import { mapGetters } from 'vuex'
+
 
 export default {
   name: 'LolbodyColumnChart',
@@ -68,7 +70,48 @@ export default {
         
       },
     }
+  },
+  watch: {
+    radarData: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.changeData(this.radarData)
+      }
+
+    }
+  },
+  computed: {
+    // ...mapGetters(['getLolbodyData'])
+  },
+  props: {
+    radarData: Array,
+  },
+  methods: {
+    changeData(datas) {
+      var agg = []
+      var stab = []
+      var infl = []
+
+      for ( var data of datas ) {
+        for ( var value in data.radarReference ) {
+          if ( value === "aggressiveness" ) {
+            agg.push(Math.round(data.radarReference[value]*100))
+          }
+          else if ( value === "stability" ) {
+            stab.push(Math.round(data.radarReference[value]*100))
+          }
+          else {
+            infl.push(Math.round(data.radarReference[value]*100))
+          }
+        }
+      }
+      this.series[0].data = agg
+      this.series[1].data = stab
+      this.series[2].data = infl
+    }
   }
+
 }
 </script>
 

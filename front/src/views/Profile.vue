@@ -27,7 +27,7 @@
 							</div>
 						</v-col>
 
-                        <v-btn class="px-1 fs-9 lolbody-btn" color="#30BA8C" outlined>LoL Body</v-btn>
+                        <v-btn class="px-1 fs-9 lolbody-btn" color="#30BA8C" outlined @click="goLolbody(profileDatas.summonerName)">LoL Body</v-btn>
                         <!--<v-col cols="1">
                             <v-avatar size="45" class="profiletier">
                                 <v-img :src="imageload('tier/'+profileDatas.tier+'.png')" />
@@ -228,6 +228,11 @@ export default {
 		},
 	},
 	methods:{
+		// 롤바디 페이지 넘어가는 로직
+		goLolbody(userName) {
+			this.$router.push('/Lolbody/' + userName)
+		},
+
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
             //this.now = this.profileDatas.rankedRecord;

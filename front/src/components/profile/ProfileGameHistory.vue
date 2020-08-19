@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-flex v-for="(matchData, idx) in matchDatas" :key="idx + '_matchData'">
-            <v-card class="mx-1 mb-2 vertical-align-center overflow-hidden" :class="{ bg_win : matchData[matchData.myTeam].win, bg_fail : !matchData[matchData.myTeam].win, bg_gray : matchData.noGame}" outlined>
+            <v-card class="mx-1 mb-2 vertical-align-center overflow-hidden z-index1" :class="{ bg_win : matchData[matchData.myTeam].win, bg_fail : !matchData[matchData.myTeam].win, bg_gray : matchData.noGame}" outlined>
                 <table height="100px">
                     <tr>
                         <td class="text-center" width="80px">
@@ -120,7 +120,7 @@
                             </table>
                         </td>
 
-                        <td width="161px">
+                        <td width="168px">
                             <div class="fs-0 ml-2">
                                 <div class="summonerNametd"><img :src="imageload('champion/' + matchData.blueTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
                                 <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.blueTeam.teammate[0].name)">{{matchData.blueTeam.teammate[0].name}}</a></div>
@@ -270,29 +270,33 @@ export default {
 
 <style>
 .tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: #272727;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
+    visibility: hidden;
+    width: 120px;
+    background-color: #272727;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
   
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-  top: -5px;
-  left: 105%;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 105%;
 }
 
 .tooltip:hover .tooltiptext {
-  visibility: visible;
+    visibility: visible;
+}
+
+.z-index1{
+    z-index: 1;
 }
 
 .blueplayer0{
@@ -359,6 +363,7 @@ export default {
     height: 100% !important;
     min-width: 10px !important;
     padding : 0 !important;
+    float: right;
 }
 .textover {
     overflow: hidden !important;

@@ -34,15 +34,15 @@ public class MultiSearchController {
 			multiSearch.setUserCard(profileService.getUserCard(name.replaceAll(" ", "")));
 			multiSearch.setMatchResult(profileService.getMatchResult(name.replaceAll(" ", ""), "1"));
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "멀티서치 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

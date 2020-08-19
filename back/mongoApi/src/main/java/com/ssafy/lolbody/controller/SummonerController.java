@@ -38,15 +38,15 @@ public class SummonerController {
 		try {
 			summonerDto = summonerService.findBySubName(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -62,15 +62,15 @@ public class SummonerController {
 			summonerDto = summonerService.findBySubName(name.replaceAll(" ", ""));
 			matchlistDto = matchlistService.findBySummonerId(summonerDto);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

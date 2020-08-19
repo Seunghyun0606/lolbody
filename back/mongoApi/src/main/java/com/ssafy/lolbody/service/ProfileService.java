@@ -155,7 +155,7 @@ public class ProfileService {
 				left = 0;
 			}
 
-			System.out.println("----------match 불러오기----------");
+//			System.out.println("----------match 불러오기----------");
 			boolean isNew = false;
 			try {
 				for (int i = s; i >= 0; i--) {
@@ -169,10 +169,10 @@ public class ProfileService {
 				throw new Exception(e);
 			}
 
-			System.out.println("----------python 코드 실행----------");
+//			System.out.println("----------python 코드 실행----------");
 			if (isNew) {
 				try {
-					System.out.println(summonerDto.getId() + " " + left + " " + right + " " + tier);
+//					System.out.println(summonerDto.getId() + " " + left + " " + right + " " + tier);
 					Api.runAnalysis("SetDataBase.py", summonerDto.getId() + " " + left + " " + right + " " + tier);
 				} catch (Exception e) {
 					for (int i = s; i >= 0; i--) {
@@ -182,7 +182,7 @@ public class ProfileService {
 				}
 			}
 			for (int i = s; i >= 0; i--) {
-				System.out.println("----------match 데이터 정리----------");
+//				System.out.println("----------match 데이터 정리----------");
 				MatchReferenceDto matchReferenceDto = matchReferences.get(i);
 				MatchDto match = matchService.findByGameId(matchReferenceDto.getGameId());
 				List<ParticipantIdentityDto> users = match.getParticipantIdentities();
@@ -318,7 +318,7 @@ public class ProfileService {
 		matchResult.setMatchRecordList(matchRecords);
 		matchResult.setBadgeMap(badgeMap);
 
-		System.out.println("----------return----------");
+//		System.out.println("----------return----------");
 		return matchResult;
 	}
 

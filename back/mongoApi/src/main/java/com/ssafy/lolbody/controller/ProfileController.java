@@ -34,15 +34,15 @@ public class ProfileController {
 		try {
 			userCard = profileService.getUserCard(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -57,15 +57,15 @@ public class ProfileController {
 			profileService.updateProfile(name.replaceAll(" ", ""));
 			userCard = profileService.getUserCard(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 프로필 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -79,15 +79,15 @@ public class ProfileController {
 		try {
 			matchResult = profileService.getMatchResult(name.replaceAll(" ", ""), num);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "유저 매치 전적 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

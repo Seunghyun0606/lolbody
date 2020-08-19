@@ -33,15 +33,15 @@ public class LolbodyController {
 		try {
 			lolbody = lolbodyService.getLolbody(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -56,15 +56,15 @@ public class LolbodyController {
 			lolbodyService.updateLolbody(name);
 			lolbody = lolbodyService.getLolbody(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

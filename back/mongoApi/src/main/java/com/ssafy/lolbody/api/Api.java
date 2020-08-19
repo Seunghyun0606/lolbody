@@ -49,7 +49,7 @@ public class Api {
 				con.addRequestProperty("X-Riot-Token", tokens[idx]);
 				con.setRequestMethod("GET");
 				idx = (idx + 1) % tokens.length;
-				System.out.println(url + " " + con.getResponseMessage());
+//				System.out.println(url + " " + con.getResponseMessage());
 				StringBuilder sb = new StringBuilder();
 				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
@@ -68,7 +68,7 @@ public class Api {
 					continue;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		}
 		if(isOk)
@@ -92,7 +92,7 @@ public class Api {
 			con.setReadTimeout(5000);
 			con.addRequestProperty("X-Riot-Token", token);
 			con.setRequestMethod("GET");
-			System.out.println(url + " " + con.getResponseMessage());
+//			System.out.println(url + " " + con.getResponseMessage());
 			StringBuilder sb = new StringBuilder();
 			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
@@ -107,7 +107,7 @@ public class Api {
 				isTimeout = true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		if(isOk)
 			return result;
@@ -141,7 +141,7 @@ public class Api {
 				result = sb.toString();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return result;
 	}
@@ -168,7 +168,7 @@ public class Api {
 				result = sb.toString();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return result;
 	}
@@ -194,7 +194,7 @@ public class Api {
 				result = sb.toString();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return result;
 	}

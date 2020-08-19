@@ -120,7 +120,7 @@
                             </table>
                         </td>
 
-                        <td width="160px">
+                        <td width="161px">
                             <div class="fs-0 ml-2">
                                 <div class="summonerNametd"><img :src="imageload('champion/' + matchData.blueTeam.teammate[0].champ + '.png')" class="vertical-align-bottom" width="16px"/></div>
                                 <div class="summonerNametd"><a class="fs-12px textover" @click="toProfile(matchData.blueTeam.teammate[0].name)">{{matchData.blueTeam.teammate[0].name}}</a></div>
@@ -156,12 +156,18 @@
                 <v-row v-if="matchData.display" style="background-color: #fff;" width="650px">
                     <v-col cols="6">
                         <barchart :team="matchData.blueTeam.teammate"/>
-                        <img :src="imageload('champion/' + p.champ + '.png')" :class="['player-icon', 'blueplayer'+idx]" v-for="(p, idx) in matchData.blueTeam.teammate" :key="idx + '_player'"/>
+                        <div class="tooltip" :class="['blueplayer'+idx]" v-for="(p, idx) in matchData.blueTeam.teammate" :key="idx + '_blue_player'">
+                            <img :src="imageload('champion/' + p.champ + '.png')" class="player-icon" />
+                            <span class="tooltiptext">{{p.name}}</span>
+                        </div>
                     </v-col>
 
                     <v-col cols="6">
                         <barchart :team="matchData.redTeam.teammate"/>
-                        <img :src="imageload('champion/' + p.champ + '.png')" :class="['player-icon', 'redplayer'+idx]" v-for="(p, idx) in matchData.redTeam.teammate" :key="idx + '_player'"/>
+                        <div class="tooltip" :class="['redplayer'+idx]" v-for="(p, idx) in matchData.redTeam.teammate" :key="idx + '_red_player'">
+                            <img :src="imageload('champion/' + p.champ + '.png')" class="player-icon" />
+                            <span class="tooltiptext">{{p.name}}</span>
+                        </div>
                     </v-col>
                 </v-row>
             </v-card>
@@ -218,11 +224,24 @@ export default {
             let gametime = new Date(time);
             let result = "";
             let diff = now.getTime() - gametime.getTime();
-            if(Math.floor(diff/(1000*3600*24)) > 0){
+            //if(Math.floor(diff/(1000*3600*24)) > 0){
+            //    result = (gametime.getMonth()+1) + "/" + gametime.getDate();
+            //}else{
+            //    if ( Math.floor(diff%(1000*3600*24)/(1000*3600)) <= 1 ) 
+            //        result = Math.floor(diff/(1000*60*24)) + '분 전'
+            //    else
+            //        result = Math.floor(diff%(1000*3600*24)/(1000*3600)) +"시간 전";
+            //}
+            //return result;
+            if(Math.floor(diff/(1000*60*60*24)) > 0){
                 result = (gametime.getMonth()+1) + "/" + gametime.getDate();
             }else{
-                diff = Math.floor(diff%(1000*3600*24)/(1000*3600));
-                result = diff +"시간 전";
+                if(Math.floor(diff/(1000*60)) < 1 ) 
+                    result = '방금전';
+                else if(Math.floor(diff/(1000*60)) < 60)
+                    result = Math.floor(diff/(1000*60)) + '분 전';
+                else
+                    result = Math.floor(diff/(1000*60*60)) +"시간 전";
             }
             return result;
         },
@@ -250,43 +269,79 @@ export default {
 </script>
 
 <style>
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #272727;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 105%;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 .blueplayer0{
+    position: absolute;
     top: 154px;
     left: 12px;
 }
 .blueplayer1{
+    position: absolute;
     top: 184px;
     left: 12px;
 }
 .blueplayer2{
+    position: absolute;
     top: 214px;
     left: 12px;
 }
 .blueplayer3{
+    position: absolute;
     top: 244px;
     left: 12px;
 }
 .blueplayer4{
+    position: absolute;
     top: 274px;
     left: 12px;
 }
 .redplayer0{
+    position: absolute;
     top: 154px;
     left: 348px;
 }
 .redplayer1{
+    position: absolute;
     top: 184px;
     left: 348px;
 }
 .redplayer2{
+    position: absolute;
     top: 214px;
     left: 348px;
 }
 .redplayer3{
+    position: absolute;
     top: 244px;
     left: 348px;
 }
 .redplayer4{
+    position: absolute;
     top: 274px;
     left: 348px;
 }

@@ -4,7 +4,7 @@ public class BadgeDto {
 	private String name;
 	private int tier;
 	private int cnt;
-	private String description;
+	private String comment;
 
 	public String getName() {
 		return name;
@@ -30,12 +30,17 @@ public class BadgeDto {
 		this.cnt = cnt;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	@Override
+	public String toString() {
+		return "BadgeDto [name=" + name + ", tier=" + tier + ", cnt=" + cnt + ", comment=" + comment + "]";
 	}
 
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.lolbody.api.Api;
@@ -38,7 +39,30 @@ public class LolbodyController {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(lolbody, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "소환사 이름으로 롤바디 결과를 갱신합니다.")
+	@PutMapping("/api/lolbody/{name}")
+	public ResponseEntity<LolbodyDto> updateUserCard(@PathVariable String name) {
+		LolbodyDto lolbody = new LolbodyDto();
+		try {
+			lolbodyService.updateLolbody(name);
+			lolbody = lolbodyService.getLolbody(name.replaceAll(" ", ""));
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Api.postHttpsRequest(e, "롤바디 검사 중 오류 발생");

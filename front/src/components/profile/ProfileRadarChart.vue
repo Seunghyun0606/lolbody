@@ -13,13 +13,10 @@ export default {
     components: {
         apexchart
     },
-    props: ['idx'],
+    props: ['radarData'],
     computed: {
-        datas(){
-            return this.$store.getters.getProfileRadarChart[this.idx];
-        },
         check(){
-            if(this.datas.lenght == 0 || this.datas == null || isNaN(this.datas[0]) || isNaN(this.datas[1]) || isNaN(this.datas[2]))
+            if(this.radarData.lenght == 0 || this.radarData == null || isNaN(this.radarData[0]) || isNaN(this.radarData[1]) || isNaN(this.radarData[2]))
                 return false;
             return true;
         },
@@ -42,9 +39,6 @@ export default {
                     min: 0,
                     max: 1,
                 },
-                legend: {
-                    position: 'top',
-                },
                 markers: {
                     size: 3
                 },
@@ -60,7 +54,7 @@ export default {
             };
         },
         series(){
-            return [{ data: this.datas}];
+            return [{ data: this.radarData}];
         }
     }
 }

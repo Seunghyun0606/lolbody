@@ -129,9 +129,6 @@ export default {
     vertical-align: center !important;
 }
 
-
-
-
 [tooltip]:hover {
 	position: relative;
   cursor: pointer;
@@ -162,7 +159,4 @@ export default {
 	left: 0;
 	opacity: 1;
 }
-
-
-
 </style>

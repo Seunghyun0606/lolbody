@@ -11,6 +11,7 @@ public class LolbodyDto {
 	private StasticsDto stastics;
 	private RadarReferenceDto radar;
 	private AnalysisDto analysis;
+	private AnalysisDto source;
 
 	public long getTimestamp() {
 		return timestamp;
@@ -76,11 +77,19 @@ public class LolbodyDto {
 		this.analysis = analysis;
 	}
 
+	public AnalysisDto getSource() {
+		return source;
+	}
+
+	public void setSource(AnalysisDto source) {
+		this.source = source;
+	}
+
 	@Override
 	public String toString() {
 		return "LolbodyDto [timestamp=" + timestamp + ", userCardReference=" + userCardReference + ", radarList="
 				+ radarList + ", champList=" + champList + ", lineList=" + lineList + ", stastics=" + stastics
-				+ ", radar=" + radar + ", analysis=" + analysis + "]";
+				+ ", radar=" + radar + ", analysis=" + analysis + ", source=" + source + "]";
 	}
 
 }

@@ -10,7 +10,8 @@
           @paste="onPaste"
           placeholder="Summoner ID"
           id="paste"
-          @keyup.enter="onClickSearchButton"        
+          @keyup.enter="onClickSearchButton"
+          autocomplete="off"
         >
 
       </v-col>
@@ -30,7 +31,21 @@ export default {
   data() {
     return {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2
+      searchHistory: []
     }
+  },
+  mounted() {
+    // localStorage에서 가져오기만 함
+    this.$nextTick(function() {
+      if (window.localStorage.getItem('searchHistory') !== null && window.localStorage.getItem('searchHistory') !== '') {
+        // console.log('history 있음')
+        this.searchHistory =  JSON.parse(window.localStorage.getItem('searchHistory'))
+        // console.log(this.searchHistory)
+      } else {
+        // console.log('history 없음')
+        window.localStorage.setItem('searchHistory', '')
+      }
+    })
   },
   methods: {
     onClickSearchButton() {

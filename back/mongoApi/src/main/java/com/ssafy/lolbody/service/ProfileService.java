@@ -65,7 +65,7 @@ public class ProfileService {
 		}
 		List<UserCardReferenceDto> userCardList = userCard.getUserCardList();
 		UserCardReferenceDto userCardReference = userCardList.get(userCardList.size() - 1);
-		
+
 		return userCardReference;
 	}
 
@@ -82,7 +82,7 @@ public class ProfileService {
 		} else {
 			userCardList = userCard.getUserCardList();
 		}
-		
+
 		UserCardReferenceDto userCardReference = new UserCardReferenceDto();
 		userCardReference.setTimestamp(System.currentTimeMillis());
 		userCardReference.setSummonerName(summoner.getName());
@@ -157,9 +157,16 @@ public class ProfileService {
 
 			System.out.println("----------match 불러오기----------");
 			boolean isNew = false;
-			for (int i = s; i >= 0; i--) {
-				if (matchService.gameCheck(matchReferences.get(i).getGameId()))
-					isNew = true;
+			try {
+				for (int i = s; i >= 0; i--) {
+					if (matchService.gameCheck(matchReferences.get(i).getGameId()))
+						isNew = true;
+				}
+			} catch (Exception e) {
+				for (int i = s; i >= 0; i--) {
+					matchService.deleteByGameId(matchReferences.get(i).getGameId());
+				}
+				throw new Exception(e);
 			}
 
 			System.out.println("----------python 코드 실행----------");
@@ -253,6 +260,7 @@ public class ProfileService {
 						tmp.setAnalysis(p.getAnalysis());
 						tmp.setRadar(p.getRadar());
 						tmp.setBadges(p.getBadges());
+						tmp.setSource(p.getSource());
 						if (j < 5)
 							blueTeammate.add(tmp);
 						else
@@ -293,13 +301,13 @@ public class ProfileService {
 				}
 				if (badges != null) {
 					for (BadgeDto badge : badges) {
-						String key = badge.getName() + " 상위" + (badge.getTier() + 1) * 10 + "%";
+						String key = badge.getName() + badge.getTier();
 						if (badgeMap.containsKey(key)) {
 							badge.setCnt(badgeMap.get(key).getCnt() + 1);
 						} else {
 							badge.setCnt(1);
 						}
-						badge.setDescription(key);
+						badge.setComment(badge.getComment());
 						badgeMap.put(key, badge);
 					}
 				}

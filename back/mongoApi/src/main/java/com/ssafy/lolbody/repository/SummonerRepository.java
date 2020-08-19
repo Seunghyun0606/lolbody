@@ -9,5 +9,5 @@ import com.ssafy.lolbody.dto.SummonerDto;
 public interface SummonerRepository extends MongoRepository<SummonerDto, String> {
 	public List<SummonerDto> findAll();
 	public SummonerDto findBySubName(String name);
-	public List<SummonerDto> findBySubNameStartingWith(String name);
+	public List<SummonerDto> findTop3BySubNameStartingWith(String name);
 }

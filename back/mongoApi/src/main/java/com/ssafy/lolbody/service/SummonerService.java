@@ -46,7 +46,7 @@ public class SummonerService {
 	}
 	
 	public List<SummonerDto> findByNameStartingWith(String name) {
-		List<SummonerDto> summonerDtos = summonerRepository.findBySubNameStartingWith(name.toLowerCase().replaceAll(" ", ""));
+		List<SummonerDto> summonerDtos = summonerRepository.findTop3BySubNameStartingWith(name.toLowerCase().replaceAll(" ", ""));
 		if(summonerDtos == null) {
 			return new ArrayList<>();
 		}

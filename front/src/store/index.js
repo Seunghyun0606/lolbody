@@ -16,64 +16,7 @@ export default new Vuex.Store({
     multiSearchDatas: [],
     multiUserDatas: [],
     multiSearchRadarData: [],
-    profileLineChartOption: {
-        series: [
-            {
-                name: "KDA",
-                data: [] 
-            },
-            // {
-            //   name: "Lane2",
-            //   data: [3, 4, 5, 6, 5, 6.3, 7.5] 
-            // }
-        ],
-        chartOptions: {
-            chart: {
-                height: 150,
-                type: 'line',
-                zoom: {
-                    enabled: false,
-                },
-                toolbar: {
-                    show: false
-                },
-            },
-            colors: ['#77B6EA', '#545454'],
-            grid: {
-                borderColor: '#e7e7e7'
-            },
-            markers: {
-                size: 5,
-                shape: "circle",
-                radius: 1,
-            },
-            labels: [],
-            xaxis: {
-                labels: {
-                    showDuplicates: false,
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tickAmount: 3,
-                categories: [],
-                type: 'category',
-                title: {
-                    // text: '최근 10게임 KDA'
-                }
-            },
-            yaxis: {
-                title: {
-                    text: 'KDA'
-                },
-                // tickAmount: 5,
-                // min: 0,
-                // max: 10
-            }
-        },
-    },
-
-
+    
     profileRadarChartOption: {
         series: [{
             name: 'Lane1',
@@ -122,7 +65,49 @@ export default new Vuex.Store({
     ],
     ProfileTotalWinRateChart: {'win': 0, 'lose': 0, 'total': 0},
     ProfileEachWinRateChart: {},
-    error: 0
+    error: 0,
+    linechartdata:[
+        {
+            yaxis:{
+                title: {
+                    text: 'KDA'
+                },
+                tickAmount: 5,
+                max: 10,
+                forceNiceScale: true,
+                labels: {
+                    show : true,
+                    formatter: (value) => { 
+                        if(value >= 10 )
+                            return '10+';
+                        else
+                            return value;
+                    },
+                },
+            },
+            series:{
+                name: [],
+                data: []
+            },
+            category:[],
+        },
+        {
+            yaxis:{
+                title: {
+                    text: '총점'
+                },
+                tickAmount: 5,
+                min: 0,
+                max: 1,
+                forceNiceScale: true,
+            },
+            series:{
+                name: [],
+                data: []
+            },
+            category:[],
+        }
+    ],
   },
   getters: {
     // 승현
@@ -435,15 +420,20 @@ export default new Vuex.Store({
             state.ProfileTotalWinRateChart.total++;
         }
     },
-    setProfileLineChartOption(state, matchDatas) {
+    setProfileLinechartdata(state, matchDatas) {
         for ( let matchData of matchDatas ) {
             if(matchData.noGame)
                 continue;
             if(matchData[matchData.myTeam].teammate[matchData.myIndex].kda == 'Infinity' || matchData[matchData.myTeam].teammate[matchData.myIndex].kda >= 10)
-                state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: 10});
+                state.linechartdata[0].series.data.unshift({x: matchData.timestamp+'', y: 10});
             else
-                state.profileLineChartOption.series[0].data.unshift({x: matchData.timestamp +matchData[matchData.myTeam].teammate[matchData.myIndex].champ,y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100});
-            state.profileLineChartOption.chartOptions.xaxis.categories.unshift(matchData.timestamp)
+                state.linechartdata[0].series.data.unshift({x: matchData.timestamp+'', y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100});
+
+            state.linechartdata[0].series.name.unshift(matchData[matchData.myTeam].teammate[matchData.myIndex].champ);
+            state.linechartdata[1].series.name.unshift(matchData[matchData.myTeam].teammate[matchData.myIndex].champ);
+            state.linechartdata[1].series.data.unshift({x: matchData.timestamp+'', y: Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].matchGrade*100)/100});
+            state.linechartdata[0].category.unshift(matchData.timestamp)
+            state.linechartdata[1].category.unshift(matchData.timestamp)
         }
     },
     setError(state, err){
@@ -534,7 +524,7 @@ export default new Vuex.Store({
         .then(res => {
             commit('setError', 0)
             commit('setProfileDatas', res.data)
-            //commit('setProfileLineChartOption', res.data)
+            //commit('setProfileLinechartdata', res.data)
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);
@@ -574,8 +564,10 @@ export default new Vuex.Store({
                 {aggressiveness : [], influence: [], stability: []}
             ];
             state.ProfileTotalWinRateChart = {'win': 0, 'lose': 0, 'total': 0};
-            state.profileLineChartOption.series[0].data = [];
-            state.profileLineChartOption.chartOptions.xaxis.categories = [];
+            state.linechartdata[0].series.data = [];
+            state.linechartdata[0].category = [];
+            state.linechartdata[1].series.data = [];
+            state.linechartdata[1].category = [];
         }
         return axios.get(SERVER_URL + `/api/profile/${userName}/${num}`)
         // return axios.get(`http://localhost:8888/profile/${userName}/${num}`)
@@ -587,13 +579,13 @@ export default new Vuex.Store({
                 commit('setError', 0)
                 commit('setMatchDatas', res.data)
                 commit('setProfileRadarChart', res.data.matchRecordList)
-                commit('setProfileLineChartOption', res.data.matchRecordList)
+                commit('setProfileLinechartdata', res.data.matchRecordList)
                 commit('setProfileTotalWinRateChart', res.data.matchRecordList)
             }else{
                 commit('setError', 0)
                 commit('setMatchDatas', res.data)
                 commit('setProfileRadarChart', res.data.matchRecordList)
-                commit('setProfileLineChartOption', res.data.matchRecordList)
+                commit('setProfileLinechartdata', res.data.matchRecordList)
                 commit('setProfileTotalWinRateChart', res.data.matchRecordList)
             }
         }).catch(function (error) {

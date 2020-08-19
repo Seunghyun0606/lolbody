@@ -45,7 +45,7 @@
 						<li><a :class="{option_action: triger.nomalGameActive}" @click="changeNomarlGame">일반</a></li>
                         <li><a :class="{option_action: triger.howlingAbyssActive}" @click="changeHowlingAbyss">칼바람</a></li>
 					</ul>
-                    <RadarChart :idx="radaridx"/>
+                    <RadarChart :radarData="radarData[radaridx]"/>
 				</v-card>
 
 				<v-card class="ma-1 mb-2 bg_card scroll" :loading="triger.MatchDataLoading" outlined height="347px" algin="center">
@@ -57,11 +57,11 @@
 			<td style="vertical-align: top">
 				<v-card class="text-center ma-1 mb-2 bg_card" outlined>
 					<ul class="options">
-						<li><a v-bind:class="{option_action: triger.LPActive}" @click="changeLP">KDA</a></li>
+						<li><a v-bind:class="{option_action: triger.KDAActive}" @click="changeKDA">KDA</a></li>
 						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
 					</ul>
 					<div class="px-5">
-						<ProfileLineChart/>
+						<ProfileLineChart :series="LineSeries" :category="LineCategory" :yaxis="LineYaxis"/>
 					</div>
 				</v-card>
 
@@ -181,7 +181,7 @@ export default {
         return {
             triger:{
                 totalPointActive: false,
-                LPActive: true,
+                KDAActive: true,
                 nomalGameActive : false,
                 rankGameActive : true,
                 howlingAbyssActive : false,
@@ -193,15 +193,37 @@ export default {
             },
             //now:{},
             radaridx: 0,
-            numOfMatch: 1
+            numOfMatch: 1,
+            LineYaxis: {},
+            LineSeries: [],
+            LineCategory: {}
         }
     },
 	mounted(){
 		const userName = this.$route.params.userName;
 		this.getProfileDatas(userName);
-		this.getMatchDatas(userName, 1);
+        this.getMatchDatas(userName, 1);
+        this.changeKDA();
 	},
 	computed: {
+        radarData(){
+            let tmp = this.$store.getters.getProfileRadarChart;
+            let r = [];
+            for(let idx in this.$store.getters.getProfileRadarChart){
+                let result = [0, 0, 0];
+                if(!isNaN(tmp[idx][0]))
+                    result[0] = tmp[idx][0];
+                if(!isNaN(tmp[idx][1]))
+                    result[1] = tmp[idx][1];
+                if(!isNaN(tmp[idx][2]))
+                    result[2] = tmp[idx][2];
+                r.push(result);
+            }
+            return r;
+        },
+        linechartdata(){
+            return this.$store.state.linechartdata
+        },
         loadAllMatchDatas(){
             return this.$store.state.loadAllMatchDatas
         },
@@ -243,11 +265,7 @@ export default {
 	methods:{
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
-            //this.now = this.profileDatas.rankedRecord;
-            if(this.profileDatas == '')
-                return;
-			// this.getMatchDatas(1);
-            //this.getRadarChartDatas(userName);
+            
 			this.triger.isLoading = false;
 		},
 		async getMatchDatas(userName, n){
@@ -255,10 +273,26 @@ export default {
             await this.$store.dispatch('getMatchDatas', {
                 'userName': userName, 
                 num : n
-			});
+            });
+            
 			this.triger.moreLoading = false;
-			this.triger.MatchDataLoading = false;
-            //this.$store.commit('setProfileLineChartOption', this.matchDatas);
+            this.triger.MatchDataLoading = false;
+
+            let toggle = [true, true, true];
+            let rad = this.radarData;
+            for(let idx in this.radarData){
+                console.log(rad)
+                if((isNaN(rad[idx][0]) || rad[idx][0] == 0)&& (isNaN(rad[idx][1]) || rad[idx][0] == 0)&& (isNaN(rad[idx][2]) || rad[idx][0] == 0)){
+                    toggle[idx] = false;
+                }
+            }
+            if(toggle[0])
+                this.changeRankGame()
+            else if(toggle[1])
+                this.changeNomarlGame()
+            else if(toggle[2])
+                this.changeHowlingAbyss()
+            //this.$store.commit('setProfileLinechartdata', this.matchDatas);
 		},
 		
 		// radar Chart data에 들어갈 데이터 여기서 vuex에 넣어주고 컴포넌트에서 부를 예정
@@ -270,44 +304,58 @@ export default {
             await this.$store.dispatch('renewalUserData', userName);
             this.getMatchDatas(userName, 1);
 		},
-
-		getRankData(){
-			//LineChart에 데이터    전달
-		},
-		getTotalPointData(){
-			//LineChart에 데이터    전달
-		},
-		changeNomarlGame(){
-			this.triger.nomalGameActive = true;
-            this.triger.rankGameActive = false;
-            this.triger.howlingAbyssActive = false;
-			//this.nowProfileDatas = this.profileDatas.blindRecord;
-			//this.nowProfileDatas.src = 'unranked';
-            //this.nowProfileDatas.rank = 'unranked';
-            this.radaridx = 1;
-		},
 		changeRankGame(){
-			this.triger.nomalGameActive = false;
-            this.triger.rankGameActive = true;
-            this.triger.howlingAbyssActive = false;
-			//this.nowProfileDatas = this.profileDatas.rankedRecord;
-			//this.nowProfileDatas.src = this.profileDatas.soloRank.tier;
-            //this.nowProfileDatas.rank = this.profileDatas.rank;
-            this.radaridx = 0;
+            let rad = this.radarData;
+            if((isNaN(rad[0][0]) || rad[0][0] == 0)&& (isNaN(rad[0][1]) || rad[0][0] == 0)&& (isNaN(rad[0][2]) || rad[0][0] == 0)){
+                alert("최근 " + this.matchDatas.length + "개의 게임 중 랭크 게임 전적이 없습니다.")
+            }else{
+                this.triger.nomalGameActive = false;
+                this.triger.rankGameActive = true;
+                this.triger.howlingAbyssActive = false;
+                this.radaridx = 0;
+            }
         },
+		changeNomarlGame(){
+            let rad = this.radarData;
+            if((isNaN(rad[1][0]) || rad[1][0] == 0)&& (isNaN(rad[1][1]) || rad[1][0] == 0)&& (isNaN(rad[1][2]) || rad[1][0] == 0)){
+                alert("최근 " + this.matchDatas.length + "개의 게임 중 일반 게임 전적이 없습니다.")
+            }else{
+                this.triger.nomalGameActive = true;
+                this.triger.rankGameActive = false;
+                this.triger.howlingAbyssActive = false;
+                this.radaridx = 1;
+            }
+		},
         changeHowlingAbyss(){
-            this.triger.nomalGameActive = false;
-            this.triger.rankGameActive = false;
-            this.triger.howlingAbyssActive = true;
-            this.radaridx = 2;
+            let rad = this.radarData;
+            if((isNaN(rad[2][0]) || rad[2][0] == 0)&& (isNaN(rad[2][1]) || rad[2][0] == 0)&& (isNaN(rad[2][2]) || rad[2][0] == 0)){
+                alert("최근 " + this.matchDatas.length + "개의 게임 중 칼바람 나락 전적이 없습니다.")
+            }else{
+                this.triger.nomalGameActive = false;
+                this.triger.rankGameActive = false;
+                this.triger.howlingAbyssActive = true;
+                this.radaridx = 2;
+            }
         },
-		changeLP(){
-			this.triger.LPActive = true;
-			this.triger.totalPointActive = false;
+		changeKDA(){
+			this.triger.KDAActive = true;
+            this.triger.totalPointActive = false;
+            this.LineYaxis = this.linechartdata[0].yaxis;
+            this.LineSeries = [{
+                name: this.linechartdata[0].series.name,
+                data: this.linechartdata[0].series.data
+            }];
+            this.LineCategory = this.linechartdata[0].category;
 		},
 		changeTotalPointDate(){
-			this.triger.LPActive = false;
-			this.triger.totalPointActive = true;
+			this.triger.KDAActive = false;
+            this.triger.totalPointActive = true;
+            this.LineYaxis = this.linechartdata[1].yaxis;
+            this.LineSeries = [{
+                name: this.linechartdata[1].series.name,
+                data: this.linechartdata[1].series.data
+            }];
+            this.LineCategory = this.linechartdata[1].category;
         },
         imageload(URL){
             try{

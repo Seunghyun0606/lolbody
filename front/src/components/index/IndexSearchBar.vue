@@ -34,18 +34,24 @@
       </v-col>
     </v-row>
     <v-row no-gutters v-show='this.historyIsVisible' >
-      <template v-for="n in this.searchHistory.length">
-        <v-col :key="n" class='col-4'>
+      <template v-for="(h, n) in this.searchHistory">
+        <v-col :key="n" class='col-4' @mousedown="onClickHistoryButton(h)">
           <v-card
-            class="pa-2"
+            class="pa-0"
             outlined
             tile
           >
-            {{ n }}
+            <v-btn 
+              text 
+              large 
+              color="primary"
+              >
+                {{ h }}
+              </v-btn>
           </v-card>
         </v-col>
         <v-responsive
-          v-if="n%3 === 0"
+          v-if="(n+1)%3 === 0"
           :key="`width-${n}`"
           width="100%"
         ></v-responsive>
@@ -56,7 +62,6 @@
 </template>
 
 <script>
-
 import { mapState } from 'vuex'
 
 export default {
@@ -64,37 +69,46 @@ export default {
   data() {
     return {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2
-      searchHistory: [],
-      historyIsVisible: false,
+      focusInput: false,
     }
   },
   computed: {
-    ...mapState(['searchSummernerIDs'])
-  },
-  mounted() {
-    // localStorage에서 가져오기만 함
-    this.$nextTick(function() {
-      if (window.localStorage.getItem('searchHistory') !== null && window.localStorage.getItem('searchHistory') !== '') {
-        // console.log('history 있음')
-        this.searchHistory = JSON.parse(window.localStorage.getItem('searchHistory'))
-        // console.log(this.searchHistory)
+    ...mapState(['searchSummernerIDs']),
+    historyIsVisible() {
+      if (this.focusInput === false) {
+        return false
       } else {
-        // console.log('history 없음')
+        if (this.inputSummonerID.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    searchHistory() {
+      let tmp = []
+      if (window.localStorage.getItem('searchHistory') !== null && window.localStorage.getItem('searchHistory') !== '') {
+        tmp = JSON.parse(window.localStorage.getItem('searchHistory'))
+      } else {
         window.localStorage.setItem('searchHistory', '')
       }
-    })
+      return tmp
+    }
   },
   methods: {
+    onClickHistoryButton(h) {
+      this.$router.push('/Profile/'+h);
+    },
     onClickSearchButton() {
       this.parseInputSummonerID()
     },
 
     onFocusInput() {
-      this.historyIsVisible = true
+      this.focusInput = true
     },
 
     offFocusInput() {
-      this.historyIsVisible = false
+      this.focusInput = false
     },
     parseInputSummonerID() {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
@@ -243,6 +257,9 @@ input:focus {
   outline:none;
 }
 
+.v-btn {
+  text-transform:none !important;
+}
 
 
 </style>

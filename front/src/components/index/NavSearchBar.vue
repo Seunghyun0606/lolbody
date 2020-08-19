@@ -22,7 +22,7 @@
       <v-col cols=2 @click="onClickSearchButton" class="nav-serach-btn pa-2 pb-5">
         <v-icon class="icon-place">search</v-icon>
       </v-col>
-      <v-row no-gutters v-show='this.historyIsVisible' >
+      <!-- <v-row no-gutters v-show='this.historyIsVisible' >
         <template v-for="(h, n) in this.searchHistory">
           <v-col :key="n" class='col-12' @mousedown="onClickHistoryButton(h)">
             <v-card
@@ -73,7 +73,7 @@
             max-width="238.4px"
           ></v-responsive>
         </template>
-      </v-row>
+      </v-row> -->
     </v-row>
   </v-container>
 

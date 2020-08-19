@@ -2,7 +2,7 @@
 
   <v-container class="multi-search-container">
     <v-row class="multi-search-row">
-      <v-col style="padding: 6px;">
+      <v-col style="padding: 3px 0px 0px 3px;">
         <input type="text"
           tabindex="1" 
           class="multi-search-col2"
@@ -35,54 +35,64 @@
         <v-icon class="icon-place">search</v-icon>
       </v-col>
     </v-row>
-    <v-row no-gutters v-show='this.historyIsVisible' >
-      <template v-for="(h, n) in this.searchHistory">
-        <v-col :key="n" class='col-4' @mousedown="onClickHistoryButton(h)">
-          <v-card
-            class="pa-0"
-            outlined
-            tile
-          >
-            <v-btn 
-              text 
-              large 
-              color="primary"
-              >
-                {{ h }}
-              </v-btn>
-          </v-card>
-        </v-col>
-        <v-responsive
-          v-if="(n+1)%3 === 0"
-          :key="`width-${n}`"
-          width="100%"
-        ></v-responsive>
-      </template>
-    </v-row>
-    <v-row no-gutters v-show='this.autoCompleteIsVisible' >
-      <template v-for="(h, n) in this.autoComplete">
-        <v-col :key="n" class='col-4' @mousedown="onClickHistoryButton(h)">
-          <v-card
-            class="pa-0"
-            outlined
-            tile
-          >
-            <v-btn 
-              text 
-              large 
-              color="primary"
-              >
-                {{ h }}
-              </v-btn>
-          </v-card>
-        </v-col>
-        <v-responsive
-          v-if="(n+1)%3 === 0"
-          :key="`width-${n}`"
-          width="100%"
-        ></v-responsive>
-      </template>
-    </v-row>
+
+    <v-card min-height="94px" v-show='this.historyIsVisible' flat class="history-place">
+      <v-row no-gutters class="history-visible-place">
+        <template v-for="(h, n) in this.searchHistory">
+          <v-col :key="n" class='col-4' @mousedown="onClickHistoryButton(h)">
+            <v-card
+              class="pa-0"
+              outlined
+              tile
+            >
+              <v-btn 
+                text 
+                large 
+                color="primary"
+                >
+                  {{ h }}
+                </v-btn>
+            </v-card>
+          </v-col>
+          <v-responsive
+            v-if="(n+1)%3 === 0"
+            :key="`width-${n}`"
+            width="100%"
+          ></v-responsive>
+        </template>
+      </v-row>
+    </v-card>
+    <v-card min-height="94px" v-show='this.autoCompleteIsVisible' flat class="history-place">
+      <v-row no-gutters class="history-visible-place">
+        <template v-for="(h, n) in this.autoComplete">
+          <v-col :key="n" class='col-4' @mousedown="onClickHistoryButton(h)">
+            <v-card
+              class="pa-0"
+              outlined
+              tile
+            >
+              <v-btn 
+                text 
+                large 
+                color="primary"
+                >
+                  {{ h }}
+                </v-btn>
+            </v-card>
+          </v-col>
+          <v-responsive
+            v-if="(n+1)%3 === 0"
+            :key="`width-${n}`"
+            width="100%"
+          ></v-responsive>
+        </template>
+      </v-row>
+    </v-card>
+    <v-card min-height="94px" v-show='this.commentIsVisible' flat class="history-place history-place-comment">
+      <div class="index-explanation">
+        <small>소환사를 처음 검색하는 경우 약간의 시간이 소요될 수 있습니다.</small>
+      </div>
+    </v-card>
   </v-container>
 
 </template>
@@ -119,7 +129,7 @@ export default {
       if (this.focusInput === false) {
         return false
       } else {
-        if (this.inputSummonerID.length !== 0) {
+        if (this.inputSummonerID.length !== 0 && this.autoComplete.length !== 0) {
           return true
         } else {
           return false
@@ -134,6 +144,13 @@ export default {
         window.localStorage.setItem('searchHistory', '')
       }
       return tmp
+    },
+    commentIsVisible() {
+      if (this.historyIsVisible || this.autoCompleteIsVisible) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   methods: {
@@ -270,7 +287,7 @@ export default {
 
 
 .multi-search-container {
-  border: 2px solid #33A39E;
+  /* border: 2px solid #33A39E; */
   /* margin-bottom: 25px; */
   padding: 0px;
   width: 690px;
@@ -279,7 +296,7 @@ export default {
 
 .multi-search-row {
   height: 45px;
-
+  border: 2px solid #33A39E;
   margin: 0;
 }
 
@@ -321,5 +338,23 @@ input:focus {
   text-transform:none !important;
 }
 
+.history-place {
+  background-color: #fafafa;
+  border-radius: 0 !important;
+}
 
+.history-visible-place{
+  background-color: #FFFFFF;
+  border: 2px solid #33A39E;
+  border-top: 0 !important;
+}
+
+.history-place-comment{
+  border: 2px solid #fafafa
+}
+
+.index-explanation{
+  color: gray;
+  /* text-align: right; */
+}
 </style>

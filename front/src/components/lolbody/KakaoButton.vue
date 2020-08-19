@@ -1,7 +1,7 @@
 <template>
   <a id="kakao-link-btn" @click="onClickKakaoButton">
-    <img
-      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+    <img class="image"
+      :src="require('@/assets/kakao.png')"
     />
   </a>
 </template>
@@ -61,6 +61,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.image {
+  width: 36px;
+  padding-top: 1px;
+  /* margin-right: 12px; */
+  /* height: 50px; */
+}
 
 </style>

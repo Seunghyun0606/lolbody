@@ -6,6 +6,7 @@
 
 <script>
 import apexchart from 'vue-apexcharts'
+// import { mapGetters } from 'vuex'
 
 export default {
   name: 'LolbodyRadarChart',
@@ -38,18 +39,36 @@ export default {
         }
       },
       series: [{
-        name: '초반',
+        name: 'Match Grade',
         data: [10, 60, 90]
-      },
-      {
-        name: '후반',
-        data: [50, 40, 60]
-      }]
+      },]
     }
   },
+  watch: {
+    radarData: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.changeSeries(this.radarData)
+      }
+
+    },
+  },
+  props: {
+    radarData: Object
+  },
   methods: {
+    changeSeries(datas) {
+      var changeSeriesData = []
+      for ( var value in datas ) {
+        changeSeriesData.push(Math.round(datas[value]*100))
+      }
+      this.series[0].data = changeSeriesData
+    }
+
   },
   computed: {
+    // ...mapGetters(['getLolbodyData'])
   },
 }
 </script>

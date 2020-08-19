@@ -6,6 +6,8 @@
 
 <script>
 import ColumnChart from 'vue-apexcharts'
+// import { mapGetters } from 'vuex'
+
 
 export default {
   name: 'LolbodyColumnChart',
@@ -47,8 +49,23 @@ export default {
           colors: ['transparent']
         },
         xaxis: {
-          categories: ['7/7', '7/8', '7/9', '7/10', '8/1', '8/3', '8/4', '8/10', '8/11'],
+          categories: [],
+          labels: {
+            showDuplicates: false,
+            style: {
+                fontSize: '10px',
+            },
+            formatter: function(value) {
+              if (value == undefined)
+                return null;
+              const timestamp =  new Date(parseInt(value));
+              const month = new Date(timestamp).getMonth() + 1 + '월 '
+              const day = new Date(timestamp).getDate() + '일 '
+              return month + day // + hour
+            }
+          },
         },
+
         // yaxis: {
         //   title: {
         //     text: '$ (thousands)'
@@ -58,6 +75,16 @@ export default {
           opacity: 1
         },
         tooltip: {
+          x: {
+            formatter: (value, {w}) => {
+              // console.log(w)
+              // console.log(value)  
+              
+              // return '<img src="'+this.imageload('champion/Orianna.png')+'" class="v-avatar" width="40px" >'
+              // // return w
+              return '<img src="'+this.imageload('champion/' + w.globals.seriesNames[0][value-1]+'.png')+'" class="v-avatar" width="40px" >'
+            }
+          },
           y: {
             formatter: function (val) {
               return val + " 점"
@@ -68,7 +95,59 @@ export default {
         
       },
     }
+  },
+  watch: {
+    radarData: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.changeData(this.radarData)
+      }
+
+    }
+  },
+  computed: {
+    // ...mapGetters(['getLolbodyData'])
+  },
+  props: {
+    radarData: Array,
+  },
+  methods: {
+    imageload(URL){
+      try{
+          return require('@/assets/images/'+ URL);
+      }catch{
+          return require('@/assets/images/error.png');
+      }
+    },
+    changeData(datas) {
+      var agg = []
+      var stab = []
+      var infl = []
+      var categories = []
+
+      for ( var data of datas ) {
+        for ( var value in data.radarReference ) {
+          if ( value === "aggressiveness" ) {
+            agg.push(Math.round(data.radarReference[value]*100))
+          }
+          else if ( value === "stability" ) {
+            stab.push(Math.round(data.radarReference[value]*100))
+          }
+          else {
+            infl.push(Math.round(data.radarReference[value]*100))
+          }
+        }
+        categories.push(data.timestamp)
+      }
+      this.series[0].data = agg.reverse()
+      this.series[1].data = infl.reverse()
+      this.series[2].data = stab.reverse()
+      this.chartOptions.xaxis.categories = categories.reverse()
+
+    }
   }
+
 }
 </script>
 

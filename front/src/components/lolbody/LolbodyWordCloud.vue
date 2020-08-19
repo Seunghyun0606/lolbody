@@ -2,7 +2,7 @@
 <div style="height: 100%; width: 100%; padding: 50px;">
   <VueWordCloud
     :words="words"
-    :color="([, weight]) => weight > 15 ? 'DeepPink' : weight > 10 ? 'RoyalBlue' : weight > 5 ? 'Red' : 'Black'"
+    :color="([, weight]) => weight > 10 ? 'DeepPink' : weight > 5 ? 'Green' : weight > 3 ? 'RoyalBlue' : weight > 1 ? 'Black' : 'Grey'"
     font-family="Anton"
     :spacing="spacing"
   />
@@ -12,6 +12,8 @@
 
 <script>
 import VueWordCloud from 'vuewordcloud';
+import champion from '@/assets/data/champion.json';
+
 
 export default {
   name: 'LolbodyWordCloud',
@@ -22,17 +24,34 @@ export default {
     return {
       spacing: 0.5,
       words: [
-        ['아리', 19],
-        ['야스오', 4],
-        ['미스포츈', 10],
-        ['아펠리오스', 5],
-        ['요네',11],
-        ['알리스타', 16],
-        ['칼리스타', 13],
-        ['아칼리', 9],
       ]
     }
-  }
+  },
+  watch: {
+    champList: {
+      deep: true,
+      // immediate: true,
+      handler() {
+        this.changeWords(this.champList)
+
+      }
+    }
+  },
+  methods: {
+    changeWords(datas) {
+      for ( var tempData of datas ) {
+        var champWord = []
+        champWord.push(champion.data[tempData.name].name)
+        champWord.push(tempData.games)
+        this.words.push(champWord)
+      }
+    }
+
+  },
+
+  props: {
+    champList: Array
+  },
 
 
 }

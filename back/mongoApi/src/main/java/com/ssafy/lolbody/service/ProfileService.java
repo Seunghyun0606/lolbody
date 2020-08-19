@@ -30,6 +30,7 @@ import com.ssafy.lolbody.preset.ChampkeyRepository;
 import com.ssafy.lolbody.preset.PerkRepository;
 import com.ssafy.lolbody.preset.PerkStyleRepository;
 import com.ssafy.lolbody.repository.MatchRecordRepository;
+import com.ssafy.lolbody.repository.MatchRepository;
 import com.ssafy.lolbody.repository.UserCardRepository;
 import com.ssafy.lolbody.preset.SpellRepository;
 
@@ -51,6 +52,8 @@ public class ProfileService {
 	private PerkRepository perkRepository;
 	@Autowired
 	private PerkStyleRepository perkStyleRepository;
+	@Autowired
+	private MatchRepository matchRepository;
 	@Autowired
 	private MatchRecordRepository matchRecordRepository;
 	@Autowired
@@ -320,6 +323,20 @@ public class ProfileService {
 
 //		System.out.println("----------return----------");
 		return matchResult;
+	}
+
+	public void deleteMatchInfo(String name) throws Exception {
+		SummonerDto summonerDto = summonerService.findOnly(name);
+		MatchlistDto matchlistDto = matchlistService.findOnly(summonerDto);
+		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
+		matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
+				.filter(o -> o.getQueue() != 2000 && o.getQueue() != 2010 && o.getQueue() != 2020)
+				.collect(Collectors.toList());
+		for(MatchReferenceDto matchReference: matchReferences) {
+			System.out.println(matchReference.getGameId());
+			matchRepository.deleteById(matchReference.getGameId());
+			matchRecordRepository.deleteById(matchReference.getGameId());
+		}
 	}
 
 }

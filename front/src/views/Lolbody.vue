@@ -50,6 +50,11 @@
                     {{ getLolbodyData.userCardReference.summonerName  }}
 
                   </v-col>
+                  <!-- 뒤로가기 -->
+                  <!-- 갱신버튼 -->
+                  <v-col cols="2 " class="renewal-lolbody" @click="backBtn">
+                    뒤로가기
+                  </v-col>
                   <!-- 갱신버튼 -->
                   <v-col cols="2 " class="renewal-lolbody" @click="renewalLolbody">
                     갱신
@@ -200,6 +205,16 @@
 
       </v-col>
 
+
+
+    <!-- *********************************** 보실 부분* ************************************************ -->
+    <!-- 레이더 차트 부분 -->
+    <!-- 여기서 getLolBodyData.radar 으로 받아온 값을 바로 넣습니다.  -->
+    <!-- 바로 반영이 안되는 것이 문제입니다. 그리고 크기가 가끔 어긋나는 것이 문제입니다. -->
+
+
+
+
       <v-col cols="6" class="card-border card-background">
 
         <!-- 레이더 차트 구역 -->
@@ -212,21 +227,52 @@
           <v-col cols="7" style="position: relative;">
             <LolbodyRadarChart :radarData="getLolbodyData.radar" />
           </v-col>
-          <v-col class="align-self-center">
-            <div>
-              공격성:  ????????????????????
+
+    <!-- *********************************** 여기 까지* ************************************************ -->
+
+
+
+
+
+
+          <v-col class="align-self-center mr-5">
+            <div class='multi-explain' :data-tooltip-text="tooltip.agg">
+              공격성이란?
+              <!-- <span style="font-size: 10px;">
+                킬, 데미지, 전투 참여 횟수 등 게임을 공격적으로 플레이하는 능력을 의미합니다.
+              </span> -->
             </div>
-            <div>
-              안정성:  ????????????????????
+            <div class="my-5 multi-explain" :data-tooltip-text="tooltip.sta">
+              안정성이란?
+              <!-- <span style="font-size: 10px;">
+                데스나 시에스 등 게임을 안정적으로 풀어나가는 능력을 의미합니다.
+                
+              </span> -->
             </div>
-            <div>
-              영향력:  ????????????????????
+            <div class='multi-explain' :data-tooltip-text="tooltip.inf">
+              영향력이란?
+
             </div>
+              <!-- <span style="font-size: 10px;">
+                오브젝트나 시야, 어시스트 등 게임 전반에 영향을 미치는 능력을 의미합니다.
+              </span> -->
           </v-col>
         </v-row>
       </v-col>
 
     </v-row>
+
+
+
+
+
+
+
+    <!-- *********************************** 보실 부분* ************************************************ -->
+    <!-- 바 차트랑, 컬럼차트가 있는 HTML부분입니다. -->
+
+
+
 
     <!-- 3번줄 -->
     <v-row v-show="!isLolbodyLoading" class='justify-space-around mb-5'>
@@ -281,6 +327,14 @@
             <ColumnChart type="bar" height="200" :options="columnChartOptions" :series="columnSeries"></ColumnChart>
           </v-col>
         </v-row>
+
+
+
+    <!-- *********************************** 여기 까지* ************************************************ -->
+
+
+
+
 
         <!-- 워드 클라우드? -->
         <v-row class='test-height2' style="border-top: 1px solid #e6e6e6">
@@ -337,11 +391,23 @@ export default {
   },
   data() {
     return {
+      tooltip: {
+        agg: '킬, 데미지, 전투 참여 횟수 등 게임을 공격적으로 플레이하는 능력을 의미합니다.',
+        sta: '데스나 시에스 등 게임을 안정적으로 풀어나가는 능력을 의미합니다.',
+        inf: '오브젝트나 시야, 어시스트 등 게임 전반에 영향을 미치는 능력을 의미합니다.'
+      },
+
       noRecommendChamps: false,
       timeWait: false,
       isLolbodyLoading: false,
       loadingColor: 'grey',
-      loadingSize: '50px',
+      loadingSize: '80px',
+
+
+      // *********************************** 보실 부분* ************************************************
+      // 바 차트에서 랭크 버튼을 누르는 곳 + 모스트 챔프 버튼
+
+
       btnTrigger: {
         barChartClick: {
           dia: false,
@@ -357,7 +423,19 @@ export default {
         },
 
       },
-      tooltip_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+
+      
+      // *********************************** 여기 까지* ************************************************
+
+
+
+
+
+
+
+
+      // *********************************** 보실 부분* ************************************************
+      // 전체 데이터를  받아와서 넣는 부분입니다.
       getLolbodyData: {
         userCardReference: {
           "timestamp": 1597825234114,
@@ -540,8 +618,11 @@ export default {
           "wardsPlacedPerMin": 0.34619754025181293,
           "wardsKilledPerMin": 0.3436652132791967
         },
-
       },
+
+
+      // *********************************** 여기 까지* ************************************************
+
       getOtherData: [
         {
           "totalDamageDealtToChampionsPerMin": 0.5,
@@ -591,6 +672,12 @@ export default {
       //     data: [],
       //   }
       // ],
+
+
+
+    // *********************************** 보실 부분* ************************************************
+    // 바 차트 데이터가 들어가는 부분
+
       barSeries: [
         {
           name: '동 티어대비',
@@ -631,30 +718,64 @@ export default {
         },
         xaxis: {
           categories: [
-            'totalDamageDealtToChampionsPerMin',
-            'damageDealtToObjectivesPerMin',
-            'visionScorePerMin',
-            'totalDamageTakenPerMin',
-            'totalMinionsKilledPerMin',
-            'killsRatio',
-            'deathsRatio',
-            'killAssistPerMin',
-            'killsPerMin',
-            'deathsPerMin',
-            'assistsPerMin',
-            'totalHealPerMin',
-            'damageSelfMitigatedPerMin',
-            'damageDealtToTurretsPerMin',
-            'timeCCingOthersPerMin',
-            'neutralMinionsKilledPerMin',
-            'totalTimeCrowdControlDealtPerMin',
-            'visionWardsBoughtInGamePerMin',
-            'neutralMinionsKilledEnemyJunglePerMin',
-            'wardsPlacedPerMin',
-            'wardsKilledPerMin',
+            '분 당 챔피언피해량',
+            '분 당 오브젝트피해량',
+            '분 당 시야 점수',
+            '분 당 받은 피해량',
+            '분 당 총 CS 킬',
+            'KDA 대비 킬 비율',
+            'KDA 대비 데스 비율',
+            '분 당 킬/어시스트',
+            '분 당 킬량',
+            '분 당 데스량',
+            '분 당 어시스트량',
+            '분 당 피해 흡수량',
+            '분 당 타워 피해량',
+            '분 당 속박가한 시간',
+            '분 당 CS량',
+            '분 당 군중제어 시간',
+            '분 당 와드 구입량',
+            '분 당 카정량',
+            '분 당 와드 설치량',
+            '분 당 와드 제거량',
+
+
+            // 'totalDamageDealtToChampionsPerMin',
+            // 'damageDealtToObjectivesPerMin',
+            // 'visionScorePerMin',
+            // 'totalDamageTakenPerMin',
+            // 'totalMinionsKilledPerMin',
+            // 'killsRatio',
+            // 'deathsRatio',
+            // 'killAssistPerMin',
+            // 'killsPerMin',
+            // 'deathsPerMin',
+            // 'assistsPerMin',
+            // 'totalHealPerMin', 없애야함
+            // 'damageSelfMitigatedPerMin',
+            // 'damageDealtToTurretsPerMin',
+            // 'timeCCingOthersPerMin',
+            // 'neutralMinionsKilledPerMin',
+            // 'totalTimeCrowdControlDealtPerMin',
+            // 'visionWardsBoughtInGamePerMin',
+            // 'neutralMinionsKilledEnemyJunglePerMin',
+            // 'wardsPlacedPerMin',
+            // 'wardsKilledPerMin',
           ],
         }
       },
+
+
+    // *********************************** 여기 까지* ************************************************
+
+
+
+
+
+
+
+    // *********************************** 보실 부분* ************************************************
+    // 컬럼 차트 데이터가 들어가는 부분
 
       columnSeries: [
         {
@@ -730,6 +851,9 @@ export default {
         }
       }
 
+    // *********************************** 여기 까지* ************************************************
+
+
     }
   },
   computed: {
@@ -741,6 +865,10 @@ export default {
     // computedColumnChartOptions() {
     //   return this.ColumnChartOptions
     // },
+
+
+// *********************************** 보실 부분* ************************************************
+
     computedBarSeries() {
       return this.barSeries
 
@@ -750,6 +878,11 @@ export default {
 
     },
   },
+
+// *********************************** 여기 까지* ************************************************
+
+
+
   watch: {
     // getLolbodyData: {
     //   deep: true,
@@ -779,6 +912,8 @@ export default {
     //   }
     // },
 
+
+// *********************************** 보실 부분* ************************************************
     getLolbodyData: {
       deep: true,
       immediate: true,
@@ -787,6 +922,9 @@ export default {
 
       }
     },
+
+// *********************************** 여기 까지* ************************************************
+
 
     mostChamp: {
       deep: true,
@@ -803,18 +941,46 @@ export default {
   },
   methods: {
 
+    // *********************************** 보실 부분* ************************************************
+
+
+    // bar 차트의 문제는 랭크 버튼 클릭시 한번에 바뀌지 않는 부분입니다.
+
+    // 나의 데이터가 들어가야하는 값은
+    // getLolbodyData.analysis. xxxx 입니다. name은 한글로 다 수작업으로 넣어뒀습니다. 맨 처음 값만 들어가면 변하지않습니다
+  
+    // others의 데이터가 들어가야하는 곳은
+    // getLolbodyData.stastics.tierAnalysis.{{ 티어 }}.total.xxxx 의 값들입니다.
+    // 티어별로 골라서 해당하는 데이터를 넣어줘야합니다.
+
+
+
+    // bar 차트 관련 , 나의 데이터 값 넣는 부분입니다.
+    // 시작할때 실행되는 함수입니다.
+    // 현재는 Bar data는 computed에서 값을 받아서 computedBar~~~ 로 넣어주고있습니다. 
     barInit() {
+      // bar chart입니다.
       var myList = []
       // var columnName = []
 
       for ( var data in this.getLolbodyData.analysis ) {
+        // totalHealPerMIn은 값이 없어서 뺍니다.
+        if ( data === 'totalHealPerMin' ) {
+          continue
+        }
         myList.push(Math.round(this.getLolbodyData.analysis[data]*100))
         // columnName.push(data)
 
       }
       this.barSeries[1].data = myList
+
+      // 카테고리 넣는거 지웠습니다. 수작업으로했습니다.
       // this.barChartOptions.xaxis.categories = columnName
     },
+
+    // Bar Chart 비교해야하는 다른 사람들 값을 넣는 곳입니다. 이 값은 고정값으로 옵니다.
+    // 모두 동일한 값이라 생각해보니 수작업으로도 가능은 할거 같습니다.
+    // 나중에 티어 버튼을 클릭하면 이 함수가 실행됩니다.
     barOther(datas) {
       var myList = []
       var name = datas[1]
@@ -826,159 +992,9 @@ export default {
       this.barSeries[0].data = myList
       this.barSeries[0].name = name
 
-      console.log(datas)
     },
 
-    
-
-
-   imageload(URL){
-      try{
-          return require('@/assets/images/'+ URL);
-      }catch{
-          return require('@/assets/images/error.png');
-      }
-    },
-    changeData(datas) {
-      var agg = []
-      var stab = []
-      var infl = []
-      var categories = []
-
-      for ( var data of datas ) {
-        for ( var value in data.radarReference ) {
-          if ( value === "aggressiveness" ) {
-            agg.push(Math.round(data.radarReference[value]*100))
-          }
-          else if ( value === "stability" ) {
-            stab.push(Math.round(data.radarReference[value]*100))
-          }
-          else {
-            infl.push(Math.round(data.radarReference[value]*100))
-          }
-        }
-        categories.push(data.timestamp)
-      }
-      this.columnSeries[0].data = agg.reverse()
-      this.columnSeries[1].data = infl.reverse()
-      this.columnSeries[2].data = stab.reverse()
-      this.columnChartOptions.xaxis.categories = categories.reverse()
-
-    },
-
-
-
-    // setBarSeriesMyData() {
-    //   var tempSeries = {
-    //     name: "나",
-    //     data: [],
-    //   }
-    //   for ( var temp in this.getLolbodyData.analysis ) {
-    //     tempSeries.data.push(this.getLolbodyData.analysis[temp])
-    //   }
-    //   this.barSeries[1] = tempSeries
-    // },
-    async renewalLolbody() {
-      // await this.init()
-      await this.fetchRenewalLolbody()
-      await this.setLolbodyData()
-      await this.setMostChamp()
-    },
-
-    // init() {
-    //   this.getLolbodyData.champList = []
-    // },
-
-    fetchRenewalLolbody() {
-      return axios
-        .put(`https://lolbody.gq` + `/api/lolbody/${this.$route.params.userName}`)
-        .then(res => {
-          this.getLolbodyData = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-
-    fixEmptyData() {
-      var emptyData = this.getLolbodyData
-      var check = false
-
-      if ( emptyData.radarList.length === 0) {
-        check = true
-      }
-      else if ( emptyData.champList.length === 0 ) {
-        check = true        
-      }
-      else if ( emptyData.lineList.length === 0 ) {
-        check = true
-      }
-
-      if ( check ) {
-        alert("해당 사용자는 롤바디 데이터가 없습니다.")
-        this.$router.push('/Profile/'+this.$route.params.userName)
-      }
-
-
-    },
-
-
-    async setLolbodyData() {
-      // 여기다여기
-      // await console.log('1--------------------------')
-      // await console.log(this.getLolbodyData)
-      await this.fixEmptyData()
-      await this.selectMostChamp()
-      // await console.log('2--------------------------')
-      await this.selectLolbti()
-      // await console.log('3--------------------------')
-      await this.selectlolbtiChampType()
-      // await console.log('4--------------------------')
-
-
-      if ( this.getLolbodyData.userCardReference.soloRank.tier === "DIAMOND" ) {
-        this.DiaData()
-      }
-      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "PLATINUM" ) {
-        this.PlaData()
-      }
-      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "GOLD" ) {
-        this.GoldData()
-      }
-      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "SILVER" ) {
-        this.SilverData()
-      }
-      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "BRONZE" ) {
-        this.BronzeData()
-      }
-      else {
-        this.IronData()
-      }
-
-    },
-    setMostChamp() {
-      this.changeChampTitle()
-      this.changeChampInfo()
-      this.getRecommendChamps(this.mostChamp)
-      this.changeChampType()
-      this.changeBackground()
-
-      this.barInit()
-
-    },
-    fetchLolbodyData() {
-      return axios
-        .get(`https://lolbody.gq` + `/api/lolbody/${this.$route.params.userName}`)
-        .then(res => {
-          this.getLolbodyData = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    // totalData() {
-    //   this.getOtherData = this.getLolbodyData.stastics.stastics.total.total
-    // },
+    // Bar Chart에서 티어 클릭시 실행되어야 하는 함수입니다
     DiaData() {
       // this.barSeries
       // var tempSeries = {
@@ -994,6 +1010,7 @@ export default {
 
 
       // this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.diamond.total, "다이아"]
+      // 밑에 함수로 데이터를 넣어 바꿀 생각이었습니다.
       this.barOther([this.getLolbodyData.stastics.tierAnalysis.diamond.total, "다이아"])
       
       this.btnTrigger.barChartClick.dia = true
@@ -1026,7 +1043,9 @@ export default {
 
     },
     GoldData() {
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.gold.total, "골드"]
+      // this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.gold.total, "골드"]
+      this.barOther([this.getLolbodyData.stastics.tierAnalysis.gold.total, "골드"])
+
       this.btnTrigger.barChartClick.dia = false
       this.btnTrigger.barChartClick.pla = false
       this.btnTrigger.barChartClick.gold = true
@@ -1036,7 +1055,9 @@ export default {
 
     },
     SilverData() {
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.silver.total, "실버"]
+      // this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.silver.total, "실버"]
+      this.barOther([this.getLolbodyData.stastics.tierAnalysis.silver.total, "실버"])
+
       this.btnTrigger.barChartClick.dia = false
       this.btnTrigger.barChartClick.pla = false
       this.btnTrigger.barChartClick.gold = false
@@ -1046,7 +1067,9 @@ export default {
 
     },
     BronzeData() {
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.bronze.total, "브론즈"]
+      // this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.bronze.total, "브론즈"]
+      this.barOther([this.getLolbodyData.stastics.tierAnalysis.bronze.total, "브론즈"])
+
       this.btnTrigger.barChartClick.dia = false
       this.btnTrigger.barChartClick.pla = false
       this.btnTrigger.barChartClick.gold = false
@@ -1056,7 +1079,9 @@ export default {
 
     },
     IronData() {
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.iron.total, "아이언"]
+      // this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.iron.total, "아이언"]
+      this.barOther([this.getLolbodyData.stastics.tierAnalysis.iron.total, "아이언"])
+
       this.btnTrigger.barChartClick.dia = false
       this.btnTrigger.barChartClick.pla = false
       this.btnTrigger.barChartClick.gold = false
@@ -1066,10 +1091,219 @@ export default {
 
     },
 
+
+// *********************************** 여기까지* ************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+// *********************************** 보실 부분* ************************************************
+
+    // 여기서부터 ColumnChart 입니다.
+
+    // watch 에 의해서 getLolbodyData가 바뀌면 radarList 에서 리스트를 10개 쪼개서 받아와서 넣습니다.
+    // 최근 10개의 레이더 차트 데이터를 쓸것이기 때문입니다.
+    // 최신이 제일 앞이기 때문에 역순으로 넣어야합니다
+
+    // 현재 문제는, 들어가자말자 바로 업데이트가 되지 않는 것입니다.
+    // 들어가야할 데이터는 radarList에 모두 있습니다. 시간, 챔피언 이름, 레이더 그래프 값들이 들어갑니다.
+    // getLolbodyData.radarList.timestamp  시간
+    // getLolbodyData.radarList.name       챔피언 이름
+    // getLolbodyData.radarList.radarReference.aggressiveness  레이더 그래프 값들 ( 공격성, 안정성, 영향력)
+    // getLolbodyData.radarList.radarReference.stability  레이더 그래프 값들 ( 공격성, 안정성, 영향력)
+    // getLolbodyData.radarList.radarReference.influence  레이더 그래프 값들 ( 공격성, 안정성, 영향력)
+    changeData(datas) {
+
+      // columnChart 입니다.
+      // 여기서 timeStamp
+      var agg = []
+      var stab = []
+      var infl = []
+      var categories = []
+
+      for ( var data of datas ) {
+        for ( var value in data.radarReference ) {
+          if ( value === "aggressiveness" ) {
+            agg.push(Math.round(data.radarReference[value]*100))
+          }
+          else if ( value === "stability" ) {
+            stab.push(Math.round(data.radarReference[value]*100))
+          }
+          else {
+            infl.push(Math.round(data.radarReference[value]*100))
+          }
+        }
+        categories.push(data.timestamp)
+      }
+      this.columnSeries[0].data = agg.reverse()
+      this.columnSeries[1].data = infl.reverse()
+      this.columnSeries[2].data = stab.reverse()
+      this.columnChartOptions.xaxis.categories = categories.reverse()
+
+    },
+
+
+
+
+    // column 차트에서 형래님이 사용하신 함수입니다. (챔피언 이미지 넣기 위함.)
+    imageload(URL){
+      try{
+          return require('@/assets/images/'+ URL);
+      }catch{
+          return require('@/assets/images/error.png');
+      }
+    },
+
+
+// *********************************** 여기 까지* ************************************************
+
+
+
+
+
+
+
+    // setBarSeriesMyData() {
+    //   var tempSeries = {
+    //     name: "나",
+    //     data: [],
+    //   }
+    //   for ( var temp in this.getLolbodyData.analysis ) {
+    //     tempSeries.data.push(this.getLolbodyData.analysis[temp])
+    //   }
+    //   this.barSeries[1] = tempSeries
+    // },
+
+    
+
+
+    // 갱신을위해서 만든건데 혹시 안되면 지우시고 뒤로가기 만 남기면 될거같습니다.
+    // 현재는 시작하자말자 get이 아니라 put으로 데이터를 가져오고 있습니다.
+    async renewalLolbody() {
+      // await this.init()
+      await this.fetchRenewalLolbody()
+      await this.setLolbodyData()
+      await this.setMostChamp()
+    },
+
+    // init() {
+    //   this.getLolbodyData.champList = []
+    // },
+
+    fetchRenewalLolbody() {
+      return axios
+        .put(`https://lolbody.gq` + `/api/lolbody/${this.$route.params.userName}`)
+        .then(res => {
+          this.getLolbodyData = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
+
+
+
+
+
+
+
+// *********************************** 보실 부분* ************************************************
+// if 문으로 Bar Chart 다른사람들의 데이터 값을 생성하는 부분을 한번 보셔야할듯합니다.
+
+
+    // 시작시 롤바디 데이터를 세팅합니다.
+    async setLolbodyData() {
+      // await console.log('1--------------------------')
+      // await console.log(this.getLolbodyData)
+      await this.fixEmptyData()
+      await this.selectMostChamp()
+      // await console.log('2--------------------------')
+      await this.selectLolbti()
+      // await console.log('3--------------------------')
+      await this.selectlolbtiChampType()
+      // await console.log('4--------------------------')
+
+
+      if ( this.getLolbodyData.userCardReference.soloRank.tier === "DIAMOND" ) {
+        this.DiaData()
+      }
+      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "PLATINUM" ) {
+        this.PlaData()
+      }
+      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "GOLD" ) {
+        this.GoldData()
+      }
+      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "SILVER" ) {
+        this.SilverData()
+      }
+      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "BRONZE" ) {
+        this.BronzeData()
+      }
+      else {
+        this.IronData()
+      }
+
+    },
+
+
+// *********************************** 여기 까지* ************************************************
+
+
+
+
+
+
+
+
+
+
+    // 시작시 데이터를 불러옵니다.현재는 get이 아니라 put으로 불러옵니다.
+    // 혹시나 갱신 버튼이 안될 때의 상황에 대비하기 위함입니다.
+    fetchLolbodyData() {
+      return axios
+        .put(`https://lolbody.gq` + `/api/lolbody/${this.$route.params.userName}`)
+        .then(res => {
+          this.getLolbodyData = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    // totalData() {
+    //   this.getOtherData = this.getLolbodyData.stastics.stastics.total.total
+    // },
+
+
+    // 시작시 모스트 챔프를 사용하는 값들을 세팅합니다.
+    setMostChamp() {
+      this.changeChampTitle()
+      this.changeChampInfo()
+      this.getRecommendChamps(this.mostChamp)
+      this.changeChampType()
+      this.changeBackground()
+      
+      // 맨 처음 나의 Bar 차트 값을 넣어줍니다.
+      this.barInit()
+
+    },
+
+
+    // 롤비티아이에서 쓰일 챔피언 type을 정합니다 (tag값)
     selectlolbtiChampType() {
       this.lolbtiChampType = champion.data[this.getLolbodyData.champList[0].name].tags[0]
     },
 
+
+    // 롤비티아이에서 들어갈 형용사를 정합니다.
     selectLolbti() {
       var radar = this.getLolbodyData.radar
 
@@ -1188,6 +1422,8 @@ export default {
 
     },
 
+
+    // 가장 많이한 챔프를 고르고, 한글 이름을 추출해냅니다. 챔피언 클릭시 반응하는 함수입니다.
     selectMostChamp() {
       // console.log('test1')
       this.mostChamp = this.getLolbodyData.champList[0]
@@ -1197,6 +1433,8 @@ export default {
       this.btnTrigger.champClick.main = true
       this.btnTrigger.champClick.sub = false
     },
+
+    // 두번째로 많이한 챔프를 고르고, 한글 이름을 추출합니다.
     selectSecondChamp() {
       this.mostChamp = this.getLolbodyData.champList[1]
       this.korChampName = champion.data[this.getLolbodyData.champList[1].name].name
@@ -1205,6 +1443,9 @@ export default {
       this.btnTrigger.champClick.sub = true
     },
 
+
+
+    // 시작할때 들어갈 바뀌게 될 값들 입니다.
     changeChampTitle() {
       this.champTitle = champion.data[this.mostChamp.name].title
     },
@@ -1219,7 +1460,7 @@ export default {
       
     },
 
-
+    // 모스트 챔피언에 따라서 추천해주는 로직입니다. 시작할때 실행됩니다.
     getRecommendChamps(mostChamp) {
       var champList = []
 
@@ -1266,6 +1507,31 @@ export default {
       }
     },
 
+
+    // 칼바람만 하는 사람은 클래식 게임 데이터가 오지 않기 때문에 예외처리해둔겁니다.
+    fixEmptyData() {
+      var emptyData = this.getLolbodyData
+      var check = false
+
+      if ( emptyData.radarList.length === 0) {
+        check = true
+      }
+      else if ( emptyData.champList.length === 0 ) {
+        check = true        
+      }
+      else if ( emptyData.lineList.length === 0 ) {
+        check = true
+      }
+
+      if ( check ) {
+        alert("해당 사용자는 롤바디 데이터가 없습니다.")
+        this.$router.push('/Profile/'+this.$route.params.userName)
+      }
+
+    },
+
+
+    // 로딩 및 시간, 백 버튼 함수입니다.
     startLoading() {
       this.isLolbodyLoading = true
     },
@@ -1279,11 +1545,25 @@ export default {
       alert('사용자가 너무 많아서 느립니다. 잠시 후에 다시 시도해주세요.')
       this.$router.push('/Profile/'+this.$route.params.userName)
     },
+    backBtn() {
+      this.$router.push('/Profile/'+this.$route.params.userName)
+    },
 
 
 
 
   },
+
+
+
+
+
+
+  // *********************************** 보실 부분* ************************************************
+
+
+  // 시작할때 timeout을 걸어주고, fetch Lolbody로 데이터를 불러옵니다.
+  // 각 데이터를 세팅한 후, 시간내에 끝나지 못하면, 타임아웃에 의해서 글자가 나오고, 이후 뒤로가기 됩니다.
   async created() {
     this.timeOut = false,
     this.timeWait = false,
@@ -1307,13 +1587,18 @@ export default {
     await this.setMostChamp()
     // await console.log("4 start")
 
-    await console.log('end')
+    // await console.log('end')
 
     await this.endLoading()
     await clearTimeout(myTimeWait)
     await clearTimeout(myTimeOut)
     // this.$store.dispatch('getLolbodyData', this.$route.params.userName)
   },
+
+
+
+
+
 
 }
 </script>
@@ -1327,6 +1612,47 @@ export default {
   opacity: '0.7'
   
 } */
+
+
+[data-tooltip-text]:hover {
+	position: relative;
+}
+
+
+[data-tooltip-text]:hover:after {
+	content: attr(data-tooltip-text);
+
+  position: absolute;
+	bottom: 150%;
+	left: -25%;
+  padding: 14px;
+  width: 160%;
+
+  border-radius: 20px;
+    
+  background-color: rgba(0, 0, 0, 0.8);
+	color: #FFFFFF;
+	font-size: 12px;
+
+	z-index: 9999;
+}
+
+
+
+.multi-explain  {
+  font-weight: 900;
+  font-size: 20px;
+  border-radius: 20px;
+  border: 0.1px solid grey;
+  text-align: center;
+  width: 70%;
+}
+
+.multi-explain:hover {
+  background-color: #e6e6e6;
+}
+
+
 
 .lolbti-text {
   background-color: rgb(0, 0, 0, 0.5);

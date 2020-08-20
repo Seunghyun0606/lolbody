@@ -9,9 +9,11 @@
 <script>
 export default {
   name: 'FacebookButton',
+    props: {
+    username: String
+  },
   data() {
     return {
-      username: '',
       url: 'https://lolbody.gq/Lolbody/',
       badges: ['#학살자', '#농부', '#오지라퍼', '#대도둑']
     }

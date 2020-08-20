@@ -1,5 +1,5 @@
 <template>  
-    <span :class="[ win ? 'win-badge' : 'fail-badge' ]">{{ badge }}</span>
+    <span :class="[ win ? 'win-badge' : 'fail-badge' , { dis: disp } ]">{{ badge }}</span>
 </template>
 
 <script>
@@ -11,14 +11,17 @@ export default {
   data() {
     return {
       win: true,
+      disp: true,
     }
   },
   computed: {
     badge() {
-      if ( this.badges.contWins > 0) {
+      if ( this.badges.contWins > 1) {
+        // this.disp = true
         return this.badges.contWins + "연승중"
       }
-      else if ( this.badges.contFails > 0 ) {
+      else if ( this.badges.contFails > 1 ) {
+        // this.disp = true
         return this.badges.contFails + "연패중"
       }
       return ""
@@ -26,11 +29,13 @@ export default {
   },
   methods: {
     isWin() {
-      if ( this.badges.contWins > 0 ) {
+      if ( this.badges.contWins > 1 ) {
         this.win = true
+        this.disp = false
       }
-      else if ( this.badges.contFails > 0 ) {
+      else if ( this.badges.contFails > 1 ) {
         this.win = false
+        this.disp = false
       }
     }
   },
@@ -43,6 +48,10 @@ export default {
 </script>
 
 <style>
+
+.dis {
+  display: none !important;
+}
 
 
 .win-badge {

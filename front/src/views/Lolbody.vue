@@ -8,20 +8,21 @@
     <!-- <v-row class='justify-space-around'> -->
     <!-- <v-row :class='["justify-space-around", { backgroundImage: true } ]' > -->
       <!-- 랭크 -->
-      <v-col cols="5" class="align-self-center card-border">
+      <v-col cols="5" class="align-self-center lolbti-text">
 
         <!-- 유저 프로필, 랭크, 아이디, 레벨, 챔피언 라인정보. -->
         <v-row class='justify-space-around align-content-center' style='height: 10rem;'>
           <!-- 랭크 -->
-          <v-col cols="3">
+          <v-col cols="3" style="position: relative;">
             <v-row>
-              <v-col class="center">
-                <img class="icon big" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
+              <v-col class="center" style="position: relative;">
+                <img class="icon big profile-rank" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
+                <img class="profilebanner" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier_banner/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
               </v-col>
               <!-- <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily"> -->
             </v-row>
             <!-- 많이가는 라인 -->
-            <v-row class="px-3">
+            <v-row class="px-3" style="position: absolute; top: 105px; left: 5px;">
               <v-col class="center">
                 <img class="icon small" :src="getLolbodyData.lineList[0].name.length > 0 ? require(`@/assets/images/position/${getLolbodyData.lineList[0].name}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
               </v-col>
@@ -60,13 +61,13 @@
             </v-row>
             <v-row class="mt-2 justify-start mr-8">
               <v-col cols=2 class="mr-1">
-                <KaKaoButton/>
+                <KaKaoButton :username="this.$route.params.userName" />
               </v-col>
               <v-col cols=2>
-                <TwitterButton/>
+                <TwitterButton :username="this.$route.params.userName" />
               </v-col>
               <v-col cols=2>
-                <FacebookButton/>
+                <FacebookButton :username="this.$route.params.userName" />
               </v-col>
               <!-- <MultiSearchBadge :index="index"/> -->
             </v-row>
@@ -74,13 +75,15 @@
         </v-row>
       </v-col>
 
-      <v-col cols="6" class="align-self-center card-border">
+      <v-col cols="6" class="align-self-center">
         <!-- 롤비티아이 구역 -->  
-        <v-row class='align-content-center' style='height: 10rem;'>
+        <v-row class='align-content-center lolbti-text' style='height: 10rem;' >
           <v-col>
             <v-row>
-              <v-col cols='4' class="center align-self-center" >
-                <img class="icon big" :src="require(`@/assets/images/champion/${getLolbodyData.champList[0].name}.png`)" alt="temporarily">
+              <v-col cols='4' class="center align-self-center" style="position: relative;" >
+                
+                <img class="lolbti-banner" :src="require(`@/assets/cities/${ background }.png`) !== undefined ? require(`@/assets/cities/${ background }.png`) : require(`@/assets/cities/else.png`)" alt="temporarily">
+                <!-- <img class="icon big" :src="require(`@/assets/images/champion/${getLolbodyData.champList[0].name}.png`)" alt="temporarily"> -->
 
               </v-col>
               <v-col>
@@ -247,7 +250,9 @@
             <!-- 우측 막대 그래프 분석 데이터 산출물 이용. 전체랑 최근 20게임 평균 비교 col 하나 먹이고 row로 3~4개로 나눠서하면될듯 -->
             <!-- 동티어 동일챔프 기준? -->
             <!-- <LolbodyBarChart :barSeries="barSeries"/> -->
-            <LolbodyBarChart :getMyData="getLolbodyData.analysis" :getOtherData="getOtherData"/>
+            <!-- <LolbodyBarChart :getMyData="getLolbodyData.analysis" :getOtherData="getOtherData"/> -->
+            <BarChart type="bar" height="450" :options="computedBarChartOptions" :series="computedBarSeries"></BarChart>
+
           </v-col>
         
         </v-row>
@@ -262,7 +267,9 @@
             레이더 차트의 변화 // 전체 // 현재 // 이전 막대그래프
           </div> -->
           <v-col>
-            <LolbodyColumnChart :radarData="getLolbodyData.radarList.slice(0, 10)"/>
+            <!-- <LolbodyColumnChart :radarData="getLolbodyData.radarList.slice(0, 10)"/> -->
+            <!-- <ColumnChart type="bar" height="200" :options="computedColumnChartOptions" :series="computedColumnSeries"></ColumnChart> -->
+            <ColumnChart type="bar" height="200" :options="columnChartOptions" :series="columnSeries"></ColumnChart>
           </v-col>
         </v-row>
 
@@ -284,9 +291,13 @@
 </template>
 
 <script>
+import ColumnChart from 'vue-apexcharts'
+import BarChart from "vue-apexcharts"
+
+
 // import { mapState, mapGetters } from 'vuex'
-import LolbodyBarChart from '@/components/lolbody/LolbodyBarChart'
-import LolbodyColumnChart from '@/components/lolbody/LolbodyColumnChart'
+// import LolbodyBarChart from '@/components/lolbody/LolbodyBarChart'
+// import LolbodyColumnChart from '@/components/lolbody/LolbodyColumnChart'
 import LolbodyRadarChart from '@/components/lolbody/LolbodyRadarChart'
 import LolbodyWordCloud from '@/components/lolbody/LolbodyWordCloud'
 
@@ -302,8 +313,10 @@ import axios from 'axios'
 export default {
   name: 'Lolbody',
   components: {
-    LolbodyBarChart,
-    LolbodyColumnChart,
+    ColumnChart,
+    BarChart,
+    // LolbodyBarChart,
+    // LolbodyColumnChart,
     LolbodyRadarChart,
     LolbodyWordCloud,
     KaKaoButton,
@@ -550,23 +563,175 @@ export default {
       lolbti: "",
       lolbtiChampType: "",
       korChampName: "",
+      // barSeries: [
+      //   {
+      //     name: "",
+      //     data: [],
+
+      //   }, 
+      //   {
+      //     name: "",
+      //     data: [],
+      //   }
+      // ],
       barSeries: [
         {
-          name: "",
-          data: [],
-
-        }, 
+          name: '동 티어대비',
+          data: []
+        },
         {
-          name: "",
-          data: [],
+          name: '나',
+          data: []
+        },
+      ],
+      barChartOptions: {
+        chart: {
+          type: 'bar',
+          toolbar: {
+            show: false,
+          },
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            dataLabels: {
+              position: 'top',
+            },
+          }
+        },
+        dataLabels: {
+          enabled: false,
+          offsetX: 17,
+          style: {
+            fontSize: '7px',
+            colors: ['#000']
+          }
+        },
+        stroke: {
+          show: true,
+          width: 1,
+          colors: ['#fff']
+        },
+        xaxis: {
+          categories: [
+            'totalDamageDealtToChampionsPerMin',
+            'damageDealtToObjectivesPerMin',
+            'visionScorePerMin',
+            'totalDamageTakenPerMin',
+            'totalMinionsKilledPerMin',
+            'killsRatio',
+            'deathsRatio',
+            'killAssistPerMin',
+            'killsPerMin',
+            'deathsPerMin',
+            'assistsPerMin',
+            'totalHealPerMin',
+            'damageSelfMitigatedPerMin',
+            'damageDealtToTurretsPerMin',
+            'timeCCingOthersPerMin',
+            'neutralMinionsKilledPerMin',
+            'totalTimeCrowdControlDealtPerMin',
+            'visionWardsBoughtInGamePerMin',
+            'neutralMinionsKilledEnemyJunglePerMin',
+            'wardsPlacedPerMin',
+            'wardsKilledPerMin',
+          ],
+        }
+      },
+
+      columnSeries: [
+        {
+          name: '공격성',
+          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+        }, {
+          name: '안정성',
+          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+        }, {
+          name: '영향력',
+          data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
         }
       ],
+      columnChartOptions: {
+        chart: {
+          type: 'bar',
+          toolbar: {
+            show: false,
+          },
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            // endingShape: 'rounded'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: [],
+          labels: {
+            showDuplicates: false,
+            style: {
+                fontSize: '10px',
+            },
+            formatter: function(value) {
+              if (value == undefined)
+                return null;
+              const timestamp =  new Date(parseInt(value));
+              const month = new Date(timestamp).getMonth() + 1 + '월 '
+              const day = new Date(timestamp).getDate() + '일 '
+              return month + day // + hour
+            }
+          },
+        },
+
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+          x: {
+            formatter: (value, {w}) => {
+              // console.log(w)
+              // console.log(value)  
+              
+              // return '<img src="'+this.imageload('champion/Orianna.png')+'" class="v-avatar" width="40px" >'
+              // // return w
+              return '<img src="'+this.imageload('champion/' + w.globals.seriesNames[0][value-1]+'.png')+'" class="v-avatar" width="40px" >'
+            }
+          },
+          y: {
+            formatter: function (val) {
+              return val + " 점"
+            }
+          }
+        }
+      }
 
     }
   },
   computed: {
     // ...mapState(['lolbodyData']),
     // ...mapGetters(['getLolbodyData']),
+    // computedColumnSeries() {
+    //   return this.columnSeries
+    // },
+    // computedColumnChartOptions() {
+    //   return this.ColumnChartOptions
+    // },
+    computedBarSeries() {
+      return this.barSeries
+
+    },
+    computedBarChartOptions() {
+      return this.barChartOptions
+
+    },
   },
   watch: {
     // getLolbodyData: {
@@ -596,6 +761,16 @@ export default {
     //     }
     //   }
     // },
+
+    getLolbodyData: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.changeData(this.getLolbodyData.radarList.slice(0, 10))
+
+      }
+    },
+
     mostChamp: {
       deep: true,
       handler() {
@@ -609,6 +784,72 @@ export default {
     }
   },
   methods: {
+
+    barInit() {
+      var myList = []
+      // var columnName = []
+
+      for ( var data in this.getLolbodyData.analysis ) {
+        myList.push(Math.round(this.getLolbodyData.analysis[data]*100))
+        // columnName.push(data)
+
+      }
+      this.barSeries[1].data = myList
+      // this.barChartOptions.xaxis.categories = columnName
+    },
+    barOther(datas) {
+      var myList = []
+      var name = datas[1]
+
+      for ( var data in datas[0] ) {
+        myList.push(Math.round(datas[0][data]*100))
+
+      }
+      this.barSeries[0].data = myList
+      this.barSeries[0].name = name
+
+      console.log(datas)
+    },
+
+    
+
+
+   imageload(URL){
+      try{
+          return require('@/assets/images/'+ URL);
+      }catch{
+          return require('@/assets/images/error.png');
+      }
+    },
+    changeData(datas) {
+      var agg = []
+      var stab = []
+      var infl = []
+      var categories = []
+
+      for ( var data of datas ) {
+        for ( var value in data.radarReference ) {
+          if ( value === "aggressiveness" ) {
+            agg.push(Math.round(data.radarReference[value]*100))
+          }
+          else if ( value === "stability" ) {
+            stab.push(Math.round(data.radarReference[value]*100))
+          }
+          else {
+            infl.push(Math.round(data.radarReference[value]*100))
+          }
+        }
+        categories.push(data.timestamp)
+      }
+      this.columnSeries[0].data = agg.reverse()
+      this.columnSeries[1].data = infl.reverse()
+      this.columnSeries[2].data = stab.reverse()
+      this.columnChartOptions.xaxis.categories = categories.reverse()
+
+    },
+
+
+
     // setBarSeriesMyData() {
     //   var tempSeries = {
     //     name: "나",
@@ -676,6 +917,8 @@ export default {
       this.changeChampType()
       this.changeBackground()
 
+      this.barInit()
+
     },
     fetchLolbodyData() {
       return axios
@@ -701,7 +944,12 @@ export default {
       //   tempSeries.data.push(tempData[temp])
       // }
       // this.barSeries[0] = tempSeries
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.platinum.total, "플레티넘"]
+
+
+
+      // this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.diamond.total, "다이아"]
+      this.barOther([this.getLolbodyData.stastics.tierAnalysis.diamond.total, "다이아"])
+      
       this.btnTrigger.barChartClick.dia = true
       this.btnTrigger.barChartClick.pla = false
       this.btnTrigger.barChartClick.gold = false
@@ -712,16 +960,17 @@ export default {
     },
     PlaData() {
       // var tempSeries = {
-      //   name: "플레티넘",
+        //   name: "플레티넘",
       //   data: [],
       // }
       // var tempData = this.getLolbodyData.stastics.tierAnalysis.platinum.total
       // for ( var temp in tempData ) {
-      //   tempSeries.data.push(tempData[temp])
+        //   tempSeries.data.push(tempData[temp])
       // }
       // this.barSeries[0] = tempSeries
 
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.platinum.total, "플레티넘"]
+      // this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.platinum.total, "플레티넘"]
+      this.barOther([this.getLolbodyData.stastics.tierAnalysis.platinum.total, "플레티넘"])
       this.btnTrigger.barChartClick.dia = false
       this.btnTrigger.barChartClick.pla = true
       this.btnTrigger.barChartClick.gold = false
@@ -992,7 +1241,41 @@ export default {
   
 } */
 
+.lolbti-text {
+  background-color: rgb(0, 0, 0, 0.5);
+  border-radius: 15px;
+  /* padding: 9px !important; */
+  /* margin-right: 5px !important; */
+  /* border-radius: 10px; */
+}
+
+
+.lolbti-banner {
+  position: absolute;
+  width: 80px;
+  top: -60px;
+  left: 50px;
+  /* background-color: rgb(0, 0, 0, 0.3); */
+  /* padding: 5px; */
+  /* border-radius: 10px; */
+}
+
+.profile-rank {
+  position: absolute;
+  z-index: 1;
+  left : 12px;
+}
+
+.profilebanner{
+  position: absolute;
+  width: 115px;
+  left: -11px;
+  z-index: 0;
+  /* top: 10px; */
+}
+
 .renewal-lolbody {
+  background-color: #e6e6e6;
   border: 1px solid #33A39E;
   border-radius: 3px;
   color: #33A39E;

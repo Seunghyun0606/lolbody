@@ -158,6 +158,12 @@ export default new Vuex.Store({
                 tickAmount: 5,
                 min: 0,
                 max: 100,
+                labels: {
+                    show : true,
+                    formatter: (value) => { 
+                        return parseInt(value);
+                    },
+                },
             },
             series:{
                 name: [],

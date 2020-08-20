@@ -13,7 +13,9 @@
 
       </v-col>
     </v-row>
+
     <IndexIntro />
+    
   </v-container>
 </template>
 

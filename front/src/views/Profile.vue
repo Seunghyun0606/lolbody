@@ -392,8 +392,8 @@ export default {
                     if (searchHistory.includes(this.profileDatas.summonerName)) {
                         return
                     }
-                    if (searchHistory.length >= 9) {
-                        // 최대 9개의 히스토리만 가지고 있도록 9개 이상인 경우 하나 빼버림
+                    if (searchHistory.length >= 6) {
+                        // 최대 9개의 히스토리만 가지고 있도록 6개 이상인 경우 하나 빼버림
                         searchHistory.shift()
                     }
                 // searchHistory가 존재하지만 빈 string인 경우

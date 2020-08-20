@@ -29,7 +29,7 @@ public class SummonerService {
 		if (json.equals("Fail")) {
 			throw new NameNotFoundException("존재하지 않는 소환사입니다. ("+name+")");
 		} else if (json.equals("Timeout"))
-			throw new TimeoutException("요청이 너무 많습니다.");
+			throw new TimeoutException("메인 키 요청이 너무 많습니다.");
 		SummonerDto summonerDto = new Gson().fromJson(json, SummonerDto.class);
 		JSONObject object = new JSONObject(json);
 		summonerDto.setSubName(object.getString("name").toLowerCase().replaceAll(" ", ""));

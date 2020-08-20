@@ -51,7 +51,7 @@ public class MatchlistService {
 				if (str.equals("Fail"))
 					break;
 				else if (str.equals("Timeout"))
-					throw new TimeoutException("요청이 너무 많습니다.");
+					throw new TimeoutException("메인 키 요청이 너무 많습니다.");
 				JSONObject obj = new JSONObject(str);
 				JSONArray arr = obj.getJSONArray("matches");
 				if (arr.length() == 0)
@@ -85,7 +85,7 @@ public class MatchlistService {
 				if (str.equals("Fail"))
 					break;
 				else if (str.equals("Timeout"))
-					throw new TimeoutException("요청이 너무 많습니다.");
+					throw new TimeoutException("메인 키 요청이 너무 많습니다.");
 				JSONObject obj = new JSONObject(str);
 				JSONArray arr = obj.getJSONArray("matches");
 				if (arr.length() == 0)

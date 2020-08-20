@@ -1,7 +1,7 @@
 <template>
   <a id="twitter-link-btn" @click="onClickTwitterButton">
-    <img
-      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+    <img class="image"
+      :src="require('@/assets/twitter.png')"
     />
   </a>
 </template>
@@ -9,9 +9,11 @@
 <script>
 export default {
   name: 'TwitterButton',
+  props: {
+    username: String
+  },
   data() {
     return {
-      username: '',
       url: 'https://lolbody.gq/Lolbody/',
       badges: ['#학살자', '#농부', '#오지라퍼', '#대도둑']
     }
@@ -31,6 +33,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.image {
+  width: 40px;
+}
 
 </style>

@@ -2,11 +2,12 @@
 
   <v-container class="multi-search-container">
     <v-row class="multi-search-row">
-      <v-col style="padding: 6px;">
+      <v-col style="padding: 3px 0px 0px 3px;">
         <input type="text"
           tabindex="1" 
           class="multi-search-col2"
-          v-model="inputSummonerID"
+          v-on:input="typing"
+          v-bind:value="inputSummonerID"
           @paste="onPaste"
           placeholder="Summoner ID"
           id="paste"
@@ -14,6 +15,7 @@
           autocomplete="off"
           @focus="onFocusInput"
           @blur="offFocusInput"
+          @keyup="onPressKey"
         >
 
         <!-- <textarea
@@ -33,69 +35,133 @@
         <v-icon class="icon-place">search</v-icon>
       </v-col>
     </v-row>
-    <v-row no-gutters v-show='this.historyIsVisible' >
-      <template v-for="n in this.searchHistory.length">
-        <v-col :key="n" class='col-4'>
-          <v-card
-            class="pa-2"
-            outlined
-            tile
-          >
-            {{ n }}
-          </v-card>
-        </v-col>
-        <v-responsive
-          v-if="n%3 === 0"
-          :key="`width-${n}`"
-          width="100%"
-        ></v-responsive>
-      </template>
-    </v-row>
+
+    <v-card min-height="94px" v-show='this.historyIsVisible' flat class="history-place">
+      <v-row no-gutters class="history-visible-place">
+        <template v-for="(h, n) in this.searchHistory">
+          <v-col :key="n" class='col-4' @mousedown="onClickHistoryButton(h)">
+            <v-card
+              class="pa-0"
+              outlined
+              tile
+            >
+              <v-btn 
+                text 
+                large 
+                color="primary"
+                >
+                  {{ h }}
+                </v-btn>
+            </v-card>
+          </v-col>
+          <v-responsive
+            v-if="(n+1)%3 === 0"
+            :key="`width-${n}`"
+            width="100%"
+          ></v-responsive>
+        </template>
+      </v-row>
+    </v-card>
+    <v-card min-height="94px" v-show='this.autoCompleteIsVisible' flat class="history-place">
+      <v-row no-gutters class="history-visible-place">
+        <template v-for="(h, n) in this.autoComplete">
+          <v-col :key="n" class='col-4' @mousedown="onClickHistoryButton(h)">
+            <v-card
+              class="pa-0"
+              outlined
+              tile
+            >
+              <v-btn 
+                text 
+                large 
+                color="primary"
+                >
+                  {{ h }}
+                </v-btn>
+            </v-card>
+          </v-col>
+          <v-responsive
+            v-if="(n+1)%3 === 0"
+            :key="`width-${n}`"
+            width="100%"
+          ></v-responsive>
+        </template>
+      </v-row>
+    </v-card>
+    <v-card min-height="94px" v-show='this.commentIsVisible' flat class="history-place history-place-comment">
+      <div class="index-explanation">
+        <small>소환사를 처음 검색하는 경우 약간의 시간이 소요될 수 있습니다.</small>
+      </div>
+    </v-card>
   </v-container>
 
 </template>
 
 <script>
-
 import { mapState } from 'vuex'
+import axios from 'axios'
+
+const SEVER_URL = 'https://lolbody.gq'
 
 export default {
   name: "IndexSearchBar",
   data() {
     return {
       inputSummonerID: '',  // 한글기준 3 ~ 8글자 영어 * 2
-      searchHistory: [],
-      historyIsVisible: false,
+      focusInput: false,
+      autoComplete: []
     }
   },
   computed: {
-    ...mapState(['searchSummernerIDs'])
-  },
-  mounted() {
-    // localStorage에서 가져오기만 함
-    this.$nextTick(function() {
-      if (window.localStorage.getItem('searchHistory') !== null && window.localStorage.getItem('searchHistory') !== '') {
-        // console.log('history 있음')
-        this.searchHistory = JSON.parse(window.localStorage.getItem('searchHistory'))
-        // console.log(this.searchHistory)
+    ...mapState(['searchSummernerIDs']),
+    historyIsVisible() {
+      if (this.focusInput === false) {
+        return false
       } else {
-        // console.log('history 없음')
+        if (this.inputSummonerID.length === 0 && this.searchHistory.length !==0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    autoCompleteIsVisible() {
+      if (this.focusInput === false) {
+        return false
+      } else {
+        if (this.inputSummonerID.length !== 0 && this.autoComplete.length !== 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    searchHistory() {
+      let tmp = []
+      if (window.localStorage.getItem('searchHistory') !== null && window.localStorage.getItem('searchHistory') !== '') {
+        tmp = JSON.parse(window.localStorage.getItem('searchHistory'))
+      } else {
         window.localStorage.setItem('searchHistory', '')
       }
-    })
+      return tmp
+    },
+    commentIsVisible() {
+      if (this.historyIsVisible || this.autoCompleteIsVisible) {
+        return false
+      } else {
+        return true
+      }
+    }
   },
   methods: {
+    typing(e) {
+      this.inputSummonerID = e.target.value
+    },
+
     onClickSearchButton() {
       this.parseInputSummonerID()
     },
 
-    onFocusInput() {
-      this.historyIsVisible = true
-    },
-
-    offFocusInput() {
-      this.historyIsVisible = false
-    },
     parseInputSummonerID() {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로
@@ -188,6 +254,31 @@ export default {
         this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
         // console.log(3)
     },
+
+    onFocusInput() {
+      this.focusInput = true
+    },
+
+    offFocusInput() {
+      this.focusInput = false
+    },
+    
+    onClickHistoryButton(h) {
+      this.$router.push('/Profile/'+h);
+    },
+
+    onPressKey() {
+      if (this.inputSummonerID.length !== 0) {
+        axios.get(SEVER_URL + '/api/auto/' + this.inputSummonerID)
+          .then(res => {
+            let tmp = []
+            res.data.forEach(e => tmp.push(e.name))
+            this.autoComplete = tmp
+            })
+          .catch(err => console.log(err))
+
+      }
+    }
   },
 }
 </script>
@@ -196,7 +287,7 @@ export default {
 
 
 .multi-search-container {
-  border: 2px solid #33A39E;
+  /* border: 2px solid #33A39E; */
   /* margin-bottom: 25px; */
   padding: 0px;
   width: 690px;
@@ -205,7 +296,7 @@ export default {
 
 .multi-search-row {
   height: 45px;
-
+  border: 2px solid #33A39E;
   margin: 0;
 }
 
@@ -225,7 +316,7 @@ export default {
 }
 
 .multi-search-col3:hover {
-  background:rgb(142, 162, 248);
+  background: #588a88;
   cursor: pointer;
 
 }
@@ -243,6 +334,27 @@ input:focus {
   outline:none;
 }
 
+.v-btn {
+  text-transform:none !important;
+}
 
+.history-place {
+  background-color: #fafafa;
+  border-radius: 0 !important;
+}
 
+.history-visible-place{
+  background-color: #FFFFFF;
+  border: 2px solid #33A39E;
+  border-top: 0 !important;
+}
+
+.history-place-comment{
+  border: 2px solid #fafafa
+}
+
+.index-explanation{
+  color: gray;
+  /* text-align: right; */
+}
 </style>

@@ -28,7 +28,7 @@ const routes = [
     component: MultiSearch,
   },
   {
-    path: '/Lolbody',
+    path: '/Lolbody/:userName',
     name: 'Lolbody',
     component: Lolbody,
   },

@@ -52,27 +52,27 @@ badges_420 = [
     ]
 
 badge_names = {
-    'totalDamageDealtToChampionsPerMin': '폭행범',  # 챔피언에게 입힌 피해량
-    'totalDamageTakenPerMin': '샌드백',             # 받은 피해량
-    "damageDealtToObjectivesPerMin": '몬스터헌터',       # 오브젝트에게 준 피해량
-    'totalMinionsKilledPerMin': '농부',           # cs
-    'killsRatio': '오지라퍼',                   # 킬관여율
-    'deathsRatio': '민폐甲',                  # 데스관여울
-    'killAssistPerMin': '쌈닭',
-    'killsPerMin': '학살자',                        # kill
-    'deathsPerMin': '불사신',                       # deaths
-    'assistsPerMin': '수발러',                      # assists
+    'totalDamageDealtToChampionsPerMin': ['폭행범', '챔피언에게 입힌 피해량'],  # 챔피언에게 입힌 피해량
+    'totalDamageTakenPerMin': ['샌드백', '챔피언에게 받은 피해량'],             # 받은 피해량
+    "damageDealtToObjectivesPerMin": ['몬스터헌터', '오브젝트에게 준 피해량'],       # 오브젝트에게 준 피해량
+    'totalMinionsKilledPerMin': ['농부', '분 당 cs'],           # cs
+    'killsRatio': ['오지라퍼', '팀내 킬/어시스트 비율'],                   # 킬관여율
+    'deathsRatio': ['민폐甲', '팀내 데스 비율'],                  # 데스관여울
+    'killAssistPerMin': ['쌈닭', '분 당 킬/어시스트'],
+    'killsPerMin': ['학살자', '분 당 킬 횟수'],                        # kill
+    'deathsPerMin': ['불사신', '분 당 데스 횟수'],                       # deaths
+    'assistsPerMin': ['수발러', '분 당 어시스트 횟수'],                      # assists
     # 'totalHealPerMin': '어머니',                    # 총 회복량
-    'damageSelfMitigatedPerMin': '방어막',          # 감소시킨 피해량(방어막?)
-    "damageDealtToTurretsPerMin": '철거반',         # 타워에 준 피해량
-    'timeCCingOthersPerMin': '명타겟',              # cc기에 맞은 총 시간
-    'totalTimeCrowdControlDealtPerMin': '명사수',   # cc기를 맞춘 총 시간
-    'visionScorePerMin': '옵저버',                  # 시야점수
-    'visionWardsBoughtInGamePerMin': '취미:비싼꽃꽂이',      # 핑와 구매 개수
-    'neutralMinionsKilledPerMin': '사냥꾼',         # 중립몹 킬수
-    'neutralMinionsKilledEnemyJunglePerMin': '대도둑', # 상대 정글몹 킬수
-    'wardsPlacedPerMin': '취미:꽃꽂이',                  # 와드 설치수
-    'wardsKilledPerMin': '나무꾼',     
+    'damageSelfMitigatedPerMin': ['돌덩이', '감소시킨 피해량'],          # 감소시킨 피해량(방어막?)
+    "damageDealtToTurretsPerMin": ['철거반', '타워에 준 피해량'],         # 타워에 준 피해량
+    'timeCCingOthersPerMin': ['명타겟', 'CC기에 맞은 시간'],              # cc기에 맞은 총 시간
+    'totalTimeCrowdControlDealtPerMin': ['명사수', 'CC기를 맞춘 시간'],   # cc기를 맞춘 총 시간
+    'visionScorePerMin': ['옵저버', '시야점수'],                  # 시야점수
+    'visionWardsBoughtInGamePerMin': ['취미:비싼꽃꽂이', '핑크와드 구매 개수'],      # 핑와 구매 개수
+    'neutralMinionsKilledPerMin': ['사냥꾼', '정글 미니언 처치 수'],         # 중립몹 킬수
+    'neutralMinionsKilledEnemyJunglePerMin': ['대도둑', '상대 정글 미니언 처치 수'], # 상대 정글몹 킬수
+    'wardsPlacedPerMin': ['취미:꽃꽂이', '와드 설치 개수'],                  # 와드 설치수
+    'wardsKilledPerMin': ['나무꾼', '와드 삭제 개수'],     
 }
 
 def change_to_p_value(z):
@@ -135,7 +135,6 @@ def update_match_data(profile_id, left, right, tier):
             player_data = participant.get('stats')
             # 레이더 차트 그리기 위한 플레이어 데이터
             participant_data = {
-                'visionScorePerMin': player_data.get('visionScore') / duration,
                 'totalMinionsKilledPerMin': player_data.get('totalMinionsKilled') / duration,
                 'deathsRatio': player_data.get('deaths') / team.get(participant.get('teamId')).get('deaths')\
                     if team.get(participant.get('teamId')).get('deaths') != 0 else 0,
@@ -157,13 +156,14 @@ def update_match_data(profile_id, left, right, tier):
                 'damageSelfMitigatedPerMin': player_data.get('damageSelfMitigated') / duration,          # 감소시킨 피해량(방어막?)
                 "damageDealtToTurretsPerMin": player_data.get('damageDealtToTurrets') / duration,         # 타워에 준 피해량
                 'timeCCingOthersPerMin': player_data.get('timeCCingOthers') / duration,              # cc기에 맞은 총 시간
-                'neutralMinionsKilledPerMin': player_data.get('neutralMinionsKilled') / duration,         # 중립몹 킬수
                 'totalTimeCrowdControlDealtPerMin': player_data.get('totalTimeCrowdControlDealt') / duration,   # cc기를 맞춘 총 시간
-                'visionWardsBoughtInGamePerMin': player_data.get('visionWardsBoughtInGame') / duration,      # 핑와 구매 개수
             }
             if queue == 420:
                 badges_420_data = {
+                    'visionScorePerMin': player_data.get('visionScore') / duration,
+                    'neutralMinionsKilledPerMin': player_data.get('neutralMinionsKilled') / duration,         # 중립몹 킬수
                     'neutralMinionsKilledEnemyJunglePerMin': player_data.get('neutralMinionsKilledEnemyJungle') / duration, # 상대 정글몹 킬수
+                    'visionWardsBoughtInGamePerMin': player_data.get('visionWardsBoughtInGame') / duration,      # 핑와 구매 개수
                     'wardsPlacedPerMin': player_data.get('wardsPlaced') / duration,                  # 와드 설치수
                     'wardsKilledPerMin': player_data.get('wardsKilled') / duration,                  # 와드 파괴수
                 }
@@ -226,11 +226,11 @@ def update_match_data(profile_id, left, right, tier):
                     tmp_player_p_value[col] = p_value
                     # 여기는 뱃지 붙이는 곳
                     if p_value >= 0.9:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 0})
+                        badges_data.append({'name': badge_names[col][0], 'stats': col, 'p_value': p_value, 'tier': 0, 'comment': badge_names[col][1] + ' 상위 10%'})
                     elif p_value >= 0.8:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 1})
+                        badges_data.append({'name': badge_names[col][0], 'stats': col, 'p_value': p_value, 'tier': 1, 'comment': badge_names[col][1] + ' 상위 20%'})
                     elif p_value >= 0.7:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 2})
+                        badges_data.append({'name': badge_names[col][0], 'stats': col, 'p_value': p_value, 'tier': 2, 'comment': badge_names[col][1] + ' 상위 30%'})
                 player_p_value = tmp_player_p_value
             else:
                 data.update(badges_450_data)
@@ -247,13 +247,14 @@ def update_match_data(profile_id, left, right, tier):
                     tmp_player_p_value[col] = p_value
                     # 여기는 뱃지 붙이는 곳
                     if p_value >= 0.9:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 0})
+                        badges_data.append({'name': badge_names[col][0], 'stats': col, 'p_value': p_value, 'tier': 0, 'comment': badge_names[col][1] + ' 상위 10%'})
                     elif p_value >= 0.8:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 1})
+                        badges_data.append({'name': badge_names[col][0], 'stats': col, 'p_value': p_value, 'tier': 1, 'comment': badge_names[col][1] + ' 상위 20%'})
                     elif p_value >= 0.7:
-                        badges_data.append({'name': badge_names[col], 'stats': col, 'p_value': p_value, 'tier': 2})
+                        badges_data.append({'name': badge_names[col][0], 'stats': col, 'p_value': p_value, 'tier': 2, 'comment': badge_names[col][1] + ' 상위 30%'})
                 player_p_value = tmp_player_p_value
-
+            
+            participant['source'] = data
             participant['line'] = tmp_position
             participant['analysis'] = player_p_value
             participant['badges'] = badges_data

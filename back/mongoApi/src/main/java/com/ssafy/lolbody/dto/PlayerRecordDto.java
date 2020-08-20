@@ -30,6 +30,7 @@ public class PlayerRecordDto {
 	private AnalysisDto analysis;
 	private RadarReferenceDto radar;
 	private List<BadgeDto> badges;
+	private AnalysisDto source;
 
 	public String getName() {
 		return name;
@@ -247,6 +248,14 @@ public class PlayerRecordDto {
 		this.badges = badges;
 	}
 
+	public AnalysisDto getSource() {
+		return source;
+	}
+
+	public void setSource(AnalysisDto source) {
+		this.source = source;
+	}
+
 	@Override
 	public String toString() {
 		return "PlayerRecordDto [name=" + name + ", champ=" + champ + ", kills=" + kills + ", deaths=" + deaths
@@ -255,7 +264,7 @@ public class PlayerRecordDto {
 				+ ", item5=" + item5 + ", item6=" + item6 + ", perk=" + perk + ", perkStyle=" + perkStyle + ", level="
 				+ level + ", gold=" + gold + ", cs=" + cs + ", csPerMin=" + csPerMin + ", line=" + line
 				+ ", matchGrade=" + matchGrade + ", analysis=" + analysis + ", radar=" + radar + ", badges=" + badges
-				+ "]";
+				+ ", source=" + source + "]";
 	}
 
 }

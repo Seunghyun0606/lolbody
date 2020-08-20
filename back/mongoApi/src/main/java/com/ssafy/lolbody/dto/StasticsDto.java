@@ -8,6 +8,7 @@ public class StasticsDto {
 	@Id
 	private int queueId;
 	private StasticsReferenceDto stastics;
+	private TierAnalysisReferenceDto tierAnalysis;
 
 	public int getQueueId() {
 		return queueId;
@@ -25,9 +26,17 @@ public class StasticsDto {
 		this.stastics = stastics;
 	}
 
+	public TierAnalysisReferenceDto getTierAnalysis() {
+		return tierAnalysis;
+	}
+
+	public void setTierAnalysis(TierAnalysisReferenceDto tierAnalysis) {
+		this.tierAnalysis = tierAnalysis;
+	}
+
 	@Override
 	public String toString() {
-		return "StasticsDto [queueId=" + queueId + ", stastics=" + stastics + "]";
+		return "StasticsDto [queueId=" + queueId + ", stastics=" + stastics + ", tierAnalysis=" + tierAnalysis + "]";
 	}
 
 }

@@ -30,6 +30,24 @@ public class Api {
 			"RGAPI-9041c188-f0f9-42ad-8204-b41f5da22e6a",
 			
 			// 임시키
+			"RGAPI-57f1039a-111f-47ad-b909-0e6b0e03a9f1",
+			"RGAPI-1cb6220a-1d83-48da-b291-99906253f78e",
+			"RGAPI-4bb21ae8-418a-4eba-bbfe-a2d502c5cc09",
+			"RGAPI-20c4332b-9f44-4732-97db-82236465c4b1",
+			
+			"RGAPI-28d14c16-da02-4309-8e26-f5a55755d15e",
+			"RGAPI-7d8fff74-f589-45b8-a9df-4e09d314cc34",
+			"RGAPI-aa5ff062-27d9-489f-8d5e-57f75661f5dc",
+			"RGAPI-4b77ebb2-71e0-48c4-aaef-7dd0cc94d3dd",
+			"RGAPI-ba3b2cd3-9db9-4e79-a1c1-8ac8ba262fab",
+			
+			"RGAPI-6875064d-9902-4075-8542-df9233d07fa7",
+			"RGAPI-3c6480a0-fe4c-4d1e-a959-c7e9ed586aa9",
+			"RGAPI-cf40dfdb-c665-4366-a86a-bc810d378f81",
+			"RGAPI-32a8a60f-b451-472c-bf81-a8b42d5ebf2b",
+			
+			"RGAPI-ad64d4d3-a6c2-4cc8-a883-f889c5195479",
+			"RGAPI-7e9c2ec1-c71e-4907-a86c-b8e481781600"
 			
 	};
 	// 안먹히는 키 찾는 방법
@@ -49,7 +67,7 @@ public class Api {
 				con.addRequestProperty("X-Riot-Token", tokens[idx]);
 				con.setRequestMethod("GET");
 				idx = (idx + 1) % tokens.length;
-				System.out.println(url + " " + con.getResponseMessage());
+//				System.out.println(url + " " + con.getResponseMessage());
 				StringBuilder sb = new StringBuilder();
 				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
@@ -68,7 +86,7 @@ public class Api {
 					continue;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		}
 		if(isOk)
@@ -92,7 +110,7 @@ public class Api {
 			con.setReadTimeout(5000);
 			con.addRequestProperty("X-Riot-Token", token);
 			con.setRequestMethod("GET");
-			System.out.println(url + " " + con.getResponseMessage());
+//			System.out.println(url + " " + con.getResponseMessage());
 			StringBuilder sb = new StringBuilder();
 			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
@@ -107,7 +125,7 @@ public class Api {
 				isTimeout = true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		if(isOk)
 			return result;
@@ -141,7 +159,7 @@ public class Api {
 				result = sb.toString();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return result;
 	}
@@ -168,7 +186,7 @@ public class Api {
 				result = sb.toString();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return result;
 	}
@@ -194,7 +212,7 @@ public class Api {
 				result = sb.toString();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return result;
 	}

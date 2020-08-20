@@ -30,6 +30,7 @@ import com.ssafy.lolbody.preset.ChampkeyRepository;
 import com.ssafy.lolbody.preset.PerkRepository;
 import com.ssafy.lolbody.preset.PerkStyleRepository;
 import com.ssafy.lolbody.repository.MatchRecordRepository;
+import com.ssafy.lolbody.repository.MatchRepository;
 import com.ssafy.lolbody.repository.UserCardRepository;
 import com.ssafy.lolbody.preset.SpellRepository;
 
@@ -52,6 +53,8 @@ public class ProfileService {
 	@Autowired
 	private PerkStyleRepository perkStyleRepository;
 	@Autowired
+	private MatchRepository matchRepository;
+	@Autowired
 	private MatchRecordRepository matchRecordRepository;
 	@Autowired
 	private UserCardRepository userCardRepository;
@@ -65,7 +68,7 @@ public class ProfileService {
 		}
 		List<UserCardReferenceDto> userCardList = userCard.getUserCardList();
 		UserCardReferenceDto userCardReference = userCardList.get(userCardList.size() - 1);
-		
+
 		return userCardReference;
 	}
 
@@ -82,7 +85,7 @@ public class ProfileService {
 		} else {
 			userCardList = userCard.getUserCardList();
 		}
-		
+
 		UserCardReferenceDto userCardReference = new UserCardReferenceDto();
 		userCardReference.setTimestamp(System.currentTimeMillis());
 		userCardReference.setSummonerName(summoner.getName());
@@ -155,17 +158,24 @@ public class ProfileService {
 				left = 0;
 			}
 
-			System.out.println("----------match 불러오기----------");
+//			System.out.println("----------match 불러오기----------");
 			boolean isNew = false;
-			for (int i = s; i >= 0; i--) {
-				if (matchService.gameCheck(matchReferences.get(i).getGameId()))
-					isNew = true;
+			try {
+				for (int i = s; i >= 0; i--) {
+					if (matchService.gameCheck(matchReferences.get(i).getGameId()))
+						isNew = true;
+				}
+			} catch (Exception e) {
+				for (int i = s; i >= 0; i--) {
+					matchService.deleteByGameId(matchReferences.get(i).getGameId());
+				}
+				throw new Exception(e);
 			}
 
-			System.out.println("----------python 코드 실행----------");
+//			System.out.println("----------python 코드 실행----------");
 			if (isNew) {
 				try {
-					System.out.println(summonerDto.getId() + " " + left + " " + right + " " + tier);
+//					System.out.println(summonerDto.getId() + " " + left + " " + right + " " + tier);
 					Api.runAnalysis("SetDataBase.py", summonerDto.getId() + " " + left + " " + right + " " + tier);
 				} catch (Exception e) {
 					for (int i = s; i >= 0; i--) {
@@ -175,7 +185,7 @@ public class ProfileService {
 				}
 			}
 			for (int i = s; i >= 0; i--) {
-				System.out.println("----------match 데이터 정리----------");
+//				System.out.println("----------match 데이터 정리----------");
 				MatchReferenceDto matchReferenceDto = matchReferences.get(i);
 				MatchDto match = matchService.findByGameId(matchReferenceDto.getGameId());
 				List<ParticipantIdentityDto> users = match.getParticipantIdentities();
@@ -243,7 +253,8 @@ public class ProfileService {
 						tmp.setItem5(p.getStats().getItem5());
 						tmp.setItem6(p.getStats().getItem6());
 						tmp.setPerk(perkRepository.findByKey(p.getStats().getPerk0()).getName().replaceAll(" ", ""));
-						tmp.setPerkStyle(perkStyleRepository.findByKey(p.getStats().getPerkSubStyle()).getName());
+						tmp.setPerkStyle(p.getStats().getPerkSubStyle() == 0 ? ""
+								: perkStyleRepository.findByKey(p.getStats().getPerkSubStyle()).getName());
 						tmp.setLevel(p.getStats().getChampLevel());
 						tmp.setGold(p.getStats().getGoldEarned());
 						tmp.setCs(p.getStats().getNeutralMinionsKilled() + p.getStats().getTotalMinionsKilled());
@@ -253,6 +264,7 @@ public class ProfileService {
 						tmp.setAnalysis(p.getAnalysis());
 						tmp.setRadar(p.getRadar());
 						tmp.setBadges(p.getBadges());
+						tmp.setSource(p.getSource());
 						if (j < 5)
 							blueTeammate.add(tmp);
 						else
@@ -293,13 +305,13 @@ public class ProfileService {
 				}
 				if (badges != null) {
 					for (BadgeDto badge : badges) {
-						String key = badge.getName() + " 상위" + (badge.getTier() + 1) * 10 + "%";
+						String key = badge.getName() + badge.getTier();
 						if (badgeMap.containsKey(key)) {
 							badge.setCnt(badgeMap.get(key).getCnt() + 1);
 						} else {
 							badge.setCnt(1);
 						}
-						badge.setDescription(key);
+						badge.setComment(badge.getComment());
 						badgeMap.put(key, badge);
 					}
 				}
@@ -310,8 +322,21 @@ public class ProfileService {
 		matchResult.setMatchRecordList(matchRecords);
 		matchResult.setBadgeMap(badgeMap);
 
-		System.out.println("----------return----------");
+//		System.out.println("----------return----------");
 		return matchResult;
+	}
+
+	public void deleteMatchInfo(String name) throws Exception {
+		SummonerDto summonerDto = summonerService.findOnly(name);
+		MatchlistDto matchlistDto = matchlistService.findOnly(summonerDto);
+		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
+		matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
+				.filter(o -> o.getQueue() != 2000 && o.getQueue() != 2010 && o.getQueue() != 2020)
+				.collect(Collectors.toList());
+		for (MatchReferenceDto matchReference : matchReferences) {
+			matchRepository.deleteById(matchReference.getGameId());
+			matchRecordRepository.deleteById(matchReference.getGameId());
+		}
 	}
 
 }

@@ -38,15 +38,15 @@ public class SummonerController {
 		try {
 			summonerDto = summonerService.findBySubName(name.replaceAll(" ", ""));
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 정보 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -62,23 +62,23 @@ public class SummonerController {
 			summonerDto = summonerService.findBySubName(name.replaceAll(" ", ""));
 			matchlistDto = matchlistService.findBySummonerId(summonerDto);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
+//			e.printStackTrace();
+//			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Api.postHttpsRequest(e, "소환사 매치 리스트 검색 중 오류 발생");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(matchlistDto, HttpStatus.OK);
 	}
 
-	@GetMapping("/auto/{name}")
-	@ApiOperation(value = "사용자의 소환사 이름을 name 변수로 받아 맞는 소환사 이름을 모두 반환합니다.")
+	@GetMapping("/api/auto/{name}")
+	@ApiOperation(value = "name으로 시작하는 소환사 정보를 모두 반환합니다.")
 	public ResponseEntity<List<SummonerDto>> getSummoners(@PathVariable String name) {
 		return new ResponseEntity<>(summonerService.findByNameStartingWith(name), HttpStatus.OK);
 	}

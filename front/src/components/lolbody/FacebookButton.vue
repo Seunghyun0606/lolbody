@@ -1,7 +1,7 @@
 <template>
   <a id="facebook-link-btn" @click="onClickFacebookButton">
-    <img
-      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+    <img class="image"
+      :src="require('@/assets/facebook.png')"
     />
   </a>
 </template>
@@ -9,9 +9,11 @@
 <script>
 export default {
   name: 'FacebookButton',
+    props: {
+    username: String
+  },
   data() {
     return {
-      username: '',
       url: 'https://lolbody.gq/Lolbody/',
       badges: ['#학살자', '#농부', '#오지라퍼', '#대도둑']
     }
@@ -27,6 +29,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.image {
+  width: 52px;
+  /* height: 50px; */
+}
 
 </style>

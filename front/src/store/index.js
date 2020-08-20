@@ -16,6 +16,15 @@ export default new Vuex.Store({
     multiSearchDatas: [],
     // multiUserDatas: [],
     // multiSearchRadarData: [],
+    // lolbodyData: {
+    //   userCardReference: {},
+    //   radarList: [],
+    //   champList: [],
+    //   lineList: [],
+    //   stastics: {},
+    //   radar: {},
+    //   analysis: {},
+    // },
 
 
     profileLineChartOption: {
@@ -502,6 +511,15 @@ export default new Vuex.Store({
       // multiSearchDatas.recentMatchResults = { wins: recentGameWin, fails: recentGameTotal - recentGameWin, rate: Math.round((recentGameWin/recentGameTotal)*100)}
       // state.multiSearchDatas.push(multiSearchDatas)
     },
+    // setLolbodyData(state, lolbodyData) {
+    //   state.lolbodyData.userCardReference = lolbodyData.userCardReference
+    //   state.lolbodyData.radarList = lolbodyData.radarList.slice(0, 10)
+    //   state.lolbodyData.champList = lolbodyData.champList
+    //   state.lolbodyData.lineList = lolbodyData.lineList
+    //   state.lolbodyData.stastics = lolbodyData.stastics
+    //   state.lolbodyData.radar = lolbodyData.radar
+    //   state.lolbodyData.analysis = lolbodyData.analysis
+    // },
     // setMultiUserDatas(state, userDatas) {
     //   // userData는 array로 오기 때문에 sperad시킴
     //   // 20.07.30 userData가 자유랭크 데이터도 넘기기때문에 스프레드 시키면안됨. 단일 오브젝트만 넣습니다.
@@ -704,6 +722,16 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
+    // getLolbodyData( { commit }, userName ) {
+      // axios
+      //   .get(SERVER_URL + `/api/lolbody/${userName}`)
+      //   .then(res => {
+      //     commit('setLolbodyData', res.data)
+      //   })
+      //   .catch(err => {
+      //     console.log(err)
+      //   })
+    // },
     // getMultiUserDatas( { commit }, userName ) {
     //   return axios
     //     .get(SERVER_URL + `/api/profile/${userName}`)

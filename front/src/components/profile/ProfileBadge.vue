@@ -33,6 +33,7 @@ export default {
   },
   created() {
       window.addEventListener("scroll", this.onScroll)
+      this.onScroll();
   },
   destroyed(){
       window.removeEventListener("scroll", this.onScroll)
@@ -52,7 +53,7 @@ export default {
         },
         getMY(){
             return parseInt(this.MY) - this.scrollY;
-        }
+        },
   },
   methods:{
         mousepoint(event){

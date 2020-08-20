@@ -140,7 +140,8 @@ export default {
 <style scoped>
 
 .nav-serach-btn:hover {
-  cursor: pointer;
+    cursor: pointer;
+    background: rgba(48, 186, 140, 0.8) !important;
 }
 
 .nav-search-border {

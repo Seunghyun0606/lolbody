@@ -155,7 +155,7 @@
                 </table>
                 <v-row v-if="matchData.display" style="background-color: #fff;" width="650px">
                     <v-col cols="6">
-                        <barchart :team="matchData.blueTeam.teammate"/>
+                        <barchart :team="matchData.blueTeam.teammate" :selfName="profileDatas.summonerName" :win="matchData[matchData.myTeam].win" />
                         <div class="tooltip" :class="['blueplayer'+idx]" v-for="(p, idx) in matchData.blueTeam.teammate" :key="idx + '_blue_player'">
                             <img :src="imageload('champion/' + p.champ + '.png')" class="player-icon" />
                             <span class="tooltiptext">{{p.name}}</span>
@@ -163,7 +163,7 @@
                     </v-col>
 
                     <v-col cols="6">
-                        <barchart :team="matchData.redTeam.teammate"/>
+                        <barchart :team="matchData.redTeam.teammate" :selfName="profileDatas.summonerName" :win="matchData[matchData.myTeam].win" />
                         <div class="tooltip" :class="['redplayer'+idx]" v-for="(p, idx) in matchData.redTeam.teammate" :key="idx + '_red_player'">
                             <img :src="imageload('champion/' + p.champ + '.png')" class="player-icon" />
                             <span class="tooltiptext">{{p.name}}</span>
@@ -269,15 +269,15 @@ export default {
 </script>
 
 <style>
+
 .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
+    min-width: 130px;
     background-color: #272727;
     color: #fff;
     text-align: center;

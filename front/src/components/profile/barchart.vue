@@ -12,7 +12,7 @@ export default {
     components: {
         apexchart
     },
-    props: ['team'],
+    props: ['team', 'selfName', 'win'],
     computed:{
         series(){
             let result = [{
@@ -35,16 +35,18 @@ export default {
             return result;
         },
         chartOptions(){
-            let result = [];
-            for(let t in this.team){
-                result.push(this.team[t].champ);
-            }
-            return {
+            let result = {
                 chart: {
                     type: 'bar',
                     toolbar: {
                         show: false,
-                    },
+                    }, 
+                    animations: {
+                        enabled: false,
+                    }
+                },
+                annotations: {
+                    yaxis: [],
                 },
                 plotOptions: {
                     bar: {
@@ -72,17 +74,10 @@ export default {
                 },
                 xaxis: {
                     type: 'category',
-                    categories: [0, 0, 0, 0, 0],
+                    categories: [0, 1, 2, 3, 4],
                     tickAmount: 5,
                     max: 1
                 },
-                //yaxis:{
-                //    labels: {
-                //        formatter: function(val) {
-                //            return val;
-                //        }
-                //    }
-                //},
                 legend:{
                     show: true
                 },
@@ -91,7 +86,31 @@ export default {
                         show: false,
                     },
                 }
+            };
+            for(let t in this.team){
+                if(this.team[t].name == this.selfName){
+                    if(t == 4){
+                        result.annotations.yaxis.push({
+                            y: parseInt(t)-1,
+                            y2: parseInt(t),
+                            fillColor: this.win ? '#0054FF' : '#F00000',
+                            opacity: 0.1,
+                            offsetY: 14,  
+                            yAxisIndex: parseInt(t),
+                        })
+                    }else{
+                        result.annotations.yaxis.push({
+                            y: parseInt(t),
+                            y2: parseInt(t)+1,
+                            fillColor: this.win ? '#0054FF' : '#F00000',
+                            opacity: 0.1,
+                            offsetY: -17,  
+                            yAxisIndex: parseInt(t),
+                        })
+                    }
+                }
             }
+            return result;
         }
     },
     methods:{

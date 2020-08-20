@@ -94,7 +94,7 @@ public class ProfileController {
 		}
 		return new ResponseEntity<>(matchResult, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "소환사 이름으로 유저의 매치 데이터를 삭제합니다.")
 	@DeleteMapping("/api/profile/{name}")
 	public ResponseEntity<String> deleteMatchInfo(@PathVariable String name) {
@@ -116,10 +116,4 @@ public class ProfileController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "아무 이유없이 404를 리턴해줍니다.")
-	@GetMapping("/api/profile/404")
-	public ResponseEntity<MatchResultDto> errorTest() {
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-
 }

@@ -87,7 +87,6 @@ public class LolbodyService {
 							&& matchRecord.getQueue() != 430 && matchRecord.getQueue() != 440)) {
 						continue;
 					}
-
 					PlayerRecordDto playerRecord = (matchRecord.getMyTeam().equals("blueTeam")
 							? matchRecord.getBlueTeam().getTeammate().get(matchRecord.getMyIndex())
 							: matchRecord.getRedTeam().getTeammate().get(matchRecord.getMyIndex()));
@@ -242,6 +241,7 @@ public class LolbodyService {
 
 			lolbodyRepository.save(lolbodyResult);
 		} catch (Exception e) {
+//			e.printStackTrace();
 			profileService.deleteMatchInfo(name);
 			throw new Exception(e);
 		}

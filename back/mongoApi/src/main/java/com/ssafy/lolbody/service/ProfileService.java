@@ -74,7 +74,7 @@ public class ProfileService {
 
 	public void updateProfile(String name) throws Exception {
 		SummonerDto summoner = summonerService.findBySubName(name.toLowerCase());
-		List<LeagueEntryDto> leagueEntryList = leagueEntryService.findBySummonerId(summoner.getId());
+		List<LeagueEntryDto> leagueEntryList = leagueEntryService.findBySummonerId(summoner);
 		matchlistService.findBySummonerId(summoner);
 
 		UserCardDto userCard = userCardRepository.findBySummonerId(summoner.getId());
@@ -133,7 +133,7 @@ public class ProfileService {
 		map.put("SUPPORT", 4);
 		map.put("None", 5);
 
-		List<LeagueEntryDto> leagueEntryList = leagueEntryService.findOnly(summonerDto.getId());
+		List<LeagueEntryDto> leagueEntryList = leagueEntryService.findOnly(summonerDto);
 		String tier = "IRON";
 		for (LeagueEntryDto l : leagueEntryList) {
 			if (l.getQueueType().equals("RANKED_SOLO_5x5")) {
@@ -167,6 +167,7 @@ public class ProfileService {
 				}
 			} catch (Exception e) {
 				for (int i = s; i >= 0; i--) {
+//					System.out.println(matchReferences.get(i).getGameId());
 					matchService.deleteByGameId(matchReferences.get(i).getGameId());
 				}
 				throw new Exception(e);
@@ -179,6 +180,7 @@ public class ProfileService {
 					Api.runAnalysis("SetDataBase.py", summonerDto.getId() + " " + left + " " + right + " " + tier);
 				} catch (Exception e) {
 					for (int i = s; i >= 0; i--) {
+//						System.out.println(matchReferences.get(i).getGameId());
 						matchService.deleteByGameId(matchReferences.get(i).getGameId());
 					}
 					throw new Exception(e);

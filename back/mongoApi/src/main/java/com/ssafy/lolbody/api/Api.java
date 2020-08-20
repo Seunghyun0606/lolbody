@@ -135,6 +135,47 @@ public class Api {
 			return "Fail";
 	}
 	
+	public static String get(String input, String summonerName, String key) {
+		boolean isOk = false, isTimeout = false, isForbidden = false;
+		String result = "";
+		try {
+			String name = summonerName.replaceAll("\\s", "%20");
+			URL url = new URL(input+"/"+name);
+			if(summonerName.length() == 0)
+				url = new URL(input);
+			HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
+			con.addRequestProperty("X-Riot-Token", key);
+			con.setRequestMethod("GET");
+//			System.out.println(url + " " + con.getResponseMessage());
+			StringBuilder sb = new StringBuilder();
+			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"));
+				String line;
+				while((line = br.readLine()) != null) {
+					sb.append(line).append("\n");
+				}
+				br.close();
+				isOk = true;
+				result = sb.toString();
+			} else if (con.getResponseMessage().equals("Too Many Requests") || con.getResponseMessage().equals("Gateway Timeout")) {
+				isTimeout = true;
+			} else if (con.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN)
+				isForbidden = true;
+		} catch (Exception e) {
+//			e.printStackTrace();
+		}
+		if(isOk)
+			return result;
+		else if(isTimeout)
+			return "Timeout";
+		else if (isForbidden)
+			return "Forbidden";
+		else
+			return "Fail";
+	}
+	
 	public static String getAllChampionsInfo() {
 		JSONArray jsonArray = new JSONArray(Api.get("https://ddragon.leagueoflegends.com/api/versions.json", ""));
 		String version = jsonArray.getString(0);
@@ -279,6 +320,9 @@ public class Api {
 			throw new IOException(sb.toString());
 		}
 	}
-	
+
+	public static String[] getTokens() {
+		return tokens;
+	}
 	
 }

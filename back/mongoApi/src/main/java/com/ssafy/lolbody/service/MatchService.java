@@ -30,29 +30,30 @@ public class MatchService {
 	public MatchDto findByGameId(long gameId) throws Exception {
 		MatchDto matchDto = matchRepository.findByGameId(gameId);
 		if (matchDto == null) {
-			matchDto = new MatchDto();
-			String json = Api.multi("https://kr.api.riotgames.com/lol/match/v4/matches", gameId + "");
-			if (json.equals("Fail"))
-				throw new TimeoutException("서브 키 요청이 너무 많습니다.");
-			else if (json.equals("Forbidden"))
-				throw new TimeoutException("서브 키 요청이 너무 많습니다. (만료된 key 포함)");
-			matchDto = new Gson().fromJson(json, MatchDto.class);
-
-			List<ParticipantDto> participants = matchDto.getParticipants();
-			List<ParticipantIdentityDto> participantIdentitys = matchDto.getParticipantIdentities();
-			MatchTimelineDto matchTimeline = matchTimelineService.findByGameId(gameId);
-
-			for (int i = 0; i < participants.size(); i++) {
-				ParticipantDto participant = participants.get(i);
-				participant.setName(participantIdentitys.get(i).getPlayer().getSummonerName());
-				MatchPositionDto position = matchTimeline.getFrames().get(2).getParticipantFrames().get((i + 1) + "")
-						.getPosition();
-				participant.setX(position.getX());
-				participant.setY(position.getY());
-				participant.setAnalysis(new AnalysisDto());
-			}
-
-			save(matchDto);
+//			matchDto = new MatchDto();
+//			String json = Api.multi("https://kr.api.riotgames.com/lol/match/v4/matches", gameId + "");
+//			if (json.equals("Fail"))
+//				throw new TimeoutException("서브 키 요청이 너무 많습니다.");
+//			else if (json.equals("Forbidden"))
+//				throw new TimeoutException("서브 키 요청이 너무 많습니다. (만료된 key 포함)");
+//			matchDto = new Gson().fromJson(json, MatchDto.class);
+//
+//			List<ParticipantDto> participants = matchDto.getParticipants();
+//			List<ParticipantIdentityDto> participantIdentitys = matchDto.getParticipantIdentities();
+//			MatchTimelineDto matchTimeline = matchTimelineService.findByGameId(gameId);
+//
+//			for (int i = 0; i < participants.size(); i++) {
+//				ParticipantDto participant = participants.get(i);
+//				participant.setName(participantIdentitys.get(i).getPlayer().getSummonerName());
+//				MatchPositionDto position = matchTimeline.getFrames().get(2).getParticipantFrames().get((i + 1) + "")
+//						.getPosition();
+//				participant.setX(position.getX());
+//				participant.setY(position.getY());
+//				participant.setAnalysis(new AnalysisDto());
+//			}
+//
+//			save(matchDto);
+			throw new Exception("비정상적인 접근입니다.");
 		}
 		return matchDto;
 	}

@@ -14,24 +14,76 @@ export default {
     return {
     }
   },
-  computed: {
-      series: {
-        get() {
-          return [
-              {
-                name: '동 티어대비',
-                data: []
-              },
-              {
-                name: '나',
-                data: []
-              },
-            ]
+    computed: {
+        series() {
+            return [
+                {
+                    name: '동 티어대비',
+                    data: []
+                },
+                {
+                    name: '나',
+                    data: []
+                }]
         },
-        set(){
-          
+        chartOptions(){
+            return {
+                barChartOptions: {
+                    chart: {
+                        type: 'bar',
+                        toolbar: {
+                            show: false,
+                        },
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: true,
+                            dataLabels: {
+                                position: 'top',
+                            },
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                        offsetX: 17,
+                        style: {
+                            fontSize: '7px',
+                            colors: ['#000']
+                        }
+                    },
+                    stroke: {
+                        show: true,
+                        width: 1,
+                        colors: ['#fff']
+                    },
+                    xaxis: {
+                        categories: [
+                            'totalDamageDealtToChampionsPerMin',
+                            'damageDealtToObjectivesPerMin',
+                            'visionScorePerMin',
+                            'totalDamageTakenPerMin',
+                            'totalMinionsKilledPerMin',
+                            'killsRatio',
+                            'deathsRatio',
+                            'killAssistPerMin',
+                            'killsPerMin',
+                            'deathsPerMin',
+                            'assistsPerMin',
+                            'totalHealPerMin',
+                            'damageSelfMitigatedPerMin',
+                            'damageDealtToTurretsPerMin',
+                            'timeCCingOthersPerMin',
+                            'neutralMinionsKilledPerMin',
+                            'totalTimeCrowdControlDealtPerMin',
+                            'visionWardsBoughtInGamePerMin',
+                            'neutralMinionsKilledEnemyJunglePerMin',
+                            'wardsPlacedPerMin',
+                            'wardsKilledPerMin',
+                        ],
+                    }
+                },
+            }
         }
-      },
       // chartOptions() {
       //   return {
       //     chart: {
@@ -88,12 +140,12 @@ export default {
       //     },
       //   }
       // },
-  },
-  props: {
-    getMyData: Object,
-    getOtherData: [Array, Object]
-    // barSeries: Array,
-  },
+    },
+    props: {
+        getMyData: Object,
+        getOtherData: [Array, Object]
+        // barSeries: Array,
+    },
   watch: {
     getMyData: {
       deep: true,

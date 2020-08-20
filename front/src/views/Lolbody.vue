@@ -322,339 +322,285 @@ import lolbti from '@/assets/data/lolbti.json'
 import axios from 'axios'
 
 export default {
-  name: 'Lolbody',
-  components: {
-    LolbodyLoading,
-    ColumnChart,
-    BarChart,
-    // LolbodyBarChart,
-    // LolbodyColumnChart,
-    LolbodyRadarChart,
-    LolbodyWordCloud,
-    KaKaoButton,
-    TwitterButton,
-    FacebookButton,
-  },
-  data() {
-    return {
-      noRecommendChamps: false,
-      timeWait: false,
-      isLolbodyLoading: false,
-      loadingColor: 'grey',
-      loadingSize: '50px',
-      btnTrigger: {
-        barChartClick: {
-          dia: false,
-          pla: false,
-          gold: false,
-          silver: false,
-          bronze: false,
-          iron: false,
-        },
-        champClick: {
-          main: true,
-          sub: false,
-        },
-
-      },
-      tooltip_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-      getLolbodyData: {
-        userCardReference: {
-          "timestamp": 1597825234114,
-          "summonerName": "재료페인",
-          "profileIconId": 4086,
-          "summonerLevel": 201,
-          "soloRank": {
-            "tier": "PLATINUM",
-            "rank": "III",
-            "leaguePoints": 32,
-            "wins": 66,
-            "losses": 53,
-            "winRate": 55.46218487394958
-          },
-        },
-        radarList: [
-          {
-            "timestamp": 1594060552449,
-            "name": "TwistedFate",
-            "radarReference": {
-              "aggressiveness": 0.5287902452747564,
-              "stability": 0.6730255075161797,
-              "influence": 0.504803296988731
-            }
-          },
-          {
-            "timestamp": 1594058425193,
-            "name": "Jax",
-            "radarReference": {
-              "aggressiveness": 0.37390242667293955,
-              "stability": 0.4310051680067268,
-              "influence": 0.3031385651678081
-            }
-          },
-          {
-            "timestamp": 1594056983278,
-            "name": "Orianna",
-            "radarReference": {
-              "aggressiveness": 0.12238816226275566,
-              "stability": 0.5091945524345002,
-              "influence": 0.12000449578248656
-            }
-          },
-          {
-            "timestamp": 1594055159121,
-            "name": "Orianna",
-            "radarReference": {
-              "aggressiveness": 0.22806715096095465,
-              "stability": 0.5254654385290459,
-              "influence": 0.2193302750652961
-            }
-          },
-          {
-            "timestamp": 1594053134899,
-            "name": "Orianna",
-            "radarReference": {
-              "aggressiveness": 0.2901309138940865,
-              "stability": 0.5946994096901721,
-              "influence": 0.31574316472451325
-            }
-          },
-          {
-            "timestamp": 1594051149111,
-            "name": "Orianna",
-            "radarReference": {
-              "aggressiveness": 0.3653485013278112,
-              "stability": 0.48374294432745907,
-              "influence": 0.32514938494076384
-            }
-          },
-          {
-            "timestamp": 1594049332679,
-            "name": "Orianna",
-            "radarReference": {
-              "aggressiveness": 0.6525656931029792,
-              "stability": 0.46818454118961733,
-              "influence": 0.5690111665081311
-            }
-          },
-          {
-            "timestamp": 1594046379961,
-            "name": "Graves",
-            "radarReference": {
-              "aggressiveness": 0.468612237283427,
-              "stability": 0.4221981915745073,
-              "influence": 0.7439142968083056
-            }
-          },
-          {
-            "timestamp": 1594044251027,
-            "name": "Ezreal",
-            "radarReference": {
-              "aggressiveness": 0.4883628522405608,
-              "stability": 0.4420279678502079,
-              "influence": 0.3394182825191822
-            }
-          },
-          {
-            "timestamp": 1594042080076,
-            "name": "Vayne",
-            "radarReference": {
-              "aggressiveness": 0.2489906606546086,
-              "stability": 0.8168628321386745,
-              "influence": 0.44028859524597586
-            }
-          },
-
-        ],
-        champList: [
-          {
-            "name": "Orianna",
-            "games": 5,
-            "wins": 3,
-            "losses": 2
-          },
-          {
-            "name": "Ezreal",
-            "games": 5,
-            "wins": 3,
-            "losses": 2
-          },
-        ],
-        lineList: [
-          {
-            "name": "BOTTOM",
-            "games": 22,
-            "wins": 13,
-            "losses": 9
-          },
-          {
-            "name": "JUNGLE",
-            "games": 8,
-            "wins": 2,
-            "losses": 6
-          },
-          {
-            "name": "TOP",
-            "games": 6,
-            "wins": 4,
-            "losses": 2
-          },
-          {
-            "name": "MID",
-            "games": 4,
-            "wins": 3,
-            "losses": 1
-          },
-          {
-            "name": "SUPPORT",
-            "games": 1,
-            "wins": 0,
-            "losses": 1
-          }
-        ],
-        radar: {
-          "aggressiveness": 0.45649899054273085,
-          "stability": 0.46422986811258116,
-          "influence": 0.42943992455013963
-        },
-        analysis: {
-          "totalDamageDealtToChampionsPerMin": 0.4867824887872988,
-          "damageDealtToObjectivesPerMin": 0.563701684684821,
-          "visionScorePerMin": 0.2912816723922004,
-          "totalDamageTakenPerMin": 0.4729416777189834,
-          "totalMinionsKilledPerMin": 0.6389355471119424,
-          "killsRatio": 0.4333364165733978,
-          "deathsRatio": 0.4521519272401263,
-          "killAssistPerMin": 0.40977280512191083,
-          "killsPerMin": 0.4730457064944947,
-          "deathsPerMin": 0.520559122806781,
-          "assistsPerMin": 0.38440696307502353,
-          "totalHealPerMin": 0.0,
-          "damageSelfMitigatedPerMin": 0.4306140184137884,
-          "damageDealtToTurretsPerMin": 0.6064815854204757,
-          "timeCCingOthersPerMin": 0.5889592408994767,
-          "neutralMinionsKilledPerMin": 0.4591647865999153,
-          "totalTimeCrowdControlDealtPerMin": 0.49119109346869805,
-          "visionWardsBoughtInGamePerMin": 0.4108086044276818,
-          "neutralMinionsKilledEnemyJunglePerMin": 0.4913651945781554,
-          "wardsPlacedPerMin": 0.34619754025181293,
-          "wardsKilledPerMin": 0.3436652132791967
-        },
-
-      },
-      getOtherData: [
-        {
-          "totalDamageDealtToChampionsPerMin": 0.5,
-          "damageDealtToObjectivesPerMin": 0.5,
-          "visionScorePerMin": 0.5,
-          "totalDamageTakenPerMin": 0.5,
-          "totalMinionsKilledPerMin": 0.5,
-          "killsRatio": 0.5,
-          "deathsRatio": 0.5,
-          "killAssistPerMin": 0.5,
-          "killsPerMin": 0.5,
-          "deathsPerMin": 0.5,
-          "assistsPerMin": 0.5,
-          "totalHealPerMin": 0.0,
-          "damageSelfMitigatedPerMin": 0.5,
-          "damageDealtToTurretsPerMin": 0.5,
-          "timeCCingOthersPerMin": 0.5,
-          "neutralMinionsKilledPerMin": 0.5,
-          "totalTimeCrowdControlDealtPerMin": 0.5,
-          "visionWardsBoughtInGamePerMin": 0.5,
-          "neutralMinionsKilledEnemyJunglePerMin": 0.5,
-          "wardsPlacedPerMin": 0.5,
-          "wardsKilledPerMin": 0.5
-        },
-      ],
-      mostChamp: {
-        name: "error",
-        games: 0,
-        wins: 0,
-      },
-      champTitle: "",
-      champInfo: {},
-      recommendChamps: [],
-      champType: "",
-      background: "아이오니아",
-      lolbti: "",
-      lolbtiChampType: "",
-      korChampName: "",
-      // barSeries: [
-      //   {
-      //     name: "",
-      //     data: [],
-
-      //   }, 
-      //   {
-      //     name: "",
-      //     data: [],
-      //   }
-      // ],
-      barSeries: [
-        {
-          name: '동 티어대비',
-          data: []
-        },
-        {
-          name: '나',
-          data: []
-        },
-      ],
-      barChartOptions: {
-        chart: {
-          type: 'bar',
-          toolbar: {
-            show: false,
-          },
-        },
-        plotOptions: {
-          bar: {
-            horizontal: true,
-            dataLabels: {
-              position: 'top',
+    name: 'Lolbody',
+    components: {
+        LolbodyLoading,
+        ColumnChart,
+        BarChart,
+        // LolbodyBarChart,
+        // LolbodyColumnChart,
+        LolbodyRadarChart,
+        LolbodyWordCloud,
+        KaKaoButton,
+        TwitterButton,
+        FacebookButton,
+    },
+    data() {
+        return {
+            noRecommendChamps: false,
+            timeWait: false,
+            isLolbodyLoading: false,
+            loadingColor: 'grey',
+            loadingSize: '50px',
+            btnTrigger: {
+                barChartClick: {
+                    dia: false,
+                    pla: false,
+                    gold: false,
+                    silver: false,
+                    bronze: false,
+                    iron: false,
+                },
+                champClick: {
+                    main: true,
+                    sub: false,
+                },
             },
-          }
+        tooltip_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        getLolbodyData: {
+            userCardReference: {
+            "timestamp": 1597825234114,
+            "summonerName": "재료페인",
+            "profileIconId": 4086,
+            "summonerLevel": 201,
+            "soloRank": {
+                "tier": "PLATINUM",
+                "rank": "III",
+                "leaguePoints": 32,
+                "wins": 66,
+                "losses": 53,
+                "winRate": 55.46218487394958
+            },
+            },
+            radarList: [
+            {
+                "timestamp": 1594060552449,
+                "name": "TwistedFate",
+                "radarReference": {
+                "aggressiveness": 0.5287902452747564,
+                "stability": 0.6730255075161797,
+                "influence": 0.504803296988731
+                }
+            },
+            {
+                "timestamp": 1594058425193,
+                "name": "Jax",
+                "radarReference": {
+                "aggressiveness": 0.37390242667293955,
+                "stability": 0.4310051680067268,
+                "influence": 0.3031385651678081
+                }
+            },
+            {
+                "timestamp": 1594056983278,
+                "name": "Orianna",
+                "radarReference": {
+                "aggressiveness": 0.12238816226275566,
+                "stability": 0.5091945524345002,
+                "influence": 0.12000449578248656
+                }
+            },
+            {
+                "timestamp": 1594055159121,
+                "name": "Orianna",
+                "radarReference": {
+                "aggressiveness": 0.22806715096095465,
+                "stability": 0.5254654385290459,
+                "influence": 0.2193302750652961
+                }
+            },
+            {
+                "timestamp": 1594053134899,
+                "name": "Orianna",
+                "radarReference": {
+                "aggressiveness": 0.2901309138940865,
+                "stability": 0.5946994096901721,
+                "influence": 0.31574316472451325
+                }
+            },
+            {
+                "timestamp": 1594051149111,
+                "name": "Orianna",
+                "radarReference": {
+                "aggressiveness": 0.3653485013278112,
+                "stability": 0.48374294432745907,
+                "influence": 0.32514938494076384
+                }
+            },
+            {
+                "timestamp": 1594049332679,
+                "name": "Orianna",
+                "radarReference": {
+                "aggressiveness": 0.6525656931029792,
+                "stability": 0.46818454118961733,
+                "influence": 0.5690111665081311
+                }
+            },
+            {
+                "timestamp": 1594046379961,
+                "name": "Graves",
+                "radarReference": {
+                "aggressiveness": 0.468612237283427,
+                "stability": 0.4221981915745073,
+                "influence": 0.7439142968083056
+                }
+            },
+            {
+                "timestamp": 1594044251027,
+                "name": "Ezreal",
+                "radarReference": {
+                "aggressiveness": 0.4883628522405608,
+                "stability": 0.4420279678502079,
+                "influence": 0.3394182825191822
+                }
+            },
+            {
+                "timestamp": 1594042080076,
+                "name": "Vayne",
+                "radarReference": {
+                "aggressiveness": 0.2489906606546086,
+                "stability": 0.8168628321386745,
+                "influence": 0.44028859524597586
+                }
+            },
+
+            ],
+            champList: [
+            {
+                "name": "Orianna",
+                "games": 5,
+                "wins": 3,
+                "losses": 2
+            },
+            {
+                "name": "Ezreal",
+                "games": 5,
+                "wins": 3,
+                "losses": 2
+            },
+            ],
+            lineList: [
+            {
+                "name": "BOTTOM",
+                "games": 22,
+                "wins": 13,
+                "losses": 9
+            },
+            {
+                "name": "JUNGLE",
+                "games": 8,
+                "wins": 2,
+                "losses": 6
+            },
+            {
+                "name": "TOP",
+                "games": 6,
+                "wins": 4,
+                "losses": 2
+            },
+            {
+                "name": "MID",
+                "games": 4,
+                "wins": 3,
+                "losses": 1
+            },
+            {
+                "name": "SUPPORT",
+                "games": 1,
+                "wins": 0,
+                "losses": 1
+            }
+            ],
+            radar: {
+            "aggressiveness": 0.45649899054273085,
+            "stability": 0.46422986811258116,
+            "influence": 0.42943992455013963
+            },
+            analysis: {
+            "totalDamageDealtToChampionsPerMin": 0.4867824887872988,
+            "damageDealtToObjectivesPerMin": 0.563701684684821,
+            "visionScorePerMin": 0.2912816723922004,
+            "totalDamageTakenPerMin": 0.4729416777189834,
+            "totalMinionsKilledPerMin": 0.6389355471119424,
+            "killsRatio": 0.4333364165733978,
+            "deathsRatio": 0.4521519272401263,
+            "killAssistPerMin": 0.40977280512191083,
+            "killsPerMin": 0.4730457064944947,
+            "deathsPerMin": 0.520559122806781,
+            "assistsPerMin": 0.38440696307502353,
+            "totalHealPerMin": 0.0,
+            "damageSelfMitigatedPerMin": 0.4306140184137884,
+            "damageDealtToTurretsPerMin": 0.6064815854204757,
+            "timeCCingOthersPerMin": 0.5889592408994767,
+            "neutralMinionsKilledPerMin": 0.4591647865999153,
+            "totalTimeCrowdControlDealtPerMin": 0.49119109346869805,
+            "visionWardsBoughtInGamePerMin": 0.4108086044276818,
+            "neutralMinionsKilledEnemyJunglePerMin": 0.4913651945781554,
+            "wardsPlacedPerMin": 0.34619754025181293,
+            "wardsKilledPerMin": 0.3436652132791967
+            },
+
         },
-        dataLabels: {
-          enabled: false,
-          offsetX: 17,
-          style: {
-            fontSize: '7px',
-            colors: ['#000']
-          }
+        getOtherData: [
+            {
+            "totalDamageDealtToChampionsPerMin": 0.5,
+            "damageDealtToObjectivesPerMin": 0.5,
+            "visionScorePerMin": 0.5,
+            "totalDamageTakenPerMin": 0.5,
+            "totalMinionsKilledPerMin": 0.5,
+            "killsRatio": 0.5,
+            "deathsRatio": 0.5,
+            "killAssistPerMin": 0.5,
+            "killsPerMin": 0.5,
+            "deathsPerMin": 0.5,
+            "assistsPerMin": 0.5,
+            "totalHealPerMin": 0.0,
+            "damageSelfMitigatedPerMin": 0.5,
+            "damageDealtToTurretsPerMin": 0.5,
+            "timeCCingOthersPerMin": 0.5,
+            "neutralMinionsKilledPerMin": 0.5,
+            "totalTimeCrowdControlDealtPerMin": 0.5,
+            "visionWardsBoughtInGamePerMin": 0.5,
+            "neutralMinionsKilledEnemyJunglePerMin": 0.5,
+            "wardsPlacedPerMin": 0.5,
+            "wardsKilledPerMin": 0.5
+            },
+        ],
+        mostChamp: {
+            name: "error",
+            games: 0,
+            wins: 0,
         },
-        stroke: {
-          show: true,
-          width: 1,
-          colors: ['#fff']
-        },
-        xaxis: {
-          categories: [
-            'totalDamageDealtToChampionsPerMin',
-            'damageDealtToObjectivesPerMin',
-            'visionScorePerMin',
-            'totalDamageTakenPerMin',
-            'totalMinionsKilledPerMin',
-            'killsRatio',
-            'deathsRatio',
-            'killAssistPerMin',
-            'killsPerMin',
-            'deathsPerMin',
-            'assistsPerMin',
-            'totalHealPerMin',
-            'damageSelfMitigatedPerMin',
-            'damageDealtToTurretsPerMin',
-            'timeCCingOthersPerMin',
-            'neutralMinionsKilledPerMin',
-            'totalTimeCrowdControlDealtPerMin',
-            'visionWardsBoughtInGamePerMin',
-            'neutralMinionsKilledEnemyJunglePerMin',
-            'wardsPlacedPerMin',
-            'wardsKilledPerMin',
-          ],
-        }
-      },
+        champTitle: "",
+        champInfo: {},
+        recommendChamps: [],
+        champType: "",
+        background: "아이오니아",
+        lolbti: "",
+        lolbtiChampType: "",
+        korChampName: "",
+        // barSeries: [
+        //   {
+        //     name: "",
+        //     data: [],
+
+        //   }, 
+        //   {
+        //     name: "",
+        //     data: [],
+        //   }
+        // ],
+        barSeries: [
+            {
+                name: '동 티어대비',
+                data: []
+            },
+            {
+                name: '나',
+                data: []
+            },
+        ],
+        
 
       columnSeries: [
         {

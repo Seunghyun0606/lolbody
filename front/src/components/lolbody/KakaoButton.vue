@@ -12,9 +12,11 @@ Kakao.init('7b7a42d9cf2509fe7d9c7db809ef3807')
 
 export default {
   name: 'KakaoButton',
+  props: {
+    username: String,
+  },
   data() {
     return {
-      username: '',
       url: 'https://lolbody.gq/Lolbody/',
       badges: ['#학살자', '#농부', '#오지라퍼', '#대도둑']
     }
@@ -27,17 +29,12 @@ export default {
         // 여기 두 줄이 카톡에서 보임
         title: this.username + '님의 LoLBody 분석결과',
         description: this.badges.toString().replace(/,/gi, ' '),
-        imageUrl:
-          'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+        imageUrl: 'https://lolbody.gq/lolbody-logo2.png',
+        //   'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
         link: {
           mobileWebUrl: this.url + this.username,
           webUrl: this.url + this.username,
         },
-      },
-      social: {
-        likeCount: 286,
-        commentCount: 45,
-        sharedCount: 845,
       },
       // buttons: [
       //   {

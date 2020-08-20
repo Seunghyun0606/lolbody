@@ -61,13 +61,13 @@
             </v-row>
             <v-row class="mt-2 justify-start mr-8">
               <v-col cols=2 class="mr-1">
-                <KaKaoButton/>
+                <KaKaoButton :username="this.$route.params.userName" />
               </v-col>
               <v-col cols=2>
-                <TwitterButton/>
+                <TwitterButton :username="this.$route.params.userName" />
               </v-col>
               <v-col cols=2>
-                <FacebookButton/>
+                <FacebookButton :username="this.$route.params.userName" />
               </v-col>
               <!-- <MultiSearchBadge :index="index"/> -->
             </v-row>

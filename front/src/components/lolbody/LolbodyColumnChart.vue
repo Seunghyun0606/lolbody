@@ -15,11 +15,6 @@ export default {
     ColumnChart
   },
   props: ['radarData'],
-  data() {
-    return {        
-      
-    }
-  },
   computed: {
         series(){
             var agg = [];
@@ -115,7 +110,7 @@ export default {
                             return val + " 점"
                         }
                     }
-                }
+                },
             }
         }
   },

@@ -1,6 +1,6 @@
 <template>
 
-  <apexchart class="move-apexchart" width="350" :options="options" :series="series"></apexchart>
+  <apexchart class="move-apexchart" height="270" :options="options" :series="series"></apexchart>
 
 </template>
 
@@ -16,8 +16,8 @@ export default {
     props: ['radarData'],
     computed: {
         series(){
-            var changeSeriesData = [];
-            for ( var value in this.radarData ) 
+            let changeSeriesData = [];
+            for ( let value in this.radarData ) 
                 changeSeriesData.push(Math.round(this.radarData[value]*100));
             
             return [{
@@ -32,6 +32,8 @@ export default {
                     toolbar: {
                         show: false,
                     },
+                    offsetY: 20,
+                    offsetX: 20
                 },
                 legend: {
                     show: false,
@@ -56,11 +58,5 @@ export default {
 </script>
 
 <style scoped>
-
-.move-apexchart {
-  position: relative;
-  left: -65px;
-  top: 30px;
-}
 
 </style>

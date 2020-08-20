@@ -37,7 +37,7 @@ export default {
                     show: false,
                     tickAmount: 5,
                     min: 0,
-                    max: 1,
+                    max: 100,
                 },
                 markers: {
                     size: 3

@@ -83,7 +83,7 @@ public class MatchlistService {
 							summonerMap.put(key, tmpSummoner);
 							subSummoner.setSummonerMap(summonerMap);
 							subSummonerRepository.save(subSummoner);
-							accountId = tmpSummoner.getId();
+							accountId = tmpSummoner.getAccountId();
 						}
 					}
 					String query = "?season=" + season + "&beginIndex=" + beginIndex + "&endIndex=" + endIndex;
@@ -160,7 +160,7 @@ public class MatchlistService {
 							summonerMap.put(key, tmpSummoner);
 							subSummoner.setSummonerMap(summonerMap);
 							subSummonerRepository.save(subSummoner);
-							accountId = tmpSummoner.getId();
+							accountId = tmpSummoner.getAccountId();
 						}
 					}
 					String query = "?season=" + season + "&beginIndex=" + beginIndex + "&endIndex=" + endIndex
@@ -225,7 +225,6 @@ public class MatchlistService {
 			int beginIndex = 0, endIndex = 100;
 			while (true) {
 				String query = "?beginIndex=" + beginIndex + "&endIndex=" + endIndex;
-				;
 				if (season >= 0 && season < jsonArr.length())
 					query += "&season=" + season;
 

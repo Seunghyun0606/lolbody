@@ -215,7 +215,7 @@ export default {
         this.parseInputSummonerID()
         // 사용자가 수정이 가능하도록 input 창에 띄워줌
         // console.log(2)
-        this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
+        // this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
     },
 
     onFocusInput() {

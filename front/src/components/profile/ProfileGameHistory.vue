@@ -42,20 +42,31 @@
                             <small class="d-block clear fs-12 pt-2 font-weight-bold">{{champoins.data[matchData[matchData.myTeam].teammate[matchData.myIndex].champ].name}}</small>
                         </td>
 
-                        <td class="text-center" width="90px">
-                            <div class="fs-15 font-weight-bold">
-                                <span>{{matchData[matchData.myTeam].teammate[matchData.myIndex].kills}}</span> /
-                                <span class="fc_red">{{matchData[matchData.myTeam].teammate[matchData.myIndex].deaths}}</span> /
-                                <span>{{matchData[matchData.myTeam].teammate[matchData.myIndex].assists}}</span>
+                        <td class="text-center" width="90px" @click="matchData.KDAToggle = !matchData.KDAToggle" style="cursor: pointer">
+                            <div :style="{display: !matchData.KDAToggle ? 'inline-block' : 'none'}" >
+                                <div class="fs-15 font-weight-bold">
+                                    <span>{{matchData[matchData.myTeam].teammate[matchData.myIndex].kills}}</span> /
+                                    <span class="fc_red">{{matchData[matchData.myTeam].teammate[matchData.myIndex].deaths}}</span> /
+                                    <span>{{matchData[matchData.myTeam].teammate[matchData.myIndex].assists}}</span>
+                                </div>
+                                <div class="fs-13">
+                                    <span v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].kda == 'Infinity'">Perfect</span>
+                                    <span v-else>평점 {{Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100}}</span>
+                                </div>
+                                <div class="fs-13">
+                                    <span>킬관여 {{Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].ka)}}%</span>
+                                </div>
                             </div>
-                            <div class="fs-13">
-                                <span v-if="matchData[matchData.myTeam].teammate[matchData.myIndex].kda == 'Infinity'">Perfect</span>
-                                <span v-else>평점 {{Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].kda*100)/100}}</span>
-                            </div>
-                            <div class="fs-13">
-                                <span>킬관여 {{Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].ka)}}%</span>
+                            <div :style="{display: matchData.KDAToggle ? 'inline-block' : 'none'}" >
+                                <ProfilePie :KDA="[matchData[matchData.myTeam].teammate[matchData.myIndex].kills, matchData[matchData.myTeam].teammate[matchData.myIndex].deaths, matchData[matchData.myTeam].teammate[matchData.myIndex].assists]"/>
+                                <div class="fs-15 font-weight-bold under-kda">
+                                    <span>{{matchData[matchData.myTeam].teammate[matchData.myIndex].kills}}</span> /
+                                    <span class="fc_red">{{matchData[matchData.myTeam].teammate[matchData.myIndex].deaths}}</span> /
+                                    <span>{{matchData[matchData.myTeam].teammate[matchData.myIndex].assists}}</span>
+                                </div>
                             </div>
                         </td>
+
                         <td class="text-center" width="85px">
                             <span class="d-block fs-12">레벨 {{matchData[matchData.myTeam].teammate[matchData.myIndex].level}}</span>
                             <span class="d-block fs-12">{{matchData[matchData.myTeam].teammate[matchData.myIndex].cs}} ({{Math.round(matchData[matchData.myTeam].teammate[matchData.myIndex].csPerMin*100)/100}}) CS</span>
@@ -181,11 +192,13 @@ import { mapState } from "vuex"
 import champoins from "@/assets/data/champion.json";
 import queues from "@/assets/data/queues.json";
 import barchart from "@/components/profile/barchart";
+import ProfilePie from "@/components/profile/ProfilePie";
 
 export default {
     name: "ProfileGameHistory",
     components:{
-        barchart
+        barchart,
+        ProfilePie
     },
     data: function() {
         return {
@@ -269,6 +282,12 @@ export default {
 </script>
 
 <style>
+.under-kda{
+    position: absolute;
+    left:50%;
+    width: 90px;
+    transform: translateX(-50%) translateY(-50%);
+}
 
 .tooltip {
     position: relative;

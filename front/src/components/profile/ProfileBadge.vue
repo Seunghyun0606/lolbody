@@ -11,7 +11,7 @@
     </div> -->
     <!--:tooltip="badge.comment" :style="teStyle" -->
     <div class="d-inline-block mr-2" >
-        <div class="ma-1 pa-1 badge d-inline-block hidden-has-tooltip" :class="['num'+badge.tier]" @mouseenter="mousepoint" >
+        <div class="ma-1 pa-1 badge d-inline-block hidden-has-tooltip" :class="['num'+badge.tier, (badge.name=='민폐甲' || badge.name =='명타겟') ? 'badbagdge'+badge.tier : '']" @mouseenter="mousepoint" >
             <span class="sharp"># </span>
             <span class="badge-content">{{badge.name}}</span>
         </div>
@@ -108,5 +108,24 @@ export default {
 
 .num2{
     background-color: rgb(205, 175, 140);
+}
+
+.badbagdge0{
+    background-color: #670000;
+}
+.badbagdge1{
+    background-color: #a10202;
+}
+.badbagdge2{
+    background-color: #c07a7a;
+}
+.badbagdge0 .badge-content{
+    color: white;
+}
+.badbagdge1 .badge-content{
+    color: white;
+}
+.badbagdge2 .badge-content{
+    color: white;
 }
 </style>

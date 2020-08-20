@@ -24,7 +24,8 @@
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
 								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="#30BA8C" @click="renewalUserData(profileDatas.summonerName)" outlined>전적 갱신</v-btn>
-								<span class="fs-10 d-block">최근 업데이트: {{ updateTime }}</span>
+								<v-btn class="mt-2 px-1 py-3 fs-14 refresh-btn" color="#30BA8C" outlined>LoL Body</v-btn>
+                                <span class="fs-10 d-block">최근 업데이트: {{ updateTime }}</span>
 							</div>
 						</v-col>
 
@@ -273,7 +274,7 @@ export default {
 
 		async getProfileDatas(userName){
 			await this.$store.dispatch('getProfileDatas', userName);
-            
+            this.setSearchHistory();
 			this.triger.isLoading = false;
 		},
 		async getMatchDatas(userName, n){
@@ -376,6 +377,31 @@ export default {
                 return Math.round(num*100)/100;
             }catch{
                 return 0;
+            }
+        },
+        setSearchHistory() {
+            if (this.profileDatas.summonerName.length > 0) {
+                let searchHistory = window.localStorage.getItem('searchHistory')
+                // searchHistory가 존재하지 않는 경우
+                if (searchHistory === null) {
+                    searchHistory = []
+                // searchHistory가 존재하고 길이가 0보다 큰 경우, 즉 저장된 값이 존재하는 경우
+                } else if (searchHistory.length > 0) {
+                    searchHistory = JSON.parse(window.localStorage.getItem('searchHistory'))
+                    // 이미 히스토리에 저장된 닉네임인경우 함수 종료
+                    if (searchHistory.includes(this.profileDatas.summonerName)) {
+                        return
+                    }
+                    if (searchHistory.length >= 9) {
+                        // 최대 9개의 히스토리만 가지고 있도록 9개 이상인 경우 하나 빼버림
+                        searchHistory.shift()
+                    }
+                // searchHistory가 존재하지만 빈 string인 경우
+                } else {
+                    searchHistory = []
+                }
+                searchHistory.push(this.profileDatas.summonerName)
+                window.localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
             }
         }
 	},

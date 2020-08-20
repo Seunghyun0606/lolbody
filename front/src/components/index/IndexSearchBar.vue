@@ -316,7 +316,7 @@ export default {
 }
 
 .multi-search-col3:hover {
-  background:rgb(142, 162, 248);
+  background: #588a88;
   cursor: pointer;
 
 }

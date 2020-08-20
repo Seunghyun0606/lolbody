@@ -1,10 +1,14 @@
 <template>
 
+<div>
+  <LolbodyLoading v-show="isLolbodyLoading" :loading="isLolbodyLoading" :color="loadingColor" :size="loadingSize"></LolbodyLoading>
+  <div v-show="timeWait" style="text-align: center; font-size: 50px;">
+    사용량이 많아서 느립니다. 잠시만 기다려주세요.
+  </div>
   <!-- 나중에 만들때 전체 넓이랑 높이 고정값 주고 퍼센트 값으로 높이 정하자.. -->
   <v-container class='card-border mb-10'>
-
     <!-- 1번줄 -->
-    <v-row class='justify-space-around' :style="{ backgroundImage: 'url(\'' + require(`@/assets/cities/background/${ background }.png`) + '\')', height: '15em', backgroundSize: '100%' }">
+    <v-row v-show="!isLolbodyLoading" class='justify-space-around' :style="{ backgroundImage: 'url(\'' + require(`@/assets/cities/background/${ background }.png`) + '\')', height: '15em', backgroundSize: '100%' }">
     <!-- <v-row class='justify-space-around'> -->
     <!-- <v-row :class='["justify-space-around", { backgroundImage: true } ]' > -->
       <!-- 랭크 -->
@@ -16,18 +20,20 @@
           <v-col cols="3" style="position: relative;">
             <v-row>
               <v-col class="center" style="position: relative;">
-                <img class="icon big profile-rank" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
-                <img class="profilebanner" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier_banner/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
+                <img class="icon big profile-rank" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/tier/IRON.png`)" alt="temporarily">
+                <img class="profilebanner" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier_banner/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/tier_banner/UNRANKED.png`)" alt="temporarily">
               </v-col>
               <!-- <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily"> -->
             </v-row>
             <!-- 많이가는 라인 -->
             <v-row class="px-3" style="position: absolute; top: 105px; left: 5px;">
               <v-col class="center">
-                <img class="icon small" :src="getLolbodyData.lineList[0].name.length > 0 ? require(`@/assets/images/position/${getLolbodyData.lineList[0].name}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
+                <!-- <img class="icon small" :src="getLolbodyData.lineList[0].name.length > 0 && getLolbodyData.lineList[0] !== undefined ? require(`@/assets/images/position/${getLolbodyData.lineList[0].name}.png`) : require(`@/assets/images/error.png`)" alt="temporarily"> -->
+                <img class="icon small" :src="getLolbodyData.lineList[0] !== undefined ? require(`@/assets/images/position/${getLolbodyData.lineList[0].name}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
               </v-col>
               <v-col class="center">
-                <img class="icon small" :src="getLolbodyData.lineList[1].name.length > 0 ? require(`@/assets/images/position/${getLolbodyData.lineList[1].name}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
+                <!-- <img class="icon small" :src="getLolbodyData.lineList[1].name.length > 0 && getLolbodyData.lineList[1] !== undefined ? require(`@/assets/images/position/${getLolbodyData.lineList[1].name}.png`) : require(`@/assets/images/error.png`)" alt="temporarily"> -->
+                <img class="icon small" :src="getLolbodyData.lineList[1] !== undefined ? require(`@/assets/images/position/${getLolbodyData.lineList[1].name}.png`) : require(`@/assets/images/error.png`)" alt="temporarily">
               </v-col>
               <!-- <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.mainLane}.png`)" alt="mainLane">
               <img class="lane-width" :src="require(`@/assets/images/position/${multiSearchData.subLane}.png`)" alt="subLane"> -->
@@ -124,7 +130,7 @@
     </v-row>
 
     <!-- 2번줄 -->
-    <v-row class='justify-space-around my-5 '>
+    <v-row v-show="!isLolbodyLoading" class='justify-space-around my-5 '>
       <v-col cols="5" class="card-border card-background">
         <v-row class='test-height2'>
           <v-col>
@@ -174,8 +180,11 @@
                     </v-row>
                   </v-col>
 
-                  <v-col cols="7">
+                  <v-col cols="7" v-show="!noRecommendChamps">
                     {{ champType }} type 을 주로하는 당신, 이런 챔프들은 어떤가요?
+                  </v-col>
+                  <v-col cols="7" v-show="noRecommendChamps">
+                    추천이 필요없으신 최고의 소환사시네요.
                   </v-col>
                 </v-row>
 
@@ -220,7 +229,7 @@
     </v-row>
 
     <!-- 3번줄 -->
-    <v-row class='justify-space-around mb-5'>
+    <v-row v-show="!isLolbodyLoading" class='justify-space-around mb-5'>
       <v-col cols="5" class="card-border card-background">
         <v-row class="justify-space-around">
           <!-- <v-col class="bar-rank" @click="totalData()">
@@ -287,12 +296,14 @@
     </v-row>
 
   </v-container>
+</div>
   
 </template>
 
 <script>
 import ColumnChart from 'vue-apexcharts'
 import BarChart from "vue-apexcharts"
+import LolbodyLoading from '@/components/multisearch/MultiLoading.vue'
 
 
 // import { mapState, mapGetters } from 'vuex'
@@ -313,6 +324,7 @@ import axios from 'axios'
 export default {
   name: 'Lolbody',
   components: {
+    LolbodyLoading,
     ColumnChart,
     BarChart,
     // LolbodyBarChart,
@@ -325,6 +337,11 @@ export default {
   },
   data() {
     return {
+      noRecommendChamps: false,
+      timeWait: false,
+      isLolbodyLoading: false,
+      loadingColor: 'grey',
+      loadingSize: '50px',
       btnTrigger: {
         barChartClick: {
           dia: false,
@@ -773,6 +790,7 @@ export default {
 
     mostChamp: {
       deep: true,
+      // immediate: true,
       handler() {
         this.changeChampTitle()
         this.changeChampInfo()
@@ -869,7 +887,6 @@ export default {
 
     // init() {
     //   this.getLolbodyData.champList = []
-
     // },
 
     fetchRenewalLolbody() {
@@ -883,11 +900,40 @@ export default {
         })
     },
 
+    fixEmptyData() {
+      var emptyData = this.getLolbodyData
+      var check = false
 
-    setLolbodyData() {
-      this.selectMostChamp()
-      this.selectLolbti()
-      this.selectlolbtiChampType()
+      if ( emptyData.radarList.length === 0) {
+        check = true
+      }
+      else if ( emptyData.champList.length === 0 ) {
+        check = true        
+      }
+      else if ( emptyData.lineList.length === 0 ) {
+        check = true
+      }
+
+      if ( check ) {
+        alert("해당 사용자는 롤바디 데이터가 없습니다.")
+        this.$router.push('/Profile/'+this.$route.params.userName)
+      }
+
+
+    },
+
+
+    async setLolbodyData() {
+      // 여기다여기
+      // await console.log('1--------------------------')
+      // await console.log(this.getLolbodyData)
+      await this.fixEmptyData()
+      await this.selectMostChamp()
+      // await console.log('2--------------------------')
+      await this.selectLolbti()
+      // await console.log('3--------------------------')
+      await this.selectlolbtiChampType()
+      // await console.log('4--------------------------')
 
 
       if ( this.getLolbodyData.userCardReference.soloRank.tier === "DIAMOND" ) {
@@ -1143,8 +1189,10 @@ export default {
     },
 
     selectMostChamp() {
+      // console.log('test1')
       this.mostChamp = this.getLolbodyData.champList[0]
       this.korChampName = champion.data[this.getLolbodyData.champList[0].name].name
+      // console.log('test2')
       
       this.btnTrigger.champClick.main = true
       this.btnTrigger.champClick.sub = false
@@ -1170,8 +1218,6 @@ export default {
       this.background = champion.data[this.mostChamp.name].region
       
     },
-
-
 
 
     getRecommendChamps(mostChamp) {
@@ -1213,18 +1259,59 @@ export default {
           }
         }
       }
+      this.noRecommendChamps = false
       this.recommendChamps = champList.slice(0, 3)
+      if ( this.recommendChamps.length === 0 ) {
+        this.noRecommendChamps = true
+      }
     },
+
+    startLoading() {
+      this.isLolbodyLoading = true
+    },
+    endLoading() {
+      this.isLolbodyLoading = false
+    },
+    startTimeWait(boo) {
+      this.timeWait = boo
+    },
+    startTimeOut() {
+      alert('사용자가 너무 많아서 느립니다. 잠시 후에 다시 시도해주세요.')
+      this.$router.push('/Profile/'+this.$route.params.userName)
+    },
+
 
 
 
   },
   async created() {
+    this.timeOut = false,
+    this.timeWait = false,
     this.$store.commit('toggleNavSearch', false)
-    await this.fetchLolbodyData()
-    await this.setLolbodyData()
-    await this.setMostChamp()
+    var myTimeWait = setTimeout(() => {
+      this.startTimeWait(true)
+    }, 10000)
+    var myTimeOut = setTimeout(() => {
+      this.startTimeOut(true)
+    }, 30000)
 
+    myTimeWait
+    myTimeOut
+
+    await this.startLoading()
+    // await console.log("1 start")
+    await this.fetchLolbodyData()
+    // await console.log("2 start")
+    await this.setLolbodyData()
+    // await console.log("3 start")
+    await this.setMostChamp()
+    // await console.log("4 start")
+
+    await console.log('end')
+
+    await this.endLoading()
+    await clearTimeout(myTimeWait)
+    await clearTimeout(myTimeOut)
     // this.$store.dispatch('getLolbodyData', this.$route.params.userName)
   },
 

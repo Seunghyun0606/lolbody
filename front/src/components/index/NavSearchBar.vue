@@ -2,7 +2,7 @@
 <div>
   <v-container class="pa-0 mr-10 pr-16">
     <v-row align="center" class="nav-search-border" max-width="238.4px">
-      <v-col class="pa-2 pb-5 pl-2">
+      <v-col class="pa-2 pb-9 pl-2">
         <input type="text"
           style="color:white;"
           tabindex="1" 
@@ -19,7 +19,7 @@
         >
 
       </v-col>
-      <v-col cols=2 @click="onClickSearchButton" class="nav-serach-btn pa-2 pb-5">
+      <v-col cols=2 @click="onClickSearchButton" class="nav-serach-btn pa-2 mb-7">
         <v-icon class="icon-place">search</v-icon>
       </v-col>
       <!-- <v-row no-gutters v-show='this.historyIsVisible' >
@@ -250,7 +250,8 @@ export default {
 
 .nav-serach-btn:hover {
     cursor: pointer;
-    background: rgba(48, 186, 140, 0.8) !important;
+    background: rgba(255,255,255, 0.1) !important;
+    border-radius: 70%;
 }
 
 .nav-search-border {

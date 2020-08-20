@@ -117,7 +117,7 @@ export default {
     background-color: rgba(133, 133, 133, 0.25);
 }
 .bg_main{
-    background-color: #fafafa;
+    background-color: #fafafa !important;
 }
 
 .border-rounded{

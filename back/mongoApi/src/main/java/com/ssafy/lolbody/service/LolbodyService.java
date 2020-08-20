@@ -240,9 +240,12 @@ public class LolbodyService {
 			lolbodyResult.setLolbodyList(lolbodyList);
 
 			lolbodyRepository.save(lolbodyResult);
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 //			e.printStackTrace();
 			profileService.deleteMatchInfo(name);
+			throw new Exception(e);
+		} catch (Exception e) {
+//			e.printStackTrace();
 			throw new Exception(e);
 		}
 	}

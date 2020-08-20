@@ -253,7 +253,8 @@ public class ProfileService {
 						tmp.setItem5(p.getStats().getItem5());
 						tmp.setItem6(p.getStats().getItem6());
 						tmp.setPerk(perkRepository.findByKey(p.getStats().getPerk0()).getName().replaceAll(" ", ""));
-						tmp.setPerkStyle(perkStyleRepository.findByKey(p.getStats().getPerkSubStyle()).getName());
+						tmp.setPerkStyle(p.getStats().getPerkSubStyle() == 0 ? ""
+								: perkStyleRepository.findByKey(p.getStats().getPerkSubStyle()).getName());
 						tmp.setLevel(p.getStats().getChampLevel());
 						tmp.setGold(p.getStats().getGoldEarned());
 						tmp.setCs(p.getStats().getNeutralMinionsKilled() + p.getStats().getTotalMinionsKilled());
@@ -332,8 +333,7 @@ public class ProfileService {
 		matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
 				.filter(o -> o.getQueue() != 2000 && o.getQueue() != 2010 && o.getQueue() != 2020)
 				.collect(Collectors.toList());
-		for(MatchReferenceDto matchReference: matchReferences) {
-			System.out.println(matchReference.getGameId());
+		for (MatchReferenceDto matchReference : matchReferences) {
 			matchRepository.deleteById(matchReference.getGameId());
 			matchRecordRepository.deleteById(matchReference.getGameId());
 		}

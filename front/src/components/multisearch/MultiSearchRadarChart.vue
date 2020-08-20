@@ -7,7 +7,6 @@
 
 <script>
 import apexchart from 'vue-apexcharts'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'MultiSearchRadarChart',
@@ -26,11 +25,6 @@ export default {
       
   //   }
   // },
-  computed: {
-    ...mapGetters([
-      "multiSearchRadarData"
-    ])
-  },
   
   // methods: {
   //   changeSeries() {

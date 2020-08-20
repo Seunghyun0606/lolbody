@@ -259,9 +259,9 @@ export default new Vuex.Store({
                 result[idx][2] += tmp[idx].influence[t];
         }
         for(let idx in tmp){
-            result[idx][0] = Math.round(result[idx][0]/tmp[idx].aggressiveness.length*100)/100;
-            result[idx][1] = Math.round(result[idx][1]/tmp[idx].stability.length*100)/100;
-            result[idx][2] = Math.round(result[idx][2]/tmp[idx].influence.length*100)/100;
+            result[idx][0] = Math.round(result[idx][0]/tmp[idx].aggressiveness.length*100);
+            result[idx][1] = Math.round(result[idx][1]/tmp[idx].stability.length*100);
+            result[idx][2] = Math.round(result[idx][2]/tmp[idx].influence.length*100);
         }
         return result;
     },
@@ -403,6 +403,15 @@ export default new Vuex.Store({
             },
             markers: {
               size: 3
+            },
+            tooltip: {
+                y: {
+                    title: {
+                        formatter: function() {
+                            return ''
+                        }
+                    }
+                },
             }
           },
           series: [
@@ -822,7 +831,7 @@ export default new Vuex.Store({
     //lolbody
     fetchLolbodyData( { commit }, userName) {
         return axios
-            .put(SERVER_URL + `/api/lolbody/${userName}`)
+            .get(SERVER_URL + `/api/lolbody/${userName}`)
             .then(res => {
                 commit('setLolbodyData', res.data);
             })
@@ -830,7 +839,16 @@ export default new Vuex.Store({
                 console.log(err)
             })
     },
-
+    fetchRenewalLolbody({ commit }, userName) {
+        return axios
+            .put(SERVER_URL + `/api/lolbody/${userName}`)
+            .then(res => {
+                    commit('setLolbodyData', res.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
     // 형래, profile
     getProfileDatas( { commit, state }, userName){
         commit('setError', 0)

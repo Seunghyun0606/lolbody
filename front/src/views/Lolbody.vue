@@ -1,14 +1,14 @@
 <template>
 
-<div>
+<div> 
   <LolbodyLoading v-show="isLolbodyLoading" :loading="isLolbodyLoading" :color="loadingColor" :size="loadingSize"></LolbodyLoading>
   <div v-show="timeWait" style="text-align: center; font-size: 50px;">
     사용량이 많아서 느립니다. 잠시만 기다려주세요.
   </div>
   <!-- 나중에 만들때 전체 넓이랑 높이 고정값 주고 퍼센트 값으로 높이 정하자.. -->
-  <v-container class='card-border mb-10'>
+  <v-container class='card-border mb-10 lolbody-main' >
     <!-- 1번줄 -->
-    <v-row v-show="!isLolbodyLoading" class='justify-space-around' :style="{ backgroundImage: 'url(\'' + require(`@/assets/cities/background/${ background }.png`) + '\')', height: '15em', backgroundSize: '100%' }">
+    <v-row v-show="!isLolbodyLoading" class='justify-space-around' :style="{ backgroundImage: 'url(\'' + require(`@/assets/cities/background/${ background }.png`) + '\')', height: '240px', backgroundSize: '100%' }">
     <!-- <v-row class='justify-space-around'> -->
     <!-- <v-row :class='["justify-space-around", { backgroundImage: true } ]' > -->
       <!-- 랭크 -->
@@ -220,45 +220,40 @@
       <v-col cols="6" class="card-border card-background">
 
         <!-- 레이더 차트 구역 -->
-        <v-row class='test-height2'>
+        <v-row class='justify-space-around test-height2'>
           <!-- <div>
             레이더 차트 컴포넌트
             좌측에 레이더 차트 넣고 우측에는 레이더 차트 설명
             구획 2개로 나눠서하면될듯
           </div> -->
-          <v-col cols="7" style="position: relative;">
-            <LolbodyRadarChart :radarData="getLolbodyData.radar" />
+          <v-col>
+                <LolbodyRadarChart :radarData="getLolbodyData.radar" />
           </v-col>
 
     <!-- *********************************** 여기 까지* ************************************************ -->
 
+            <v-col class="align-self-center mb-11 ml-16">
+                <div class='multi-explain' :data-tooltip-text="tooltip.agg">
+                공격성이란?
+                <!-- <span style="font-size: 10px;">
+                    킬, 데미지, 전투 참여 횟수 등 게임을 공격적으로 플레이하는 능력을 의미합니다.
+                </span> -->
+                </div>
+                <div class="my-5 multi-explain" :data-tooltip-text="tooltip.sta">
+                안정성이란?
+                <!-- <span style="font-size: 10px;">
+                    데스나 시에스 등 게임을 안정적으로 풀어나가는 능력을 의미합니다.
+                    
+                </span> -->
+                </div>
+                <div class='multi-explain' :data-tooltip-text="tooltip.inf">
+                영향력이란?
 
-
-
-
-
-          <v-col class="align-self-center mr-5">
-            <div class='multi-explain' :data-tooltip-text="tooltip.agg">
-              공격성이란?
-              <!-- <span style="font-size: 10px;">
-                킬, 데미지, 전투 참여 횟수 등 게임을 공격적으로 플레이하는 능력을 의미합니다.
-              </span> -->
-            </div>
-            <div class="my-5 multi-explain" :data-tooltip-text="tooltip.sta">
-              안정성이란?
-              <!-- <span style="font-size: 10px;">
-                데스나 시에스 등 게임을 안정적으로 풀어나가는 능력을 의미합니다.
-                
-              </span> -->
-            </div>
-            <div class='multi-explain' :data-tooltip-text="tooltip.inf">
-              영향력이란?
-
-            </div>
+                </div>
+            </v-col>
               <!-- <span style="font-size: 10px;">
                 오브젝트나 시야, 어시스트 등 게임 전반에 영향을 미치는 능력을 의미합니다.
               </span> -->
-          </v-col>
         </v-row>
       </v-col>
 
@@ -323,7 +318,7 @@
           <!-- <div>
             레이더 차트의 변화 // 전체 // 현재 // 이전 막대그래프
           </div> -->
-          <v-col>
+          <v-col class="text-center">
             <LolbodyColumnChart :radarData="getLolbodyData.radarList.slice(0, 10)"/>
             <!-- <ColumnChart type="bar" height="200" :options="computedColumnChartOptions" :series="computedColumnSeries"></ColumnChart> -->
             <!--<ColumnChart type="bar" height="200" :options="columnChartOptions" :series="columnSeries"></ColumnChart>-->
@@ -357,12 +352,8 @@
 </template>
 
 <script>
-//import ColumnChart from 'vue-apexcharts'
-//import BarChart from "vue-apexcharts"
 import LolbodyLoading from '@/components/multisearch/MultiLoading.vue'
 
-
-// import { mapState, mapGetters } from 'vuex'
 import LolbodyBarChart from '@/components/lolbody/LolbodyBarChart'
 import LolbodyColumnChart from '@/components/lolbody/LolbodyColumnChart'
 import LolbodyRadarChart from '@/components/lolbody/LolbodyRadarChart'
@@ -374,8 +365,6 @@ import FacebookButton from '@/components/lolbody/FacebookButton'
 
 import champion from '@/assets/data/champion.json'
 import lolbti from '@/assets/data/lolbti.json'
-
-import axios from 'axios'
 
 export default {
   name: 'Lolbody',
@@ -402,7 +391,7 @@ export default {
         },
 
       noRecommendChamps: false,
-      timeWait: true,
+      timeWait: false,
       isLolbodyLoading: true,
       loadingColor: 'grey',
       loadingSize: '80px',
@@ -451,6 +440,16 @@ export default {
 
     methods: {
         async getActionLolbodydata(userName){
+            var myTimeWait = setTimeout(() => {
+                this.startTimeWait(true)
+            }, 10000);
+            var myTimeOut = setTimeout(() => {
+                this.startTimeOut()
+            }, 30000);
+
+            myTimeWait;
+            myTimeOut;
+
             await this.$store.dispatch('fetchLolbodyData', userName);
             //데이터 받고 초기화?
             this.fixEmptyData();
@@ -479,6 +478,8 @@ export default {
             }
             
             this.isLolbodyLoading = false;
+            clearTimeout(myTimeWait);
+            clearTimeout(myTimeOut);
             this.timeWait = false;
         },
     DiaData() {
@@ -563,25 +564,55 @@ export default {
     // 갱신을위해서 만든건데 혹시 안되면 지우시고 뒤로가기 만 남기면 될거같습니다.
     // 현재는 시작하자말자 get이 아니라 put으로 데이터를 가져오고 있습니다.
     async renewalLolbody() {
-      // await this.init()
-      await this.fetchRenewalLolbody()
-      await this.getActionLolbodydata()
+        this.isLolbodyLoading = true;
+        const userName = this.$route.params.userName;
+        var myTimeWait = setTimeout(() => {
+            this.startTimeWait(true)
+        }, 10000)
+        var myTimeOut = setTimeout(() => {
+            this.startTimeOut()
+        }, 30000);
+
+        myTimeWait;
+        myTimeOut;
+
+        await this.$store.dispatch('fetchRenewalLolbody', userName);
+        //데이터 받고 초기화?
+        this.fixEmptyData();
+        this.selectMostChamp();
+        this.selectLolbti();
+        this.selectlolbtiChampType();
+        this.setMostChamp();
+
+        if ( this.getLolbodyData.userCardReference.soloRank.tier === "DIAMOND" ) {
+            this.DiaData()
+        }
+        else if ( this.getLolbodyData.userCardReference.soloRank.tier === "PLATINUM" ) {
+            this.PlaData()
+        }
+        else if ( this.getLolbodyData.userCardReference.soloRank.tier === "GOLD" ) {
+            this.GoldData()
+        }
+        else if ( this.getLolbodyData.userCardReference.soloRank.tier === "SILVER" ) {
+            this.SilverData()
+        }
+        else if ( this.getLolbodyData.userCardReference.soloRank.tier === "BRONZE" ) {
+            this.BronzeData()
+        }
+        else {
+            this.IronData()
+        }
+        this.isLolbodyLoading = false;
+        clearTimeout(myTimeWait);
+        clearTimeout(myTimeOut);
+        this.timeWait = false;
     },
 
     // init() {
     //   this.getLolbodyData.champList = []
     // },
 
-    fetchRenewalLolbody() {
-      return axios
-        .put(`https://lolbody.gq` + `/api/lolbody/${this.$route.params.userName}`)
-        .then(res => {
-          this.getLolbodyData = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
+    
 
 // *********************************** 여기 까지* ************************************************
 
@@ -860,7 +891,6 @@ export default {
   // *********************************** 보실 부분* ************************************************
     mounted(){
         this.isLolbodyLoading = true;
-        this.timeWait = true;
         const userName = this.$route.params.userName;
         this.getActionLolbodydata(userName);
     },
@@ -963,6 +993,12 @@ export default {
   opacity: '0.7'
   
 } */
+.lolbody-main{
+    min-width: 1200px !important;
+    max-width: 1200px !important;
+    width: 1200px !important;
+}
+
 .unrankedicon{
     transform: translate(8px, 15px);
     width: 50px !important;
@@ -995,6 +1031,7 @@ export default {
 
 
 .multi-explain  {
+    width:150px !important;
   font-weight: 900;
   font-size: 20px;
   border-radius: 20px;
@@ -1117,7 +1154,7 @@ export default {
   height: 20em;
 }
 .test-height2 {
-  height: 15em;
+  height: 240px;
 }
 
 .icon {

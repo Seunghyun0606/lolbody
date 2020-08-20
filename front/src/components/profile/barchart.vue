@@ -28,9 +28,9 @@ export default {
                     data: []
                 }];
             for(let t in this.team){
-                result[0].data.push(Math.round(this.team[t].radar.aggressiveness*100)/100);
-                result[1].data.push(Math.round(this.team[t].radar.influence*100)/100);
-                result[2].data.push(Math.round(this.team[t].radar.stability*100)/100);
+                result[0].data.push(Math.round(this.team[t].radar.aggressiveness*100));
+                result[1].data.push(Math.round(this.team[t].radar.influence*100));
+                result[2].data.push(Math.round(this.team[t].radar.stability*100));
             }
             return result;
         },
@@ -76,7 +76,7 @@ export default {
                     type: 'category',
                     categories: [0, 1, 2, 3, 4],
                     tickAmount: 5,
-                    max: 1
+                    max: 100
                 },
                 legend:{
                     show: true

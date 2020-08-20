@@ -1,13 +1,13 @@
 <template>
-    <v-container fluid class="mt-12">
-	<v-row align="center" justify="center">
+    <v-container fluid class="bg_main">
+	<v-row align="center" justify="center" >
 	<v-app id="sandbox">
 	<v-main>
 	<LoadError :error="error"  v-if="error != 0" />
-	<table width="1010px" height="835px" v-else>
+	<table width="1012px" height="835px" class="bg_main" v-else>
 		<tr>
 			<!-- 여기서부터 좌측 공간 -->
-			<td style="vertical-align: top" width="332px">
+			<td style="vertical-align: top" width="333px">
 				<v-card class="ma-1 bg_card" :class="[profileDatas.soloRank.tier]" outlined height="160px" :loading="triger.isLoading">
 					<img :src="imageload('tier_banner/'+profileDatas.soloRank.tier+'.png')" class="profilebanner" width="135px">
 					<!-- 유저프로필 -->
@@ -48,7 +48,7 @@
                     <RadarChart :radarData="radarData[radaridx]"/>
 				</v-card>
 
-				<v-card class="ma-1 mb-2 bg_card scroll" :loading="triger.MatchDataLoading" outlined height="347px" algin="center">
+				<v-card class="ma-1 mb-2 bg_card scroll" :loading="triger.MatchDataLoading" outlined height="568px" algin="center">
 					<ProfileBadge v-for="(badge, idx) in badgeSet" :key="idx+'_badge'" :badge="badge" />
 					<!-- <ProfileBadge /> -->
 				</v-card>

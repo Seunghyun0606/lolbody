@@ -1,5 +1,5 @@
 <template>
-    <v-app style="background-color: #fafafa;">
+    <v-app class="bg_main">
         <v-app-bar app color="#33A39E" dense dark flat>
             <v-tabs align-with-title>
             <v-tab router-link to="/">Main</v-tab>
@@ -116,7 +116,9 @@ export default {
 .bg_gray_op{
     background-color: rgba(133, 133, 133, 0.25);
 }
-
+.bg_main{
+    background-color: #fafafa;
+}
 
 .border-rounded{
     border-radius: 15px;
@@ -167,10 +169,11 @@ export default {
     position: fixed;
     top: var(--MY);
     left: var(--MX);
-    color: #FFFFFF;
-    padding: 10px;
+    color: #fff;
+    width: 150px;
+    padding: 5px 5px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0);
+    background-color: rgb(0, 0, 0);
     opacity: 0;
     z-index: -1;
 }

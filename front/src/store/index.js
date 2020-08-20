@@ -618,8 +618,10 @@ export default new Vuex.Store({
         let matchDatas = datas.matchRecordList;
         if(matchDatas == null)
             return;
-        for(let idx = 0; idx < matchDatas.length; idx++)
+        for(let idx = 0; idx < matchDatas.length; idx++){
             matchDatas[idx].display = false;
+            matchDatas[idx].KDAToggle = true;
+        }
         
         state.matchDatas = state.matchDatas.concat(matchDatas);
 
@@ -766,6 +768,7 @@ export default new Vuex.Store({
 
     // 형래, profile
     getProfileDatas( { commit, state }, userName){
+        commit('setError', 0)
         state.profileDatas= {
             timestamp: null,
             summonerName: null,
@@ -792,7 +795,6 @@ export default new Vuex.Store({
         return axios.get(SERVER_URL + `/api/profile/${userName}`)
         // return axios.get(`http://localhost:8888/profile/${userName}`)
         .then(res => {
-            commit('setError', 0)
             commit('setProfileDatas', res.data)
             //commit('setProfileLinechartdata', res.data)
         }).catch(function (error) {
@@ -828,6 +830,7 @@ export default new Vuex.Store({
         if(num == 1){
             state.matchDatas = [];
             state.badgeMap = {};
+            state.badgeSet = [];
             state.ProfileRadarChart = [
                 {aggressiveness : [], influence: [], stability: []},
                 {aggressiveness : [], influence: [], stability: []},
@@ -846,13 +849,11 @@ export default new Vuex.Store({
                 commit('setLoadAllMatchDatas', false)
             }else if(res.data.matchRecordList.length%10 != 0){
                 commit('setLoadAllMatchDatas', false)
-                commit('setError', 0)
                 commit('setMatchDatas', res.data)
                 commit('setProfileRadarChart', res.data.matchRecordList)
                 commit('setProfileLinechartdata', res.data.matchRecordList)
                 commit('setProfileTotalWinRateChart', res.data.matchRecordList)
             }else{
-                commit('setError', 0)
                 commit('setMatchDatas', res.data)
                 commit('setProfileRadarChart', res.data.matchRecordList)
                 commit('setProfileLinechartdata', res.data.matchRecordList)

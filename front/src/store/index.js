@@ -181,6 +181,53 @@ export default new Vuex.Store({
             category:[],
         }
     ],
+    LolbodyData: {
+        userCardReference: {
+          "timestamp": 0,
+          "summonerName": undefined,
+          "profileIconId": undefined,
+          "summonerLevel": undefined,
+          "soloRank": {
+            "tier": undefined,
+            "rank": undefined,
+            "leaguePoints": undefined,
+            "wins": 0,
+            "losses": 0,
+            "winRate": 0
+          },
+        },
+        radarList: [],
+        champList: [],
+        lineList: [],
+        radar: {
+          "aggressiveness": 0,
+          "stability": 0,
+          "influence": 0
+        },
+        analysis: {
+          "totalDamageDealtToChampionsPerMin": 0,
+          "damageDealtToObjectivesPerMin": 0,
+          "visionScorePerMin": 0,
+          "totalDamageTakenPerMin": 0,
+          "totalMinionsKilledPerMin": 0,
+          "killsRatio": 0,
+          "deathsRatio": 0,
+          "killAssistPerMin": 0,
+          "killsPerMin": 0,
+          "deathsPerMin": 0,
+          "assistsPerMin": 0,
+          "totalHealPerMin": 0,
+          "damageSelfMitigatedPerMin": 0,
+          "damageDealtToTurretsPerMin": 0,
+          "timeCCingOthersPerMin": 0,
+          "neutralMinionsKilledPerMin": 0,
+          "totalTimeCrowdControlDealtPerMin": 0,
+          "visionWardsBoughtInGamePerMin": 0,
+          "neutralMinionsKilledEnemyJunglePerMin": 0,
+          "wardsPlacedPerMin": 0,
+          "wardsKilledPerMin": 0
+        },
+    },
   },
   getters: {
     // 승현
@@ -309,6 +356,9 @@ export default new Vuex.Store({
                 break;
         }
         return ans;
+    },
+    getLolbodyData(state){
+        return state.LolbodyData;
     }
   },
   mutations: {
@@ -703,6 +753,9 @@ export default new Vuex.Store({
     },
     setLoadAllMatchDatas(state, bool){
         state.loadAllMatchDatas = bool;
+    },
+    setLolbodyData(state, data){
+        state.LolbodyData = data;
     }
   },
 
@@ -764,6 +817,18 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err)
         })
+    },
+
+    //lolbody
+    fetchLolbodyData( { commit }, userName) {
+        return axios
+            .put(SERVER_URL + `/api/lolbody/${userName}`)
+            .then(res => {
+                commit('setLolbodyData', res.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
     },
 
     // 형래, profile

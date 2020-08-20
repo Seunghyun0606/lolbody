@@ -14,24 +14,26 @@
       hide-delimiters
       show-arrows-on-hover
       :show-arrows="false"
-      interval="2000"
+      interval="1500"
     >
       <v-carousel-item
         v-for="(slide, i) in slides"
         :key="i"
       >
-        <v-sheet
+        <!-- <v-sheet
           :color="colors[i]"
           height="100%"
-        >
-          <v-row
+        > -->
+          <!-- <v-row
             class="fill-height"
             align="center"
             justify="center"
-          >
-            <div class="display-3">{{ slide }}</div>
-          </v-row>
-        </v-sheet>
+          > -->
+            <img style="width: 100%;" :src="slide">
+
+            <!-- <div class="display-3">{{ slide }}</div> -->
+          <!-- </v-row> -->
+        <!-- </v-sheet> -->
       </v-carousel-item>
     </v-carousel>
 
@@ -50,13 +52,27 @@ export default {
           'pink darken-2',
         ],
         slides: [
-          'Example1',
-          'Example2',
-          'Example3',
+          // require(`@/assets/index/1.png`),
+          // require(`@/assets/index/2.png`),
+          // require(`@/assets/index/3.png`),
+          // require(`@/assets/index/4.png`),
         ],
 
     }
   },
+  methods: {
+    pushData() {
+      this.slides.push(require(`@/assets/index/1.png`))
+      this.slides.push(require(`@/assets/index/2.png`))
+      this.slides.push(require(`@/assets/index/3.png`))
+      this.slides.push(require(`@/assets/index/4.png`))
+    }
+
+  },
+  mounted() {
+    this.pushData()
+
+  }
 
 }
 </script>

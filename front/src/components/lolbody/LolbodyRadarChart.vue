@@ -9,67 +9,49 @@ import apexchart from 'vue-apexcharts'
 // import { mapGetters } from 'vuex'
 
 export default {
-  name: 'LolbodyRadarChart',
-  components: {
-    apexchart
-  },
-  data() {
-    return {
-      options: {
-        chart: {
-          type: "radar",
-          toolbar: {
-            show: false,
-          },
-        },
-        legend: {
-          show: false,
-        },
-        xaxis: {
-          categories: ['공격력', '안정성', '영향력']
-        },
-        yaxis: {
-          show: false,
-          tickAmount: 5,
-          min: 0,
-          max: 100,
-        },
-        markers: {
-          size: 3
-        }
-      },
-      series: [{
-        name: 'Match Grade',
-        data: [10, 60, 90]
-      },]
-    }
-  },
-  watch: {
-    radarData: {
-      deep: true,
-      immediate: true,
-      handler() {
-        this.changeSeries(this.radarData)
-      }
-
+    name: 'LolbodyRadarChart',
+    components: {
+        apexchart
     },
-  },
-  props: {
-    radarData: Object
-  },
-  methods: {
-    changeSeries(datas) {
-      var changeSeriesData = []
-      for ( var value in datas ) {
-        changeSeriesData.push(Math.round(datas[value]*100))
-      }
-      this.series[0].data = changeSeriesData
-    }
-
-  },
-  computed: {
-    // ...mapGetters(['getLolbodyData'])
-  },
+    props: ['radarData'],
+    computed: {
+        series(){
+            var changeSeriesData = [];
+            for ( var value in this.radarData ) 
+                changeSeriesData.push(Math.round(this.radarData[value]*100));
+            
+            return [{
+                name: 'Match Grade',
+                data: changeSeriesData
+            }];
+        },
+        options() {
+            return {
+                chart: {
+                    type: "radar",
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                legend: {
+                    show: false,
+                },
+                xaxis: {
+                    categories: ['공격력', '안정성', '영향력']
+                },
+                yaxis: {
+                    show: false,
+                    tickAmount: 5,
+                    min: 0,
+                    max: 100,
+                },
+                markers: {
+                    size: 3
+                }
+            }
+            
+        }
+    },
 }
 </script>
 

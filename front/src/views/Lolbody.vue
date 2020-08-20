@@ -20,7 +20,9 @@
           <v-col cols="3" style="position: relative;">
             <v-row>
               <v-col class="center" style="position: relative;">
-                <img class="icon big profile-rank" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/tier/IRON.png`)" alt="temporarily">
+                <!--<img class="icon big profile-rank" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/tier/IRON.png`)" alt="temporarily">-->
+                <img class="icon big profile-rank" :src="imageload('tier/'+getLolbodyData.userCardReference.soloRank.tier+'.png')" :class="{'unrankedicon': getLolbodyData.userCardReference.soloRank.tier == 'UNRANKED' ? true : false}" alt="temporarily">
+                
                 <img class="profilebanner" :src="getLolbodyData.userCardReference.soloRank.tier !== 'UNRANKED' && getLolbodyData.userCardReference.soloRank.tier !== undefined ? require(`@/assets/images/tier_banner/${getLolbodyData.userCardReference.soloRank.tier}.png`) : require(`@/assets/images/tier_banner/UNRANKED.png`)" alt="temporarily">
               </v-col>
               <!-- <img class="icon big" :src="require(`@/assets/images/error.png`)" alt="temporarily"> -->
@@ -49,6 +51,11 @@
                   <v-col>
                     {{ getLolbodyData.userCardReference.summonerName  }}
 
+                  </v-col>
+                  <!-- 뒤로가기 -->
+                  <!-- 갱신버튼 -->
+                  <v-col cols="2 " class="renewal-lolbody" @click="backBtn">
+                    뒤로가기
                   </v-col>
                   <!-- 갱신버튼 -->
                   <v-col cols="2 " class="renewal-lolbody" @click="renewalLolbody">
@@ -151,7 +158,7 @@
                 <!-- 선택한 라인에서 높은 숙련도 챔피언 정보 -->
                 <v-row class="justify-space-around">
                   <v-col class="center" cols="4">
-                    <img class="icon big" :src="require(`@/assets/images/champion/${mostChamp.name}.png`)" alt="temporarily">
+                    <img class="icon big" :src="imageload('champion/'+mostChamp.name+'.png')" alt="temporarily">
                   </v-col>
 
                   <v-col cols="7">
@@ -175,7 +182,7 @@
                     <v-row class="justify-space-around">
                       <!-- 여기서 for문 돌릴 예정 -->
                       <v-col class="center" v-for="( recommendChamp, index ) in recommendChamps" :key="index">
-                        <img class="icon small" :src="require(`@/assets/images/champion/${recommendChamp.id}.png`)" alt="temporarily">
+                        <img class="icon small" :src="imageload('champion/'+recommendChamp.id+'.png')" alt="temporarily">
                       </v-col>
                     </v-row>
                   </v-col>
@@ -200,6 +207,16 @@
 
       </v-col>
 
+
+
+    <!-- *********************************** 보실 부분* ************************************************ -->
+    <!-- 레이더 차트 부분 -->
+    <!-- 여기서 getLolBodyData.radar 으로 받아온 값을 바로 넣습니다.  -->
+    <!-- 바로 반영이 안되는 것이 문제입니다. 그리고 크기가 가끔 어긋나는 것이 문제입니다. -->
+
+
+
+
       <v-col cols="6" class="card-border card-background">
 
         <!-- 레이더 차트 구역 -->
@@ -212,21 +229,52 @@
           <v-col cols="7" style="position: relative;">
             <LolbodyRadarChart :radarData="getLolbodyData.radar" />
           </v-col>
-          <v-col class="align-self-center">
-            <div>
-              공격성:  ????????????????????
+
+    <!-- *********************************** 여기 까지* ************************************************ -->
+
+
+
+
+
+
+          <v-col class="align-self-center mr-5">
+            <div class='multi-explain' :data-tooltip-text="tooltip.agg">
+              공격성이란?
+              <!-- <span style="font-size: 10px;">
+                킬, 데미지, 전투 참여 횟수 등 게임을 공격적으로 플레이하는 능력을 의미합니다.
+              </span> -->
             </div>
-            <div>
-              안정성:  ????????????????????
+            <div class="my-5 multi-explain" :data-tooltip-text="tooltip.sta">
+              안정성이란?
+              <!-- <span style="font-size: 10px;">
+                데스나 시에스 등 게임을 안정적으로 풀어나가는 능력을 의미합니다.
+                
+              </span> -->
             </div>
-            <div>
-              영향력:  ????????????????????
+            <div class='multi-explain' :data-tooltip-text="tooltip.inf">
+              영향력이란?
+
             </div>
+              <!-- <span style="font-size: 10px;">
+                오브젝트나 시야, 어시스트 등 게임 전반에 영향을 미치는 능력을 의미합니다.
+              </span> -->
           </v-col>
         </v-row>
       </v-col>
 
     </v-row>
+
+
+
+
+
+
+
+    <!-- *********************************** 보실 부분* ************************************************ -->
+    <!-- 바 차트랑, 컬럼차트가 있는 HTML부분입니다. -->
+
+
+
 
     <!-- 3번줄 -->
     <v-row v-show="!isLolbodyLoading" class='justify-space-around mb-5'>
@@ -258,9 +306,9 @@
           <v-col>
             <!-- 우측 막대 그래프 분석 데이터 산출물 이용. 전체랑 최근 20게임 평균 비교 col 하나 먹이고 row로 3~4개로 나눠서하면될듯 -->
             <!-- 동티어 동일챔프 기준? -->
-            <!-- <LolbodyBarChart :barSeries="barSeries"/> -->
+            <LolbodyBarChart :barSeries="getLolbodyData.analysis" :othersSeries="othersSeries" />
             <!-- <LolbodyBarChart :getMyData="getLolbodyData.analysis" :getOtherData="getOtherData"/> -->
-            <BarChart type="bar" height="450" :options="computedBarChartOptions" :series="computedBarSeries"></BarChart>
+            <!--<BarChart type="bar" height="450" :options="computedBarChartOptions" :series="computedBarSeries"></BarChart>-->
 
           </v-col>
         
@@ -276,11 +324,19 @@
             레이더 차트의 변화 // 전체 // 현재 // 이전 막대그래프
           </div> -->
           <v-col>
-            <!-- <LolbodyColumnChart :radarData="getLolbodyData.radarList.slice(0, 10)"/> -->
+            <LolbodyColumnChart :radarData="getLolbodyData.radarList.slice(0, 10)"/>
             <!-- <ColumnChart type="bar" height="200" :options="computedColumnChartOptions" :series="computedColumnSeries"></ColumnChart> -->
-            <ColumnChart type="bar" height="200" :options="columnChartOptions" :series="columnSeries"></ColumnChart>
+            <!--<ColumnChart type="bar" height="200" :options="columnChartOptions" :series="columnSeries"></ColumnChart>-->
           </v-col>
         </v-row>
+
+
+
+    <!-- *********************************** 여기 까지* ************************************************ -->
+
+
+
+
 
         <!-- 워드 클라우드? -->
         <v-row class='test-height2' style="border-top: 1px solid #e6e6e6">
@@ -301,14 +357,14 @@
 </template>
 
 <script>
-import ColumnChart from 'vue-apexcharts'
-import BarChart from "vue-apexcharts"
+//import ColumnChart from 'vue-apexcharts'
+//import BarChart from "vue-apexcharts"
 import LolbodyLoading from '@/components/multisearch/MultiLoading.vue'
 
 
 // import { mapState, mapGetters } from 'vuex'
-// import LolbodyBarChart from '@/components/lolbody/LolbodyBarChart'
-// import LolbodyColumnChart from '@/components/lolbody/LolbodyColumnChart'
+import LolbodyBarChart from '@/components/lolbody/LolbodyBarChart'
+import LolbodyColumnChart from '@/components/lolbody/LolbodyColumnChart'
 import LolbodyRadarChart from '@/components/lolbody/LolbodyRadarChart'
 import LolbodyWordCloud from '@/components/lolbody/LolbodyWordCloud'
 
@@ -322,513 +378,194 @@ import lolbti from '@/assets/data/lolbti.json'
 import axios from 'axios'
 
 export default {
-    name: 'Lolbody',
-    components: {
-        LolbodyLoading,
-        ColumnChart,
-        BarChart,
-        // LolbodyBarChart,
-        // LolbodyColumnChart,
-        LolbodyRadarChart,
-        LolbodyWordCloud,
-        KaKaoButton,
-        TwitterButton,
-        FacebookButton,
-    },
-    data() {
-        return {
-            noRecommendChamps: false,
-            timeWait: false,
-            isLolbodyLoading: false,
-            loadingColor: 'grey',
-            loadingSize: '50px',
-            btnTrigger: {
-                barChartClick: {
-                    dia: false,
-                    pla: false,
-                    gold: false,
-                    silver: false,
-                    bronze: false,
-                    iron: false,
-                },
-                champClick: {
-                    main: true,
-                    sub: false,
-                },
-            },
-        tooltip_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        getLolbodyData: {
-            userCardReference: {
-            "timestamp": 1597825234114,
-            "summonerName": "재료페인",
-            "profileIconId": 4086,
-            "summonerLevel": 201,
-            "soloRank": {
-                "tier": "PLATINUM",
-                "rank": "III",
-                "leaguePoints": 32,
-                "wins": 66,
-                "losses": 53,
-                "winRate": 55.46218487394958
-            },
-            },
-            radarList: [
-            {
-                "timestamp": 1594060552449,
-                "name": "TwistedFate",
-                "radarReference": {
-                "aggressiveness": 0.5287902452747564,
-                "stability": 0.6730255075161797,
-                "influence": 0.504803296988731
-                }
-            },
-            {
-                "timestamp": 1594058425193,
-                "name": "Jax",
-                "radarReference": {
-                "aggressiveness": 0.37390242667293955,
-                "stability": 0.4310051680067268,
-                "influence": 0.3031385651678081
-                }
-            },
-            {
-                "timestamp": 1594056983278,
-                "name": "Orianna",
-                "radarReference": {
-                "aggressiveness": 0.12238816226275566,
-                "stability": 0.5091945524345002,
-                "influence": 0.12000449578248656
-                }
-            },
-            {
-                "timestamp": 1594055159121,
-                "name": "Orianna",
-                "radarReference": {
-                "aggressiveness": 0.22806715096095465,
-                "stability": 0.5254654385290459,
-                "influence": 0.2193302750652961
-                }
-            },
-            {
-                "timestamp": 1594053134899,
-                "name": "Orianna",
-                "radarReference": {
-                "aggressiveness": 0.2901309138940865,
-                "stability": 0.5946994096901721,
-                "influence": 0.31574316472451325
-                }
-            },
-            {
-                "timestamp": 1594051149111,
-                "name": "Orianna",
-                "radarReference": {
-                "aggressiveness": 0.3653485013278112,
-                "stability": 0.48374294432745907,
-                "influence": 0.32514938494076384
-                }
-            },
-            {
-                "timestamp": 1594049332679,
-                "name": "Orianna",
-                "radarReference": {
-                "aggressiveness": 0.6525656931029792,
-                "stability": 0.46818454118961733,
-                "influence": 0.5690111665081311
-                }
-            },
-            {
-                "timestamp": 1594046379961,
-                "name": "Graves",
-                "radarReference": {
-                "aggressiveness": 0.468612237283427,
-                "stability": 0.4221981915745073,
-                "influence": 0.7439142968083056
-                }
-            },
-            {
-                "timestamp": 1594044251027,
-                "name": "Ezreal",
-                "radarReference": {
-                "aggressiveness": 0.4883628522405608,
-                "stability": 0.4420279678502079,
-                "influence": 0.3394182825191822
-                }
-            },
-            {
-                "timestamp": 1594042080076,
-                "name": "Vayne",
-                "radarReference": {
-                "aggressiveness": 0.2489906606546086,
-                "stability": 0.8168628321386745,
-                "influence": 0.44028859524597586
-                }
-            },
+  name: 'Lolbody',
+  components: {
+    LolbodyLoading,
+    //ColumnChart,
+    //BarChart,
+    LolbodyBarChart,
+    LolbodyColumnChart,
+    LolbodyRadarChart,
+    LolbodyWordCloud,
+    KaKaoButton,
+    TwitterButton,
+    FacebookButton,
+  },
+  data() {
+    return {
+        othersSeries:[],
 
-            ],
-            champList: [
-            {
-                "name": "Orianna",
-                "games": 5,
-                "wins": 3,
-                "losses": 2
-            },
-            {
-                "name": "Ezreal",
-                "games": 5,
-                "wins": 3,
-                "losses": 2
-            },
-            ],
-            lineList: [
-            {
-                "name": "BOTTOM",
-                "games": 22,
-                "wins": 13,
-                "losses": 9
-            },
-            {
-                "name": "JUNGLE",
-                "games": 8,
-                "wins": 2,
-                "losses": 6
-            },
-            {
-                "name": "TOP",
-                "games": 6,
-                "wins": 4,
-                "losses": 2
-            },
-            {
-                "name": "MID",
-                "games": 4,
-                "wins": 3,
-                "losses": 1
-            },
-            {
-                "name": "SUPPORT",
-                "games": 1,
-                "wins": 0,
-                "losses": 1
-            }
-            ],
-            radar: {
-            "aggressiveness": 0.45649899054273085,
-            "stability": 0.46422986811258116,
-            "influence": 0.42943992455013963
-            },
-            analysis: {
-            "totalDamageDealtToChampionsPerMin": 0.4867824887872988,
-            "damageDealtToObjectivesPerMin": 0.563701684684821,
-            "visionScorePerMin": 0.2912816723922004,
-            "totalDamageTakenPerMin": 0.4729416777189834,
-            "totalMinionsKilledPerMin": 0.6389355471119424,
-            "killsRatio": 0.4333364165733978,
-            "deathsRatio": 0.4521519272401263,
-            "killAssistPerMin": 0.40977280512191083,
-            "killsPerMin": 0.4730457064944947,
-            "deathsPerMin": 0.520559122806781,
-            "assistsPerMin": 0.38440696307502353,
-            "totalHealPerMin": 0.0,
-            "damageSelfMitigatedPerMin": 0.4306140184137884,
-            "damageDealtToTurretsPerMin": 0.6064815854204757,
-            "timeCCingOthersPerMin": 0.5889592408994767,
-            "neutralMinionsKilledPerMin": 0.4591647865999153,
-            "totalTimeCrowdControlDealtPerMin": 0.49119109346869805,
-            "visionWardsBoughtInGamePerMin": 0.4108086044276818,
-            "neutralMinionsKilledEnemyJunglePerMin": 0.4913651945781554,
-            "wardsPlacedPerMin": 0.34619754025181293,
-            "wardsKilledPerMin": 0.3436652132791967
-            },
-
-        },
-        getOtherData: [
-            {
-            "totalDamageDealtToChampionsPerMin": 0.5,
-            "damageDealtToObjectivesPerMin": 0.5,
-            "visionScorePerMin": 0.5,
-            "totalDamageTakenPerMin": 0.5,
-            "totalMinionsKilledPerMin": 0.5,
-            "killsRatio": 0.5,
-            "deathsRatio": 0.5,
-            "killAssistPerMin": 0.5,
-            "killsPerMin": 0.5,
-            "deathsPerMin": 0.5,
-            "assistsPerMin": 0.5,
-            "totalHealPerMin": 0.0,
-            "damageSelfMitigatedPerMin": 0.5,
-            "damageDealtToTurretsPerMin": 0.5,
-            "timeCCingOthersPerMin": 0.5,
-            "neutralMinionsKilledPerMin": 0.5,
-            "totalTimeCrowdControlDealtPerMin": 0.5,
-            "visionWardsBoughtInGamePerMin": 0.5,
-            "neutralMinionsKilledEnemyJunglePerMin": 0.5,
-            "wardsPlacedPerMin": 0.5,
-            "wardsKilledPerMin": 0.5
-            },
-        ],
-        mostChamp: {
-            name: "error",
-            games: 0,
-            wins: 0,
-        },
-        champTitle: "",
-        champInfo: {},
-        recommendChamps: [],
-        champType: "",
-        background: "아이오니아",
-        lolbti: "",
-        lolbtiChampType: "",
-        korChampName: "",
-        // barSeries: [
-        //   {
-        //     name: "",
-        //     data: [],
-
-        //   }, 
-        //   {
-        //     name: "",
-        //     data: [],
-        //   }
-        // ],
-        barSeries: [
-            {
-                name: '동 티어대비',
-                data: []
-            },
-            {
-                name: '나',
-                data: []
-            },
-        ],
-        
-
-      columnSeries: [
-        {
-          name: '공격성',
-          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        }, {
-          name: '안정성',
-          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }, {
-          name: '영향력',
-          data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-        }
-      ],
-      columnChartOptions: {
-        chart: {
-          type: 'bar',
-          toolbar: {
-            show: false,
-          },
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            // endingShape: 'rounded'
-          },
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-        xaxis: {
-          categories: [],
-          labels: {
-            showDuplicates: false,
-            style: {
-                fontSize: '10px',
-            },
-            formatter: function(value) {
-              if (value == undefined)
-                return null;
-              const timestamp =  new Date(parseInt(value));
-              const month = new Date(timestamp).getMonth() + 1 + '월 '
-              const day = new Date(timestamp).getDate() + '일 '
-              return month + day // + hour
-            }
-          },
-        },
-
-        fill: {
-          opacity: 1
-        },
         tooltip: {
-          x: {
-            formatter: (value, {w}) => {
-              // console.log(w)
-              // console.log(value)  
-              
-              // return '<img src="'+this.imageload('champion/Orianna.png')+'" class="v-avatar" width="40px" >'
-              // // return w
-              return '<img src="'+this.imageload('champion/' + w.globals.seriesNames[0][value-1]+'.png')+'" class="v-avatar" width="40px" >'
-            }
-          },
-          y: {
-            formatter: function (val) {
-              return val + " 점"
-            }
-          }
-        }
-      }
+            agg: '킬, 데미지, 전투 참여 횟수 등 게임을 공격적으로 플레이하는 능력을 의미합니다.',
+            sta: '데스나 시에스 등 게임을 안정적으로 풀어나가는 능력을 의미합니다.',
+            inf: '오브젝트나 시야, 어시스트 등 게임 전반에 영향을 미치는 능력을 의미합니다.'
+        },
 
+      noRecommendChamps: false,
+      timeWait: true,
+      isLolbodyLoading: true,
+      loadingColor: 'grey',
+      loadingSize: '80px',
+
+
+      // *********************************** 보실 부분* ************************************************
+      // 바 차트에서 랭크 버튼을 누르는 곳 + 모스트 챔프 버튼
+
+
+      btnTrigger: {
+        barChartClick: {
+          dia: false,
+          pla: false,
+          gold: false,
+          silver: false,
+          bronze: false,
+          iron: false,
+        },
+        champClick: {
+          main: true,
+          sub: false,
+        },
+
+      },
+      mostChamp: {
+        name: "error",
+        games: 0,
+        wins: 0,
+      },
+      champTitle: "",
+      champInfo: {},
+      recommendChamps: [],
+      champType: "",
+      background: "아이오니아",
+      lolbti: "",
+      lolbtiChampType: "",
+      korChampName: "",
     }
   },
-  computed: {
-    // ...mapState(['lolbodyData']),
-    // ...mapGetters(['getLolbodyData']),
-    // computedColumnSeries() {
-    //   return this.columnSeries
-    // },
-    // computedColumnChartOptions() {
-    //   return this.ColumnChartOptions
-    // },
-    computedBarSeries() {
-      return this.barSeries
+    computed: {
+        getLolbodyData(){
+            return this.$store.getters.getLolbodyData;
+        },
 
     },
-    computedBarChartOptions() {
-      return this.barChartOptions
+
+    methods: {
+        async getActionLolbodydata(userName){
+            await this.$store.dispatch('fetchLolbodyData', userName);
+            //데이터 받고 초기화?
+            this.fixEmptyData();
+            this.selectMostChamp();
+            this.selectLolbti();
+            this.selectlolbtiChampType();
+            this.setMostChamp();
+
+            if ( this.getLolbodyData.userCardReference.soloRank.tier === "DIAMOND" ) {
+                this.DiaData()
+            }
+            else if ( this.getLolbodyData.userCardReference.soloRank.tier === "PLATINUM" ) {
+                this.PlaData()
+            }
+            else if ( this.getLolbodyData.userCardReference.soloRank.tier === "GOLD" ) {
+                this.GoldData()
+            }
+            else if ( this.getLolbodyData.userCardReference.soloRank.tier === "SILVER" ) {
+                this.SilverData()
+            }
+            else if ( this.getLolbodyData.userCardReference.soloRank.tier === "BRONZE" ) {
+                this.BronzeData()
+            }
+            else {
+                this.IronData()
+            }
+            
+            this.isLolbodyLoading = false;
+            this.timeWait = false;
+        },
+    DiaData() {
+      this.othersSeries = [this.getLolbodyData.stastics.tierAnalysis.diamond.total, "다이아"];
+      
+      this.btnTrigger.barChartClick.dia = true
+      this.btnTrigger.barChartClick.pla = false
+      this.btnTrigger.barChartClick.gold = false
+      this.btnTrigger.barChartClick.silver = false
+      this.btnTrigger.barChartClick.bronze = false
+      this.btnTrigger.barChartClick.iron = false
 
     },
-  },
-  watch: {
-    // getLolbodyData: {
-    //   deep: true,
-    //   // immediate: true,
-    //   handler() {
-    //     this.selectMostChamp()
-    //     this.selectLolbti()
-    //     this.selectlolbtiChampType()
-    //     if ( this.getLolbodyData.userCardReference.soloRank.tier === "DIAMOND" ) {
-    //       this.DiaData()
-    //     }
-    //     else if ( this.getLolbodyData.userCardReference.soloRank.tier === "PLATINUM" ) {
-    //       this.PlaData()
-    //     }
-    //     else if ( this.getLolbodyData.userCardReference.soloRank.tier === "GOLD" ) {
-    //       this.GoldData()
-    //     }
-    //     else if ( this.getLolbodyData.userCardReference.soloRank.tier === "SILVER" ) {
-    //       this.SilverData()
-    //     }
-    //     else if ( this.getLolbodyData.userCardReference.soloRank.tier === "BRONZE" ) {
-    //       this.BronzeData()
-    //     }
-    //     else {
-    //       this.IronData()
-    //     }
-    //   }
-    // },
+    PlaData() {
+      this.othersSeries = [this.getLolbodyData.stastics.tierAnalysis.platinum.total, "플레티넘"];
+      this.btnTrigger.barChartClick.dia = false
+      this.btnTrigger.barChartClick.pla = true
+      this.btnTrigger.barChartClick.gold = false
+      this.btnTrigger.barChartClick.silver = false
+      this.btnTrigger.barChartClick.bronze = false
+      this.btnTrigger.barChartClick.iron = false
 
-    getLolbodyData: {
-      deep: true,
-      immediate: true,
-      handler() {
-        this.changeData(this.getLolbodyData.radarList.slice(0, 10))
+    },
+    GoldData() {
+      this.othersSeries = [this.getLolbodyData.stastics.tierAnalysis.gold.total, "골드"];
 
-      }
+      this.btnTrigger.barChartClick.dia = false
+      this.btnTrigger.barChartClick.pla = false
+      this.btnTrigger.barChartClick.gold = true
+      this.btnTrigger.barChartClick.silver = false
+      this.btnTrigger.barChartClick.bronze = false
+      this.btnTrigger.barChartClick.iron = false
+
+    },
+    SilverData() {
+      this.othersSeries = [this.getLolbodyData.stastics.tierAnalysis.silver.total, "실버"];
+
+      this.btnTrigger.barChartClick.dia = false
+      this.btnTrigger.barChartClick.pla = false
+      this.btnTrigger.barChartClick.gold = false
+      this.btnTrigger.barChartClick.silver = true
+      this.btnTrigger.barChartClick.bronze = false
+      this.btnTrigger.barChartClick.iron = false
+
+    },
+    BronzeData() {
+      this.othersSeries = [this.getLolbodyData.stastics.tierAnalysis.bronze.total, "브론즈"];
+
+      this.btnTrigger.barChartClick.dia = false
+      this.btnTrigger.barChartClick.pla = false
+      this.btnTrigger.barChartClick.gold = false
+      this.btnTrigger.barChartClick.silver = false
+      this.btnTrigger.barChartClick.bronze = true
+      this.btnTrigger.barChartClick.iron = false
+
+    },
+    IronData() {
+      this.othersSeries = [this.getLolbodyData.stastics.tierAnalysis.iron.total, "아이언"];
+
+      this.btnTrigger.barChartClick.dia = false
+      this.btnTrigger.barChartClick.pla = false
+      this.btnTrigger.barChartClick.gold = false
+      this.btnTrigger.barChartClick.silver = false
+      this.btnTrigger.barChartClick.bronze = false
+      this.btnTrigger.barChartClick.iron = true
+
     },
 
-    mostChamp: {
-      deep: true,
-      // immediate: true,
-      handler() {
-        this.changeChampTitle()
-        this.changeChampInfo()
-        this.getRecommendChamps(this.mostChamp)
-        // this.changeChampType()
-        // this.changeBackground()
-
-      }
-    }
-  },
-  methods: {
-
-    barInit() {
-      var myList = []
-      // var columnName = []
-
-      for ( var data in this.getLolbodyData.analysis ) {
-        myList.push(Math.round(this.getLolbodyData.analysis[data]*100))
-        // columnName.push(data)
-
-      }
-      this.barSeries[1].data = myList
-      // this.barChartOptions.xaxis.categories = columnName
-    },
-    barOther(datas) {
-      var myList = []
-      var name = datas[1]
-
-      for ( var data in datas[0] ) {
-        myList.push(Math.round(datas[0][data]*100))
-
-      }
-      this.barSeries[0].data = myList
-      this.barSeries[0].name = name
-
-      console.log(datas)
-    },
-
-    
-
-
-   imageload(URL){
+    // column 차트에서 형래님이 사용하신 함수입니다. (챔피언 이미지 넣기 위함.)
+    imageload(URL){
       try{
           return require('@/assets/images/'+ URL);
       }catch{
           return require('@/assets/images/error.png');
       }
     },
-    changeData(datas) {
-      var agg = []
-      var stab = []
-      var infl = []
-      var categories = []
-
-      for ( var data of datas ) {
-        for ( var value in data.radarReference ) {
-          if ( value === "aggressiveness" ) {
-            agg.push(Math.round(data.radarReference[value]*100))
-          }
-          else if ( value === "stability" ) {
-            stab.push(Math.round(data.radarReference[value]*100))
-          }
-          else {
-            infl.push(Math.round(data.radarReference[value]*100))
-          }
-        }
-        categories.push(data.timestamp)
-      }
-      this.columnSeries[0].data = agg.reverse()
-      this.columnSeries[1].data = infl.reverse()
-      this.columnSeries[2].data = stab.reverse()
-      this.columnChartOptions.xaxis.categories = categories.reverse()
-
-    },
 
 
+// *********************************** 여기 까지* ************************************************
 
-    // setBarSeriesMyData() {
-    //   var tempSeries = {
-    //     name: "나",
-    //     data: [],
-    //   }
-    //   for ( var temp in this.getLolbodyData.analysis ) {
-    //     tempSeries.data.push(this.getLolbodyData.analysis[temp])
-    //   }
-    //   this.barSeries[1] = tempSeries
-    // },
+
+    // 갱신을위해서 만든건데 혹시 안되면 지우시고 뒤로가기 만 남기면 될거같습니다.
+    // 현재는 시작하자말자 get이 아니라 put으로 데이터를 가져오고 있습니다.
     async renewalLolbody() {
       // await this.init()
       await this.fetchRenewalLolbody()
-      await this.setLolbodyData()
-      await this.setMostChamp()
+      await this.getActionLolbodydata()
     },
 
     // init() {
@@ -846,176 +583,29 @@ export default {
         })
     },
 
-    fixEmptyData() {
-      var emptyData = this.getLolbodyData
-      var check = false
+// *********************************** 여기 까지* ************************************************
 
-      if ( emptyData.radarList.length === 0) {
-        check = true
-      }
-      else if ( emptyData.champList.length === 0 ) {
-        check = true        
-      }
-      else if ( emptyData.lineList.length === 0 ) {
-        check = true
-      }
-
-      if ( check ) {
-        alert("해당 사용자는 롤바디 데이터가 없습니다.")
-        this.$router.push('/Profile/'+this.$route.params.userName)
-      }
-
-
-    },
-
-
-    async setLolbodyData() {
-      // 여기다여기
-      // await console.log('1--------------------------')
-      // await console.log(this.getLolbodyData)
-      await this.fixEmptyData()
-      await this.selectMostChamp()
-      // await console.log('2--------------------------')
-      await this.selectLolbti()
-      // await console.log('3--------------------------')
-      await this.selectlolbtiChampType()
-      // await console.log('4--------------------------')
-
-
-      if ( this.getLolbodyData.userCardReference.soloRank.tier === "DIAMOND" ) {
-        this.DiaData()
-      }
-      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "PLATINUM" ) {
-        this.PlaData()
-      }
-      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "GOLD" ) {
-        this.GoldData()
-      }
-      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "SILVER" ) {
-        this.SilverData()
-      }
-      else if ( this.getLolbodyData.userCardReference.soloRank.tier === "BRONZE" ) {
-        this.BronzeData()
-      }
-      else {
-        this.IronData()
-      }
-
-    },
+    // 시작시 데이터를 불러옵니다.현재는 get이 아니라 put으로 불러옵니다.
+    // 혹시나 갱신 버튼이 안될 때의 상황에 대비하기 위함입니다.
+   
+    // 시작시 모스트 챔프를 사용하는 값들을 세팅합니다.
     setMostChamp() {
-      this.changeChampTitle()
-      this.changeChampInfo()
-      this.getRecommendChamps(this.mostChamp)
-      this.changeChampType()
-      this.changeBackground()
-
-      this.barInit()
-
-    },
-    fetchLolbodyData() {
-      return axios
-        .get(`https://lolbody.gq` + `/api/lolbody/${this.$route.params.userName}`)
-        .then(res => {
-          this.getLolbodyData = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    // totalData() {
-    //   this.getOtherData = this.getLolbodyData.stastics.stastics.total.total
-    // },
-    DiaData() {
-      // this.barSeries
-      // var tempSeries = {
-      //   name: "다이아",
-      //   data: [],
-      // }
-      // var tempData = this.getLolbodyData.stastics.tierAnalysis.diamond.total
-      // for ( var temp in tempData ) {
-      //   tempSeries.data.push(tempData[temp])
-      // }
-      // this.barSeries[0] = tempSeries
-
-
-
-      // this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.diamond.total, "다이아"]
-      this.barOther([this.getLolbodyData.stastics.tierAnalysis.diamond.total, "다이아"])
-      
-      this.btnTrigger.barChartClick.dia = true
-      this.btnTrigger.barChartClick.pla = false
-      this.btnTrigger.barChartClick.gold = false
-      this.btnTrigger.barChartClick.silver = false
-      this.btnTrigger.barChartClick.bronze = false
-      this.btnTrigger.barChartClick.iron = false
-
-    },
-    PlaData() {
-      // var tempSeries = {
-        //   name: "플레티넘",
-      //   data: [],
-      // }
-      // var tempData = this.getLolbodyData.stastics.tierAnalysis.platinum.total
-      // for ( var temp in tempData ) {
-        //   tempSeries.data.push(tempData[temp])
-      // }
-      // this.barSeries[0] = tempSeries
-
-      // this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.platinum.total, "플레티넘"]
-      this.barOther([this.getLolbodyData.stastics.tierAnalysis.platinum.total, "플레티넘"])
-      this.btnTrigger.barChartClick.dia = false
-      this.btnTrigger.barChartClick.pla = true
-      this.btnTrigger.barChartClick.gold = false
-      this.btnTrigger.barChartClick.silver = false
-      this.btnTrigger.barChartClick.bronze = false
-      this.btnTrigger.barChartClick.iron = false
-
-    },
-    GoldData() {
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.gold.total, "골드"]
-      this.btnTrigger.barChartClick.dia = false
-      this.btnTrigger.barChartClick.pla = false
-      this.btnTrigger.barChartClick.gold = true
-      this.btnTrigger.barChartClick.silver = false
-      this.btnTrigger.barChartClick.bronze = false
-      this.btnTrigger.barChartClick.iron = false
-
-    },
-    SilverData() {
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.silver.total, "실버"]
-      this.btnTrigger.barChartClick.dia = false
-      this.btnTrigger.barChartClick.pla = false
-      this.btnTrigger.barChartClick.gold = false
-      this.btnTrigger.barChartClick.silver = true
-      this.btnTrigger.barChartClick.bronze = false
-      this.btnTrigger.barChartClick.iron = false
-
-    },
-    BronzeData() {
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.bronze.total, "브론즈"]
-      this.btnTrigger.barChartClick.dia = false
-      this.btnTrigger.barChartClick.pla = false
-      this.btnTrigger.barChartClick.gold = false
-      this.btnTrigger.barChartClick.silver = false
-      this.btnTrigger.barChartClick.bronze = true
-      this.btnTrigger.barChartClick.iron = false
-
-    },
-    IronData() {
-      this.getOtherData = [this.getLolbodyData.stastics.tierAnalysis.iron.total, "아이언"]
-      this.btnTrigger.barChartClick.dia = false
-      this.btnTrigger.barChartClick.pla = false
-      this.btnTrigger.barChartClick.gold = false
-      this.btnTrigger.barChartClick.silver = false
-      this.btnTrigger.barChartClick.bronze = false
-      this.btnTrigger.barChartClick.iron = true
-
+        this.changeChampTitle()
+        this.changeChampInfo()
+        this.getRecommendChamps(this.mostChamp)
+        this.changeChampType()
+        this.changeBackground()
+        
     },
 
+
+    // 롤비티아이에서 쓰일 챔피언 type을 정합니다 (tag값)
     selectlolbtiChampType() {
       this.lolbtiChampType = champion.data[this.getLolbodyData.champList[0].name].tags[0]
     },
 
+
+    // 롤비티아이에서 들어갈 형용사를 정합니다.
     selectLolbti() {
       var radar = this.getLolbodyData.radar
 
@@ -1134,23 +724,35 @@ export default {
 
     },
 
+
+    // 가장 많이한 챔프를 고르고, 한글 이름을 추출해냅니다. 챔피언 클릭시 반응하는 함수입니다.
     selectMostChamp() {
       // console.log('test1')
-      this.mostChamp = this.getLolbodyData.champList[0]
-      this.korChampName = champion.data[this.getLolbodyData.champList[0].name].name
+      this.mostChamp = this.getLolbodyData.champList[0];
+      this.korChampName = champion.data[this.getLolbodyData.champList[0].name].name;
+      this.changeChampTitle()
+      this.changeChampInfo()
+      this.getRecommendChamps(this.mostChamp);
       // console.log('test2')
       
-      this.btnTrigger.champClick.main = true
-      this.btnTrigger.champClick.sub = false
-    },
-    selectSecondChamp() {
-      this.mostChamp = this.getLolbodyData.champList[1]
-      this.korChampName = champion.data[this.getLolbodyData.champList[1].name].name
-      
-      this.btnTrigger.champClick.main = false
-      this.btnTrigger.champClick.sub = true
+      this.btnTrigger.champClick.main = true;
+      this.btnTrigger.champClick.sub = false;
     },
 
+    // 두번째로 많이한 챔프를 고르고, 한글 이름을 추출합니다.
+    selectSecondChamp() {
+      this.mostChamp = this.getLolbodyData.champList[1];
+      this.korChampName = champion.data[this.getLolbodyData.champList[1].name].name;
+      this.changeChampTitle()
+      this.changeChampInfo()
+      this.getRecommendChamps(this.mostChamp);
+      this.btnTrigger.champClick.main = false;
+      this.btnTrigger.champClick.sub = true;
+    },
+
+
+
+    // 시작할때 들어갈 바뀌게 될 값들 입니다.
     changeChampTitle() {
       this.champTitle = champion.data[this.mostChamp.name].title
     },
@@ -1165,7 +767,7 @@ export default {
       
     },
 
-
+    // 모스트 챔피언에 따라서 추천해주는 로직입니다. 시작할때 실행됩니다.
     getRecommendChamps(mostChamp) {
       var champList = []
 
@@ -1212,6 +814,31 @@ export default {
       }
     },
 
+
+    // 칼바람만 하는 사람은 클래식 게임 데이터가 오지 않기 때문에 예외처리해둔겁니다.
+    fixEmptyData() {
+        var emptyData = this.getLolbodyData
+        var check = false
+
+        if ( emptyData.radarList.length === 0) {
+            check = true
+        }
+        else if ( emptyData.champList.length === 0 ) {
+            check = true        
+        }
+        else if ( emptyData.lineList.length === 0 ) {
+            check = true
+        }
+
+        if ( check ) {
+            alert("해당 사용자는 롤바디 데이터가 없습니다.")
+            this.$router.push('/Profile/'+this.$route.params.userName)
+        }
+
+    },
+
+
+    // 로딩 및 시간, 백 버튼 함수입니다.
     startLoading() {
       this.isLolbodyLoading = true
     },
@@ -1225,41 +852,104 @@ export default {
       alert('사용자가 너무 많아서 느립니다. 잠시 후에 다시 시도해주세요.')
       this.$router.push('/Profile/'+this.$route.params.userName)
     },
-
-
-
-
+    backBtn() {
+        this.$router.go(-1)
+    },
   },
-  async created() {
-    this.timeOut = false,
-    this.timeWait = false,
-    this.$store.commit('toggleNavSearch', false)
-    var myTimeWait = setTimeout(() => {
-      this.startTimeWait(true)
-    }, 10000)
-    var myTimeOut = setTimeout(() => {
-      this.startTimeOut(true)
-    }, 30000)
 
-    myTimeWait
-    myTimeOut
+  // *********************************** 보실 부분* ************************************************
+    mounted(){
+        this.isLolbodyLoading = true;
+        this.timeWait = true;
+        const userName = this.$route.params.userName;
+        this.getActionLolbodydata(userName);
+    },
+    beforeDestroy(){
+        this.$store.state.LolbodyData = {
+            userCardReference: {
+            "timestamp": 0,
+            "summonerName": undefined,
+            "profileIconId": undefined,
+            "summonerLevel": undefined,
+            "soloRank": {
+                "tier": undefined,
+                "rank": undefined,
+                "leaguePoints": undefined,
+                "wins": 0,
+                "losses": 0,
+                "winRate": 0
+            },
+            },
+            radarList: [],
+            champList: [],
+            lineList: [],
+            radar: {
+            "aggressiveness": 0,
+            "stability": 0,
+            "influence": 0
+            },
+            analysis: {
+            "totalDamageDealtToChampionsPerMin": 0,
+            "damageDealtToObjectivesPerMin": 0,
+            "visionScorePerMin": 0,
+            "totalDamageTakenPerMin": 0,
+            "totalMinionsKilledPerMin": 0,
+            "killsRatio": 0,
+            "deathsRatio": 0,
+            "killAssistPerMin": 0,
+            "killsPerMin": 0,
+            "deathsPerMin": 0,
+            "assistsPerMin": 0,
+            "totalHealPerMin": 0,
+            "damageSelfMitigatedPerMin": 0,
+            "damageDealtToTurretsPerMin": 0,
+            "timeCCingOthersPerMin": 0,
+            "neutralMinionsKilledPerMin": 0,
+            "totalTimeCrowdControlDealtPerMin": 0,
+            "visionWardsBoughtInGamePerMin": 0,
+            "neutralMinionsKilledEnemyJunglePerMin": 0,
+            "wardsPlacedPerMin": 0,
+            "wardsKilledPerMin": 0
+            },
+        };
+    }
+  // 시작할때 timeout을 걸어주고, fetch Lolbody로 데이터를 불러옵니다.
+  // 각 데이터를 세팅한 후, 시간내에 끝나지 못하면, 타임아웃에 의해서 글자가 나오고, 이후 뒤로가기 됩니다.
+//  async created() {
+//    this.timeOut = false,
+//    this.timeWait = false,
+//    this.$store.commit('toggleNavSearch', false)
+//    var myTimeWait = setTimeout(() => {
+//      this.startTimeWait(true)
+//    }, 10000)
+//    var myTimeOut = setTimeout(() => {
+//      this.startTimeOut(true)
+//    }, 30000)
 
-    await this.startLoading()
-    // await console.log("1 start")
-    await this.fetchLolbodyData()
-    // await console.log("2 start")
-    await this.setLolbodyData()
-    // await console.log("3 start")
-    await this.setMostChamp()
-    // await console.log("4 start")
+//    myTimeWait
+//    myTimeOut
 
-    await console.log('end')
+//    await this.startLoading()
+//    // await console.log("1 start")
+//    await this.fetchLolbodyData()
+//    // await console.log("2 start")
+//    await this.setLolbodyData()
+//    // await console.log("3 start")
+//    await this.setMostChamp()
+//    // await console.log("4 start")
 
-    await this.endLoading()
-    await clearTimeout(myTimeWait)
-    await clearTimeout(myTimeOut)
-    // this.$store.dispatch('getLolbodyData', this.$route.params.userName)
-  },
+//    // await console.log('end')
+
+//    await this.endLoading()
+//    await clearTimeout(myTimeWait)
+//    await clearTimeout(myTimeOut)
+//    // this.$store.dispatch('getLolbodyData', this.$route.params.userName)
+//  },
+
+
+
+
+
 
 }
 </script>
@@ -1273,6 +963,51 @@ export default {
   opacity: '0.7'
   
 } */
+.unrankedicon{
+    transform: translate(8px, 15px);
+    width: 50px !important;
+    height: 50px !important;
+}
+
+[data-tooltip-text]:hover {
+	position: relative;
+}
+
+
+[data-tooltip-text]:hover:after {
+	content: attr(data-tooltip-text);
+
+  position: absolute;
+	bottom: 150%;
+	left: -25%;
+  padding: 14px;
+  width: 160%;
+
+  border-radius: 20px;
+    
+  background-color: rgba(0, 0, 0, 0.8);
+	color: #FFFFFF;
+	font-size: 12px;
+
+	z-index: 9999;
+}
+
+
+
+.multi-explain  {
+  font-weight: 900;
+  font-size: 20px;
+  border-radius: 20px;
+  border: 0.1px solid grey;
+  text-align: center;
+  width: 70%;
+}
+
+.multi-explain:hover {
+  background-color: #e6e6e6;
+}
+
+
 
 .lolbti-text {
   background-color: rgb(0, 0, 0, 0.5);

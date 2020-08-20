@@ -24,12 +24,12 @@
 							<div class="pt-4 pl-4">
 								<v-card-title class="headline nickname" v-text="profileDatas.summonerName"/>
 								<v-btn class="mt-2 mr-1 py-3 px-2 fs-14 refresh-btn" color="#30BA8C" @click="renewalUserData(profileDatas.summonerName)" outlined>전적 갱신</v-btn>
-								<v-btn class="mt-2 px-1 py-3 fs-14 refresh-btn" color="#30BA8C" outlined>LoL Body</v-btn>
+								<v-btn class="mt-2 px-1 py-3 fs-14 refresh-btn" color="#30BA8C" outlined @click="goLolbody(profileDatas.summonerName)">LoL Body</v-btn>
                                 <span class="fs-10 d-block">최근 업데이트: {{ updateTime }}</span>
 							</div>
 						</v-col>
 
-                        <v-btn class="px-1 fs-9 lolbody-btn" color="#30BA8C" outlined @click="goLolbody(profileDatas.summonerName)">LoL Body</v-btn>
+                        <!-- <v-btn class="px-1 fs-9 lolbody-btn" color="#30BA8C" outlined @click="goLolbody(profileDatas.summonerName)">LoL Body</v-btn> -->
                         <!--<v-col cols="1">
                             <v-avatar size="45" class="profiletier">
                                 <v-img :src="imageload('tier/'+profileDatas.tier+'.png')" />
@@ -392,8 +392,8 @@ export default {
                     if (searchHistory.includes(this.profileDatas.summonerName)) {
                         return
                     }
-                    if (searchHistory.length >= 9) {
-                        // 최대 9개의 히스토리만 가지고 있도록 9개 이상인 경우 하나 빼버림
+                    if (searchHistory.length >= 6) {
+                        // 최대 9개의 히스토리만 가지고 있도록 6개 이상인 경우 하나 빼버림
                         searchHistory.shift()
                     }
                 // searchHistory가 존재하지만 빈 string인 경우

@@ -13,7 +13,7 @@
 
 - 지속적인 CI/CD를 바탕으로 UX 향상 및 즐거움 선사.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a385356b-6746-44ab-967f-277a5afe3022/1.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a385356b-6746-44ab-967f-277a5afe3022/1.png)
+![1](./README_image/1.png)
 
 ## &#128640; 시작하기
 

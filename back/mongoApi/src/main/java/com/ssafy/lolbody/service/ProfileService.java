@@ -362,7 +362,7 @@ public class ProfileService {
 			}
 
 			for (int i = s; i >= 0; i--) {
-				System.out.println(matchReferences.get(i).getGameId());
+//				System.out.println(matchReferences.get(i).getGameId());
 				matchRepository.deleteById(matchReferences.get(i).getGameId());
 				matchRecordRepository.deleteById(matchReferences.get(i).getGameId());
 			}

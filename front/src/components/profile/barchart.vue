@@ -29,8 +29,8 @@ export default {
                 }];
             for(let t in this.team){
                 result[0].data.push(Math.round(this.team[t].radar.aggressiveness*100));
-                result[1].data.push(Math.round(this.team[t].radar.influence*100));
-                result[2].data.push(Math.round(this.team[t].radar.stability*100));
+                result[1].data.push(Math.round(this.team[t].radar.stability*100));
+                result[2].data.push(Math.round(this.team[t].radar.influence*100));
             }
             return result;
         },

@@ -20,39 +20,24 @@ export default {
   components: {
     VueWordCloud
   },
+  props: ['champList'],
   data() {
     return {
-      spacing: 0.5,
-      words: [
-      ]
+        spacing: 1,
     }
   },
-  watch: {
-    champList: {
-      deep: true,
-      // immediate: true,
-      handler() {
-        this.changeWords(this.champList)
-
+  computed:{
+      words(){
+            let result = [];
+            for ( var tempData of this.champList ) {
+                var champWord = []
+                champWord.push(champion.data[tempData.name].name)
+                champWord.push(tempData.games)
+                result.push(champWord)
+            }
+            return result;
       }
-    }
   },
-  methods: {
-    changeWords(datas) {
-      for ( var tempData of datas ) {
-        var champWord = []
-        champWord.push(champion.data[tempData.name].name)
-        champWord.push(tempData.games)
-        this.words.push(champWord)
-      }
-    }
-
-  },
-
-  props: {
-    champList: Array
-  },
-
 
 }
 </script>

@@ -208,7 +208,6 @@ export default {
 	},
 	computed: {
         badgeSet(){
-            console.log(this.$store.getters.getBadgeSet)
             return this.$store.getters.getBadgeSet
         },
         radarData(){

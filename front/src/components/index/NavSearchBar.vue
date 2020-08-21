@@ -1,11 +1,11 @@
 <template>
 <div>
   <v-container class="pa-0 mr-10 pr-16">
-    <v-row align="center" class="nav-search-border" max-width="238.4px">
-      <v-col class="pa-2 pb-9 pl-2">
+    <v-row class="multi-search-row" style="width: 400px">
+      <v-col style="padding: 3px 0px 0px 3px;">
         <input type="text"
-          style="color:white;"
           tabindex="1" 
+          class="multi-search-col2"
           v-on:input="typing"
           v-bind:value="inputSummonerID"
           @paste="onPaste"
@@ -18,63 +18,56 @@
           @keyup="onPressKey"
         >
 
+        <!-- <textarea
+          tabindex="1"
+          class="multi-search-col2"
+          v-model="inputSummonerID"
+          @paste="onPaste"
+          placeholder="Summoner ID"
+          id="paste"
+          @keyup.enter="onClickSearchButton"
+
+
+        ></textarea> -->
       </v-col>
-      <v-col cols=2 @click="onClickSearchButton" class="nav-serach-btn pa-2 mb-7">
+
+      <v-col cols=1 class="multi-search-col3" @keyup.enter='onClickSearchButton' @click="onClickSearchButton" tabindex="2" >
         <v-icon class="icon-place">search</v-icon>
       </v-col>
-      <!-- <v-row no-gutters v-show='this.historyIsVisible' >
+    </v-row>
+
+    <v-card min-height="94px" width="400px" v-show='this.historyIsVisible' flat class="history-place">
+      <v-row no-gutters class="history-visible-place">
         <template v-for="(h, n) in this.searchHistory">
-          <v-col :key="n" class='col-12' @mousedown="onClickHistoryButton(h)">
-            <v-card
-              class="pa-0"
-              outlined
-              tile
-              max-width="238.4px"
-            >
-              <v-btn 
-                text 
-                large 
-                color="primary"
-                >
-                  {{ h }}
-                </v-btn>
-            </v-card>
-          </v-col>
+            <v-col :key="n" cols="4" class="fs-0" @mousedown="onClickHistoryButton(h)">
+                <v-card class="text-center navsearchhistorybtn py-4" outlined tile>
+                    {{ h }}
+                </v-card>
+            </v-col>
           <v-responsive
-            v-if="(n+1)%1 === 0"
+            v-if="(n+1)%3 === 0"
             :key="`width-${n}`"
             width="100%"
-            max-width="238.4px"
           ></v-responsive>
         </template>
       </v-row>
-      <v-row no-gutters v-show='this.autoCompleteIsVisible' >
+    </v-card>
+    <v-card min-height="94px" width="400px" v-show='this.autoCompleteIsVisible' flat class="history-place">
+      <v-row no-gutters class="history-visible-place">
         <template v-for="(h, n) in this.autoComplete">
-          <v-col :key="n" class='col-12' @mousedown="onClickHistoryButton(h)">
-            <v-card
-              class="pa-0"
-              outlined
-              tile
-              max-width="238.4px"
-            >
-              <v-btn 
-                text 
-                large 
-                color="primary"
-                >
-                  {{ h }}
-                </v-btn>
-            </v-card>
-          </v-col>
+            <v-col :key="n" cols="4" @mousedown="onClickHistoryButton(h)">
+                <v-card class="text-center navsearchhistorybtn py-4" outlined tile>
+                    {{ h }}
+                </v-card>
+            </v-col>
           <v-responsive
-            v-if="(n+1)%1 === 0"
+            v-if="(n+1)%3 === 0"
             :key="`width-${n}`"
             width="100%"
-            max-width="238.4px"
           ></v-responsive>
         </template>
-      </v-row> -->
-    </v-row>
+      </v-row>
+    </v-card>
   </v-container>
 
 </div>
@@ -99,7 +92,7 @@ export default {
       if (this.focusInput === false) {
         return false
       } else {
-        if (this.inputSummonerID.length === 0) {
+        if (this.inputSummonerID.length === 0 && this.searchHistory.length !==0) {
           return true
         } else {
           return false
@@ -110,7 +103,7 @@ export default {
       if (this.focusInput === false) {
         return false
       } else {
-        if (this.inputSummonerID.length !== 0) {
+        if (this.inputSummonerID.length !== 0 && this.autoComplete.length !== 0) {
           return true
         } else {
           return false
@@ -125,6 +118,13 @@ export default {
         window.localStorage.setItem('searchHistory', '')
       }
       return tmp
+    },
+    commentIsVisible() {
+      if (this.historyIsVisible || this.autoCompleteIsVisible) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   methods: {
@@ -140,9 +140,14 @@ export default {
       // 개행문자가 존재 할 경우 따옴표로 바꾸고 따옴표 기준으로 Array로 split
       // 혹시 op.gg처럼 멀티서치 검색창이 따로 존재 할 수도 있으므로
       let tmpSearchSummernerIDs = this.inputSummonerID.replace(/(\n|\r\n)/g, ',').split(',')
-      // console.log(tmpSearchSummernerIDs)
+      // console.log(1, tmpSearchSummernerIDs)
       // // 따옴표로 구분된 아이디 Array
       // searchSummernerID = this.inputSummonerID.split('\n')
+
+      // 인덱스에서 엔터 거르는로직 input으로 만들면 필요없음
+      // if ( tmpSearchSummernerIDs.length === 2 ) {
+      //   tmpSearchSummernerIDs.pop()
+      // }
 
       // 특수문자 정규표현식
       const regExp = /[{}[\]/?.,;:|)*~`!^-_+<>@#$%&\\=('"]/gi;
@@ -170,7 +175,11 @@ export default {
         // console.log(ID + '공백제거')
       })
 
+      // console.log(2, tmpSearchSummernerIDs)
+      // this.searchSummernerIDs = tmpSearchSummernerIDs
+
       this.$store.commit('changeSearchSummonerIDs', tmpSearchSummernerIDs)
+
       // 1개면 유저프로필. 1개이상이면 멀티서치.
       if (tmpSearchSummernerIDs.length > 1) {
         this.getData(tmpSearchSummernerIDs)
@@ -180,19 +189,18 @@ export default {
         this.$router.push('/Profile/'+tmpSearchSummernerIDs);
 
       }
-      this.inputSummonerID = ""
 
     },
     async getData(tmpSearchSummernerIDs) {
       await this.$store.dispatch('initMultiSearchData')
       await this.$store.commit('toggleMultiSearchLoading', true)
-      
+
       // await this.$store.dispatch('getMultiSearchRadarDatas', ID)
       // await this.$store.dispatch('getMultiUserDatas', ID)
-
       for ( var ID of tmpSearchSummernerIDs ) {
         await this.$store.dispatch('getMultiSearchDatas', ID)
       }
+
       await this.$store.commit('toggleMultiSearchLoading', false)
 
     },
@@ -215,7 +223,10 @@ export default {
         this.parseInputSummonerID()
         // 사용자가 수정이 가능하도록 input 창에 띄워줌
         // console.log(2)
-        // this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
+
+        // console.log(this.inputSummonerID)
+        this.inputSummonerID = this.$store.state.searchSummonerIDs.join(', ')
+        // console.log(3)
     },
 
     onFocusInput() {
@@ -270,4 +281,72 @@ input:focus {
 }
 
 
+.multi-search-row {
+  height: 45px;
+  border: 2px solid white;
+  margin: 0;
+}
+
+.multi-search-col2 {
+  height: 35px;
+  width: 100%;
+  resize: none;
+  padding: 5px;
+}
+.multi-search-col3 {
+  background: #33A39E;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  transition: 0.3s;
+}
+
+.multi-search-col3:hover {
+  background: #588a88;
+  cursor: pointer;
+}
+
+.icon-place {
+  position: relative;
+  top: 20%;
+  left: 15%;
+  font-size: 40px;
+  color: white;
+}
+.v-btn {
+  text-transform:none !important;
+}
+
+.history-place {
+    position: absolute;
+    background-color: #fafafa !important;
+    border-radius: 0 !important;
+}
+
+.history-visible-place{
+  background-color: #FFFFFF;
+  border: 1px solid #33A39E;
+  border-top: 0 !important;
+}
+
+.history-place-comment{
+  border: 2px solid #fafafa
+}
+
+.navsearchhistorybtn{
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    display: block !important;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1px solid #D8D8D8 !important;
+    background-color: #fafafa !important;
+    color: black !important;
+    border-radius: 0 !important;
+    cursor: pointer;
+}
+.navsearchhistorybtn:hover{
+    background: rgba(51,163,158, 0.1) !important;
+}
 </style>

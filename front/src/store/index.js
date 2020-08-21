@@ -843,7 +843,7 @@ export default new Vuex.Store({
         return axios
             .put(SERVER_URL + `/api/lolbody/${userName}`)
             .then(res => {
-                    commit('setLolbodyData', res.data);
+                commit('setLolbodyData', res.data);
             })
             .catch(err => {
                 console.log(err)

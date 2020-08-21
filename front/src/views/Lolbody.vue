@@ -602,9 +602,9 @@ export default {
         else {
             this.IronData()
         }
-        this.isLolbodyLoading = false;
         clearTimeout(myTimeWait);
         clearTimeout(myTimeOut);
+        this.isLolbodyLoading = false;
         this.timeWait = false;
     },
 
@@ -862,7 +862,7 @@ export default {
         }
 
         if ( check ) {
-            alert("해당 사용자는 롤바디 데이터가 없습니다.")
+            alert("솔랭, 자유랭, 일반 게임을 플레이하지 않은 사용자는 롤바디 데이터가 없습니다.")
             this.$router.push('/Profile/'+this.$route.params.userName)
         }
 

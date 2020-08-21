@@ -308,9 +308,7 @@ input:focus {
 
 .icon-place {
   position: relative;
-  top: 20%;
-  left: 15%;
-  font-size: 40px;
+  font-size: 20px;
   color: white;
 }
 .v-btn {

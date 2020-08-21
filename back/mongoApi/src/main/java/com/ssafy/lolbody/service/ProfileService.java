@@ -341,4 +341,32 @@ public class ProfileService {
 		}
 	}
 
+	public void deleteMatchInfo(String name, int idx) throws Exception {
+		SummonerDto summonerDto = summonerService.findOnly(name);
+		MatchlistDto matchlistDto = matchlistService.findOnly(summonerDto);
+		List<MatchReferenceDto> matchReferences = matchlistDto.getMatches();
+		matchReferences = matchReferences.stream().filter(o -> o.getTimestamp() >= 1578596400000l)
+				.filter(o -> o.getQueue() != 2000 && o.getQueue() != 2010 && o.getQueue() != 2020)
+				.collect(Collectors.toList());
+		int size = matchReferences.size();
+		if (size - ((idx - 1) * 10) <= 0) {
+			return;
+		} else {
+			int s = 0;
+			if (size - (idx * 10) >= 0) {
+				matchReferences = matchReferences.subList(size - (idx * 10), size - ((idx - 1) * 10));
+				s = 9;
+			} else {
+				matchReferences = matchReferences.subList(0, size - ((idx - 1) * 10));
+				s = size - ((idx - 1) * 10) - 1;
+			}
+
+			for (int i = s; i >= 0; i--) {
+				System.out.println(matchReferences.get(i).getGameId());
+				matchRepository.deleteById(matchReferences.get(i).getGameId());
+				matchRecordRepository.deleteById(matchReferences.get(i).getGameId());
+			}
+		}
+	}
+
 }

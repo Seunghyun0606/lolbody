@@ -42,7 +42,7 @@
                             <small class="d-block clear fs-12 pt-2 font-weight-bold">{{champoins.data[matchData[matchData.myTeam].teammate[matchData.myIndex].champ].name}}</small>
                         </td>
 
-                        <td class="text-center" @click="matchData.KDAToggle = !matchData.KDAToggle" style="cursor: pointer; width:90px !important;">
+                        <td class="text-center" width="90px" @click="matchData.KDAToggle = !matchData.KDAToggle" style="cursor: pointer; width:90px !important;">
                             <div :style="{display: !matchData.KDAToggle ? 'inline-block' : 'none'}" >
                                 <div class="fs-16 font-weight-bold">
                                     <span>{{matchData[matchData.myTeam].teammate[matchData.myIndex].kills}}</span> /

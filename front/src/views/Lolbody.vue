@@ -448,12 +448,12 @@ export default {
             var myTimeWait = setTimeout(() => {
                 this.startTimeWait(true)
             }, 30000);
-            var myTimeOut = setTimeout(() => {
-                this.startTimeOut()
-            }, 60000);
+            //var myTimeOut = setTimeout(() => {
+            //    this.startTimeOut()
+            //}, 60000);
 
             myTimeWait;
-            myTimeOut;
+            //myTimeOut;
 
             await this.$store.dispatch('fetchLolbodyData', userName);
             //데이터 받고 초기화?
@@ -484,7 +484,7 @@ export default {
             
             this.isLolbodyLoading = false;
             clearTimeout(myTimeWait);
-            clearTimeout(myTimeOut);
+            //clearTimeout(myTimeOut);
             this.timeWait = false;
         },
     DiaData() {
@@ -574,12 +574,12 @@ export default {
         var myTimeWait = setTimeout(() => {
             this.startTimeWait(true)
         }, 30000)
-        var myTimeOut = setTimeout(() => {
-            this.startTimeOut()
-        }, 60000);
+        //var myTimeOut = setTimeout(() => {
+        //    this.startTimeOut()
+        //}, 60000);
         
         myTimeWait;
-        myTimeOut;
+        //myTimeOut;
 
         await this.$store.dispatch('fetchRenewalLolbody', userName);
         //데이터 받고 초기화?
@@ -608,7 +608,7 @@ export default {
             this.IronData()
         }
         clearTimeout(myTimeWait);
-        clearTimeout(myTimeOut);
+        //clearTimeout(myTimeOut);
         this.RadarKey++;
         this.isLolbodyLoading = false;
         this.timeWait = false;

@@ -30,10 +30,10 @@ public class Api {
 			"RGAPI-9041c188-f0f9-42ad-8204-b41f5da22e6a",
 			
 			// 임시키
-			"RGAPI-57f1039a-111f-47ad-b909-0e6b0e03a9f1",
-			"RGAPI-1cb6220a-1d83-48da-b291-99906253f78e",
-			"RGAPI-4bb21ae8-418a-4eba-bbfe-a2d502c5cc09",
-			"RGAPI-20c4332b-9f44-4732-97db-82236465c4b1",
+			"RGAPI-40134eb2-2eae-4b95-985c-f4c4a2b082a1",
+			"RGAPI-c498295f-ddc0-460a-8114-3354ffce1f60",
+			"RGAPI-aa875688-4572-4663-a74f-e1556fdefe37",
+			"RGAPI-adbca621-e3c4-47a1-acbd-08aed86ab0a8",
 			
 			"RGAPI-6962f890-c4be-4908-af1a-ea5dcf3173c3",
 			"RGAPI-6ad99e83-ef0f-4f6f-8452-d45fad5299bb",

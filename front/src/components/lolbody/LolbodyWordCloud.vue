@@ -23,7 +23,7 @@ export default {
   props: ['champList'],
   data() {
     return {
-        spacing: 1,
+        spacing: 3,
     }
   },
   computed:{

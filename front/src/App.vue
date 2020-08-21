@@ -130,6 +130,11 @@ export default {
     vertical-align: center !important;
 }
 
+.index-explanation{
+  color: gray;
+  /* text-align: right; */
+}
+
 [tooltip]:hover {
     position: relative;
     cursor: pointer;

@@ -59,7 +59,7 @@
 				<v-card class="text-center ma-1 mb-2 bg_card" width="655px" outlined>
 					<ul class="options">
 						<li><a v-bind:class="{option_action: triger.KDAActive}" @click="changeKDA">KDA</a></li>
-						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">총점</a></li>
+						<li><a v-bind:class="{option_action: triger.totalPointActive}" @click="changeTotalPointDate">BP</a></li>
 					</ul>
 					<div class="px-5">
 						<ProfileLineChart :series="LineSeries" :category="LineCategory" :yaxis="LineYaxis"/>

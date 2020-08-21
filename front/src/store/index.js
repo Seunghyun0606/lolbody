@@ -162,7 +162,7 @@ export default new Vuex.Store({
         {
             yaxis:{
                 title: {
-                    text: '총점'
+                    text: 'BP'
                 },
                 tickAmount: 5,
                 min: 0,
@@ -200,9 +200,9 @@ export default new Vuex.Store({
         champList: [],
         lineList: [],
         radar: {
-          "aggressiveness": 0,
-          "stability": 0,
-          "influence": 0
+            "aggressiveness": 0,
+            "stability": 0,
+            "influence": 0
         },
         analysis: {
           "totalDamageDealtToChampionsPerMin": 0,

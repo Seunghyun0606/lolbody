@@ -1,26 +1,22 @@
 <template>
-
 <div class="champ-card" :class="[ this.recentGame.win ? 'bg_win' : 'bg_fail' ]" >
-  <div class="champ">
-    <div class="lane">
-      <img class="card-sub" :src="laneImage" alt="lane">  
+    <div class="champ">
+        <div class="lane">
+        <img class="card-sub" :src="laneImage" alt="lane">  
+        </div>
+
+        <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="card-champ-img">
+
+        <div class="spell">
+        <img class="card-sub card-sub-left" :src="require(`@/assets/images/spell/${recentGame.spell1}.png`)" alt="spell-left">
+        <img class="card-sub card-sub-right" :src="require(`@/assets/images/spell/${recentGame.spell2}.png`)" alt="spell-right">
+        </div>
+        
+        <div class="champ-card-text">
+            {{ recentGame.kills }} / <span>{{ recentGame.deaths }}</span> / {{ recentGame.assists }}
+        </div>
     </div>
-
-    <img class="card-champ-img" :src="require(`@/assets/images/champion/${recentGame.champName}.png`)" alt="card-champ-img">
-
-    <div class="spell">
-      <img class="card-sub card-sub-left" :src="require(`@/assets/images/spell/${recentGame.spell1}.png`)" alt="spell-left">
-      <img class="card-sub card-sub-right" :src="require(`@/assets/images/spell/${recentGame.spell2}.png`)" alt="spell-right">
-    </div>
-    <div class="champ-card-text">
-      {{ recentGame.kills }} / <span>{{ recentGame.deaths }}</span> / {{ recentGame.assists }}
-    </div>
-  </div>
-
-
 </div>
-
-
 </template>
 
 <script>
@@ -84,9 +80,14 @@ export default {
 }
 
 .champ-card-text {
-  padding-top: 5px;
-  font-size: 50%;
-  font-weight: 900;
+    width: 70px;
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 5px;
+    font-size: 50%;
+    font-weight: 900;
 }
 
 .champ-card-text > span {

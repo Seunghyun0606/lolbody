@@ -218,21 +218,26 @@
 
 
       <v-col cols="6" class="card-border card-background">
-
+          
+        <v-row>
+            <div class="index-explanation ml-5">
+                <small>*최근 100 게임 기준</small>
+            </div>
+        </v-row>
         <!-- 레이더 차트 구역 -->
-        <v-row class='justify-space-around test-height2'>
+        <v-row class='test-height2'>
           <!-- <div>
             레이더 차트 컴포넌트
             좌측에 레이더 차트 넣고 우측에는 레이더 차트 설명
             구획 2개로 나눠서하면될듯
           </div> -->
           <v-col>
-                <LolbodyRadarChart :radarData="getLolbodyData.radar" />
+                <LolbodyRadarChart :radarData="getLolbodyData.radar" :key="RadarKey"/>
           </v-col>
 
     <!-- *********************************** 여기 까지* ************************************************ -->
 
-            <v-col class="align-self-center mb-11 ml-16">
+            <v-col class="align-self-center mb-16 ml-16">
                 <div class='multi-explain' :data-tooltip-text="tooltip.agg">
                 공격성이란?
                 <!-- <span style="font-size: 10px;">
@@ -389,12 +394,12 @@ export default {
             sta: '데스나 시에스 등 게임을 안정적으로 풀어나가는 능력을 의미합니다.',
             inf: '오브젝트나 시야, 어시스트 등 게임 전반에 영향을 미치는 능력을 의미합니다.'
         },
-
-      noRecommendChamps: false,
-      timeWait: false,
-      isLolbodyLoading: true,
-      loadingColor: 'grey',
-      loadingSize: '80px',
+        RadarKey: 0,
+        noRecommendChamps: false,
+        timeWait: false,
+        isLolbodyLoading: true,
+        loadingColor: 'grey',
+        loadingSize: '80px',
 
 
       // *********************************** 보실 부분* ************************************************
@@ -442,10 +447,10 @@ export default {
         async getActionLolbodydata(userName){
             var myTimeWait = setTimeout(() => {
                 this.startTimeWait(true)
-            }, 10000);
+            }, 30000);
             var myTimeOut = setTimeout(() => {
                 this.startTimeOut()
-            }, 30000);
+            }, 60000);
 
             myTimeWait;
             myTimeOut;
@@ -568,11 +573,11 @@ export default {
         const userName = this.$route.params.userName;
         var myTimeWait = setTimeout(() => {
             this.startTimeWait(true)
-        }, 10000)
+        }, 30000)
         var myTimeOut = setTimeout(() => {
             this.startTimeOut()
-        }, 30000);
-
+        }, 60000);
+        
         myTimeWait;
         myTimeOut;
 
@@ -604,6 +609,7 @@ export default {
         }
         clearTimeout(myTimeWait);
         clearTimeout(myTimeOut);
+        this.RadarKey++;
         this.isLolbodyLoading = false;
         this.timeWait = false;
     },
@@ -897,49 +903,49 @@ export default {
     beforeDestroy(){
         this.$store.state.LolbodyData = {
             userCardReference: {
-            "timestamp": 0,
-            "summonerName": undefined,
-            "profileIconId": undefined,
-            "summonerLevel": undefined,
-            "soloRank": {
-                "tier": undefined,
-                "rank": undefined,
-                "leaguePoints": undefined,
-                "wins": 0,
-                "losses": 0,
-                "winRate": 0
-            },
+                "timestamp": 0,
+                "summonerName": undefined,
+                "profileIconId": undefined,
+                "summonerLevel": undefined,
+                "soloRank": {
+                    "tier": undefined,
+                    "rank": undefined,
+                    "leaguePoints": undefined,
+                    "wins": 0,
+                    "losses": 0,
+                    "winRate": 0
+                },
             },
             radarList: [],
             champList: [],
             lineList: [],
             radar: {
-            "aggressiveness": 0,
-            "stability": 0,
-            "influence": 0
+                "aggressiveness": 0,
+                "stability": 0,
+                "influence": 0
             },
             analysis: {
-            "totalDamageDealtToChampionsPerMin": 0,
-            "damageDealtToObjectivesPerMin": 0,
-            "visionScorePerMin": 0,
-            "totalDamageTakenPerMin": 0,
-            "totalMinionsKilledPerMin": 0,
-            "killsRatio": 0,
-            "deathsRatio": 0,
-            "killAssistPerMin": 0,
-            "killsPerMin": 0,
-            "deathsPerMin": 0,
-            "assistsPerMin": 0,
-            "totalHealPerMin": 0,
-            "damageSelfMitigatedPerMin": 0,
-            "damageDealtToTurretsPerMin": 0,
-            "timeCCingOthersPerMin": 0,
-            "neutralMinionsKilledPerMin": 0,
-            "totalTimeCrowdControlDealtPerMin": 0,
-            "visionWardsBoughtInGamePerMin": 0,
-            "neutralMinionsKilledEnemyJunglePerMin": 0,
-            "wardsPlacedPerMin": 0,
-            "wardsKilledPerMin": 0
+                "totalDamageDealtToChampionsPerMin": 0,
+                "damageDealtToObjectivesPerMin": 0,
+                "visionScorePerMin": 0,
+                "totalDamageTakenPerMin": 0,
+                "totalMinionsKilledPerMin": 0,
+                "killsRatio": 0,
+                "deathsRatio": 0,
+                "killAssistPerMin": 0,
+                "killsPerMin": 0,
+                "deathsPerMin": 0,
+                "assistsPerMin": 0,
+                "totalHealPerMin": 0,
+                "damageSelfMitigatedPerMin": 0,
+                "damageDealtToTurretsPerMin": 0,
+                "timeCCingOthersPerMin": 0,
+                "neutralMinionsKilledPerMin": 0,
+                "totalTimeCrowdControlDealtPerMin": 0,
+                "visionWardsBoughtInGamePerMin": 0,
+                "neutralMinionsKilledEnemyJunglePerMin": 0,
+                "wardsPlacedPerMin": 0,
+                "wardsKilledPerMin": 0
             },
         };
     }

@@ -65,7 +65,7 @@
           <br>
           {{ multiSearchData.totalWinRate }}%
           <br>
-          {{ multiSearchData.averageMatchGrade }} <span style="color: green;">MG</span>
+          {{ multiSearchData.averageMatchGrade*10 }} <span style="color: green;">BP</span>
 
         </div>
         

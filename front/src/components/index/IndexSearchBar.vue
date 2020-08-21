@@ -89,9 +89,9 @@
       </v-row>
     </v-card>
     <v-card min-height="94px" v-show='this.commentIsVisible' flat class="history-place history-place-comment">
-      <div class="index-explanation">
-        <small>소환사를 처음 검색하는 경우 약간의 시간이 소요될 수 있습니다.</small>
-      </div>
+        <div class="index-explanation">
+            <small>소환사를 처음 검색하는 경우 약간의 시간이 소요될 수 있습니다.</small>
+        </div>
     </v-card>
   </v-container>
 
@@ -353,8 +353,5 @@ input:focus {
   border: 2px solid #fafafa
 }
 
-.index-explanation{
-  color: gray;
-  /* text-align: right; */
-}
+
 </style>

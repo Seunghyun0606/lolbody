@@ -32,7 +32,8 @@ export default {
                     toolbar: {
                         show: false,
                     },
-                    offsetY: 20,
+                    height: 270,
+                    offsetY: 0,
                     offsetX: 20
                 },
                 legend: {
@@ -49,7 +50,7 @@ export default {
                 },
                 markers: {
                     size: 3
-                }
+                },
             }
             
         }

@@ -30,21 +30,21 @@ public class Api {
 			"RGAPI-9041c188-f0f9-42ad-8204-b41f5da22e6a",
 			
 			// 임시키
-			"RGAPI-57f1039a-111f-47ad-b909-0e6b0e03a9f1",
-			"RGAPI-1cb6220a-1d83-48da-b291-99906253f78e",
-			"RGAPI-4bb21ae8-418a-4eba-bbfe-a2d502c5cc09",
-			"RGAPI-20c4332b-9f44-4732-97db-82236465c4b1",
+			"RGAPI-40134eb2-2eae-4b95-985c-f4c4a2b082a1",
+			"RGAPI-c498295f-ddc0-460a-8114-3354ffce1f60",
+			"RGAPI-aa875688-4572-4663-a74f-e1556fdefe37",
+			"RGAPI-adbca621-e3c4-47a1-acbd-08aed86ab0a8",
 			
-			"RGAPI-28d14c16-da02-4309-8e26-f5a55755d15e",
-			"RGAPI-7d8fff74-f589-45b8-a9df-4e09d314cc34",
-			"RGAPI-aa5ff062-27d9-489f-8d5e-57f75661f5dc",
-			"RGAPI-4b77ebb2-71e0-48c4-aaef-7dd0cc94d3dd",
-			"RGAPI-ba3b2cd3-9db9-4e79-a1c1-8ac8ba262fab",
+			"RGAPI-6962f890-c4be-4908-af1a-ea5dcf3173c3",
+			"RGAPI-6ad99e83-ef0f-4f6f-8452-d45fad5299bb",
+			"RGAPI-3ddba651-9b8b-46dc-98f5-5deb521d2e24",
+			"RGAPI-efb99809-17f2-468f-b9db-dcfcc3ac9d4c",
+			"RGAPI-bce391e2-d965-47ec-b078-60f1963c6451",
 			
-			"RGAPI-6875064d-9902-4075-8542-df9233d07fa7",
-			"RGAPI-3c6480a0-fe4c-4d1e-a959-c7e9ed586aa9",
-			"RGAPI-cf40dfdb-c665-4366-a86a-bc810d378f81",
-			"RGAPI-32a8a60f-b451-472c-bf81-a8b42d5ebf2b",
+			"RGAPI-30da5406-669a-4bdf-8855-3b9a4578b03c",
+			"RGAPI-312d800a-3d1f-4eb7-bde3-a650e536aae2",
+			"RGAPI-36e07f71-bd7e-4536-9c9d-81c18d58514a",
+			"RGAPI-ceb608c6-902f-4138-8b0a-0e480244a5b2",
 			
 			"RGAPI-ad64d4d3-a6c2-4cc8-a883-f889c5195479",
 			"RGAPI-7e9c2ec1-c71e-4907-a86c-b8e481781600"

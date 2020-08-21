@@ -690,8 +690,9 @@ export default new Vuex.Store({
                 state.badgeMap[badge] = datas.badgeMap[badge];
             else
                 state.badgeMap[badge].cnt += datas.badgeMap[badge].cnt;
-            state.badgeSet.push(state.badgeMap[badge]);
         }
+        for(let badge in state.badgeMap)
+            state.badgeSet.push(state.badgeMap[badge]);
     },
     setProfileRadarChart(state, matchDatas){
         if(matchDatas == null)

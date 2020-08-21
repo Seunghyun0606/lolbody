@@ -647,8 +647,8 @@ export default {
       var radar = this.getLolbodyData.radar
 
       var a = radar.aggressiveness
-      var s = radar.stability
-      var i = radar.influence
+      var s = radar.influence // 영향력 변수이름 바뀌었지만 나중에 고쳐야함
+      var i = radar.stability // 안정성
 
       
       if ( a < 0.34 ) {

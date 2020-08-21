@@ -46,8 +46,8 @@ public class Api {
 			"RGAPI-36e07f71-bd7e-4536-9c9d-81c18d58514a",
 			"RGAPI-ceb608c6-902f-4138-8b0a-0e480244a5b2",
 			
-			"RGAPI-ad64d4d3-a6c2-4cc8-a883-f889c5195479",
-			"RGAPI-7e9c2ec1-c71e-4907-a86c-b8e481781600"
+			"RGAPI-1ffc3b1a-10f8-48ec-a4a9-3e8e9b5a6e86",
+			"RGAPI-32330156-7635-4be9-a042-f759105aac45"
 			
 	};
 	// 안먹히는 키 찾는 방법

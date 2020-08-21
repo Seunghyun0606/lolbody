@@ -208,6 +208,7 @@ export default {
 	},
 	computed: {
         badgeSet(){
+            console.log(this.$store.getters.getBadgeSet)
             return this.$store.getters.getBadgeSet
         },
         radarData(){
@@ -233,9 +234,6 @@ export default {
         },
 		error(){
 			return this.$store.state.error
-		},
-		badgeMap(){
-			return this.$store.getters.getBadgeMap
 		},
         profileDatas(){
             return this.$store.getters.getProfileDatas

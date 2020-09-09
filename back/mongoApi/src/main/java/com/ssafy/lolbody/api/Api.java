@@ -15,28 +15,28 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Api {
-	private final static String token = "RGAPI-40134eb2-2eae-4b95-985c-f4c4a2b082a1";
+	private final static String token = "RGAPI-40134eb2-2eae-4b95-985c-";
 	private final static String[] tokens = {
 			// 개인키
 			// 임시키
-			"RGAPI-40134eb2-2eae-4b95-985c-f4c4a2b082a1",
-			"RGAPI-c498295f-ddc0-460a-8114-3354ffce1f60",
-			"RGAPI-aa875688-4572-4663-a74f-e1556fdefe37",
-			"RGAPI-adbca621-e3c4-47a1-acbd-08aed86ab0a8",
+			"RGAPI-40134eb2-2eae-4b95-985c-",
+			"RGAPI-c498295f-ddc0-460a-8114-",
+			"RGAPI-aa875688-4572-4663-a74f-",
+			"RGAPI-adbca621-e3c4-47a1-acbd-",
 			
-			"RGAPI-6962f890-c4be-4908-af1a-ea5dcf3173c3",
-			"RGAPI-6ad99e83-ef0f-4f6f-8452-d45fad5299bb",
-			"RGAPI-3ddba651-9b8b-46dc-98f5-5deb521d2e24",
-			"RGAPI-efb99809-17f2-468f-b9db-dcfcc3ac9d4c",
-			"RGAPI-bce391e2-d965-47ec-b078-60f1963c6451",
+			"RGAPI-6962f890-c4be-4908-af1a-",
+			"RGAPI-6ad99e83-ef0f-4f6f-8452-",
+			"RGAPI-3ddba651-9b8b-46dc-98f5-",
+			"RGAPI-efb99809-17f2-468f-b9db-",
+			"RGAPI-bce391e2-d965-47ec-b078-",
 			
-			"RGAPI-30da5406-669a-4bdf-8855-3b9a4578b03c",
-			"RGAPI-312d800a-3d1f-4eb7-bde3-a650e536aae2",
-			"RGAPI-36e07f71-bd7e-4536-9c9d-81c18d58514a",
-			"RGAPI-ceb608c6-902f-4138-8b0a-0e480244a5b2",
-			
-			"RGAPI-1ffc3b1a-10f8-48ec-a4a9-3e8e9b5a6e86",
-			"RGAPI-32330156-7635-4be9-a042-f759105aac45"
+			"RGAPI-30da5406-669a-4bdf-8855-",
+			"RGAPI-312d800a-3d1f-4eb7-bde3-",
+			"RGAPI-36e07f71-bd7e-4536-9c9d-",
+			"RGAPI-ceb608c6-902f-4138-8b0a-",
+		
+			"RGAPI-1ffc3b1a-10f8-48ec-a4a9-",
+			"RGAPI-32330156-7635-4be9-a042-"
 			
 	};
 	// 안먹히는 키 찾는 방법

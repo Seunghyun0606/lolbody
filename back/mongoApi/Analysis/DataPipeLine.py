@@ -17,15 +17,15 @@ class API_KEYs:
             self.idx += 1
 
 API_DUMMY = [
-    'RGAPI-9041c188-f0f9-42ad-8204-b41f5da22e6a',
-    'RGAPI-4630b7c8-6bdc-446f-b81e-3e7244ab970c',
-    'RGAPI-ad13b224-7b6f-4358-8ff9-3c93df6cda80',
-    'RGAPI-e1a57063-3429-414b-87f7-891538676189',
-    'RGAPI-8cbfda0a-c52d-4a75-8aa5-b87491f13b3c',
-    'RGAPI-44c9480b-4f14-4046-ab15-c181222f1d39',
-    'RGAPI-b91dd012-eb39-41ef-9d5f-5bd2f54612a9',
-    'RGAPI-255f85c9-c59c-4754-aee4-96abf7adebbf',
-    'RGAPI-18a6cad9-eb35-4437-96ec-be050345e935',
+    'RGAPI-9041c188-f0f9-42ad-8204-',
+    'RGAPI-4630b7c8-6bdc-446f-b81e-',
+    'RGAPI-ad13b224-7b6f-4358-8ff9-',
+    'RGAPI-e1a57063-3429-414b-87f7-',
+    'RGAPI-8cbfda0a-c52d-4a75-8aa5-',
+    'RGAPI-44c9480b-4f14-4046-ab15-',
+    'RGAPI-b91dd012-eb39-41ef-9d5f-',
+    'RGAPI-255f85c9-c59c-4754-aee4-',
+    'RGAPI-18a6cad9-eb35-4437-96ec-',
     ]
 
 API = API_KEYs(API_DUMMY)

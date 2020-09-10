@@ -15,28 +15,28 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Api {
-	private final static String token = "RGAPI-40134eb2-2eae-4b95-985c-";
+	private final static String token = "abcd-40134eb2-2eae-4b95-985c-";
 	private final static String[] tokens = {
 			// 개인키
 			// 임시키
-			"RGAPI-40134eb2-2eae-4b95-985c-",
-			"RGAPI-c498295f-ddc0-460a-8114-",
-			"RGAPI-aa875688-4572-4663-a74f-",
-			"RGAPI-adbca621-e3c4-47a1-acbd-",
+			"abcd-40134eb2-2eae-4b95-985c-",
+			"abcd-c498295f-ddc0-460a-8114-",
+			"abcd-aa875688-4572-4663-a74f-",
+			"abcd-adbca621-e3c4-47a1-acbd-",
 			
-			"RGAPI-6962f890-c4be-4908-af1a-",
-			"RGAPI-6ad99e83-ef0f-4f6f-8452-",
-			"RGAPI-3ddba651-9b8b-46dc-98f5-",
-			"RGAPI-efb99809-17f2-468f-b9db-",
-			"RGAPI-bce391e2-d965-47ec-b078-",
+			"abcd-6962f890-c4be-4908-af1a-",
+			"abcd-6ad99e83-ef0f-4f6f-8452-",
+			"abcd-3ddba651-9b8b-46dc-98f5-",
+			"abcd-efb99809-17f2-468f-b9db-",
+			"abcd-bce391e2-d965-47ec-b078-",
 			
-			"RGAPI-30da5406-669a-4bdf-8855-",
-			"RGAPI-312d800a-3d1f-4eb7-bde3-",
-			"RGAPI-36e07f71-bd7e-4536-9c9d-",
-			"RGAPI-ceb608c6-902f-4138-8b0a-",
+			"abcd-30da5406-669a-4bdf-8855-",
+			"abcd-312d800a-3d1f-4eb7-bde3-",
+			"abcd-36e07f71-bd7e-4536-9c9d-",
+			"abcd-ceb608c6-902f-4138-8b0a-",
 		
-			"RGAPI-1ffc3b1a-10f8-48ec-a4a9-",
-			"RGAPI-32330156-7635-4be9-a042-"
+			"abcd-1ffc3b1a-10f8-48ec-a4a9-",
+			"abcd-32330156-7635-4be9-a042-"
 			
 	};
 	// 안먹히는 키 찾는 방법
